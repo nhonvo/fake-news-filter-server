@@ -1,0 +1,4 @@
+/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Data/obj/Debug/netcoreapp3.1/FakeNewsFilter.Data.csproj.AssemblyReference.cache
+/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Data/obj/Debug/netcoreapp3.1/FakeNewsFilter.Data.AssemblyInfoInputs.cache
+/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Data/obj/Debug/netcoreapp3.1/FakeNewsFilter.Data.AssemblyInfo.cs
+/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Data/obj/Debug/netcoreapp3.1/FakeNewsFilter.Data.csproj.CoreCompileInputs.cache
