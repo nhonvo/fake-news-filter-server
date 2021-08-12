@@ -23,5 +23,9 @@
     <None Remove="Microsoft.EntityFrameworkCore.Tools" />
     <None Remove="Swashbuckle.AspNetCore.SwaggerUI" />
     <None Remove="Swashbuckle.AspNetCore.SwaggerGen" />
+    <None Remove="Controllers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controllers\" />
   </ItemGroup>
 </Project>

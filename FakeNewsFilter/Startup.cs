@@ -1,4 +1,3 @@
-using FakeNewsFilter.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.AzureAD.UI;
 using Microsoft.AspNetCore.Builder;
@@ -33,10 +32,7 @@ namespace FakeNewsFilter
             services.AddAuthentication(AzureADDefaults.BearerAuthenticationScheme)
                 .AddAzureADBearer(options => Configuration.Bind("AzureAd", options));
             services.AddControllers();
-            services.AddDbContext<ApplicationDBContext>(dbContextOption =>
-            
-                dbContextOption.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")
-            ));
+           
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v2", new OpenApiInfo { Title = "Fake News Filter API", Version = "v1" });

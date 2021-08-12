@@ -14,7 +14,7 @@
         "outputPath": "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Data/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/buiphukhuyen/.config/NuGet/NuGet.Config"
+          "/Users/buiphukhuyen/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -51,6 +51,14 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[5.0.8, )"
+            },
+            "Microsoft.Extensions.Configuration.FileExtensions": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Microsoft.Extensions.Configuration.Json": {
+              "target": "Package",
+              "version": "[5.0.0, )"
             }
           },
           "imports": [

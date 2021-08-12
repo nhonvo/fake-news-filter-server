@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace FakeNewsFilter.Data.Entities
 {
     public class News
@@ -16,5 +18,7 @@ namespace FakeNewsFilter.Data.Entities
         public string SourceLink { get; set; }
 
         public Media Media { get; set; }
+
+        public List<NewsInTopics> NewsInTopics { get; set; }
     } 
 }
