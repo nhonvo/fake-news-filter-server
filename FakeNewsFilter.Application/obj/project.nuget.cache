@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "P7+k4eR0i0NqAAy1P5uZCoqkCosbgl9rbmqs8ULSj7YMTmiNzM2+7GkMvoD24xuh/6BZL3caDYyOj3lgSz4AqQ==",
+  "dgSpecHash": "m5UZW9t7fCZvOr00ScBpbB8WY1VrQt1ki1CY1Hj3meqfN+mwwJRGdF5o6BEX3ukynQ+MwYQRs734HOjg1kqV0g==",
   "success": true,
-  "projectFilePath": "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Application/FakeNewsFilter.Application.csproj",
+  "projectFilePath": "Z:\\FakeNewsFilter\\FakeNewsFilter.Application\\FakeNewsFilter.Application.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

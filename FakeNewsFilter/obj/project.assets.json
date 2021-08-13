@@ -6020,24 +6020,26 @@
     ]
   },
   "packageFolders": {
-    "/Users/buiphukhuyen/.nuget/packages/": {}
+    "C:\\Users\\buiphukhuyen\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter/FakeNewsFilter.WebApp.csproj",
+      "projectUniqueName": "Z:\\FakeNewsFilter\\FakeNewsFilter\\FakeNewsFilter.WebApp.csproj",
       "projectName": "FakeNewsFilter.WebApp",
-      "projectPath": "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter/FakeNewsFilter.WebApp.csproj",
-      "packagesPath": "/Users/buiphukhuyen/.nuget/packages/",
-      "outputPath": "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter/obj/",
+      "projectPath": "Z:\\FakeNewsFilter\\FakeNewsFilter\\FakeNewsFilter.WebApp.csproj",
+      "packagesPath": "C:\\Users\\buiphukhuyen\\.nuget\\packages\\",
+      "outputPath": "Z:\\FakeNewsFilter\\FakeNewsFilter\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/buiphukhuyen/.config/NuGet/NuGet.Config"
+        "C:\\Users\\buiphukhuyen\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -6101,7 +6103,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.302/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.300\\RuntimeIdentifierGraph.json"
       }
     }
   }

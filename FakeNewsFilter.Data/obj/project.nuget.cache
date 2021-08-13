@@ -1,10 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "5lBNMAxdofZVIitnz9R6TKe/bCghIx3JJV6fKG5RoCmuAG+rEcv091t9NWX0PrQvz4a5TBjN/8BWJ5xhaq7pkA==",
+  "dgSpecHash": "nkj56V+JEhdiJ47k4sB88+Hq7Z5YDHE/Fihc+5fusn607VXINWcYYcthXUme8kmyfR2wk7eAvQkw2BK7cSUprg==",
   "success": true,
   "projectFilePath": "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Data/FakeNewsFilter.Data.csproj",
   "expectedPackageFiles": [
     "/Users/buiphukhuyen/.nuget/packages/humanizer.core/2.8.26/humanizer.core.2.8.26.nupkg.sha512",
+    "/Users/buiphukhuyen/.nuget/packages/microsoft.aspnetcore.cryptography.internal/5.0.8/microsoft.aspnetcore.cryptography.internal.5.0.8.nupkg.sha512",
+    "/Users/buiphukhuyen/.nuget/packages/microsoft.aspnetcore.cryptography.keyderivation/5.0.8/microsoft.aspnetcore.cryptography.keyderivation.5.0.8.nupkg.sha512",
+    "/Users/buiphukhuyen/.nuget/packages/microsoft.aspnetcore.identity.entityframeworkcore/5.0.8/microsoft.aspnetcore.identity.entityframeworkcore.5.0.8.nupkg.sha512",
     "/Users/buiphukhuyen/.nuget/packages/microsoft.csharp/4.7.0/microsoft.csharp.4.7.0.nupkg.sha512",
     "/Users/buiphukhuyen/.nuget/packages/microsoft.data.sqlclient/2.0.1/microsoft.data.sqlclient.2.0.1.nupkg.sha512",
     "/Users/buiphukhuyen/.nuget/packages/microsoft.data.sqlclient.sni.runtime/2.0.1/microsoft.data.sqlclient.sni.runtime.2.0.1.nupkg.sha512",
@@ -26,6 +29,8 @@
     "/Users/buiphukhuyen/.nuget/packages/microsoft.extensions.fileproviders.abstractions/5.0.0/microsoft.extensions.fileproviders.abstractions.5.0.0.nupkg.sha512",
     "/Users/buiphukhuyen/.nuget/packages/microsoft.extensions.fileproviders.physical/5.0.0/microsoft.extensions.fileproviders.physical.5.0.0.nupkg.sha512",
     "/Users/buiphukhuyen/.nuget/packages/microsoft.extensions.filesystemglobbing/5.0.0/microsoft.extensions.filesystemglobbing.5.0.0.nupkg.sha512",
+    "/Users/buiphukhuyen/.nuget/packages/microsoft.extensions.identity.core/5.0.8/microsoft.extensions.identity.core.5.0.8.nupkg.sha512",
+    "/Users/buiphukhuyen/.nuget/packages/microsoft.extensions.identity.stores/5.0.8/microsoft.extensions.identity.stores.5.0.8.nupkg.sha512",
     "/Users/buiphukhuyen/.nuget/packages/microsoft.extensions.logging/5.0.0/microsoft.extensions.logging.5.0.0.nupkg.sha512",
     "/Users/buiphukhuyen/.nuget/packages/microsoft.extensions.logging.abstractions/5.0.0/microsoft.extensions.logging.abstractions.5.0.0.nupkg.sha512",
     "/Users/buiphukhuyen/.nuget/packages/microsoft.extensions.options/5.0.0/microsoft.extensions.options.5.0.0.nupkg.sha512",

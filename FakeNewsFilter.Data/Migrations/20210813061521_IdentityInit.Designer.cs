@@ -4,14 +4,16 @@ using FakeNewsFilter.Data.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FakeNewsFilter.Data.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210813061521_IdentityInit")]
+    partial class IdentityInit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -128,41 +130,6 @@ namespace FakeNewsFilter.Data.Migrations
                     b.ToTable("NewsInTopics");
                 });
 
-            modelBuilder.Entity("FakeNewsFilter.Data.Entities.Role", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(70)
-                        .HasColumnType("nvarchar(70)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Role");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("a3314be5-4c77-4fb6-82ad-302014682a73"),
-                            ConcurrencyStamp = "168bf747-b14b-4fa1-b34f-e3abb337f53b",
-                            Description = "System Admin",
-                            Name = "admin",
-                            NormalizedName = "admin"
-                        });
-                });
-
             modelBuilder.Entity("FakeNewsFilter.Data.Entities.TopicNews", b =>
                 {
                     b.Property<int>("TopicId")
@@ -183,7 +150,7 @@ namespace FakeNewsFilter.Data.Migrations
                     b.Property<DateTime>("Timestamp")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 8, 13, 13, 39, 46, 356, DateTimeKind.Local).AddTicks(1130));
+                        .HasDefaultValue(new DateTime(2021, 8, 13, 13, 15, 20, 691, DateTimeKind.Local).AddTicks(430));
 
                     b.Property<string>("TopicName")
                         .IsRequired()
@@ -197,7 +164,7 @@ namespace FakeNewsFilter.Data.Migrations
 
             modelBuilder.Entity("FakeNewsFilter.Data.Entities.User", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("UserId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -208,10 +175,16 @@ namespace FakeNewsFilter.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(70)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(70)");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -227,6 +200,12 @@ namespace FakeNewsFilter.Data.Migrations
 
                     b.Property<string>("NormalizedUserName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(20)");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
@@ -251,29 +230,34 @@ namespace FakeNewsFilter.Data.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("UserId");
 
                     b.ToTable("Users");
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("69db714f-9576-45ba-b5b7-f00649be00de"),
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "7b1e390b-9427-4e90-ad5c-509ad8fbbfdf",
-                            Email = "bp.khuyen@hutech.edu.vn",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            Name = "Bui Phu Khuyen",
-                            NormalizedEmail = "bp.khuyen@hutech.edu.vn",
-                            NormalizedUserName = "khuyenpb",
-                            PasswordHash = "AQAAAAEAACcQAAAAENfTEXoqp8BuFFipxYdeFBamEL2/SxOhy0wtDosTYYkht3qIAALYzv1UtRVN7einyw==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "",
-                            Status = 0,
-                            TwoFactorEnabled = false,
-                            UserName = "khuyenpb"
-                        });
+            modelBuilder.Entity("FakeNewsFilter.Data.Entities.UserRole", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserRole");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -349,13 +333,6 @@ namespace FakeNewsFilter.Data.Migrations
                     b.HasKey("UserId", "RoleId");
 
                     b.ToTable("UserRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = new Guid("69db714f-9576-45ba-b5b7-f00649be00de"),
-                            RoleId = new Guid("a3314be5-4c77-4fb6-82ad-302014682a73")
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>

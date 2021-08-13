@@ -11,13 +11,7 @@ namespace FakeNewsFilter.Data.Configurations
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.ToTable("Users");
-
-            builder.HasKey(k => k.UserId);
-
-            builder.Property(x => x.Password).IsRequired().IsUnicode(false).HasMaxLength(20);
-
-            builder.Property(x => x.Email).IsRequired().IsUnicode(false).HasMaxLength(70);
-
+  
             builder.Property(x => x.Status).HasDefaultValue(Status.Active);
         }
     }
