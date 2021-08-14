@@ -19,7 +19,9 @@ namespace FakeNewsFilter.Data.Configurations
 
                 builder.Property(x => x.SourceLink).IsRequired();
 
-                
+                builder.Property(x => x.SocialBeliefs).HasDefaultValue(0);
+
+                builder.Property(x => x.Timestamp).HasDefaultValue(DateTime.Now);
             
         }
     }

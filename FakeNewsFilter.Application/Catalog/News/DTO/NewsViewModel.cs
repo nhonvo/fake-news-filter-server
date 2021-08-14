@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
+using FakeNewsFilter.Data.Entities;
 
-namespace FakeNewsFilter.Data.Entities
+namespace FakeNewsFilter.Application.Catalog.News.DTO.Manage
 {
-    public class News
+    public class NewsViewModel
     {
         public int NewsId { get; set; }
 
@@ -21,6 +21,9 @@ namespace FakeNewsFilter.Data.Entities
 
         public DateTime Timestamp { get; set; }
 
-        public List<NewsInTopics> NewsInTopics { get; set; }
-    } 
+        public int TopicId { get; set; }
+
+        public string TopicName { get; set; }
+
+    }
 }

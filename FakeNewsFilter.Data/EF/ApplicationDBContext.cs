@@ -30,10 +30,19 @@ namespace FakeNewsFilter.Data.EF
 
             modelBuilder.Entity<IdentityRoleClaim<Guid>>().ToTable("RoleClaims");
             modelBuilder.Entity<IdentityUserToken<Guid>>().ToTable("UserTokens").HasKey(x => x.UserId);
+
             //Data seeding
             modelBuilder.Seed();
         }
 
-       
+        public DbSet<News> News { get; set; }
+
+        public DbSet<TopicNews> TopicNews { get; set; }
+
+        public DbSet<AppConfig> AppConfigs { get; set; }
+
+        public DbSet<NewsInTopics> NewsInTopics { get; set; }
+        
+        
     }
 }

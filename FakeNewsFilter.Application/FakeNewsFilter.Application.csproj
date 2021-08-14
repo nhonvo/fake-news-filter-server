@@ -4,4 +4,24 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Catalog\" />
+    <None Remove="Catalog\News\" />
+    <None Remove="Catalog\News\DTO\" />
+    <None Remove="DTOs\" />
+    <None Remove="Catalog\News\DTO\Manage\" />
+    <None Remove="Catalog\News\DTO\Public\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Catalog\" />
+    <Folder Include="Catalog\News\" />
+    <Folder Include="Catalog\News\DTO\" />
+    <Folder Include="DTOs\" />
+    <Folder Include="Catalog\News\DTO\Manage\" />
+    <Folder Include="Catalog\News\DTO\Public\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FakeNewsFilter.Data\FakeNewsFilter.Data.csproj" />
+    <ProjectReference Include="..\FakeNewsFilter.Utilities\FakeNewsFilter.Utilities.csproj" />
+  </ItemGroup>
 </Project>

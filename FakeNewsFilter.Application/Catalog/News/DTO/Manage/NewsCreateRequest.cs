@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using FakeNewsFilter.Data.Entities;
 
-namespace FakeNewsFilter.Data.Entities
+namespace FakeNewsFilter.Application.Catalog.News.DTO.Manage
 {
-    public class News
+    public class NewsCreateRequest
     {
         public int NewsId { get; set; }
 
@@ -18,9 +19,6 @@ namespace FakeNewsFilter.Data.Entities
         public string SourceLink { get; set; }
 
         public Media Media { get; set; }
-
-        public DateTime Timestamp { get; set; }
-
-        public List<NewsInTopics> NewsInTopics { get; set; }
-    } 
+       
+    }
 }
