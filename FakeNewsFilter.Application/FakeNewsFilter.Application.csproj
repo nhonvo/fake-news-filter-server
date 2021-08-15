@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -6,22 +6,25 @@
 
   <ItemGroup>
     <None Remove="Catalog\" />
-    <None Remove="Catalog\News\" />
     <None Remove="Catalog\News\DTO\" />
     <None Remove="DTOs\" />
-    <None Remove="Catalog\News\DTO\Manage\" />
-    <None Remove="Catalog\News\DTO\Public\" />
+    <None Remove="Common\" />
   </ItemGroup>
+
+  <ItemGroup>
+      <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
   <ItemGroup>
     <Folder Include="Catalog\" />
-    <Folder Include="Catalog\News\" />
-    <Folder Include="Catalog\News\DTO\" />
-    <Folder Include="DTOs\" />
-    <Folder Include="Catalog\News\DTO\Manage\" />
-    <Folder Include="Catalog\News\DTO\Public\" />
+    <Folder Include="Common\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FakeNewsFilter.Data\FakeNewsFilter.Data.csproj" />
     <ProjectReference Include="..\FakeNewsFilter.Utilities\FakeNewsFilter.Utilities.csproj" />
+    <ProjectReference Include="..\FakeNewsFilter.ViewModel\FakeNewsFilter.ViewModel.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="5.0.0" />
   </ItemGroup>
 </Project>

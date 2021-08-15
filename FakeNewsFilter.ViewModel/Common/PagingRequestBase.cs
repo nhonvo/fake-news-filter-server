@@ -1,5 +1,5 @@
 ﻿using System;
-namespace FakeNewsFilter.Application.DTOs
+namespace FakeNewsFilter.ViewModel.Common
 {
     public class PagingRequestBase
     {

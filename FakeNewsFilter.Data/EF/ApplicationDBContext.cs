@@ -23,6 +23,7 @@ namespace FakeNewsFilter.Data.EF
             modelBuilder.ApplyConfiguration(new NewsInTopicsConfiguration());
             modelBuilder.ApplyConfiguration(new FollowConfiguration());
             modelBuilder.ApplyConfiguration(new UserRoleConfiguration());
+            modelBuilder.ApplyConfiguration(new MediaConfiguration());
 
             modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("UserClaims");
             modelBuilder.Entity<IdentityUserRole<Guid>>().ToTable("UserRoles").HasKey(x => new { x.UserId, x.RoleId});
@@ -42,7 +43,9 @@ namespace FakeNewsFilter.Data.EF
         public DbSet<AppConfig> AppConfigs { get; set; }
 
         public DbSet<NewsInTopics> NewsInTopics { get; set; }
-        
-        
+
+        public DbSet<Media> Media { get; set; }
+
+
     }
 }

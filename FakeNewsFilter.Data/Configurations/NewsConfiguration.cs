@@ -13,6 +13,8 @@ namespace FakeNewsFilter.Data.Configurations
 
                 builder.HasKey(k => k.NewsId);
 
+                builder.Property(k => k.NewsId).UseIdentityColumn();
+
                 builder.Property(x => x.Name).IsRequired().HasMaxLength(150);
 
                 builder.Property(x => x.Description).IsRequired().HasMaxLength(250);
@@ -21,8 +23,8 @@ namespace FakeNewsFilter.Data.Configurations
 
                 builder.Property(x => x.SocialBeliefs).HasDefaultValue(0);
 
-                builder.Property(x => x.Timestamp).HasDefaultValue(DateTime.Now);
-            
+                builder.Property(x => x.Timestamp);
+
         }
     }
 }

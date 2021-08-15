@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace FakeNewsFilter.Application.DTOs
+namespace FakeNewsFilter.ViewModel.Common
 {
     public class PagedResult<T>
     {

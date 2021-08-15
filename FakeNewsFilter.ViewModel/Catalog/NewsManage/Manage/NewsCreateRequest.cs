@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using FakeNewsFilter.Data.Entities;
+﻿using FakeNewsFilter.Data.Entities;
+using FakeNewsFilter.Data.Enums;
+using Microsoft.AspNetCore.Http;
 
-namespace FakeNewsFilter.Application.Catalog.News.DTO.Manage
+namespace FakeNewsFilter.ViewModel.Catalog.News.Manage
 {
     public class NewsCreateRequest
     {
@@ -18,7 +18,13 @@ namespace FakeNewsFilter.Application.Catalog.News.DTO.Manage
 
         public string SourceLink { get; set; }
 
+        public string MediaLink { get; set; }
+
+
         public Media Media { get; set; }
-       
+
+        public MediaType Type { get; set; }
+
+        public IFormFile ThumbnailImage { get; set;}
     }
 }

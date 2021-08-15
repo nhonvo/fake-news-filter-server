@@ -1,7 +1,7 @@
-﻿using System;
-using FakeNewsFilter.Data.Entities;
+﻿using FakeNewsFilter.Data.Entities;
+using System;
 
-namespace FakeNewsFilter.Application.Catalog.News.DTO.Manage
+namespace FakeNewsFilter.ViewModel.Catalog.News
 {
     public class NewsViewModel
     {

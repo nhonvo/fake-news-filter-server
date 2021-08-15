@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using FakeNewsFilter.Application.DTOs;
+using FakeNewsFilter.ViewModel.Common;
 
-namespace FakeNewsFilter.Application.Catalog.News.DTO.Manage
+namespace FakeNewsFilter.ViewModel.Catalog.News.Manage
 {
     public class GetNewsPagingRequest : PagingRequestBase
     {

@@ -18,5 +18,10 @@ namespace FakeNewsFilter.Data.Entities
         public List<NewsInTopics> NewsInTopics { get; set; }
 
         public List<Follow> Follows { get; set; }
+
+        public int? MediaId { get; set; }
+
+        public Media Media { get; set; }
+
     }
 }

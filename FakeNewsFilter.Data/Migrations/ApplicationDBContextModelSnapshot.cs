@@ -57,21 +57,39 @@ namespace FakeNewsFilter.Data.Migrations
 
             modelBuilder.Entity("FakeNewsFilter.Data.Entities.Media", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("MediaId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Caption")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("Duration")
+                        .HasColumnType("int");
+
+                    b.Property<long>("FileSize")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("PathMedia")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SortOrder")
                         .HasColumnType("int");
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
                     b.Property<string>("Url")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("MediaId");
 
                     b.ToTable("Media");
                 });
@@ -81,6 +99,8 @@ namespace FakeNewsFilter.Data.Migrations
                     b.Property<int>("NewsId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
@@ -109,13 +129,13 @@ namespace FakeNewsFilter.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Timestamp")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 8, 14, 22, 28, 51, 460, DateTimeKind.Local).AddTicks(5890));
+                        .HasColumnType("datetime2");
 
                     b.HasKey("NewsId");
 
-                    b.HasIndex("MediaId");
+                    b.HasIndex("MediaId")
+                        .IsUnique()
+                        .HasFilter("[MediaId] IS NOT NULL");
 
                     b.ToTable("News");
                 });
@@ -163,7 +183,7 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             Id = new Guid("a3314be5-4c77-4fb6-82ad-302014682a73"),
-                            ConcurrencyStamp = "4c801deb-05d9-413a-802a-34a18f59323c",
+                            ConcurrencyStamp = "02efe253-c5b8-4838-8d1b-215f07057f70",
                             Description = "System Admin",
                             Name = "admin",
                             NormalizedName = "admin"
@@ -175,6 +195,8 @@ namespace FakeNewsFilter.Data.Migrations
                     b.Property<int>("TopicId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
@@ -182,15 +204,16 @@ namespace FakeNewsFilter.Data.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
+                    b.Property<int?>("MediaId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Tag")
                         .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
                     b.Property<DateTime>("Timestamp")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 8, 14, 22, 28, 51, 439, DateTimeKind.Local).AddTicks(4030));
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("TopicName")
                         .IsRequired()
@@ -198,6 +221,10 @@ namespace FakeNewsFilter.Data.Migrations
                         .HasColumnType("nvarchar(30)");
 
                     b.HasKey("TopicId");
+
+                    b.HasIndex("MediaId")
+                        .IsUnique()
+                        .HasFilter("[MediaId] IS NOT NULL");
 
                     b.ToTable("TopicNews");
                 });
@@ -267,14 +294,14 @@ namespace FakeNewsFilter.Data.Migrations
                         {
                             Id = new Guid("69db714f-9576-45ba-b5b7-f00649be00de"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "160977e3-776c-4fd9-90d8-8897abf72514",
+                            ConcurrencyStamp = "495c4f57-6f56-4b80-8dfc-a93c21ece01f",
                             Email = "bp.khuyen@hutech.edu.vn",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Bui Phu Khuyen",
                             NormalizedEmail = "bp.khuyen@hutech.edu.vn",
                             NormalizedUserName = "khuyenpb",
-                            PasswordHash = "AQAAAAEAACcQAAAAEEdWnaaey0jBU1PZz5zHiw0Zs5LOhXIJFbnl423cHe8X/O+PhGjO8/VxejVyWJbClA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAECg10jzrZIyVr8wSHk31AXcNaPvvDchRmOinAOmSKzcjvWM3g6Oq84sJmuG/QROUhA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             Status = 0,
@@ -407,8 +434,8 @@ namespace FakeNewsFilter.Data.Migrations
             modelBuilder.Entity("FakeNewsFilter.Data.Entities.News", b =>
                 {
                     b.HasOne("FakeNewsFilter.Data.Entities.Media", "Media")
-                        .WithMany()
-                        .HasForeignKey("MediaId");
+                        .WithOne("News")
+                        .HasForeignKey("FakeNewsFilter.Data.Entities.News", "MediaId");
 
                     b.Navigation("Media");
                 });
@@ -427,6 +454,22 @@ namespace FakeNewsFilter.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("News");
+
+                    b.Navigation("TopicNews");
+                });
+
+            modelBuilder.Entity("FakeNewsFilter.Data.Entities.TopicNews", b =>
+                {
+                    b.HasOne("FakeNewsFilter.Data.Entities.Media", "Media")
+                        .WithOne("TopicNews")
+                        .HasForeignKey("FakeNewsFilter.Data.Entities.TopicNews", "MediaId");
+
+                    b.Navigation("Media");
+                });
+
+            modelBuilder.Entity("FakeNewsFilter.Data.Entities.Media", b =>
+                {
                     b.Navigation("News");
 
                     b.Navigation("TopicNews");

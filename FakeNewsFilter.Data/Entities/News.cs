@@ -17,10 +17,12 @@ namespace FakeNewsFilter.Data.Entities
 
         public string SourceLink { get; set; }
 
-        public Media Media { get; set; }
-
         public DateTime Timestamp { get; set; }
 
         public List<NewsInTopics> NewsInTopics { get; set; }
+
+        public int? MediaId { get; set; }
+
+        public Media Media { get; set; }
     } 
 }
