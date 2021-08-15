@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31321.278
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeNewsFilter", "FakeNewsFilter\FakeNewsFilter.csproj", "{2A7B9553-91AE-4763-A111-4BB9D53F9CAA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FakeNewsFilter.API", "FakeNewsFilter\FakeNewsFilter.API.csproj", "{2A7B9553-91AE-4763-A111-4BB9D53F9CAA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeNewsFilter.Data", "FakeNewsFilter.Data\FakeNewsFilter.Data.csproj", "{DF013B35-79E3-4C7D-AC69-FC8A7AE0CBD8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FakeNewsFilter.Data", "FakeNewsFilter.Data\FakeNewsFilter.Data.csproj", "{DF013B35-79E3-4C7D-AC69-FC8A7AE0CBD8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeNewsFilter.Application", "FakeNewsFilter.Application\FakeNewsFilter.Application.csproj", "{2AF7A27C-C650-4F11-A291-3D2E8E4659F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FakeNewsFilter.Application", "FakeNewsFilter.Application\FakeNewsFilter.Application.csproj", "{2AF7A27C-C650-4F11-A291-3D2E8E4659F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeNewsFilter.Utilities", "FakeNewsFilter.Utilities\FakeNewsFilter.Utilities.csproj", "{89622AF7-C137-4246-866D-0604EE16E16A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FakeNewsFilter.Utilities", "FakeNewsFilter.Utilities\FakeNewsFilter.Utilities.csproj", "{89622AF7-C137-4246-866D-0604EE16E16A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeNewsFilter.ViewModel", "FakeNewsFilter.ViewModel\FakeNewsFilter.ViewModel.csproj", "{BA376108-2BBD-41DE-BA9A-0A06A260B988}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FakeNewsFilter.ViewModel", "FakeNewsFilter.ViewModel\FakeNewsFilter.ViewModel.csproj", "{BA376108-2BBD-41DE-BA9A-0A06A260B988}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FakeNewsFilter.WebApp", "FakeNewsFilter.WebApp\FakeNewsFilter.WebApp.csproj", "{2B8B46E8-80F3-46DE-B22F-6E9A79876914}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{BA376108-2BBD-41DE-BA9A-0A06A260B988}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA376108-2BBD-41DE-BA9A-0A06A260B988}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA376108-2BBD-41DE-BA9A-0A06A260B988}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B8B46E8-80F3-46DE-B22F-6E9A79876914}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B8B46E8-80F3-46DE-B22F-6E9A79876914}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B8B46E8-80F3-46DE-B22F-6E9A79876914}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B8B46E8-80F3-46DE-B22F-6E9A79876914}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

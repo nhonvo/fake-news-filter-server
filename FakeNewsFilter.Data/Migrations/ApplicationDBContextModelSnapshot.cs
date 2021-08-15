@@ -183,7 +183,7 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             Id = new Guid("a3314be5-4c77-4fb6-82ad-302014682a73"),
-                            ConcurrencyStamp = "02efe253-c5b8-4838-8d1b-215f07057f70",
+                            ConcurrencyStamp = "6359202d-c106-4568-814a-ced1ce340987",
                             Description = "System Admin",
                             Name = "admin",
                             NormalizedName = "admin"
@@ -201,8 +201,10 @@ namespace FakeNewsFilter.Data.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Label")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("MediaId")
                         .HasColumnType("int");
@@ -215,11 +217,6 @@ namespace FakeNewsFilter.Data.Migrations
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("TopicName")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
                     b.HasKey("TopicId");
 
                     b.HasIndex("MediaId")
@@ -227,6 +224,62 @@ namespace FakeNewsFilter.Data.Migrations
                         .HasFilter("[MediaId] IS NOT NULL");
 
                     b.ToTable("TopicNews");
+
+                    b.HasData(
+                        new
+                        {
+                            TopicId = 1,
+                            Description = "Follow live as the Taliban seizes territory across Afghanistan in the wake of the U.S. withdrawal.",
+                            Label = "breaking",
+                            Tag = "afghanistan",
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            TopicId = 2,
+                            Description = "Best nonfiction features, in-depth stores and other long-form content from across the web.",
+                            Label = "featured",
+                            Tag = "in-depth",
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            TopicId = 3,
+                            Description = "Outbreak of respiratory virus that has killed over 1 million and infected 100 milion worldwide.",
+                            Label = "feature",
+                            Tag = "coronavirus",
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            TopicId = 4,
+                            Description = "The top business and economic news from around the world with a focus on the United State.",
+                            Label = "feature",
+                            Tag = "top-business",
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            TopicId = 5,
+                            Description = "Follow the presidential transition of Joe Biden, including policy plans, appointments and more.",
+                            Label = "feature",
+                            Tag = "biden-admin",
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            TopicId = 6,
+                            Description = "Top stories from around the world with a focus on news not covered in other feeds.",
+                            Tag = "top-news",
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            TopicId = 7,
+                            Description = "Follow important local news: politics, business, top events and more. Updated everything evening.",
+                            Tag = "boston",
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("FakeNewsFilter.Data.Entities.User", b =>
@@ -294,14 +347,14 @@ namespace FakeNewsFilter.Data.Migrations
                         {
                             Id = new Guid("69db714f-9576-45ba-b5b7-f00649be00de"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "495c4f57-6f56-4b80-8dfc-a93c21ece01f",
+                            ConcurrencyStamp = "92b3bf3e-f5fa-4398-b157-8837fe891590",
                             Email = "bp.khuyen@hutech.edu.vn",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Bui Phu Khuyen",
                             NormalizedEmail = "bp.khuyen@hutech.edu.vn",
                             NormalizedUserName = "khuyenpb",
-                            PasswordHash = "AQAAAAEAACcQAAAAECg10jzrZIyVr8wSHk31AXcNaPvvDchRmOinAOmSKzcjvWM3g6Oq84sJmuG/QROUhA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEE4VlzC1qQBowlbg83dzvasn9BUzE1AG6E0r7gAeLRbiZIM8dzQIULALEpA2M05l1A==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             Status = 0,

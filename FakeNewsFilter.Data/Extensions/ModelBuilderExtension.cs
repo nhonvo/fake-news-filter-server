@@ -42,6 +42,56 @@ namespace FakeNewsFilter.Data.Extensions
                 RoleId = RoleId,
                 UserId = AdminId
             });
+
+
+            modelBuilder.Entity<TopicNews>().HasData(
+               new TopicNews() {
+                   TopicId = 1,
+                   Label = "breaking",
+                   Tag = "afghanistan",
+                   Description = "Follow live as the Taliban seizes territory across Afghanistan in the wake of the U.S. withdrawal."
+               },
+               new TopicNews()
+               {
+                   TopicId = 2,
+                   Label = "featured",
+                   Tag = "in-depth",
+                   Description = "Best nonfiction features, in-depth stores and other long-form content from across the web."
+               },
+               new TopicNews()
+               {
+                   TopicId = 3,
+                   Label = "feature",
+                   Tag = "coronavirus",
+                   Description = "Outbreak of respiratory virus that has killed over 1 million and infected 100 milion worldwide."
+               },
+               new TopicNews()
+               {
+                   TopicId = 4,
+                   Label = "feature",
+                   Tag = "top-business",
+                   Description = "The top business and economic news from around the world with a focus on the United State."
+               },
+               new TopicNews()
+               {
+                   TopicId = 5,
+                   Label = "feature",
+                   Tag = "biden-admin",
+                   Description = "Follow the presidential transition of Joe Biden, including policy plans, appointments and more."
+               },
+               new TopicNews()
+               {
+                   TopicId = 6,
+                   Tag = "top-news",
+                   Description = "Top stories from around the world with a focus on news not covered in other feeds."
+               },
+               new TopicNews()
+               {
+                   TopicId = 7,
+                   Tag = "boston",
+                   Description = "Follow important local news: politics, business, top events and more. Updated everything evening."
+               }
+               );
         }
     }
 }

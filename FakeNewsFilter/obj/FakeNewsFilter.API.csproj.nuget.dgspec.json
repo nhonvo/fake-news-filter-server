@@ -4,6 +4,271 @@
     "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter/FakeNewsFilter.API.csproj": {}
   },
   "projects": {
+    "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Application/FakeNewsFilter.Application.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Application/FakeNewsFilter.Application.csproj",
+        "projectName": "FakeNewsFilter.Application",
+        "projectPath": "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Application/FakeNewsFilter.Application.csproj",
+        "packagesPath": "/Users/buiphukhuyen/.nuget/packages/",
+        "outputPath": "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Application/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/buiphukhuyen/.config/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {
+              "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Data/FakeNewsFilter.Data.csproj": {
+                "projectPath": "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Data/FakeNewsFilter.Data.csproj"
+              },
+              "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Utilities/FakeNewsFilter.Utilities.csproj": {
+                "projectPath": "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Utilities/FakeNewsFilter.Utilities.csproj"
+              },
+              "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.ViewModel/FakeNewsFilter.ViewModel.csproj": {
+                "projectPath": "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.ViewModel/FakeNewsFilter.ViewModel.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "Microsoft.Extensions.Hosting.Abstractions": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.302/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Data/FakeNewsFilter.Data.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Data/FakeNewsFilter.Data.csproj",
+        "projectName": "FakeNewsFilter.Data",
+        "projectPath": "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Data/FakeNewsFilter.Data.csproj",
+        "packagesPath": "/Users/buiphukhuyen/.nuget/packages/",
+        "outputPath": "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Data/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/buiphukhuyen/.config/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.8, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.8, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[5.0.8, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.8, )"
+            },
+            "Microsoft.Extensions.Configuration.FileExtensions": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Microsoft.Extensions.Configuration.Json": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.302/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Utilities/FakeNewsFilter.Utilities.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Utilities/FakeNewsFilter.Utilities.csproj",
+        "projectName": "FakeNewsFilter.Utilities",
+        "projectPath": "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Utilities/FakeNewsFilter.Utilities.csproj",
+        "packagesPath": "/Users/buiphukhuyen/.nuget/packages/",
+        "outputPath": "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Utilities/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/buiphukhuyen/.config/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.302/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.ViewModel/FakeNewsFilter.ViewModel.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.ViewModel/FakeNewsFilter.ViewModel.csproj",
+        "projectName": "FakeNewsFilter.ViewModel",
+        "projectPath": "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.ViewModel/FakeNewsFilter.ViewModel.csproj",
+        "packagesPath": "/Users/buiphukhuyen/.nuget/packages/",
+        "outputPath": "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.ViewModel/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/buiphukhuyen/.config/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {
+              "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Data/FakeNewsFilter.Data.csproj": {
+                "projectPath": "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Data/FakeNewsFilter.Data.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "Microsoft.AspNetCore.Http.Features": {
+              "target": "Package",
+              "version": "[5.0.9, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.302/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
     "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter/FakeNewsFilter.API.csproj": {
       "version": "1.0.0",
       "restore": {
@@ -25,7 +290,20 @@
         "frameworks": {
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
-            "projectReferences": {}
+            "projectReferences": {
+              "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Application/FakeNewsFilter.Application.csproj": {
+                "projectPath": "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Application/FakeNewsFilter.Application.csproj"
+              },
+              "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Data/FakeNewsFilter.Data.csproj": {
+                "projectPath": "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Data/FakeNewsFilter.Data.csproj"
+              },
+              "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Utilities/FakeNewsFilter.Utilities.csproj": {
+                "projectPath": "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Utilities/FakeNewsFilter.Utilities.csproj"
+              },
+              "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.ViewModel/FakeNewsFilter.ViewModel.csproj": {
+                "projectPath": "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.ViewModel/FakeNewsFilter.ViewModel.csproj"
+              }
+            }
           }
         },
         "warningProperties": {

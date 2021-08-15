@@ -1,3 +1,7 @@
+using FakeNewsFilter.Application.Catalog.Topic;
+using FakeNewsFilter.Application.Catalog.TopicNews;
+using FakeNewsFilter.Data.EF;
+using FakeNewsFilter.Utilities.Constants;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.AzureAD.UI;
 using Microsoft.AspNetCore.Builder;
@@ -32,7 +36,12 @@ namespace FakeNewsFilter
             services.AddAuthentication(AzureADDefaults.BearerAuthenticationScheme)
                 .AddAzureADBearer(options => Configuration.Bind("AzureAd", options));
             services.AddControllers();
-           
+
+            services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString(SystemConstants.MainConnectionString)));
+
+            //Declare DI
+            services.AddTransient<IPublicTopicNewsService, PublicTopicNewsService>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v2", new OpenApiInfo { Title = "Fake News Filter API", Version = "v1" });

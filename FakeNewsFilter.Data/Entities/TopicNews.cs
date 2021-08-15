@@ -6,8 +6,8 @@ namespace FakeNewsFilter.Data.Entities
     public class TopicNews
     {
         public int TopicId { get; set; }
-        
-        public string TopicName { get; set; }
+       
+        public string Label { get; set; }
 
         public string Tag { get; set; }
 

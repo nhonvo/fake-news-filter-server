@@ -9,6 +9,7 @@
     <None Remove="Catalog\News\" />
     <None Remove="Catalog\News\Manage\" />
     <None Remove="Catalog\News\Public\" />
+    <None Remove="Catalog\TopicNews\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,5 +18,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FakeNewsFilter.Data\FakeNewsFilter.Data.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Catalog\TopicNews\" />
   </ItemGroup>
 </Project>

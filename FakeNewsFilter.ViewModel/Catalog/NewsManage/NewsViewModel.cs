@@ -1,7 +1,7 @@
 ﻿using FakeNewsFilter.Data.Entities;
 using System;
 
-namespace FakeNewsFilter.ViewModel.Catalog.News
+namespace FakeNewsFilter.ViewModel.Catalog.NewsManage
 {
     public class NewsViewModel
     {
@@ -23,7 +23,7 @@ namespace FakeNewsFilter.ViewModel.Catalog.News
 
         public int TopicId { get; set; }
 
-        public string TopicName { get; set; }
+        public string LabelTopic { get; set; }
 
     }
 }

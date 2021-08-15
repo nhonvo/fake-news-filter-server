@@ -1,8 +1,7 @@
 ﻿
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using FakeNewsFilter.ViewModel.Catalog.News;
-using FakeNewsFilter.ViewModel.Catalog.News.Manage;
+using FakeNewsFilter.ViewModel.Catalog.NewsManage;
 using FakeNewsFilter.ViewModel.Common;
 using Microsoft.AspNetCore.Http;
 
@@ -19,7 +18,7 @@ namespace FakeNewsFilter.Application.Catalog.NewsManage
 
         Task<int> Delete(int NewsId);
 
-        Task<PagedResult<NewsViewModel>> GetAllPaging(GetNewsPagingRequest request);
+        Task<PagedResult<NewsViewModel>> GetAllPaging(GetManageNewsPagingRequest request);
 
     }
 }

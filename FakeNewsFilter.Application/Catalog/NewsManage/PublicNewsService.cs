@@ -4,8 +4,7 @@ using FakeNewsFilter.Data.EF;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using FakeNewsFilter.ViewModel.Common;
-using FakeNewsFilter.ViewModel.Catalog.News;
-using FakeNewsFilter.ViewModel.Catalog.News.Public;
+using FakeNewsFilter.ViewModel.Catalog.NewsManage;
 
 namespace FakeNewsFilter.Application.Catalog.NewsManage
 {
@@ -18,7 +17,7 @@ namespace FakeNewsFilter.Application.Catalog.NewsManage
             _context = context;
         }
 
-        public async Task<PagedResult<NewsViewModel>> GetAllByTopicId(GetNewsPagingRequest request)
+        public async Task<PagedResult<NewsViewModel>> GetAllByTopicId(GetPublicNewsPagingRequest request)
         {
             //1. Select Join
             var query = from n in _context.News
@@ -43,7 +42,7 @@ namespace FakeNewsFilter.Application.Catalog.NewsManage
                     NewsId = x.n.NewsId,
                     Name = x.n.Name,
                     TopicId = x.c.TopicId,
-                    TopicName = x.c.TopicName,
+                    LabelTopic = x.c.Label,
 
                 }).ToListAsync();
 
