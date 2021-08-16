@@ -1,5 +1,5 @@
-﻿using FakeNewsFilter.Data.Entities;
-using System;
+﻿using System;
+using FakeNewsFilter.ViewModel.Catalog.Media;
 
 namespace FakeNewsFilter.ViewModel.Catalog.NewsManage
 {
@@ -17,7 +17,7 @@ namespace FakeNewsFilter.ViewModel.Catalog.NewsManage
 
         public string SourceLink { get; set; }
 
-        public Media Media { get; set; }
+        public MediaViewModel Media { get; set; }
 
         public DateTime Timestamp { get; set; }
 

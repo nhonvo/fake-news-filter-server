@@ -9,6 +9,9 @@
     <None Remove="Catalog\News\DTO\" />
     <None Remove="DTOs\" />
     <None Remove="Common\" />
+    <None Remove="Catalog\Media\" />
+    <None Remove="AutoMapper.Extensions.Microsoft.DependencyInjection" />
+    <None Remove="Mapping\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,6 +21,8 @@
   <ItemGroup>
     <Folder Include="Catalog\" />
     <Folder Include="Common\" />
+    <Folder Include="Catalog\MediaManage\" />
+    <Folder Include="Mapping\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FakeNewsFilter.Data\FakeNewsFilter.Data.csproj" />
@@ -26,5 +31,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="5.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
   </ItemGroup>
 </Project>

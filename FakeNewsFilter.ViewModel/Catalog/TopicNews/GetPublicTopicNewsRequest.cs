@@ -3,8 +3,6 @@ namespace FakeNewsFilter.ViewModel.Catalog.TopicNews
 {
     public class GetPublicTopicNewsRequest
     {
-        public GetPublicTopicNewsRequest()
-        {
-        }
+        public int? TopicId { get; set; }
     }
 }

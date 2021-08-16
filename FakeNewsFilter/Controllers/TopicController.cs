@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FakeNewsFilter.Application.Catalog.Topic;
+using FakeNewsFilter.Application.Catalog.TopicNews;
+using FakeNewsFilter.ViewModel.Catalog.TopicNews;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -13,13 +15,16 @@ namespace FakeNewsFilter.API.Controllers
     public class TopicController : Controller
     {
         private readonly IPublicTopicNewsService _publicTopicNewsService;
+        private readonly IManageTopicNewsService _manageTopicNewsService;
 
-        public TopicController(IPublicTopicNewsService publicTopicNewsService)
+
+        public TopicController(IPublicTopicNewsService publicTopicNewsService, IManageTopicNewsService manageTopicNewsService)
         {
             _publicTopicNewsService = publicTopicNewsService;
+            _manageTopicNewsService = manageTopicNewsService;
         }
 
-        // GET: api/values
+        // GET: api/topic
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -28,29 +33,47 @@ namespace FakeNewsFilter.API.Controllers
             return Ok(topics);
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
         // POST api/values
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Create([FromForm]TopicNewsCreateRequest request)
         {
+            var result = await _manageTopicNewsService.Create(request);
+
+            if (result == 0)
+            {
+                return BadRequest();
+            }
+
+            return Ok();
         }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut]
+        public async Task<IActionResult> Update([FromForm] TopicNewsUpdateRequest request)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await _manageTopicNewsService.Update(request);
+
+            if (result == 0)
+            {
+                return BadRequest("Cannot update this topic");
+            }
+            return Ok("Updated successfully");
         }
 
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{topicId}")]
+        public async Task<IActionResult> Delete(int topicId)
         {
+            var result = await _manageTopicNewsService.Delete(topicId);
+
+            if (result == 0)
+            {
+                return BadRequest("Cannot delete this topic");
+            }
+            return Ok("Deleted successfully");
         }
     }
 }

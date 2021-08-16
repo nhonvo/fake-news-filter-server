@@ -10,6 +10,7 @@
     <None Remove="Catalog\News\Manage\" />
     <None Remove="Catalog\News\Public\" />
     <None Remove="Catalog\TopicNews\" />
+    <None Remove="Catalog\Media\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,5 +22,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Catalog\TopicNews\" />
+    <Folder Include="Catalog\Media\" />
   </ItemGroup>
 </Project>

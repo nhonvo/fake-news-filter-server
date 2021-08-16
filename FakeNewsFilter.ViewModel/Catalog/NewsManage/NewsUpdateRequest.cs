@@ -9,7 +9,11 @@ namespace FakeNewsFilter.ViewModel.Catalog.NewsManage
 
         public string Name { get; set; }
 
+        public string SourceLink { get; set; }
+
         public string Description { get; set; }
+
+        public string MediaLink { get; set; }
 
         public MediaType Type { get; set; }
 

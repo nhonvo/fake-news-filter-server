@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using System;
 using FakeNewsFilter.Application.Common;
 using FakeNewsFilter.ViewModel.Catalog.NewsManage;
+using FakeNewsFilter.ViewModel.Catalog.Media;
+using AutoMapper;
 
 namespace FakeNewsFilter.Application.Catalog.NewsManage
 {
@@ -20,52 +22,15 @@ namespace FakeNewsFilter.Application.Catalog.NewsManage
     {
         private readonly ApplicationDBContext _context;
 
-        private readonly IStorageService _storageService;
+        private readonly FileStorageService _storageService;
 
-        public ManageNewsService(ApplicationDBContext context, IStorageService storageService)
+        private readonly IMapper _mapper;
+
+        public ManageNewsService(ApplicationDBContext context, FileStorageService storageService, IMapper mapper)
         {
             _context = context;
             _storageService = storageService;
-        }
-
-        //Get All News Paging
-        public async Task<PagedResult<NewsViewModel>> GetAllPaging(GetManageNewsPagingRequest request)
-        {
-            //1. Select Join
-            var query = from n in _context.News
-                        join nit in _context.NewsInTopics on n.NewsId equals nit.NewsId
-                        join c in _context.TopicNews on nit.TopicId equals c.TopicId
-                        select new { n, nit, c };
-
-            //2. Filter
-            if (request.TopicIds.Count > 0)
-            {
-                query = query.Where(t => request.TopicIds.Contains(t.nit.TopicId));
-            }
-
-            //3. Paging
-            int TotalRow = await query.CountAsync();
-
-            var data = await query
-                .Skip((request.pageIndex - 1) * request.pageSize)
-                .Take(request.pageSize)
-                .Select(x => new NewsViewModel()
-                {
-                    NewsId = x.n.NewsId,
-                    Name = x.n.Name,
-                    TopicId = x.c.TopicId,
-                    LabelTopic = x.c.Label,
-
-                }).ToListAsync();
-
-            //4. Select and projection
-            var pagedResult = new PagedResult<NewsViewModel>()
-            {
-                TotalRecord = TotalRow,
-                Items = data
-            };
-
-            return pagedResult;
+            _mapper = mapper;
         }
 
         //Create News
@@ -73,42 +38,64 @@ namespace FakeNewsFilter.Application.Catalog.NewsManage
         {
             var news = new News()
             {
-                NewsId = request.NewsId,
-
                 Name = request.Name,
 
                 Description = request.Description,
 
                 SourceLink = request.SourceLink,
+
+                Timestamp = DateTime.Now
             };
-            if(request.MediaLink != null)
+            _context.News.Add(news);
+            await _context.SaveChangesAsync();
+
+           
+            //If exists MediaLink
+
+            if (request.MediaLink != null)
             {
                 news.Media = new Media()
                 {
+                    NewsId = news.NewsId,
                     Caption = "Thumbnail Image",
                     DateCreated = DateTime.Now,
                     Url = request.MediaLink,
-                    Type = request.Type,
-                    SortOrder = 1
+                    Type = (Data.Enums.MediaType)request.Type,
                 };
             };
-            //Save Image
-            if (request.ThumbnailImage != null)
+
+            //Save Image on Host
+            if (request.ThumbnailMedia != null)
             {
                 news.Media =  new Media()
                 {
-                        Caption = "Thumbnail Image",
-                        DateCreated = DateTime.Now,
-                        FileSize = request.ThumbnailImage.Length,
-                        PathMedia = await this.SaveFile(request.ThumbnailImage),
-                        Type = request.Type,
-                        SortOrder = 1
+                    NewsId = news.NewsId,
+                    Caption = "Thumbnail Image",
+                    DateCreated = DateTime.Now,
+                    FileSize = request.ThumbnailMedia.Length,
+                    PathMedia = await SaveFile(request.ThumbnailMedia),
+                    Type = (Data.Enums.MediaType)request.Type,
                 };
             }
-            _context.News.Add(news);
 
-            return await _context.SaveChangesAsync();
+            _context.NewsInTopics.Add(new NewsInTopics()
+            {
+                NewsId = news.NewsId,
+                TopicId = request.TopicId
+            });
 
+            await _context.SaveChangesAsync();
+
+            return news.NewsId;
+
+        }
+
+        private async Task<string> SaveFile(IFormFile file)
+        {
+            var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
+            await _storageService.SaveFileAsync(file.OpenReadStream(), fileName);
+            return fileName;
         }
 
         //Update News
@@ -120,18 +107,31 @@ namespace FakeNewsFilter.Application.Catalog.NewsManage
 
             news_update.Name = request.Name;
             news_update.Description = request.Description;
-            
+            news_update.SourceLink = request.SourceLink;
+           
             //Save Image
-            if (request.ThumbnailMedia != null)
+            if (request.ThumbnailMedia != null || request.MediaLink != null)
             {
-                var thumb = _context.Media.FirstOrDefault(i => i.News.NewsId == request.Id);
-                if(thumb!=null)
-                {
+                var thumb = _context.Media.FirstOrDefault(i => i.NewsId == request.Id);
 
-                    thumb.FileSize = request.ThumbnailMedia.Length;
-                    thumb.Url = await this.SaveFile(request.ThumbnailMedia);
-                    _context.Media.Update(thumb);
+                thumb.FileSize = 0;
+
+                if (thumb.PathMedia != null)
+                {
+                    await _storageService.DeleteFileAsync(thumb.PathMedia);
+                    thumb.PathMedia = null;
+                  
                 }
+                if (request.ThumbnailMedia != null)
+                {
+                    thumb.FileSize = request.ThumbnailMedia.Length;
+                    thumb.PathMedia = await SaveFile(request.ThumbnailMedia);
+                }
+
+                thumb.Type = request.Type;
+                thumb.Url = request.MediaLink;
+                
+                _context.Media.Update(thumb);
             }
 
             return await _context.SaveChangesAsync();
@@ -159,26 +159,43 @@ namespace FakeNewsFilter.Application.Catalog.NewsManage
             if (news == null) throw new FakeNewsException($"Cannot find a News with Id: {newsId}");
 
 
-            var images = _context.Media.Where(i => i.News.NewsId == newsId);
+            var media = _context.Media.Find(newsId);
 
-            foreach(var image in images)
-            {
-                await _storageService.DeleteFileAsync(image.PathMedia);
-            }
+            if(media != null && media.PathMedia!=null) 
+                await _storageService.DeleteFileAsync(media.PathMedia);
 
             _context.News.Remove(news);
 
             return await _context.SaveChangesAsync();
         }
 
-        
-        //Save File
-        private async Task<string> SaveFile(IFormFile file)
+
+        public async Task<NewsViewModel> GetById(int newsId)
         {
-            var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
-            await _storageService.SaveFileAsync(file.OpenReadStream(), fileName);
-            return fileName;
+            
+            var news = await _context.News.FindAsync(newsId);
+
+            NewsViewModel result = null;
+
+            if (news != null)
+            {
+                var topic = _context.NewsInTopics.Where(x => x.NewsId == newsId).FirstOrDefault();
+                var labeltopic = _context.TopicNews.Find(topic.TopicId);
+                var media = _context.Media.Where(x => x.NewsId == newsId).FirstOrDefault();
+                result = new NewsViewModel()
+                {
+                    NewsId = news.NewsId,
+                    Name = news.Name,
+                    Description = news.Description,
+                    SourceLink = news.SourceLink,
+                    Media = _mapper.Map<MediaViewModel>(media),
+                    Timestamp = news.Timestamp,
+                    TopicId = topic.TopicId,
+                    LabelTopic = labeltopic.Label
+                };
+            }
+
+            return result;
         }
     }
 }

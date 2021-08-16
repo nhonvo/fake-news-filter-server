@@ -3,7 +3,7 @@ using FakeNewsFilter.ViewModel.Common;
 
 namespace FakeNewsFilter.ViewModel.Catalog.NewsManage
 {
-    public class GetPublicNewsPagingRequest : PagingRequestBase
+    public class GetPublicNewsRequest : PagingRequestBase
     {
         public int? TopicId { get; set; }
     }

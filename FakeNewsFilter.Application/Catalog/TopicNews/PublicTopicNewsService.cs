@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FakeNewsFilter.Application.Catalog.Topic;
 using FakeNewsFilter.Data.EF;
+using FakeNewsFilter.ViewModel.Catalog.NewsManage;
 using FakeNewsFilter.ViewModel.Catalog.TopicNews;
 using FakeNewsFilter.ViewModel.Common;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ namespace FakeNewsFilter.Application.Catalog.TopicNews
             _context = context;
         }
 
+        //Get 10 Topic News Hot
         public async Task<List<TopicNewsViewModel>> GetTopicHotNews()
         {
             var query = _context.TopicNews.Select(x => x).Take(10);

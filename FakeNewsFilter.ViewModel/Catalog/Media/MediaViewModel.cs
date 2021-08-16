@@ -1,9 +1,10 @@
 ﻿using System;
 using FakeNewsFilter.Data.Enums;
+using Microsoft.AspNetCore.Http;
 
-namespace FakeNewsFilter.Data.Entities
+namespace FakeNewsFilter.ViewModel.Catalog.Media
 {
-    public class Media
+    public class MediaViewModel
     {
         public int MediaId { get; set; }
 
@@ -19,15 +20,8 @@ namespace FakeNewsFilter.Data.Entities
 
         public DateTime DateCreated { get; set; }
 
-        public int SortOrder { get; set; }
-
         public long FileSize { get; set; }
 
-        public int? NewsId { get; set; }
-        public News News { get; set; }
-
-        public int? TopicId { get; set; }
-        public TopicNews TopicNews { get; set; }
-       
+        public IFormFile MediaFile { get; set; }
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FakeNewsFilter.ViewModel.Catalog.NewsManage
 {
-    public class GetManageNewsPagingRequest : PagingRequestBase
+    public class GetManageNewsRequest : PagingRequestBase
     {
         public string Keyword {get; set; }
         public List<int> TopicIds { get; set; }

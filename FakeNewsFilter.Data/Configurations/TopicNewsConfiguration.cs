@@ -21,6 +21,7 @@ namespace FakeNewsFilter.Data.Configurations
 
             builder.Property(x => x.Timestamp);
 
+            builder.HasOne(x => x.Media).WithOne(x => x.TopicNews).HasForeignKey<Media>(x => x.TopicId);
         }
     }
 }

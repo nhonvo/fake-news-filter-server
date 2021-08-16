@@ -1,23 +1,19 @@
+using FakeNewsFilter.Application.Catalog.NewsManage;
 using FakeNewsFilter.Application.Catalog.Topic;
 using FakeNewsFilter.Application.Catalog.TopicNews;
+using FakeNewsFilter.Application.Common;
+using FakeNewsFilter.Application.Mapping;
 using FakeNewsFilter.Data.EF;
 using FakeNewsFilter.Utilities.Constants;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.AzureAD.UI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FakeNewsFilter
 {
@@ -35,13 +31,24 @@ namespace FakeNewsFilter
         {
             services.AddAuthentication(AzureADDefaults.BearerAuthenticationScheme)
                 .AddAzureADBearer(options => Configuration.Bind("AzureAd", options));
-            services.AddControllers();
 
+            services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+            //Config Database Connection
             services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString(SystemConstants.MainConnectionString)));
 
-            //Declare DI
-            services.AddTransient<IPublicTopicNewsService, PublicTopicNewsService>();
+            //AutoMapper
+            services.AddAutoMapper(typeof(MappingProfile));
+            services.AddControllersWithViews();
 
+            //Declare DI
+            services.AddTransient<IPublicNewsService, PublicNewsService>();
+            services.AddTransient<IManageNewsService, ManageNewsService>();
+            services.AddTransient<FileStorageService, FileStorageService>();
+            services.AddTransient<IPublicTopicNewsService, PublicTopicNewsService>();
+            services.AddTransient<IManageTopicNewsService, ManageTopicNewsService>();
+
+            //Swagger
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v2", new OpenApiInfo { Title = "Fake News Filter API", Version = "v1" });

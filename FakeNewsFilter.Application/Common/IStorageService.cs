@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace FakeNewsFilter.Application.Common
 {
-    public interface IStorageService
+    public interface IFileStorageService
     {
         string GetFileUrl(string fileName);
 

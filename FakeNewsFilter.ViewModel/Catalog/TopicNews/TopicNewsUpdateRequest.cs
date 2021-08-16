@@ -1,10 +1,10 @@
 ﻿using System;
-using FakeNewsFilter.Data.Entities;
-using FakeNewsFilter.ViewModel.Catalog.Media;
+using FakeNewsFilter.Data.Enums;
+using Microsoft.AspNetCore.Http;
 
 namespace FakeNewsFilter.ViewModel.Catalog.TopicNews
 {
-    public class TopicNewsViewModel
+    public class TopicNewsUpdateRequest
     {
         public int TopicId { get; set; }
 
@@ -14,11 +14,10 @@ namespace FakeNewsFilter.ViewModel.Catalog.TopicNews
 
         public string Description { get; set; }
 
-        public DateTime Timestamp { get; set; }
+        public MediaType Type { get; set; }
 
-        public MediaViewModel Media { get; set; }
+        public string MediaLink { get; set; }
 
-        public News NewsInTopic { get; set; }
-
+        public IFormFile ThumbnailMedia { get; set; }
     }
 }
