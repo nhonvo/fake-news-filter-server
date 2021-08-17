@@ -22,7 +22,6 @@ namespace FakeNewsFilter.Application.Catalog.MediaManager
             _storageService = storageService;
         }
 
-       
         public async Task<int> RemoveMedia(int mediaId)
         {
             var media = await _context.Media.FindAsync(mediaId);
@@ -31,7 +30,7 @@ namespace FakeNewsFilter.Application.Catalog.MediaManager
 
             if (media.PathMedia != null)
                 await _storageService.DeleteFileAsync(media.PathMedia);
-                
+
             _context.Media.Remove(media);
 
             return await _context.SaveChangesAsync();

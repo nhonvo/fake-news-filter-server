@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using FakeNewsFilter.Data.Configurations;
 using FakeNewsFilter.Data.Entities;
 using FakeNewsFilter.Data.Extensions;
@@ -11,7 +10,19 @@ namespace FakeNewsFilter.Data.EF
 {
     public class ApplicationDBContext : IdentityDbContext<User, Role, Guid>
     {
-        public ApplicationDBContext(DbContextOptions<ApplicationDBContext> dbContextOptions) : base(dbContextOptions) { }
+        public ApplicationDBContext(DbContextOptions<ApplicationDBContext> dbContextOptions) : base(dbContextOptions)
+        {
+        }
+
+        public DbSet<AppConfig> AppConfigs { get; set; }
+
+        public DbSet<Media> Media { get; set; }
+
+        public DbSet<News> News { get; set; }
+
+        public DbSet<NewsInTopics> NewsInTopics { get; set; }
+
+        public DbSet<TopicNews> TopicNews { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -26,7 +37,7 @@ namespace FakeNewsFilter.Data.EF
             modelBuilder.ApplyConfiguration(new MediaConfiguration());
 
             modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("UserClaims");
-            modelBuilder.Entity<IdentityUserRole<Guid>>().ToTable("UserRoles").HasKey(x => new { x.UserId, x.RoleId});
+            modelBuilder.Entity<IdentityUserRole<Guid>>().ToTable("UserRoles").HasKey(x => new { x.UserId, x.RoleId });
             modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("UserLogin").HasKey(x => x.UserId);
 
             modelBuilder.Entity<IdentityRoleClaim<Guid>>().ToTable("RoleClaims");
@@ -35,17 +46,5 @@ namespace FakeNewsFilter.Data.EF
             //Data seeding
             modelBuilder.Seed();
         }
-
-        public DbSet<News> News { get; set; }
-
-        public DbSet<TopicNews> TopicNews { get; set; }
-
-        public DbSet<AppConfig> AppConfigs { get; set; }
-
-        public DbSet<NewsInTopics> NewsInTopics { get; set; }
-
-        public DbSet<Media> Media { get; set; }
-
-
     }
 }

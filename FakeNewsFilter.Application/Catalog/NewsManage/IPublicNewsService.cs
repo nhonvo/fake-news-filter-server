@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using FakeNewsFilter.ViewModel.Catalog.NewsManage;
 using FakeNewsFilter.ViewModel.Common;
 
-
 namespace FakeNewsFilter.Application.Catalog.NewsManage
 {
     public interface IPublicNewsService
@@ -12,9 +11,6 @@ namespace FakeNewsFilter.Application.Catalog.NewsManage
 
         Task<PagedResult<NewsViewModel>> GetAllPaging(GetManageNewsRequest request);
 
-
         public Task<List<NewsViewModel>> GetNewsInTopic(GetPublicNewsRequest request);
-
-
     }
 }

@@ -11,6 +11,8 @@
     <None Remove="Catalog\News\Public\" />
     <None Remove="Catalog\TopicNews\" />
     <None Remove="Catalog\Media\" />
+    <None Remove="System\" />
+    <None Remove="System\Users\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,5 +25,7 @@
   <ItemGroup>
     <Folder Include="Catalog\TopicNews\" />
     <Folder Include="Catalog\Media\" />
+    <Folder Include="System\" />
+    <Folder Include="System\Users\" />
   </ItemGroup>
 </Project>

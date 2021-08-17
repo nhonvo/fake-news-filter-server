@@ -8,8 +8,7 @@ namespace FakeNewsFilter.Data.Entities
 
         public TopicNews TopicNews { get; set; }
 
-        public Guid UserId { get; set; }
-
         public User User { get; set; }
+        public Guid UserId { get; set; }
     }
 }

@@ -3,12 +3,15 @@ using FakeNewsFilter.Application.Catalog.Topic;
 using FakeNewsFilter.Application.Catalog.TopicNews;
 using FakeNewsFilter.Application.Common;
 using FakeNewsFilter.Application.Mapping;
+using FakeNewsFilter.Application.System.Users;
 using FakeNewsFilter.Data.EF;
+using FakeNewsFilter.Data.Entities;
 using FakeNewsFilter.Utilities.Constants;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.AzureAD.UI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -41,12 +44,21 @@ namespace FakeNewsFilter
             services.AddAutoMapper(typeof(MappingProfile));
             services.AddControllersWithViews();
 
+            //Indentity
+            services.AddIdentity<User, Role>()
+                .AddEntityFrameworkStores<ApplicationDBContext>()
+                .AddDefaultTokenProviders();
+
             //Declare DI
             services.AddTransient<IPublicNewsService, PublicNewsService>();
             services.AddTransient<IManageNewsService, ManageNewsService>();
             services.AddTransient<FileStorageService, FileStorageService>();
             services.AddTransient<IPublicTopicNewsService, PublicTopicNewsService>();
             services.AddTransient<IManageTopicNewsService, ManageTopicNewsService>();
+            services.AddTransient<UserManager<User>, UserManager<User>>();
+            services.AddTransient<SignInManager<User>, SignInManager<User>>();
+            services.AddTransient<RoleManager<Role>, RoleManager<Role>>();
+            services.AddTransient<IUserService, UserService>();
 
             //Swagger
             services.AddSwaggerGen(c =>

@@ -14,9 +14,8 @@ namespace FakeNewsFilter.API.Controllers
     [Route("api/[controller]")]
     public class TopicController : Controller
     {
-        private readonly IPublicTopicNewsService _publicTopicNewsService;
         private readonly IManageTopicNewsService _manageTopicNewsService;
-
+        private readonly IPublicTopicNewsService _publicTopicNewsService;
 
         public TopicController(IPublicTopicNewsService publicTopicNewsService, IManageTopicNewsService manageTopicNewsService)
         {
@@ -24,18 +23,9 @@ namespace FakeNewsFilter.API.Controllers
             _manageTopicNewsService = manageTopicNewsService;
         }
 
-        // GET: api/topic
-        [HttpGet]
-        public async Task<IActionResult> Get()
-        {
-            var topics = await _publicTopicNewsService.GetTopicHotNews();
-
-            return Ok(topics);
-        }
-
         // POST api/values
         [HttpPost]
-        public async Task<IActionResult> Create([FromForm]TopicNewsCreateRequest request)
+        public async Task<IActionResult> Create([FromForm] TopicNewsCreateRequest request)
         {
             var result = await _manageTopicNewsService.Create(request);
 
@@ -45,6 +35,27 @@ namespace FakeNewsFilter.API.Controllers
             }
 
             return Ok();
+        }
+
+        [HttpDelete("{topicId}")]
+        public async Task<IActionResult> Delete(int topicId)
+        {
+            var result = await _manageTopicNewsService.Delete(topicId);
+
+            if (result == 0)
+            {
+                return BadRequest("Cannot delete this topic");
+            }
+            return Ok("Deleted successfully");
+        }
+
+        // GET: api/topic
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            var topics = await _publicTopicNewsService.GetTopicHotNews();
+
+            return Ok(topics);
         }
 
         [HttpPut]
@@ -62,18 +73,6 @@ namespace FakeNewsFilter.API.Controllers
                 return BadRequest("Cannot update this topic");
             }
             return Ok("Updated successfully");
-        }
-
-        [HttpDelete("{topicId}")]
-        public async Task<IActionResult> Delete(int topicId)
-        {
-            var result = await _manageTopicNewsService.Delete(topicId);
-
-            if (result == 0)
-            {
-                return BadRequest("Cannot delete this topic");
-            }
-            return Ok("Deleted successfully");
         }
     }
 }

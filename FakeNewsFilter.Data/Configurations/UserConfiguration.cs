@@ -11,7 +11,7 @@ namespace FakeNewsFilter.Data.Configurations
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.ToTable("Users");
-  
+
             builder.Property(x => x.Status).HasDefaultValue(Status.Active);
         }
     }

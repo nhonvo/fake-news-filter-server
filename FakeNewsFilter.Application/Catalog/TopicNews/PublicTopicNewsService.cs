@@ -15,7 +15,6 @@ namespace FakeNewsFilter.Application.Catalog.TopicNews
     {
         private readonly ApplicationDBContext _context;
 
-
         public PublicTopicNewsService(ApplicationDBContext context)
         {
             _context = context;
@@ -35,7 +34,6 @@ namespace FakeNewsFilter.Application.Catalog.TopicNews
             }).ToListAsync();
 
             return topics;
-
         }
     }
 }

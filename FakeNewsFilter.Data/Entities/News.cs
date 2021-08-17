@@ -5,12 +5,11 @@ namespace FakeNewsFilter.Data.Entities
 {
     public class News
     {
-        public int NewsId { get; set; }
-
-        public string Name { get; set; }
-
         public string Description { get; set; }
-
+        public Media Media { get; set; }
+        public string Name { get; set; }
+        public int NewsId { get; set; }
+        public List<NewsInTopics> NewsInTopics { get; set; }
         public string OfficialRating { get; set; }
 
         public double SocialBeliefs { get; set; }
@@ -18,9 +17,5 @@ namespace FakeNewsFilter.Data.Entities
         public string SourceLink { get; set; }
 
         public DateTime Timestamp { get; set; }
-
-        public List<NewsInTopics> NewsInTopics { get; set; }
-
-        public Media Media { get; set; }
-    } 
+    }
 }

@@ -6,10 +6,10 @@ namespace FakeNewsFilter.Application.Common
 {
     public interface IFileStorageService
     {
+        Task DeleteFileAsync(string fileName);
+
         string GetFileUrl(string fileName);
 
         Task SaveFileAsync(Stream mediaBinaryStream, string fileName);
-
-        Task DeleteFileAsync(string fileName);
     }
 }

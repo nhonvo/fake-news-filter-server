@@ -9,12 +9,10 @@ namespace FakeNewsFilter.Data.EF
     {
         public ApplicationDBContext CreateDbContext(string[] args)
         {
-
             IConfigurationRoot config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
                 .Build();
-
 
             var connectString = config.GetConnectionString("DefaultConnection");
 

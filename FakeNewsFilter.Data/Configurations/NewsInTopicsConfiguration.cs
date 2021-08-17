@@ -13,7 +13,7 @@ namespace FakeNewsFilter.Data.Configurations
 
             builder.ToTable("NewsInTopics");
 
-            builder.HasOne(t => t.News).WithMany(t => t.NewsInTopics).HasForeignKey(t=>t.NewsId);
+            builder.HasOne(t => t.News).WithMany(t => t.NewsInTopics).HasForeignKey(t => t.NewsId);
 
             builder.HasOne(t => t.TopicNews).WithMany(t => t.NewsInTopics).HasForeignKey(t => t.TopicId);
         }

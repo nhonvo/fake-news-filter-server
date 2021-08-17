@@ -1,5 +1,4 @@
-﻿
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using FakeNewsFilter.Data.EF;
 using FakeNewsFilter.Data.Entities;
 using FakeNewsFilter.Utilities.Exceptions;
@@ -22,9 +21,9 @@ namespace FakeNewsFilter.Application.Catalog.NewsManage
     {
         private readonly ApplicationDBContext _context;
 
-        private readonly FileStorageService _storageService;
-
         private readonly IMapper _mapper;
+
+        private readonly FileStorageService _storageService;
 
         public ManageNewsService(ApplicationDBContext context, FileStorageService storageService, IMapper mapper)
         {
@@ -49,7 +48,6 @@ namespace FakeNewsFilter.Application.Catalog.NewsManage
             _context.News.Add(news);
             await _context.SaveChangesAsync();
 
-           
             //If exists MediaLink
 
             if (request.MediaLink != null)
@@ -67,7 +65,7 @@ namespace FakeNewsFilter.Application.Catalog.NewsManage
             //Save Image on Host
             if (request.ThumbnailMedia != null)
             {
-                news.Media =  new Media()
+                news.Media = new Media()
                 {
                     NewsId = news.NewsId,
                     Caption = "Thumbnail Image",
@@ -87,69 +85,7 @@ namespace FakeNewsFilter.Application.Catalog.NewsManage
             await _context.SaveChangesAsync();
 
             return news.NewsId;
-
         }
-
-        private async Task<string> SaveFile(IFormFile file)
-        {
-            var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
-            await _storageService.SaveFileAsync(file.OpenReadStream(), fileName);
-            return fileName;
-        }
-
-        //Update News
-        public async Task<int> Update(NewsUpdateRequest request)
-        {
-            var news_update = await _context.News.FindAsync(request.Id);
-
-            if (news_update == null) throw new FakeNewsException($"Cannont find a news with Id is: {request.Id}");
-
-            news_update.Name = request.Name;
-            news_update.Description = request.Description;
-            news_update.SourceLink = request.SourceLink;
-           
-            //Save Image
-            if (request.ThumbnailMedia != null || request.MediaLink != null)
-            {
-                var thumb = _context.Media.FirstOrDefault(i => i.NewsId == request.Id);
-
-                thumb.FileSize = 0;
-
-                if (thumb.PathMedia != null)
-                {
-                    await _storageService.DeleteFileAsync(thumb.PathMedia);
-                    thumb.PathMedia = null;
-                  
-                }
-                if (request.ThumbnailMedia != null)
-                {
-                    thumb.FileSize = request.ThumbnailMedia.Length;
-                    thumb.PathMedia = await SaveFile(request.ThumbnailMedia);
-                }
-
-                thumb.Type = request.Type;
-                thumb.Url = request.MediaLink;
-                
-                _context.Media.Update(thumb);
-            }
-
-            return await _context.SaveChangesAsync();
-        }
-
-
-        //Update Link News
-        public async Task<bool> UpdateLink(int newsId, string newLink)
-        {
-            var news_update = await _context.News.FindAsync(newsId);
-
-            if (news_update == null) throw new FakeNewsException($"Cannont find a news with Id is: {newsId}");
-
-            news_update.SourceLink = newLink;
-          
-            return await _context.SaveChangesAsync() > 0;
-        }
-
 
         //Delete News
         public async Task<int> Delete(int newsId)
@@ -158,10 +94,9 @@ namespace FakeNewsFilter.Application.Catalog.NewsManage
 
             if (news == null) throw new FakeNewsException($"Cannot find a News with Id: {newsId}");
 
-
             var media = _context.Media.Find(newsId);
 
-            if(media != null && media.PathMedia!=null) 
+            if (media != null && media.PathMedia != null)
                 await _storageService.DeleteFileAsync(media.PathMedia);
 
             _context.News.Remove(news);
@@ -169,10 +104,8 @@ namespace FakeNewsFilter.Application.Catalog.NewsManage
             return await _context.SaveChangesAsync();
         }
 
-
         public async Task<NewsViewModel> GetById(int newsId)
         {
-            
             var news = await _context.News.FindAsync(newsId);
 
             NewsViewModel result = null;
@@ -196,6 +129,64 @@ namespace FakeNewsFilter.Application.Catalog.NewsManage
             }
 
             return result;
+        }
+
+        //Update News
+        public async Task<int> Update(NewsUpdateRequest request)
+        {
+            var news_update = await _context.News.FindAsync(request.Id);
+
+            if (news_update == null) throw new FakeNewsException($"Cannont find a news with Id is: {request.Id}");
+
+            news_update.Name = request.Name;
+            news_update.Description = request.Description;
+            news_update.SourceLink = request.SourceLink;
+
+            //Save Image
+            if (request.ThumbnailMedia != null || request.MediaLink != null)
+            {
+                var thumb = _context.Media.FirstOrDefault(i => i.NewsId == request.Id);
+
+                thumb.FileSize = 0;
+
+                if (thumb.PathMedia != null)
+                {
+                    await _storageService.DeleteFileAsync(thumb.PathMedia);
+                    thumb.PathMedia = null;
+                }
+                if (request.ThumbnailMedia != null)
+                {
+                    thumb.FileSize = request.ThumbnailMedia.Length;
+                    thumb.PathMedia = await SaveFile(request.ThumbnailMedia);
+                }
+
+                thumb.Type = request.Type;
+                thumb.Url = request.MediaLink;
+
+                _context.Media.Update(thumb);
+            }
+
+            return await _context.SaveChangesAsync();
+        }
+
+        //Update Link News
+        public async Task<bool> UpdateLink(int newsId, string newLink)
+        {
+            var news_update = await _context.News.FindAsync(newsId);
+
+            if (news_update == null) throw new FakeNewsException($"Cannont find a news with Id is: {newsId}");
+
+            news_update.SourceLink = newLink;
+
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        private async Task<string> SaveFile(IFormFile file)
+        {
+            var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
+            await _storageService.SaveFileAsync(file.OpenReadStream(), fileName);
+            return fileName;
         }
     }
 }

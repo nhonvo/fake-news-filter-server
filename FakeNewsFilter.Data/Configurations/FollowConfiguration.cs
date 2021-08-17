@@ -16,7 +16,6 @@ namespace FakeNewsFilter.Data.Configurations
             builder.HasOne(t => t.User).WithMany(t => t.Follows).HasForeignKey(t => t.UserId);
 
             builder.HasOne(t => t.TopicNews).WithMany(t => t.Follows).HasForeignKey(t => t.TopicId);
-
         }
     }
 }

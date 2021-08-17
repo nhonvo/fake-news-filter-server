@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace FakeNewsFilter.Data.Entities
 {
     public class AppConfig

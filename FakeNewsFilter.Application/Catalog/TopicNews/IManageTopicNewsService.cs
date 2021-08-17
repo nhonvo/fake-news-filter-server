@@ -8,9 +8,8 @@ namespace FakeNewsFilter.Application.Catalog.TopicNews
     {
         Task<int> Create(TopicNewsCreateRequest request);
 
-        Task<int> Update(TopicNewsUpdateRequest request);
-
         Task<int> Delete(int TopicId);
 
+        Task<int> Update(TopicNewsUpdateRequest request);
     }
 }

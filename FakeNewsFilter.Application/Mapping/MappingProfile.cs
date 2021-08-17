@@ -27,6 +27,5 @@ namespace FakeNewsFilter.Application.Mapping
                      .ForMember(d => d.Timestamp, o => o.MapFrom(s => s.Timestamp))
                 ;
         }
-             
     }
 }

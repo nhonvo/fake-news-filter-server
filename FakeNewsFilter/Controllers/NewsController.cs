@@ -9,13 +9,44 @@ namespace FakeNewsFilter.API.Controllers
     [ApiController]
     public class NewsController : ControllerBase
     {
-        private readonly IPublicNewsService _publicNewsService;
         private readonly IManageNewsService _manageNewsService;
+        private readonly IPublicNewsService _publicNewsService;
 
         public NewsController(IPublicNewsService publicTopicNewsService, IManageNewsService manageTopicNewsService)
         {
             _publicNewsService = publicTopicNewsService;
             _manageNewsService = manageTopicNewsService;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromForm] NewsCreateRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var newsId = await _manageNewsService.Create(request);
+
+            if (newsId == 0)
+            {
+                return BadRequest("Cannot create news");
+            }
+
+            var news = await _manageNewsService.GetById(newsId);
+
+            return CreatedAtAction(nameof(GetById), new { newsId = newsId }, news);
+        }
+
+        [HttpDelete("{newsId}")]
+        public async Task<IActionResult> Delete(int newsId)
+        {
+            var result = await _manageNewsService.Delete(newsId);
+
+            if (result == 0)
+            {
+                return BadRequest("Cannot delete this news");
+            }
+            return Ok("Deleted successfully");
         }
 
         // GET: api/news
@@ -25,6 +56,18 @@ namespace FakeNewsFilter.API.Controllers
             var topics = await _publicNewsService.GetAll();
 
             return Ok(topics);
+        }
+
+        [HttpGet("{newsId}")]
+        public async Task<IActionResult> GetById(int newsId)
+        {
+            var news = await _manageNewsService.GetById(newsId);
+
+            if (news == null)
+            {
+                return NotFound("Cannot find product");
+            }
+            return Ok(news);
         }
 
         // GET: api/news/topic
@@ -38,37 +81,6 @@ namespace FakeNewsFilter.API.Controllers
                 return NotFound($"Cannot find product in topic {request.TopicId}");
             }
             return Ok(newsintopics);
-        }
-
-        [HttpGet("{newsId}")]
-        public async Task<IActionResult> GetById(int newsId)
-        {
-            var news = await _manageNewsService.GetById(newsId);
-
-            if (news==null)
-            {
-                return NotFound("Cannot find product");
-            }
-            return Ok(news);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Create([FromForm] NewsCreateRequest request)
-        {
-            if(!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            var newsId = await _manageNewsService.Create(request);
-
-            if(newsId == 0)
-            {
-                return BadRequest("Cannot create news");
-            }
-
-            var news = await _manageNewsService.GetById(newsId);
-
-            return CreatedAtAction(nameof(GetById), new {newsId = newsId}, news);
         }
 
         [HttpPut]
@@ -86,18 +98,6 @@ namespace FakeNewsFilter.API.Controllers
                 return BadRequest("Cannot update this news");
             }
             return Ok("Updated successfully");
-        }
-
-        [HttpDelete("{newsId}")]
-        public async Task<IActionResult> Delete(int newsId)
-        {
-            var result = await _manageNewsService.Delete(newsId);
-
-            if (result == 0)
-            {
-                return BadRequest("Cannot delete this news");
-            }
-            return Ok("Deleted successfully");
         }
 
         [HttpPatch("link/{newsId}/{newLink}")]

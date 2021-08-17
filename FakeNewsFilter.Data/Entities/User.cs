@@ -7,10 +7,10 @@ namespace FakeNewsFilter.Data.Entities
 {
     public class User : IdentityUser<Guid>
     {
+        public List<Follow> Follows { get; set; }
+
         public string Name { get; set; }
 
         public Status Status { get; set; }
-
-        public List<Follow> Follows { get; set; }
     }
 }

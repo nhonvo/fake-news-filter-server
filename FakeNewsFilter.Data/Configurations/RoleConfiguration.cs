@@ -9,9 +9,8 @@ namespace FakeNewsFilter.Data.Configurations
         public void Configure(EntityTypeBuilder<Role> builder)
         {
             builder.ToTable("Role");
- 
-            builder.Property(x => x.Description).IsRequired().HasMaxLength(70);
 
+            builder.Property(x => x.Description).IsRequired().HasMaxLength(70);
         }
     }
 }

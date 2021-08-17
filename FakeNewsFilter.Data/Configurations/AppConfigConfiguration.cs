@@ -9,13 +9,11 @@ namespace FakeNewsFilter.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<AppConfig> builder)
         {
-
             builder.ToTable("AppConfigs");
 
             builder.HasKey(k => k.Key);
 
             builder.Property(x => x.Value).IsRequired();
-
         }
     }
 }
