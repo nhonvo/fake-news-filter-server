@@ -1,5 +1,8 @@
 ﻿using FakeNewsFilter.Application.Catalog.NewsManage;
 using FakeNewsFilter.ViewModel.Catalog.NewsManage;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -7,6 +10,7 @@ namespace FakeNewsFilter.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class NewsController : ControllerBase
     {
         private readonly IManageNewsService _manageNewsService;
@@ -51,6 +55,7 @@ namespace FakeNewsFilter.API.Controllers
 
         // GET: api/news
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Get()
         {
             var topics = await _publicNewsService.GetAll();
@@ -59,6 +64,7 @@ namespace FakeNewsFilter.API.Controllers
         }
 
         [HttpGet("{newsId}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetById(int newsId)
         {
             var news = await _manageNewsService.GetById(newsId);
@@ -72,6 +78,7 @@ namespace FakeNewsFilter.API.Controllers
 
         // GET: api/news/topic
         [HttpGet("topic")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetNewsInTopic([FromQuery] GetPublicNewsRequest request)
         {
             var newsintopics = await _publicNewsService.GetNewsInTopic(request);

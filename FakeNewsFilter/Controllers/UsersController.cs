@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FakeNewsFilter.API.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     public class UsersController : Controller
     {
         private readonly IUserService _userService;

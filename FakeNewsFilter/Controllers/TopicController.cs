@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 using FakeNewsFilter.Application.Catalog.Topic;
 using FakeNewsFilter.Application.Catalog.TopicNews;
 using FakeNewsFilter.ViewModel.Catalog.TopicNews;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -12,6 +15,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace FakeNewsFilter.API.Controllers
 {
     [Route("api/[controller]")]
+    [ApiController]
+    [Authorize]
     public class TopicController : Controller
     {
         private readonly IManageTopicNewsService _manageTopicNewsService;
@@ -51,6 +56,7 @@ namespace FakeNewsFilter.API.Controllers
 
         // GET: api/topic
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Get()
         {
             var topics = await _publicTopicNewsService.GetTopicHotNews();

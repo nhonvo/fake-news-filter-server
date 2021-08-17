@@ -3,9 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using AutoMapper.Configuration;
 using FakeNewsFilter.Data.Entities;
-using FakeNewsFilter.Utilities.Exceptions;
 using FakeNewsFilter.ViewModel.System.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
@@ -21,10 +19,10 @@ namespace FakeNewsFilter.Application.System.Users
 
         private readonly RoleManager<Role> _roleManager;
 
-        private readonly Microsoft.Extensions.Configuration.IConfiguration _config;
+        private readonly IConfiguration _config;
 
 
-        public UserService(UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<Role> roleManager, Microsoft.Extensions.Configuration.IConfiguration config)
+        public UserService(UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<Role> roleManager, IConfiguration config)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -50,10 +48,10 @@ namespace FakeNewsFilter.Application.System.Users
 
             var claims = new[]
             {
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Name, user.Name),
-                new Claim(ClaimTypes.NameIdentifier, user.UserName),
-                new Claim(ClaimTypes.Role, string.Join(";", roles))
+                new Claim(ClaimTypes.Email,user.Email),
+                new Claim(ClaimTypes.GivenName,user.Name),
+                new Claim(ClaimTypes.Role, string.Join(";",roles)),
+                new Claim(ClaimTypes.Name, request.UserName)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
@@ -64,6 +62,7 @@ namespace FakeNewsFilter.Application.System.Users
                 claims,
                 expires: DateTime.Now.AddHours(3),
                 signingCredentials: creds);
+
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
