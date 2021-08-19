@@ -13,10 +13,12 @@
     <None Remove="Catalog\Media\" />
     <None Remove="System\" />
     <None Remove="System\Users\" />
+    <None Remove="FluentValidation.AspNetCore" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.9" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="10.3.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -22,7 +22,7 @@ namespace FakeNewsFilter.API.Controllers
             _userService = userService;
         }
 
-        [HttpPost("authenticate")]
+        [HttpPost("Authenticate")]
         [AllowAnonymous]
         public async Task<IActionResult> Authenticate([FromForm]LoginRequest request)
         {
@@ -41,7 +41,7 @@ namespace FakeNewsFilter.API.Controllers
             return Ok(new { token = resultToken });
         }
 
-        [HttpPost("register")]
+        [HttpPost("Register")]
         [AllowAnonymous]
         public async Task<IActionResult> Register([FromForm]RegisterRequest request)
         {

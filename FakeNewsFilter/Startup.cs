@@ -8,6 +8,9 @@ using FakeNewsFilter.Application.System.Users;
 using FakeNewsFilter.Data.EF;
 using FakeNewsFilter.Data.Entities;
 using FakeNewsFilter.Utilities.Constants;
+using FakeNewsFilter.ViewModel.System.Users;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -55,8 +58,9 @@ namespace FakeNewsFilter
             services.AddTransient<RoleManager<Role>, RoleManager<Role>>();
             services.AddTransient<IUserService, UserService>();
 
-            services.AddControllers();
-
+            //Fluent Validation   
+            services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
+            
             //Swagger
             services.AddSwaggerGen(c =>
             {
