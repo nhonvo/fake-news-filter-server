@@ -17,8 +17,8 @@
     },
     "FakeNewsFilter.WebApp": {
       "commandName": "Project",
-      "launchBrowser": true,
-      "applicationUrl": "https://localhost:63203;http://localhost:36578",
+      "launchBrowser": false,
+      "applicationUrl": "http://localhost:5002",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
