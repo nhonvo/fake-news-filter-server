@@ -13,13 +13,11 @@ namespace FakeNewsFilter.API.Controllers
     [Authorize]
     public class NewsController : ControllerBase
     {
-        private readonly IManageNewsService _manageNewsService;
-        private readonly IPublicNewsService _publicNewsService;
+        private readonly INewsService _newsService;
 
-        public NewsController(IPublicNewsService publicTopicNewsService, IManageNewsService manageTopicNewsService)
+        public NewsController(INewsService newsService)
         {
-            _publicNewsService = publicTopicNewsService;
-            _manageNewsService = manageTopicNewsService;
+            _newsService = newsService;
         }
 
         [HttpPost]
@@ -29,14 +27,14 @@ namespace FakeNewsFilter.API.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var newsId = await _manageNewsService.Create(request);
+            var newsId = await _newsService.Create(request);
 
             if (newsId == 0)
             {
                 return BadRequest("Cannot create news");
             }
 
-            var news = await _manageNewsService.GetById(newsId);
+            var news = await _newsService.GetById(newsId);
 
             return CreatedAtAction(nameof(GetById), new { newsId = newsId }, news);
         }
@@ -44,7 +42,7 @@ namespace FakeNewsFilter.API.Controllers
         [HttpDelete("{newsId}")]
         public async Task<IActionResult> Delete(int newsId)
         {
-            var result = await _manageNewsService.Delete(newsId);
+            var result = await _newsService.Delete(newsId);
 
             if (result == 0)
             {
@@ -58,7 +56,7 @@ namespace FakeNewsFilter.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Get()
         {
-            var topics = await _publicNewsService.GetAll();
+            var topics = await _newsService.GetAll();
 
             return Ok(topics);
         }
@@ -67,7 +65,7 @@ namespace FakeNewsFilter.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetById(int newsId)
         {
-            var news = await _manageNewsService.GetById(newsId);
+            var news = await _newsService.GetById(newsId);
 
             if (news == null)
             {
@@ -81,7 +79,7 @@ namespace FakeNewsFilter.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetNewsInTopic([FromQuery] GetPublicNewsRequest request)
         {
-            var newsintopics = await _publicNewsService.GetNewsInTopic(request);
+            var newsintopics = await _newsService.GetNewsInTopic(request);
 
             if (newsintopics.Count == 0)
             {
@@ -98,7 +96,7 @@ namespace FakeNewsFilter.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var result = await _manageNewsService.Update(request);
+            var result = await _newsService.Update(request);
 
             if (result == 0)
             {
@@ -114,7 +112,7 @@ namespace FakeNewsFilter.API.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var result = await _manageNewsService.UpdateLink(newsId, newLink);
+            var result = await _newsService.UpdateLink(newsId, newLink);
 
             if (result == false)
             {

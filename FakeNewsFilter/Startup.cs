@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using FakeNewsFilter.Application.Catalog.NewsManage;
-using FakeNewsFilter.Application.Catalog.Topic;
 using FakeNewsFilter.Application.Catalog.TopicNews;
 using FakeNewsFilter.Application.Common;
 using FakeNewsFilter.Application.Mapping;
@@ -9,7 +8,6 @@ using FakeNewsFilter.Data.EF;
 using FakeNewsFilter.Data.Entities;
 using FakeNewsFilter.Utilities.Constants;
 using FakeNewsFilter.ViewModel.System.Users;
-using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -48,11 +46,9 @@ namespace FakeNewsFilter
                 .AddDefaultTokenProviders();
 
             //Declare DI
-            services.AddTransient<IPublicNewsService, PublicNewsService>();
-            services.AddTransient<IManageNewsService, ManageNewsService>();
+            services.AddTransient<NewsService, NewsService>();
             services.AddTransient<FileStorageService, FileStorageService>();
-            services.AddTransient<IPublicTopicNewsService, PublicTopicNewsService>();
-            services.AddTransient<IManageTopicNewsService, ManageTopicNewsService>();
+            services.AddTransient<ITopicNewsService, TopicNewsService>();
             services.AddTransient<UserManager<User>, UserManager<User>>();
             services.AddTransient<SignInManager<User>, SignInManager<User>>();
             services.AddTransient<RoleManager<Role>, RoleManager<Role>>();

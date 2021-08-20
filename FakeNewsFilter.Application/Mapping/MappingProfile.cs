@@ -3,6 +3,7 @@ using AutoMapper;
 using FakeNewsFilter.Data.Entities;
 using FakeNewsFilter.ViewModel.Catalog.Media;
 using FakeNewsFilter.ViewModel.Catalog.TopicNews;
+using FakeNewsFilter.ViewModel.System.Users;
 
 namespace FakeNewsFilter.Application.Mapping
 {
@@ -18,6 +19,7 @@ namespace FakeNewsFilter.Application.Mapping
                     .ForMember(d => d.Type, o => o.MapFrom(s => s.Type))
                      .ForMember(d => d.Url, o => o.MapFrom(s => s.Url))
                       .ForMember(d => d.DateCreated, o => o.MapFrom(s => s.DateCreated));
+
             CreateMap<TopicNews, TopicNewsViewModel>()
                 .ForMember(d => d.TopicId, o => o.MapFrom(s => s.TopicId))
                  .ForMember(d => d.Description, o => o.MapFrom(s => s.Description))
@@ -25,6 +27,13 @@ namespace FakeNewsFilter.Application.Mapping
                    .ForMember(d => d.Media, o => o.MapFrom(s => s.Media))
                     .ForMember(d => d.Tag, o => o.MapFrom(s => s.Tag))
                      .ForMember(d => d.Timestamp, o => o.MapFrom(s => s.Timestamp))
+                ;
+            CreateMap<User, UserViewModel>()
+                .ForMember(d => d.UserId, o => o.MapFrom(s => s.Id))
+                 .ForMember(d => d.Email, o => o.MapFrom(s => s.Email))
+                  .ForMember(d => d.UserName, o => o.MapFrom(s => s.UserName))
+                   .ForMember(d => d.FullName, o => o.MapFrom(s => s.Name))
+                    .ForMember(d => d.PhoneNumber, o => o.MapFrom(s => s.PhoneNumber))
                 ;
         }
     }

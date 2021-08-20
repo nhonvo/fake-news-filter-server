@@ -2,6 +2,7 @@
 using FakeNewsFilter.Application.System.Users;
 using FakeNewsFilter.ViewModel.System.Users;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -35,6 +36,7 @@ namespace FakeNewsFilter.API.Controllers
                 return BadRequest("Username and Password is incorrect.");
 
             }
+            
             return Ok(resultToken);
         }
 
@@ -55,6 +57,14 @@ namespace FakeNewsFilter.API.Controllers
 
             }
             return Ok();
+        }
+
+        //http://localhost/api/users/paging?pageIndex=1&pageSize=10&keyword=
+        [HttpGet("paging")]
+        public async Task<IActionResult> GetAllPaging([FromQuery]GetUserPagingRequest request)
+        {
+            var users = await _userService.GetUsersPaging(request);
+            return Ok(users);
         }
     }
 }

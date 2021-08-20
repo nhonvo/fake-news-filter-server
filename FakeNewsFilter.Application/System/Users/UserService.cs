@@ -8,6 +8,10 @@ using FakeNewsFilter.ViewModel.System.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
+using FakeNewsFilter.ViewModel.Common;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 
 namespace FakeNewsFilter.Application.System.Users
 {
@@ -21,13 +25,16 @@ namespace FakeNewsFilter.Application.System.Users
 
         private readonly IConfiguration _config;
 
+        private readonly IMapper _mapper;
 
-        public UserService(UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<Role> roleManager, IConfiguration config)
+
+        public UserService(UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<Role> roleManager, IConfiguration config, IMapper mapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _config = config;
+            _mapper = mapper;
         }
         
 
@@ -66,6 +73,7 @@ namespace FakeNewsFilter.Application.System.Users
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
+
         public async Task<bool> Register(RegisterRequest request)
         {
             var user = new User()
@@ -83,6 +91,39 @@ namespace FakeNewsFilter.Application.System.Users
                 return true;
             }
             return false;
+        }
+
+        public async Task<PagedResult<UserViewModel>> GetUsersPaging(GetUserPagingRequest request)
+        {
+            var query = _userManager.Users;
+
+            if (!string.IsNullOrEmpty(request.Keyword))
+            {
+                query = query.Where(x => x.UserName.Contains(request.Keyword)
+                 || x.Email.Contains(request.Keyword));
+            }
+            //3. Paging
+            int totalRow = await query.CountAsync();
+
+            var data = await query.Skip((request.pageIndex - 1) * request.pageSize)
+                .Take(request.pageSize)
+                .Select(x => new UserViewModel()
+                {
+                    Email = x.Email,
+                    PhoneNumber = x.PhoneNumber,
+                    UserName = x.UserName,
+                    FullName = x.Name,
+                    UserId = x.Id,
+                }).ToListAsync();
+
+            //4. Select and projection
+            var pagedResult = new PagedResult<UserViewModel>()
+            {
+                TotalRecord = totalRow,
+                Items = data
+            };
+
+            return pagedResult;
         }
     }
 }

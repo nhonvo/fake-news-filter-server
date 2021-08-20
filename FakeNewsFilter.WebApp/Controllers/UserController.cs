@@ -10,6 +10,7 @@ using FakeNewsFilter.WebApp.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Logging;
@@ -31,10 +32,20 @@ namespace FakeNewsFilter.WebApp.Controllers
         }
 
         // GET: /<controller>/
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string keyWord,int pageIndex = 1, int pageSize = 10)
         {
-            var user = User.Identity.Name;
-            return View();
+            var session = HttpContext.Session.GetString("Token");
+            var request = new GetUserPagingRequest()
+            {
+                BearerToken = session,
+                Keyword = keyWord,
+                pageIndex = pageIndex,
+                pageSize = pageSize
+            };
+
+            var data = await _userApiClient.GetUsersPaging(request);
+
+            return View(data);
         }
 
         [HttpGet]
@@ -61,7 +72,9 @@ namespace FakeNewsFilter.WebApp.Controllers
                 ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
                 IsPersistent = false
             };
-            
+
+            HttpContext.Session.SetString("Token", token);
+
             await HttpContext.SignInAsync(
                         CookieAuthenticationDefaults.AuthenticationScheme,
                         userPrincipal,

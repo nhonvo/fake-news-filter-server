@@ -30,7 +30,7 @@ namespace FakeNewsFilter.Data.Extensions
                 UserName = "khuyenpb",
                 NormalizedUserName = "khuyenpb",
                 Email = "bp.khuyen@hutech.edu.vn",
-                NormalizedEmail = "bp.khuyen@hutech.edu.vn",
+                NormalizedEmail = "BP.KHUYEN@HUTECH.EDU.VN",
                 EmailConfirmed = true,
                 PasswordHash = hasher.HashPassword(null, "khuyenpb@123"),
                 SecurityStamp = string.Empty,
@@ -100,7 +100,6 @@ namespace FakeNewsFilter.Data.Extensions
                     Type = Enums.MediaType.Image,
                     Url = "https://static01.nyt.com/images/2021/08/15/world/15afghanistan-kabul-airport/merlin_193320777_09900a3b-bd82-47c6-ad73-fddc1219018d-superJumbo.jpg?quality=90&auto=webp",
                     DateCreated = DateTime.Now,
-                    NewsId = 1,
                 },
                 new Media
                 {
@@ -108,7 +107,6 @@ namespace FakeNewsFilter.Data.Extensions
                     Type = Enums.MediaType.Image,
                     Url = "https://media-cldnry.s-nbcnews.com/image/upload/t_fit-2000w,f_auto,q_auto:best/newscms/2021_30/3495573/210730-greg-abbott-ew-617p.jpg",
                     DateCreated = DateTime.Now,
-                    NewsId = 2,
                 }
            );
 
@@ -119,7 +117,7 @@ namespace FakeNewsFilter.Data.Extensions
                     Name = "Kabul’s Sudden Fall to Taliban Ends U.S. Era in Afghanistan",
                     Description = "Taliban fighters poured into the Afghan capital on Sunday amid scenes of panic and chaos, bringing a swift and shocking close to the Afghan government and the 20-year American era in the country.",
                     SourceLink = "https://www.nytimes.com/2021/08/15/world/asia/afghanistan-taliban-kabul-surrender.html",
-
+                    MediaNews = 1,
                     Timestamp = DateTime.Now,
                 },
                 new News
@@ -128,7 +126,7 @@ namespace FakeNewsFilter.Data.Extensions
                     Name = "Texas high court blocks mask mandates in two of state's largest counties",
                     Description = "The masking orders in Dallas and Bexar counties were issued after a lower court ruled last week in favor of local officials.",
                     SourceLink = "https://www.nbcnews.com/news/us-news/texas-high-court-blocks-mask-mandates-two-state-s-largest-n1276884",
-
+                    MediaNews = 2,
                     Timestamp = DateTime.Now,
                 },
                 new News

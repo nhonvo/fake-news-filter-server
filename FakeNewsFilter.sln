@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FakeNewsFilter.Utilities", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FakeNewsFilter.ViewModel", "FakeNewsFilter.ViewModel\FakeNewsFilter.ViewModel.csproj", "{BA376108-2BBD-41DE-BA9A-0A06A260B988}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FakeNewsFilter.WebApp", "FakeNewsFilter.WebApp\FakeNewsFilter.WebApp.csproj", "{2B8B46E8-80F3-46DE-B22F-6E9A79876914}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FakeNewsFilter.AdminApp", "FakeNewsFilter.WebApp\FakeNewsFilter.AdminApp.csproj", "{2B8B46E8-80F3-46DE-B22F-6E9A79876914}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructures", "Infrastructures", "{DF5A968E-8B94-4F4E-96DA-6E9EF40A4C6B}"
 EndProject

@@ -45,6 +45,12 @@ namespace FakeNewsFilter.WebApp
             //Fluent Validation 
             services.AddControllersWithViews().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>()); ;
 
+            //Session
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+            });
+
             //Razor complilation Runtime 
             IMvcBuilder builder = services.AddRazorPages();
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
@@ -72,7 +78,8 @@ namespace FakeNewsFilter.WebApp
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            
+            app.UseSession();
+
             app.UseStaticFiles();
 
             app.UseAuthentication();

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using FakeNewsFilter.Application.Catalog.Topic;
+﻿using System.Threading.Tasks;
 using FakeNewsFilter.Application.Catalog.TopicNews;
 using FakeNewsFilter.ViewModel.Catalog.TopicNews;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,20 +13,18 @@ namespace FakeNewsFilter.API.Controllers
     [Authorize]
     public class TopicController : Controller
     {
-        private readonly IManageTopicNewsService _manageTopicNewsService;
-        private readonly IPublicTopicNewsService _publicTopicNewsService;
+        private readonly TopicNewsService _topicNewsService;
 
-        public TopicController(IPublicTopicNewsService publicTopicNewsService, IManageTopicNewsService manageTopicNewsService)
+        public TopicController(TopicNewsService topicNewsService)
         {
-            _publicTopicNewsService = publicTopicNewsService;
-            _manageTopicNewsService = manageTopicNewsService;
+            _topicNewsService = topicNewsService;
         }
 
         // POST api/values
         [HttpPost]
         public async Task<IActionResult> Create([FromForm] TopicNewsCreateRequest request)
         {
-            var result = await _manageTopicNewsService.Create(request);
+            var result = await _topicNewsService.Create(request);
 
             if (result == 0)
             {
@@ -45,7 +37,7 @@ namespace FakeNewsFilter.API.Controllers
         [HttpDelete("{topicId}")]
         public async Task<IActionResult> Delete(int topicId)
         {
-            var result = await _manageTopicNewsService.Delete(topicId);
+            var result = await _topicNewsService.Delete(topicId);
 
             if (result == 0)
             {
@@ -59,7 +51,7 @@ namespace FakeNewsFilter.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Get()
         {
-            var topics = await _publicTopicNewsService.GetTopicHotNews();
+            var topics = await _topicNewsService.GetTopicHotNews();
 
             return Ok(topics);
         }
@@ -72,7 +64,7 @@ namespace FakeNewsFilter.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var result = await _manageTopicNewsService.Update(request);
+            var result = await _topicNewsService.Update(request);
 
             if (result == 0)
             {

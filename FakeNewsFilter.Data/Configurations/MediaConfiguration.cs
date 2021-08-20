@@ -18,6 +18,10 @@ namespace FakeNewsFilter.Data.Configurations
             builder.Property(x => x.Type).IsRequired();
 
             builder.Property(x => x.DateCreated);
+
+            builder.HasOne(x => x.News).WithOne(x => x.Media).HasForeignKey<News>(x => x.MediaNews);
+
+            builder.HasOne(x => x.TopicNews).WithOne(x => x.Media).HasForeignKey<TopicNews>(x => x.MediaTopic);
         }
     }
 }
