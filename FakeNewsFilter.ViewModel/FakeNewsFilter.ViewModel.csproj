@@ -14,6 +14,7 @@
     <None Remove="System\" />
     <None Remove="System\Users\" />
     <None Remove="FluentValidation.AspNetCore" />
+    <None Remove="System\Login\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,5 +30,6 @@
     <Folder Include="Catalog\Media\" />
     <Folder Include="System\" />
     <Folder Include="System\Users\" />
+    <Folder Include="System\Login\" />
   </ItemGroup>
 </Project>

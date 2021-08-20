@@ -1,65 +1,80 @@
 ﻿@using FakeNewsFilter.ViewModel.Common;
-@model PagedResult<FakeNewsFilter.ViewModel.System.Users.UserViewModel>
+@model PagedResult<FakeNewsFilter.ViewModel.System.Users.UserViewModel> 
 
 @{
-    ViewData["Title"] = "List Users";
+    ViewData["Title"] = "LIST USERS";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="row">
-    <div class="col">
-        <div class="card radius-10 mb-0">
-            <div class="card-body">
-                <div class="d-flex align-items-center">
-                    <div>
-                        <h5 class="mb-1">@ViewData["Title"]</h5>
+
+<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+    <div class="breadcrumb-title pe-3">Users Manager</div>
+    <div class="ps-3">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0 p-0">
+                <li class="breadcrumb-item">
+                    <a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">List User</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+    <div class="row">
+        <div class="col">
+            <div class="card radius-10 mb-0">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <h5 class="mb-1">@ViewData["Title"]</h5>
+                        </div>
+                        <div class="ms-auto">
+                            <a asp-action="Create" asp-controller="User" class="btn btn-success px-5"><i class="bx bx-user-pin"></i>Create User</a>
+                        </div>
+
                     </div>
-                    <div class="ms-auto">
-                        <a href="javscript:;" class="btn btn-primary btn-sm radius-30">Create User</a>
+
+                    <div class="table-responsive mt-3">
+                        <table class="table align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>User Id</th>
+                                    <th>User Name</th>
+                                    <th>Full Name</th>
+                                    <th>Email</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Items)
+                                {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.UserId)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.UserName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.FullName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Email)
+                                    </td>
+                                    <td class=""><span class="badge bg-light-success text-success w-100">@Html.DisplayFor(modelItem => item.Status)</span></td>
+                                    <td>
+                                        <div class="d-flex order-actions">
+                                            <a asp-action="Delete" asp-route-id="@item.UserId" class="text-danger bg-light-danger border-0"><i class="bx bxs-trash"></i></a>
+                                            <a asp-action="Edit" asp-route-id="@item.UserId"  class="ms-4 text-primary bg-light-primary border-0"><i class="bx bxs-edit"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-
-                <div class="table-responsive mt-3">
-                    <table class="table align-middle mb-0">
-                        <thead class="table-light">
-                            <tr>
-                                <th>User Id</th>
-                                <th>User Name</th>
-                                <th>Full Name</th>
-                                <th>Email</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach(var item in Model.Items)
-                            {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.UserId)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.UserName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.FullName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Email)
-                                </td>
-                                <td class=""><span class="badge bg-light-success text-success w-100">@Html.DisplayFor(modelItem => item.Status)</span></td>
-                                <td>
-                                    <div class="d-flex order-actions">
-                                        <a href="javascript:;" class="text-danger bg-light-danger border-0"><i class="bx bxs-trash"></i></a>
-                                        <a href="javascript:;" class="ms-4 text-primary bg-light-primary border-0"><i class="bx bxs-edit"></i></a>
-                                    </div>
-                                </td>
-                            </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-
             </div>
         </div>
     </div>
-</div>

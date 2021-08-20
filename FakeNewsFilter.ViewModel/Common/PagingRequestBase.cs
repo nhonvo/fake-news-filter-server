@@ -1,7 +1,7 @@
 ﻿using System;
 namespace FakeNewsFilter.ViewModel.Common
 {
-    public class PagingRequestBase : RequestBase
+    public class PagingRequestBase
     {
         public int pageIndex { get; set; }
 

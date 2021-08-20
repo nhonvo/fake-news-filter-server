@@ -12,6 +12,7 @@ using FakeNewsFilter.ViewModel.Common;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 
 namespace FakeNewsFilter.Application.System.Users
 {
@@ -21,34 +22,31 @@ namespace FakeNewsFilter.Application.System.Users
 
         private readonly SignInManager<User> _signInManager;
 
-        private readonly RoleManager<Role> _roleManager;
-
         private readonly IConfiguration _config;
 
         private readonly IMapper _mapper;
 
 
-        public UserService(UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<Role> roleManager, IConfiguration config, IMapper mapper)
+        public UserService(UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration config, IMapper mapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _roleManager = roleManager;
             _config = config;
             _mapper = mapper;
         }
         
 
-        public async Task<string> Authencate(LoginRequest request)
+        public async Task<ApiResult<string>> Authencate(LoginRequest request)
         {
             var user = await _userManager.FindByNameAsync(request.UserName);
 
-            if (user == null) return null;
+            if (user == null) return new ApiErrorResult<string>("Account does not exist"); 
 
             var result = await _signInManager.PasswordSignInAsync(user, request.Password, request.RememberMe, true);
 
             if (!result.Succeeded)
             {
-                return null;
+                return new ApiErrorResult<string>("Login Unsuccessful. Please Check Username or Password!");
             }
 
             var roles = _userManager.GetRolesAsync(user);
@@ -70,13 +68,25 @@ namespace FakeNewsFilter.Application.System.Users
                 expires: DateTime.Now.AddHours(3),
                 signingCredentials: creds);
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return new ApiSuccessResult<string>(new JwtSecurityTokenHandler().WriteToken(token));
         }
 
 
-        public async Task<bool> Register(RegisterRequest request)
+        public async Task<ApiResult<bool>>  Register(RegisterRequest request)
         {
-            var user = new User()
+            var user = await _userManager.FindByNameAsync(request.UserName);
+
+            if(user != null)
+            {
+                return new ApiErrorResult<bool>("Username is available");
+            }
+
+            if (await _userManager.FindByEmailAsync(request.Email) != null)
+            {
+                return new ApiErrorResult<bool>("Email is available");
+            }    
+
+            user = new User()
             {
                 Email = request.Email,
                 UserName = request.UserName,
@@ -88,12 +98,12 @@ namespace FakeNewsFilter.Application.System.Users
 
             if(result.Succeeded)
             {
-                return true;
+                return new ApiSuccessResult<bool>();
             }
-            return false;
+            return new ApiErrorResult<bool>("Register Unsuccessful.");
         }
 
-        public async Task<PagedResult<UserViewModel>> GetUsersPaging(GetUserPagingRequest request)
+        public async Task<ApiResult<PagedResult<UserViewModel>>> GetUsersPaging(GetUserPagingRequest request)
         {
             var query = _userManager.Users;
 
@@ -123,7 +133,43 @@ namespace FakeNewsFilter.Application.System.Users
                 Items = data
             };
 
-            return pagedResult;
+            return new ApiSuccessResult<PagedResult<UserViewModel>>(pagedResult);
+        }
+
+        //Update User
+        public async Task<ApiResult<bool>> Update(Guid UserId, UserUpdateRequest request)
+        {
+            if (await _userManager.Users.AnyAsync(x => x.Email == request.Email && x.Id != UserId))
+            {
+                return new ApiErrorResult<bool>("Email is available!");
+            }
+
+            var user = await _userManager.FindByIdAsync(UserId.ToString());
+           
+            user.Email = request.Email;
+            user.Name = request.Name;
+            user.PhoneNumber = request.PhoneNumber;
+
+            var result = await _userManager.UpdateAsync(user);
+            if (result.Succeeded)
+            {
+                return new ApiSuccessResult<bool>();
+            }
+            return new ApiErrorResult<bool>("Update Unsuccessful.");
+        }
+
+        public async Task<ApiResult<UserViewModel>> GetById(Guid id)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+
+            if (user == null)
+            {
+                return new ApiErrorResult<UserViewModel>("User is not exist!");
+            }
+
+            var userVm = _mapper.Map<UserViewModel>(user);
+
+            return new ApiSuccessResult<UserViewModel>(userVm);
         }
     }
 }

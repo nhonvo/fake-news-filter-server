@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using FakeNewsFilter.Application.System.Users;
 using FakeNewsFilter.ViewModel.System.Users;
 using Microsoft.AspNetCore.Authorization;
@@ -31,7 +32,7 @@ namespace FakeNewsFilter.API.Controllers
 
             var resultToken = await _userService.Authencate(request);
 
-            if(string.IsNullOrEmpty(resultToken))
+            if(string.IsNullOrEmpty(resultToken.ResultObj))
             {
                 return BadRequest("Username and Password is incorrect.");
 
@@ -51,9 +52,9 @@ namespace FakeNewsFilter.API.Controllers
 
             var result = await _userService.Register(request);
 
-            if (!result)
+            if (!result.IsSuccessed)
             {
-                return BadRequest("Register unsuccessful.");
+                return BadRequest(result.Message);
 
             }
             return Ok();
@@ -65,6 +66,29 @@ namespace FakeNewsFilter.API.Controllers
         {
             var users = await _userService.GetUsersPaging(request);
             return Ok(users);
+        }
+
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var user = await _userService.GetById(id);
+            return Ok(user);
+        }
+
+        //PUT: http://localhost/api/users/id
+        [HttpPut("{UserId}")]
+        public async Task<IActionResult> Update(Guid UserId, [FromBody] UserUpdateRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _userService.Update(UserId, request);
+            if (!result.IsSuccessed)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
         }
     }
 }

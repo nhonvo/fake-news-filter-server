@@ -1,0 +1,68 @@
+﻿@model FakeNewsFilter.ViewModel.System.Users.UserUpdateRequest
+@{
+    ViewData["Title"] = "UPDATE USER";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+    <div class="breadcrumb-title pe-3">Users Manager</div>
+    <div class="ps-3">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0 p-0">
+                <li class="breadcrumb-item">
+                    <a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <a asp-action="Index" asp-controller="User">List User</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="card border-top border-0 border-4 border-success">
+    <div class="card-body p-5">
+        <div class="card-title d-flex align-items-center">
+            <div>
+                <i class="bx bxs-user me-1 font-22 text-success"></i>
+            </div>
+            <h5 class="mb-0 text-success">USER UPDATE</h5>
+        </div>
+        <hr>
+        <form class="row g-3" asp-action="Edit" asp-controller="User" method="post">
+            <div class="col-md-6">
+                <input type="text" asp-for="UserId" class="form-control border-start-0" hidden>
+                <label for="inputLastName1" class="form-label">User Name</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-transparent"><i class="bx bxs-user"></i></span>
+                    <input type="text" asp-for="UserName" class="form-control border-start-0" readonly>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label for="inputLastName1" class="form-label">Full Name</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-transparent"><i class="bx bxs-user"></i></span>
+                    <input type="text" asp-for="Name" class="form-control border-start-0" placeholder="Full Name" required>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label for="inputPhoneNo" class="form-label">Phone No</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-transparent"><i class="bx bxs-microphone"></i></span>
+                    <input type="text" class="form-control border-start-0" asp-for="PhoneNumber" placeholder="Phone No" required>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label for="inputEmailAddress" class="form-label">Email Address</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-transparent"><i class="bx bxs-message"></i></span>
+                    <input type="email" class="form-control border-start-0" asp-for="Email" placeholder="Email Address" required>
+                </div>
+            </div>
+            <div class="col-md-6 center">
+                <button type="submit" class="btn btn-success px-5">Update</button>
+            </div>
+        </form>
+    </div>
+</div>

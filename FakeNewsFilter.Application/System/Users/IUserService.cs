@@ -7,10 +7,14 @@ namespace FakeNewsFilter.Application.System.Users
 {
     public interface IUserService
     {
-        Task<string> Authencate(LoginRequest request);
+        Task<ApiResult<string>> Authencate(LoginRequest request);
 
-        Task<bool> Register(RegisterRequest request);
+        Task<ApiResult<bool>> Register(RegisterRequest request);
 
-        Task<PagedResult<UserViewModel>> GetUsersPaging(GetUserPagingRequest request);
+        Task<ApiResult<PagedResult<UserViewModel>>> GetUsersPaging(GetUserPagingRequest request);
+
+        Task<ApiResult<bool>> Update(Guid UserId, UserUpdateRequest request);
+
+        Task<ApiResult<UserViewModel>> GetById(Guid id);
     }
 }
