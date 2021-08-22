@@ -13,6 +13,9 @@
     <Folder Include="Views\User\" />
     <Folder Include="Services\" />
     <Folder Include="Views\Login\" />
+    <Folder Include="Controllers\Components\" />
+    <Folder Include="Views\Shared\Components\" />
+    <Folder Include="Views\Shared\Components\Pager\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FakeNewsFilter.ViewModel\FakeNewsFilter.ViewModel.csproj">
@@ -27,6 +30,9 @@
     <None Remove="Microsoft.AspNetCore.Session" />
     <None Remove="Microsoft.VisualStudio.Web.CodeGeneration.Design" />
     <None Remove="Views\Login\" />
+    <None Remove="Controllers\Components\" />
+    <None Remove="Views\Shared\Components\" />
+    <None Remove="Views\Shared\Components\Pager\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.18" />

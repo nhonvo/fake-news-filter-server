@@ -29,6 +29,20 @@
             <h5 class="mb-0 text-success">User Registration</h5>
         </div>
         <hr>
+
+        
+        <ul>
+            @foreach (var error in ViewData.ModelState.SelectMany(x => x.Value.Errors))
+            { 
+                <li style="list-style: none;">
+                    <div class="alert  border-0 border-start border-5 border-danger alert-dismissible fade show">
+                        <div>@error.ErrorMessage</div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </li>
+            }
+        </ul>
+
         <form class="row g-3" asp-action="Create" asp-controller="User" method="post">
             <div class="col-md-6">
                 <label for="inputLastName1" class="form-label">Full Name</label>
@@ -69,7 +83,7 @@
                 <label for="inputConfirmPassword" class="form-label">Confirm Password</label>
                 <div class="input-group">
                     <span class="input-group-text bg-transparent"><i class="bx bxs-lock"></i></span>
-                    <input type="password" class="form-control border-start-0" asp-for="ConfirmPassword" placeholder="Confirm Password"required >
+                    <input type="password" class="form-control border-start-0" asp-for="ConfirmPassword" placeholder="Confirm Password" required>
                 </div>
             </div>
             <div class="col-md-6 center">

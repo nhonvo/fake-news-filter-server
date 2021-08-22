@@ -87,7 +87,9 @@ namespace FakeNewsFilter.Application.Catalog.NewsManage
             //4. Select and projection
             var pagedResult = new PagedResult<NewsViewModel>()
             {
-                TotalRecord = TotalRow,
+                TotalRecords = TotalRow,
+                PageIndex = request.pageIndex,
+                PageSize = request.pageSize,
                 Items = data
             };
 
@@ -126,7 +128,10 @@ namespace FakeNewsFilter.Application.Catalog.NewsManage
             //4. Select and projection
             var pagedResult = new PagedResult<NewsViewModel>()
             {
-                TotalRecord = TotalRow,
+
+                TotalRecords = TotalRow,
+                PageIndex = request.pageIndex,
+                PageSize = request.pageSize,
                 Items = data
             };
 

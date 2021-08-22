@@ -57,7 +57,7 @@ namespace FakeNewsFilter.API.Controllers
                 return BadRequest(result.Message);
 
             }
-            return Ok();
+            return Ok(result);
         }
 
         //http://localhost/api/users/paging?pageIndex=1&pageSize=10&keyword=
@@ -88,6 +88,13 @@ namespace FakeNewsFilter.API.Controllers
             {
                 return BadRequest(result);
             }
+            return Ok(result);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(String id)
+        {
+            var result = await _userService.Delete(id);
             return Ok(result);
         }
     }

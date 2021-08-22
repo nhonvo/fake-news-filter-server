@@ -35,7 +35,7 @@ namespace FakeNewsFilter.Application.System.Users
             _mapper = mapper;
         }
         
-
+        //Đăng nhập
         public async Task<ApiResult<string>> Authencate(LoginRequest request)
         {
             var user = await _userManager.FindByNameAsync(request.UserName);
@@ -68,10 +68,10 @@ namespace FakeNewsFilter.Application.System.Users
                 expires: DateTime.Now.AddHours(3),
                 signingCredentials: creds);
 
-            return new ApiSuccessResult<string>(new JwtSecurityTokenHandler().WriteToken(token));
+            return new ApiSuccessResult<string>("Login successful!", new JwtSecurityTokenHandler().WriteToken(token));
         }
 
-
+        //Đăng ký người dùng mới
         public async Task<ApiResult<bool>>  Register(RegisterRequest request)
         {
             var user = await _userManager.FindByNameAsync(request.UserName);
@@ -103,15 +103,17 @@ namespace FakeNewsFilter.Application.System.Users
             return new ApiErrorResult<bool>("Register Unsuccessful.");
         }
 
+        //Lấy danh sách người dùng (phân trang)
         public async Task<ApiResult<PagedResult<UserViewModel>>> GetUsersPaging(GetUserPagingRequest request)
         {
             var query = _userManager.Users;
 
-            if (!string.IsNullOrEmpty(request.Keyword))
+            if (!string.IsNullOrEmpty(request.keyWord))
             {
-                query = query.Where(x => x.UserName.Contains(request.Keyword)
-                 || x.Email.Contains(request.Keyword));
+                query = query.Where(x => x.UserName.Contains(request.keyWord)
+                 || x.Email.Contains(request.keyWord));
             }
+
             //3. Paging
             int totalRow = await query.CountAsync();
 
@@ -129,14 +131,16 @@ namespace FakeNewsFilter.Application.System.Users
             //4. Select and projection
             var pagedResult = new PagedResult<UserViewModel>()
             {
-                TotalRecord = totalRow,
+                TotalRecords = totalRow,
+                PageIndex = request.pageIndex,
+                PageSize = request.pageSize,
                 Items = data
             };
 
-            return new ApiSuccessResult<PagedResult<UserViewModel>>(pagedResult);
+            return new ApiSuccessResult<PagedResult<UserViewModel>>("Loading List Users Successful!",pagedResult);
         }
 
-        //Update User
+        //Cập nhật người dùng
         public async Task<ApiResult<bool>> Update(Guid UserId, UserUpdateRequest request)
         {
             if (await _userManager.Users.AnyAsync(x => x.Email == request.Email && x.Id != UserId))
@@ -158,6 +162,7 @@ namespace FakeNewsFilter.Application.System.Users
             return new ApiErrorResult<bool>("Update Unsuccessful.");
         }
 
+        //Lấy Id của người dùng
         public async Task<ApiResult<UserViewModel>> GetById(Guid id)
         {
             var user = await _userManager.FindByIdAsync(id.ToString());
@@ -169,7 +174,22 @@ namespace FakeNewsFilter.Application.System.Users
 
             var userVm = _mapper.Map<UserViewModel>(user);
 
-            return new ApiSuccessResult<UserViewModel>(userVm);
+            return new ApiSuccessResult<UserViewModel>("Get Info User Successful!",userVm);
+        }
+
+        //Xoá người dùng
+        public async Task<ApiResult<bool>> Delete(String UserId)
+        {
+            var user = await _userManager.FindByIdAsync(UserId);
+            if (user == null)
+            {
+                return new ApiErrorResult<bool>("User không tồn tại");
+            }
+            var reult = await _userManager.DeleteAsync(user);
+            if (reult.Succeeded)
+                return new ApiSuccessResult<bool>();
+
+            return new ApiErrorResult<bool>("Xóa không thành công");
         }
     }
 }

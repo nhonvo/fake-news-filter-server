@@ -60,7 +60,7 @@ namespace FakeNewsFilter.WebApp.Services
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
 
-            var respone = await client.GetAsync($"/api/users/paging?pageIndex={request.pageIndex}&pageSize={request.pageSize}&keyWork={request.Keyword}");
+            var respone = await client.GetAsync($"/api/users/paging?pageIndex={request.pageIndex}&pageSize={request.pageSize}&keyWord={request.keyWord}");
 
             var body = await respone.Content.ReadAsStringAsync();
 
@@ -131,6 +131,21 @@ namespace FakeNewsFilter.WebApp.Services
                 return JsonConvert.DeserializeObject<ApiSuccessResult<UserViewModel>>(body);
 
             return JsonConvert.DeserializeObject<ApiErrorResult<UserViewModel>>(body);
+        }
+
+        //Xoá người dùng
+        public async Task<ApiResult<bool>> Delete(String UserId)
+        {
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+            var response = await client.DeleteAsync($"/api/users/{UserId}");
+            var body = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(body);
+
+            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(body);
         }
     }
 }

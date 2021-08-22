@@ -19,7 +19,24 @@
         </nav>
     </div>
 </div>
-
+    @if(ViewBag.SuccessMsg!=null)
+            {
+                <script>
+                    window.onload = function () {
+                        Lobibox.notify('success', {
+                            pauseDelayOnHover: true,
+                            size: 'mini',
+                            rounded: true,
+                            icon: 'bx bx-check-circle',
+                            delayIndicator: false,
+                            continueDelayOnInactiveTab: false,
+                            position: 'top right',
+                            msg: '@ViewBag.SuccessMsg'
+                        });
+                    }
+                    
+                </script>
+            }
     <div class="row">
         <div class="col">
             <div class="card radius-10 mb-0">
@@ -28,12 +45,31 @@
                         <div>
                             <h5 class="mb-1">@ViewData["Title"]</h5>
                         </div>
+
                         <div class="ms-auto">
-                            <a asp-action="Create" asp-controller="User" class="btn btn-success px-5"><i class="bx bx-user-pin"></i>Create User</a>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <a asp-action="Create" asp-controller="User" class="btn btn-outline-success"><i class="bx bx-user-pin"></i>Create User</a>
+                                </div>
+                                <form asp-action="Index" method="get" class="col-md-7">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" value="@ViewBag.Keyword" name="keyword" placeholder="Search">
+                                        <button class="btn btn-success" type="submit">
+                                            <i class="bx bx-search"></i>
+                                       
+                                        </button>
+                                        <button class="btn btn-danger" type="button" onclick="window.location.href='User/Index'">
+                                            <i class="bx bx-refresh"></i>
+                                        </button>
+                                    </div>
+                                </form>
+
+                            </div>
+
+
                         </div>
-
                     </div>
-
+                   
                     <div class="table-responsive mt-3">
                         <table class="table align-middle mb-0">
                             <thead class="table-light">
@@ -49,32 +85,54 @@
                             <tbody>
                                 @foreach (var item in Model.Items)
                                 {
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.UserId)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.UserName)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.FullName)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Email)
-                                    </td>
-                                    <td class=""><span class="badge bg-light-success text-success w-100">@Html.DisplayFor(modelItem => item.Status)</span></td>
-                                    <td>
-                                        <div class="d-flex order-actions">
-                                            <a asp-action="Delete" asp-route-id="@item.UserId" class="text-danger bg-light-danger border-0"><i class="bx bxs-trash"></i></a>
-                                            <a asp-action="Edit" asp-route-id="@item.UserId"  class="ms-4 text-primary bg-light-primary border-0"><i class="bx bxs-edit"></i></a>
-                                        </div>
-                                    </td>
-                                </tr>
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.UserId)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.UserName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.FullName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Email)
+                                        </td>
+                                        <td class=""><span class="badge bg-light-success text-success w-100">@Html.DisplayFor(modelItem => item.Status)</span></td>
+                                        <td>
+                                            <div class="d-flex order-actions">
+                                                <a data-bs-toggle="modal" data-bs-target="#deleteUser" class="text-danger bg-light-danger border-0"><i class="bx bxs-trash"></i></a>
+                                                <form action="/User/Delete?UserId=@item.UserId" method="post">
+                                                    <div class="modal fade" id="deleteUser" tabindex="-1" aria-hidden="true" style="display: none;">
+                                                        <div class="modal-dialog modal-sm">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title">Delete User</h5>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">Are you sure to delete this account?</div>
+
+                                                                <div class="modal-footer">
+                                                                    <button type="submit" class="btn btn-primary">Yes</button>
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                                <a asp-action="Edit" asp-route-id="@item.UserId" class="ms-4 text-primary bg-light-primary border-0"><i class="bx bxs-edit"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 }
                             </tbody>
                         </table>
                     </div>
+                    <div style="padding-top: 20px">
+                        @await Component.InvokeAsync("Pager", Model)
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>

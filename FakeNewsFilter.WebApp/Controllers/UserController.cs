@@ -29,12 +29,19 @@ namespace FakeNewsFilter.WebApp.Controllers
 
             var request = new GetUserPagingRequest()
             {
-                Keyword = keyWord,
+                keyWord = keyWord,
                 pageIndex = pageIndex,
                 pageSize = pageSize
             };
 
             var data = await _userApiClient.GetUsersPaging(request);
+
+            ViewBag.Keyword = keyWord;
+
+            if(TempData["result"]!=null)
+            {
+                ViewBag.SuccessMsg = TempData["Result"];
+            }
 
             return View(data.ResultObj);
         }
@@ -51,6 +58,7 @@ namespace FakeNewsFilter.WebApp.Controllers
         {
             if(!ModelState.IsValid)
             {
+                ViewBag.ModelState = ModelState;
                 return View();
             }
 
@@ -58,6 +66,8 @@ namespace FakeNewsFilter.WebApp.Controllers
 
             if(result.IsSuccessed)
             {
+                TempData["Result"] = $"Create User {request.UserName} successful!";
+
                 return RedirectToAction("Index");
             }
 
@@ -98,12 +108,29 @@ namespace FakeNewsFilter.WebApp.Controllers
             var result = await _userApiClient.UpdateUser(request.UserId, request);
             if (result.IsSuccessed)
             {
-                TempData["result"] = "Cập nhật người dùng thành công";
+                TempData["result"] = $"Update User {request.UserName} successful!";
                 return RedirectToAction("Index");
             }
 
             ModelState.AddModelError("", result.Message);
             return View(request);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(String UserId)
+        {
+            if (!ModelState.IsValid)
+                return View();
+
+            var result = await _userApiClient.Delete(UserId);
+            if (result.IsSuccessed)
+            {
+                TempData["result"] = $"Delete User {UserId} successful!";
+                return RedirectToAction("Index");
+            }
+
+            ModelState.AddModelError("", result.Message);
+            return RedirectToAction("Index");
         }
 
     }
