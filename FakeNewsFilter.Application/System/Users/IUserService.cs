@@ -18,5 +18,7 @@ namespace FakeNewsFilter.Application.System.Users
         Task<ApiResult<UserViewModel>> GetById(Guid id);
 
         Task<ApiResult<bool>> Delete(String UserId);
+
+        Task<ApiResult<bool>> RoleAssign(Guid id, RoleAssignRequest request);
     }
 }

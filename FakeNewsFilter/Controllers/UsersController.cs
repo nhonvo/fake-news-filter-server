@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using FakeNewsFilter.Application.System.Users;
+using FakeNewsFilter.Utilities.Exceptions;
 using FakeNewsFilter.ViewModel.System.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -25,20 +26,20 @@ namespace FakeNewsFilter.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Authenticate([FromBody]LoginRequest request)
         {
-            if(!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
 
-            var resultToken = await _userService.Authencate(request);
+                var resultToken = await _userService.Authencate(request);
 
-            if(string.IsNullOrEmpty(resultToken.ResultObj))
-            {
-                return BadRequest("Username and Password is incorrect.");
+                if (string.IsNullOrEmpty(resultToken.ResultObj))
+                {
+                    return BadRequest("Username and Password is incorrect.");
 
-            }
-            
-            return Ok(resultToken);
+                }
+
+                return Ok(resultToken);
         }
 
         [HttpPost("Register")]
@@ -61,7 +62,7 @@ namespace FakeNewsFilter.API.Controllers
         }
 
         //http://localhost/api/users/paging?pageIndex=1&pageSize=10&keyword=
-        [HttpGet("paging")]
+        [HttpGet("Paging")]
         public async Task<IActionResult> GetAllPaging([FromQuery]GetUserPagingRequest request)
         {
             var users = await _userService.GetUsersPaging(request);
@@ -97,5 +98,20 @@ namespace FakeNewsFilter.API.Controllers
             var result = await _userService.Delete(id);
             return Ok(result);
         }
+
+        [HttpPut("{id}/roles")]
+        public async Task<IActionResult> RoleAssign(Guid id, [FromBody] RoleAssignRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _userService.RoleAssign(id, request);
+            if (!result.IsSuccessed)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+
     }
 }

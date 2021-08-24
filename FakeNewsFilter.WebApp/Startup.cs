@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using FakeNewsFilter.AdminApp.Services;
 using FakeNewsFilter.ViewModel.System.Users;
 using FakeNewsFilter.WebApp.Services;
 using FluentValidation.AspNetCore;
@@ -34,6 +35,7 @@ namespace FakeNewsFilter.WebApp
             //HttpClient
             services.AddHttpClient();
             services.AddTransient<IUserApiClient, UserApiClient>();
+            services.AddTransient<IRoleApiClient, RoleApiClient>();
 
             //Authen
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

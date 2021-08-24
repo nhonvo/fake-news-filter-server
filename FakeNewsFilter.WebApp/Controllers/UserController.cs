@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using FakeNewsFilter.AdminApp.Controllers;
+using FakeNewsFilter.AdminApp.Services;
+using FakeNewsFilter.ViewModel.Common;
 using FakeNewsFilter.ViewModel.System.Users;
 using FakeNewsFilter.WebApp.Services;
 using Microsoft.AspNetCore.Authentication;
@@ -13,14 +15,17 @@ using Microsoft.Extensions.Configuration;
 
 namespace FakeNewsFilter.WebApp.Controllers
 {
-    [Authorize]
+
     public class UserController : BaseController
     {
         private readonly IUserApiClient _userApiClient;
 
-        public UserController(IUserApiClient userApiClient, IConfiguration configuration)
+        private readonly IRoleApiClient _roleApiClient;
+
+        public UserController(IUserApiClient userApiClient, IRoleApiClient roleApiClient)
         {
             _userApiClient = userApiClient;
+            _roleApiClient = roleApiClient;
         }
 
         // GET: /<controller>/
@@ -31,7 +36,7 @@ namespace FakeNewsFilter.WebApp.Controllers
             {
                 keyWord = keyWord,
                 pageIndex = pageIndex,
-                pageSize = pageSize
+                pageSize = pageSize 
             };
 
             var data = await _userApiClient.GetUsersPaging(request);
@@ -132,6 +137,54 @@ namespace FakeNewsFilter.WebApp.Controllers
             ModelState.AddModelError("", result.Message);
             return RedirectToAction("Index");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> RoleAssign(Guid id)
+        {
+            var roleAssignRequest = await GetRoleAssignRequest(id);
+            return View(roleAssignRequest);
+        }
+
+
+        //Cập nhật quyền cho người dùng
+        [HttpPost]
+        public async Task<IActionResult> RoleAssign(RoleAssignRequest request)
+        {
+            if (!ModelState.IsValid)
+                return View();
+
+            var result = await _userApiClient.RoleAssign(request.Id, request);
+
+            if (result.IsSuccessed)
+            {
+                TempData["result"] = "Update Role Successful!";
+                return RedirectToAction("Index");
+            }
+
+            ModelState.AddModelError("", result.Message);
+
+            var roleAssignRequest = await GetRoleAssignRequest(request.Id);
+
+            return View(roleAssignRequest);
+        }
+
+        private async Task<RoleAssignRequest> GetRoleAssignRequest(Guid id)
+        {
+            var userObj = await _userApiClient.GetById(id);
+            var roleObj = await _roleApiClient.GetAll();
+            var roleAssignRequest = new RoleAssignRequest();
+            foreach (var role in roleObj.ResultObj)
+            {
+                roleAssignRequest.Roles.Add(new SelectItem()
+                {
+                    Id = role.Id.ToString(),
+                    Name = role.Name,
+                    Selected = userObj.ResultObj.Roles.Contains(role.Name)
+                });
+            }
+            return roleAssignRequest;
+        }
+
 
     }
 }

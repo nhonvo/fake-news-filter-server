@@ -16,6 +16,7 @@
     <None Remove="System\User\" />
     <None Remove="Microsoft.IdentityModel.Tokens" />
     <None Remove="System.IdentityModel.Tokens.Jwt" />
+    <None Remove="System\Role\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +30,7 @@
     <Folder Include="Mapping\" />
     <Folder Include="System\" />
     <Folder Include="System\Users\" />
+    <Folder Include="System\Roles\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FakeNewsFilter.Data\FakeNewsFilter.Data.csproj" />

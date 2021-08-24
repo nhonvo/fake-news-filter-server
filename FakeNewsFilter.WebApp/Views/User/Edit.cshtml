@@ -1,6 +1,6 @@
 ﻿@model FakeNewsFilter.ViewModel.System.Users.UserUpdateRequest
 @{
-    ViewData["Title"] = "UPDATE USER";
+    ViewData["Title"] = "Update User";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -20,6 +20,18 @@
         </nav>
     </div>
 </div>
+
+<ul>
+    @foreach (var error in ViewData.ModelState.SelectMany(x => x.Value.Errors))
+    {
+        <li style="list-style: none;">
+            <div class="alert  border-0 border-start border-5 border-danger alert-dismissible fade show">
+                <div>@error.ErrorMessage</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </li>
+    }
+</ul>
 
 <div class="card border-top border-0 border-4 border-success">
     <div class="card-body p-5">
