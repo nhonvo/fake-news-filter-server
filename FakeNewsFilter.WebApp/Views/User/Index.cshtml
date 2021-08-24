@@ -1,140 +1,311 @@
 ﻿@using FakeNewsFilter.ViewModel.Common;
-@model PagedResult<FakeNewsFilter.ViewModel.System.Users.UserViewModel> 
+@model FakeNewsFilter.ViewModel.System.Users.RegisterRequest
 
 @{
     ViewData["Title"] = "LIST USERS";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-    <div class="breadcrumb-title pe-3">Users Manager</div>
-    <div class="ps-3">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb mb-0 p-0">
-                <li class="breadcrumb-item">
-                    <a href="javascript:;"><i class="bx bx-home-alt"></i></a>
-                </li>
-                <li class="breadcrumb-item active" aria-current="page">List User</li>
-            </ol>
-        </nav>
+<link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css">
+
+<div class="content-header-left col-md-9 col-12 mb-2">
+    <div class="row breadcrumbs-top">
+        <div class="col-12">
+            <h2 class="content-header-title float-start mb-0">List Users</h2>
+            <div class="breadcrumb-wrapper">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="index.html">Home</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">User Manages</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        List Users
+                    </li>
+                </ol>
+            </div>
+        </div>
     </div>
 </div>
-    @if(ViewBag.SuccessMsg!=null)
-            {
-                <script>
-                    window.onload = function () {
-                        Lobibox.notify('success', {
-                            pauseDelayOnHover: true,
-                            size: 'mini',
-                            rounded: true,
-                            icon: 'bx bx-check-circle',
-                            delayIndicator: false,
-                            continueDelayOnInactiveTab: false,
-                            position: 'top right',
-                            msg: '@ViewBag.SuccessMsg'
-                        });
-                    }
-                    
-                </script>
-            }
-    <div class="row">
-        <div class="col">
-            <div class="card radius-10 mb-0">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div>
-                            <h5 class="mb-1">@ViewData["Title"]</h5>
-                        </div>
 
-                        <div class="ms-auto">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <a asp-action="Create" asp-controller="User" class="btn btn-outline-success"><i class="bx bx-user-pin"></i>Create User</a>
-                                </div>
-                                <form asp-action="Index" method="get" class="col-md-7">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" value="@ViewBag.Keyword" name="keyword" placeholder="Search">
-                                        <button class="btn btn-success" type="submit">
-                                            <i class="bx bx-search"></i>
-                                       
-                                        </button>
-                                        <button class="btn btn-danger" type="button" onclick="window.location.href='User/Index'">
-                                            <i class="bx bx-refresh"></i>
-                                        </button>
-                                    </div>
-                                </form>
+@if (ViewBag.SuccessMsg != null)
+{
+<div class="alert alert-success" role="alert">
+    <h4 class="alert-heading">Success</h4>
+    <div class="alert-body">
+        Create User Successful!
+    </div>
+</div>
+}
 
-                            </div>
+<ul>
+    @foreach (var error in ViewData.ModelState.SelectMany(x => x.Value.Errors))
+    {
+        <li style="list-style: none;">
+            <div class="alert alert-danger">
+                <div class="alert-heading">@error.ErrorMessage</div>
+                <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </li>
+    }
+</ul>
 
-
-                        </div>
-                    </div>
-                   
-                    <div class="table-responsive mt-3">
-                        <table class="table align-middle mb-0">
-                            <thead class="table-light">
+<div class="card">
+    <div id="DataTables_Table_0_wrapper" class=" card-body pb-50 dataTables_wrapper dt-bootstrap5 no-footer">
+        <!-- Basic table -->
+        <section id="basic-datatable">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <table class="datatables-basic table" id="list_users">
+                            <thead>
                                 <tr>
-                                    <th>User Id</th>
+                                    <th></th>
                                     <th>User Name</th>
-                                    <th>Full Name</th>
                                     <th>Email</th>
+                                    <th>Role</th>
                                     <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                @foreach (var item in Model.Items)
-                                {
-                                    <tr>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.UserId)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.UserName)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.FullName)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Email)
-                                        </td>
-                                        <td class=""><span class="badge bg-light-success text-success w-100">@Html.DisplayFor(modelItem => item.Status)</span></td>
-                                        <td>
-                                            <div class="d-flex order-actions">
-                                                <a data-bs-toggle="modal" data-bs-target="#deleteUser" class="text-danger bg-light-danger border-0"><i class="bx bxs-trash"></i></a>
-                                                <form action="/User/Delete?UserId=@item.UserId" method="post">
-                                                    <div class="modal fade" id="deleteUser" tabindex="-1" aria-hidden="true" style="display: none;">
-                                                        <div class="modal-dialog modal-sm">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title">Delete User</h5>
-                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                </div>
-                                                                <div class="modal-body">Are you sure to delete this account?</div>
-
-                                                                <div class="modal-footer">
-                                                                    <button type="submit" class="btn btn-primary">Yes</button>
-                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                                <a asp-action="Edit" asp-route-id="@item.UserId" class="ms-4 text-primary bg-light-primary border-0"><i class="bx bxs-edit"></i></a>
-                                                <a asp-action="RoleAssign" asp-route-id="@item.UserId" class="ms-4  bg-light-warning text-warning border-0"><i class="bx bxs-group"></i></a>
-                                    
-                                            </div>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
                         </table>
                     </div>
-                    <div style="padding-top: 20px">
-                        @await Component.InvokeAsync("Pager", Model)
-                    </div>
                 </div>
-
             </div>
-        </div>
+            <!-- Modal to add new record -->
+            <div class="modal modal-slide-in fade" id="modals-slide-in">
+                <div class="modal-dialog sidebar-sm">
+                    <form class="add-new-record modal-content pt-0" asp-action="Create" asp-controller="User" method="post">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                        <div class="modal-header mb-1">
+                            <h5 class="modal-title" id="exampleModalLabel">New User</h5>
+                        </div>
+                        <div class="modal-body flex-grow-1">
+                            <div class="mb-1">
+                                <label class="form-label" for="basic-icon-default-fullname">Full Name</label>
+                                <input type="text" class="form-control dt-full-name" asp-for="Name" />
+                            </div>
+                            <div class="mb-1">
+                                <label class="form-label" for="basic-icon-default-post">User Name</label>
+                                <input type="text"  asp-for="UserName" class="form-control dt-post" />
+                            </div>
+                            <div class="mb-1">
+                                <label class="form-label" for="basic-icon-default-email">Email</label>
+                                <input type="email" asp-for="Email" class="form-control dt-email" placeholder="john.doe@example.com" aria-label="john.doe@example.com" />
+                                <small class="form-text"> You can use letters, numbers & periods </small>
+                            </div>
+                            <div class="mb-1">
+                                <label class="form-label" for="basic-icon-default-date">Phone Number</label>
+                                <input type="number" class="form-control dt-date" asp-for="PhoneNumber" />
+                            </div>
+                            <div class="mb-1">
+                                <label class="form-label" for="basic-icon-default-salary">Password</label>
+                                <input type="password" asp-for="Password" class="form-control dt-salary" />
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label" for="basic-icon-default-salary">Confirm Password</label>
+                                <input type="password" asp-for="ConfirmPassword"class="form-control dt-salary" />
+                            </div>
+                            <button type="submit" class="btn btn-primary data-submit me-1">Submit</button>
+                            <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+        <!--/ Basic table -->
     </div>
+
+</div>
+
+@section scripts{
+
+    <script src="app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js"></script>
+    <script src="app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js"></script>
+    <script src="app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js"></script>
+    <script src="app-assets/vendors/js/tables/datatable/responsive.bootstrap4.js"></script>
+    <script src="app-assets/vendors/js/tables/datatable/responsive.bootstrap4.js"></script>
+    <script src="app-assets/vendors/js/tables/datatable/datatables.buttons.min.js"></script>
+    <script src="app-assets/vendors/js/tables/datatable/buttons.bootstrap5.min.js"></script>
+    <script src="app-assets/vendors/js/forms/validation/jquery.validate.min.js"></script>
+
+    <script>$(document).ready(function () {
+            var dtUserTable = $('.user-list-table'),
+                newUserSidebar = $('.new-user-modal'),
+                newUserForm = $('.add-new-user'),
+                statusObj = {
+                    0: { title: 'Pending', class: 'badge-light-warning' },
+                    1: { title: 'Active', class: 'badge-light-success' },
+                    2: { title: 'Inactive', class: 'badge-light-secondary' }
+                };
+
+            $("#list_users").DataTable({
+                processing: true,
+                searching: true,
+                ajax: {
+                    url: "/User/GetUsers",
+                    type: "get",
+                    contentType: "application/json",
+                    dataType: "json",
+                    data: function (data) {
+                        return JSON.stringify(data);
+                    }
+                },
+                dom:
+                    '<"d-flex justify-content-between align-items-center header-actions mx-1 row mt-75"' +
+                    '<"col-sm-12 col-md-4 col-lg-6" l>' +
+                    '<"col-sm-12 col-md-8 col-lg-6 ps-xl-75 ps-0"<"dt-action-buttons text-xl-end text-lg-start text-md-end text-start d-flex align-items-center justify-content-md-end align-items-center flex-sm-nowrap flex-wrap me-1"<"me-1"f>B>>' +
+                    '>t' +
+                    '<"d-flex justify-content-between mx-2 row mb-1"' +
+                    '<"col-sm-12 col-md-6"i>' +
+                    '<"col-sm-12 col-md-6"p>' +
+                    '>',
+                // Buttons with Dropdown
+                buttons: [
+                    {
+                        text: 'Add New User',
+                        className: 'add-new btn btn-primary mt-50',
+                        attr: {
+                            'data-bs-toggle': 'modal',
+                            'data-bs-target': '#modals-slide-in'
+                        },
+                        init: function (api, node, config) {
+                            $(node).removeClass('btn-secondary');
+                        }
+                    }
+                ],
+                columns: [
+                    { "data": 'userId' },
+                    { "data": 'fullName' },
+                    { "data": 'email' },
+                    { "data": 'roles' },
+                    {
+                        "data": 'status',
+                    },
+                    {
+                        "data": ''
+                    }
+                ],
+                columnDefs: [
+                    {
+                        // For Responsive
+                        className: 'control',
+                        orderable: false,
+                        visible: false,
+                        responsivePriority: 2,
+                        targets: 0
+                    },
+                    {
+                        // User full name and username
+                        targets: 1,
+                        responsivePriority: 4,
+                        render: function (data, type, full, meta) {
+                            var $name = full['fullName'],
+                                $uname = full['userName'],
+                                $image = full['avatar'];
+                            if ($image) {
+                                // For Avatar image
+                                var $output =
+                                    '<img src="' + assetPath + 'images/avatars/' + $image + '" alt="Avatar" height="32" width="32">';
+                            } else {
+                                // For Avatar badge
+                                var stateNum = Math.floor(Math.random() * 6) + 1;
+                                var states = ['success', 'danger', 'warning', 'info', 'dark', 'primary', 'secondary'];
+                                var $state = states[stateNum],
+                                    $name = full['fullName'],
+                                    $initials = $name.match(/\b\w/g) || [];
+                                $initials = (($initials.shift() || '') + ($initials.pop() || '')).toUpperCase();
+                                $output = '<span class="avatar-content">' + $initials + '</span>';
+                            }
+                            var colorClass = $image === '' ? ' bg-light-' + $state + ' ' : '';
+                            // Creates full output for row
+                            var $row_output =
+                                '<div class="d-flex justify-content-left align-items-center">' +
+                                '<div class="avatar-wrapper">' +
+                                '<div class="avatar ' +
+                                colorClass +
+                                ' me-1">' +
+                                $output +
+                                '</div>' +
+                                '</div>' +
+                                '<div class="d-flex flex-column">' +
+                                '<a href="' +
+
+                                '" class="user_name text-truncate"><span class="fw-bold">' +
+                                $name +
+                                '</span></a>' +
+                                '<small class="emp_post text-muted">&#x00040;' +
+                                $uname +
+                                '</small>' +
+                                '</div>' +
+                                '</div>';
+                            return $row_output;
+                        }
+                    },
+                    {
+                        // User Role
+                        targets: 3,
+                        render: function (data, type, full, meta) {
+                            var $role = full['roles'];
+                            var roleBadgeObj = {
+                                Subscriber: feather.icons['user'].toSvg({ class: 'font-medium-3 text-primary me-50' }),
+                                Author: feather.icons['settings'].toSvg({ class: 'font-medium-3 text-warning me-50' }),
+                                Maintainer: feather.icons['database'].toSvg({ class: 'font-medium-3 text-success me-50' }),
+                                Editor: feather.icons['edit-2'].toSvg({ class: 'font-medium-3 text-info me-50' }),
+                                Admin: feather.icons['slack'].toSvg({ class: 'font-medium-3 text-danger me-50' })
+                            };
+                            var list = '';
+                            $.each($role, function (key, value) {
+                                list += "<span class='text-truncate align-middle'>" + roleBadgeObj[value] + value + '</span>';
+                            });
+                            return list;
+                        }
+                    },
+                    {
+                        // User Status
+                        targets: 4,
+                        render: function (data, type, full, meta) {
+                            var $status = full['status'];
+                            return (
+                                '<span class="badge rounded-pill ' +
+                                statusObj[$status].class +
+                                '" text-capitalized>' +
+                                statusObj[$status].title +
+                                '</span>'
+                            );
+                        }
+                    },
+                    {
+                        // Actions
+                        targets: 5,
+                        orderable: false,
+                        render: function (data, type, full, meta) {
+                            return (
+                                '<div class="d-flex align-items-center col-actions">' +
+                                '<a class="me-1" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">' +
+                                feather.icons['edit'].toSvg({ class: 'font-medium-1 text-warning' }) +
+                                '</a>' +
+                                '<a class="me-1" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">' +
+                                feather.icons['trash'].toSvg({ class: 'font-medium-1 text-danger' }) +
+                                '</a>' +
+                                '<a class="me-1" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="View">' +
+                                feather.icons['eye'].toSvg({ class: 'font-medium-1' }) +
+                                '</a>'
+                                +
+                                '</div>'
+                            );
+                        }
+                    }
+                ],
+                //Tooltip
+                drawCallback: function () {
+                    $(document).find('[data-bs-toggle="tooltip"]').tooltip();
+                }
+
+
+            }
+            );
+        });</script>
+}
+

@@ -25,7 +25,6 @@ namespace FakeNewsFilter.Application.System.Roles
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    Description = x.Description
                 }).ToListAsync();
 
             return roles;

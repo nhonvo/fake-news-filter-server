@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using FakeNewsFilter.ViewModel.Common;
 using FakeNewsFilter.ViewModel.System.Users;
@@ -9,7 +10,7 @@ namespace FakeNewsFilter.WebApp.Services
     {
         Task<ApiResult<string>> Authenticate(LoginRequest request);
 
-        Task<ApiResult<PagedResult<UserViewModel>>> GetUsersPaging(GetUserPagingRequest request);
+        Task<ApiResult<List<UserViewModel>>> GetUsers();
 
         Task<ApiResult<bool>> RegisterUser(RegisterRequest request);
 

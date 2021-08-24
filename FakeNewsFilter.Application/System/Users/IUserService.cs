@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using FakeNewsFilter.ViewModel.Common;
 using FakeNewsFilter.ViewModel.System.Users;
@@ -11,7 +12,7 @@ namespace FakeNewsFilter.Application.System.Users
 
         Task<ApiResult<bool>> Register(RegisterRequest request);
 
-        Task<ApiResult<PagedResult<UserViewModel>>> GetUsersPaging(GetUserPagingRequest request);
+        Task<ApiResult<List<UserViewModel>>> GetUsers();
 
         Task<ApiResult<bool>> Update(Guid UserId, UserUpdateRequest request);
 

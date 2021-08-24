@@ -14,13 +14,19 @@ namespace FakeNewsFilter.Data.Extensions
                 new AppConfig() { Key = "Home Title", Value = "This is homepage" });
 
             var RoleId = new Guid("A3314BE5-4C77-4FB6-82AD-302014682A73");
+
             var AdminId = new Guid("69DB714F-9576-45BA-B5B7-F00649BE00DE");
             modelBuilder.Entity<Role>().HasData(new Role
             {
                 Id = RoleId,
-                Name = "admin",
-                NormalizedName = "admin",
-                Description = "System Admin",
+                Name = "Admin",
+                NormalizedName = "Admin",
+            });
+            modelBuilder.Entity<Role>().HasData(new Role
+            {
+                Id = new Guid("B4314BE5-4C77-4FB6-82AD-302014682B13"),
+                Name = "Subscriber",
+                NormalizedName = "Subscriber",
             });
 
             var hasher = new PasswordHasher<User>();
@@ -37,7 +43,7 @@ namespace FakeNewsFilter.Data.Extensions
                 Name = "Bui Phu Khuyen",
             });
 
-            modelBuilder.Entity<IdentityUserRole<Guid>>().HasData(new IdentityUserRole<Guid>
+            modelBuilder.Entity<UserRoles>().HasData(new UserRoles
             {
                 RoleId = RoleId,
                 UserId = AdminId

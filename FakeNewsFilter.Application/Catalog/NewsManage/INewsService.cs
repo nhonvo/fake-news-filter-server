@@ -11,8 +11,6 @@ namespace FakeNewsFilter.Application.Catalog.NewsManage
     {
         Task<List<NewsViewModel>> GetAll();
 
-        Task<PagedResult<NewsViewModel>> GetAllPaging(GetManageNewsRequest request);
-
         public Task<List<NewsViewModel>> GetNewsInTopic(GetPublicNewsRequest request);
 
         Task<int> Create(NewsCreateRequest request);

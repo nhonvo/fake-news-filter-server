@@ -56,26 +56,15 @@ namespace FakeNewsFilter.Application.Catalog.NewsManage
             return data;
         }
 
-        public async Task<PagedResult<NewsViewModel>> GetAllByTopicId(GetPublicNewsRequest request)
+        public async Task<List<NewsViewModel>> GetAllByTopicId(GetPublicNewsRequest request)
         {
-            //1. Select Join
             var query = from n in _context.News
                         join nit in _context.NewsInTopics on n.NewsId equals nit.NewsId
                         join c in _context.TopicNews on nit.TopicId equals c.TopicId
                         select new { n, nit, c };
 
-            //2. Filter
-            if (request.TopicId.HasValue && request.TopicId.Value > 0)
-            {
-                query = query.Where(t => t.nit.TopicId == request.TopicId);
-            }
-
-            //3. Paging
-            int TotalRow = await query.CountAsync();
 
             var data = await query
-                .Skip((request.pageIndex - 1) * request.pageSize)
-                .Take(request.pageSize)
                 .Select(x => new NewsViewModel()
                 {
                     NewsId = x.n.NewsId,
@@ -84,58 +73,7 @@ namespace FakeNewsFilter.Application.Catalog.NewsManage
                     LabelTopic = x.c.Label,
                 }).ToListAsync();
 
-            //4. Select and projection
-            var pagedResult = new PagedResult<NewsViewModel>()
-            {
-                TotalRecords = TotalRow,
-                PageIndex = request.pageIndex,
-                PageSize = request.pageSize,
-                Items = data
-            };
-
-            return pagedResult;
-        }
-
-        //Get All News Paging
-        public async Task<PagedResult<NewsViewModel>> GetAllPaging(GetManageNewsRequest request)
-        {
-            //1. Select Join
-            var query = from n in _context.News
-                        join nit in _context.NewsInTopics on n.NewsId equals nit.NewsId
-                        join c in _context.TopicNews on nit.TopicId equals c.TopicId
-                        select new { n, nit, c };
-
-            //2. Filter
-            if (request.TopicIds.Count > 0)
-            {
-                query = query.Where(t => request.TopicIds.Contains(t.nit.TopicId));
-            }
-
-            //3. Paging
-            int TotalRow = await query.CountAsync();
-
-            var data = await query
-                .Skip((request.pageIndex - 1) * request.pageSize)
-                .Take(request.pageSize)
-                .Select(x => new NewsViewModel()
-                {
-                    NewsId = x.n.NewsId,
-                    Name = x.n.Name,
-                    TopicId = x.c.TopicId,
-                    LabelTopic = x.c.Label,
-                }).ToListAsync();
-
-            //4. Select and projection
-            var pagedResult = new PagedResult<NewsViewModel>()
-            {
-
-                TotalRecords = TotalRow,
-                PageIndex = request.pageIndex,
-                PageSize = request.pageSize,
-                Items = data
-            };
-
-            return pagedResult;
+            return data;
         }
 
         //Get All News In Topic (Limit 50)

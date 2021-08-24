@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using FakeNewsFilter.AdminApp.Controllers;
 using FakeNewsFilter.AdminApp.Services;
@@ -29,33 +30,26 @@ namespace FakeNewsFilter.WebApp.Controllers
         }
 
         // GET: /<controller>/
-        public async Task<IActionResult> Index(string keyWord,int pageIndex = 1, int pageSize = 10)
+        public IActionResult Index()
         {
+            return View();
+        }
 
-            var request = new GetUserPagingRequest()
-            {
-                keyWord = keyWord,
-                pageIndex = pageIndex,
-                pageSize = pageSize 
-            };
+        [HttpGet]
+        public async Task<IActionResult> GetUsers()
+        {
+            var data = await _userApiClient.GetUsers();
 
-            var data = await _userApiClient.GetUsersPaging(request);
-
-            ViewBag.Keyword = keyWord;
-
-            if(TempData["result"]!=null)
+            if (TempData["result"] != null)
             {
                 ViewBag.SuccessMsg = TempData["Result"];
             }
 
-            return View(data.ResultObj);
-        }
+            return Json(new
+            {
+                data = data.ResultObj
+            });
 
-       
-        [HttpGet]
-        public IActionResult Create()
-        {
-            return View();
         }
 
         [HttpPost]
@@ -64,7 +58,7 @@ namespace FakeNewsFilter.WebApp.Controllers
             if(!ModelState.IsValid)
             {
                 ViewBag.ModelState = ModelState;
-                return View();
+                return RedirectToAction("Index");
             }
 
             var result = await _userApiClient.RegisterUser(request);
@@ -78,7 +72,7 @@ namespace FakeNewsFilter.WebApp.Controllers
 
             ModelState.AddModelError("", result.Message);
 
-            return View(request);
+            return RedirectToAction("Index", request);
         }
 
         [HttpGet]

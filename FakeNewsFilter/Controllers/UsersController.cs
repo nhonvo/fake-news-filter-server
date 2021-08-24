@@ -61,11 +61,11 @@ namespace FakeNewsFilter.API.Controllers
             return Ok(result);
         }
 
-        //http://localhost/api/users/paging?pageIndex=1&pageSize=10&keyword=
-        [HttpGet("Paging")]
-        public async Task<IActionResult> GetAllPaging([FromQuery]GetUserPagingRequest request)
+       
+        [HttpGet("list")]
+        public async Task<IActionResult> GetAllPaging()
         {
-            var users = await _userService.GetUsersPaging(request);
+            var users = await _userService.GetUsers();
             return Ok(users);
         }
 

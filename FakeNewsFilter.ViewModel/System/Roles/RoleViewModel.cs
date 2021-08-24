@@ -7,6 +7,5 @@ namespace FakeNewsFilter.ViewModel.System.Roles
 
         public string Name { get; set; }
 
-        public string Description { get; set; }
     }
 }

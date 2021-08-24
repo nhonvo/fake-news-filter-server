@@ -12,5 +12,7 @@ namespace FakeNewsFilter.Data.Entities
         public string Name { get; set; }
 
         public Status Status { get; set; }
+
+        public virtual ICollection<UserRoles> UserRoles { get; set; }
     }
 }

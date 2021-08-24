@@ -12,7 +12,7 @@ namespace FakeNewsFilter.Data.Configurations
         {
             builder.ToTable("Users");
 
-            builder.Property(x => x.Status).HasDefaultValue(Status.Active);
+            builder.Property(x => x.Status).HasDefaultValue(Status.Active);  
         }
     }
 }

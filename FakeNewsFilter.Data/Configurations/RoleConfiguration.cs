@@ -10,7 +10,10 @@ namespace FakeNewsFilter.Data.Configurations
         {
             builder.ToTable("Role");
 
-            builder.Property(x => x.Description).IsRequired().HasMaxLength(70);
+            builder.HasMany(e => e.UserRoles)
+            .WithOne(e => e.Role)
+            .HasForeignKey(ur => ur.RoleId)
+            .IsRequired();
         }
     }
 }

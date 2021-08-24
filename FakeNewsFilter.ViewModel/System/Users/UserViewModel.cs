@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using FakeNewsFilter.Data.Enums;
+using Microsoft.AspNetCore.Identity;
 
 namespace FakeNewsFilter.ViewModel.System.Users
 {

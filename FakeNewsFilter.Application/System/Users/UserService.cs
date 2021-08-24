@@ -13,6 +13,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using FakeNewsFilter.Utilities.Exceptions;
+using System.Collections.Generic;
 
 namespace FakeNewsFilter.Application.System.Users
 {
@@ -106,12 +107,13 @@ namespace FakeNewsFilter.Application.System.Users
                     PhoneNumber = request.PhoneNumber,
                     Name = request.Name,
                 };
-
                 var result = await _userManager.CreateAsync(user, request.Password);
 
-                if(result.Succeeded)
+                if (result.Succeeded)
                 {
-                    return new ApiSuccessResult<bool>();
+                    await _userManager.AddToRoleAsync(user, "Subscriber");
+
+                    return new ApiSuccessResult<bool>("Register Successful.", true);
                 }
                 return new ApiErrorResult<bool>("Register Unsuccessful.");
             }
@@ -122,41 +124,46 @@ namespace FakeNewsFilter.Application.System.Users
             }
         }
 
-        //Lấy danh sách người dùng (phân trang)
-        public async Task<ApiResult<PagedResult<UserViewModel>>> GetUsersPaging(GetUserPagingRequest request)
+        //Lấy danh sách người dùng
+        public async Task<ApiResult<List<UserViewModel>>> GetUsers()
         {
             try
             {
                 var query = _userManager.Users;
 
-                if (!string.IsNullOrEmpty(request.keyWord))
-                {
-                    query = query.Where(x => x.UserName.Contains(request.keyWord)
-                     || x.Email.Contains(request.keyWord));
-                }
+                var userList = await (from x in query
+                                      select new
+                                      {
+                                          UserId = x.Id,
+                                          Email = x.Email,
+                                          FullName = x.Name,
+                                          Status = x.Status,
+                                          UserName = x.UserName,
+                                          PhoneNumber = x.PhoneNumber,
+                                          RoleNames = (from userRole in x.UserRoles 
+                                                       join role in _roleManager.Roles 
+                                                       on userRole.RoleId
+                                                       equals role.Id
+                                                       select role.Name).ToList()
+                 }).Select(
+                    p => new UserViewModel
+                    {
+                        UserId = p.UserId,
+                        Email = p.Email,
+                        FullName = p.FullName,
+                        Status = p.Status,
+                        UserName = p.UserName,
+                        PhoneNumber = p.PhoneNumber,
+                        Roles = p.RoleNames
+                    }
+                   ).ToListAsync();
 
-                //3. Paging
-                int totalRow = await query.CountAsync();
 
-                var data = await query.Skip((request.pageIndex - 1) * request.pageSize)
-                .Take(request.pageSize)
-                .Select(x => _mapper.Map<UserViewModel>(x)
-                ).ToListAsync();
-
-                //4. Select and projection
-                var pagedResult = new PagedResult<UserViewModel>()
-                {
-                    TotalRecords = totalRow,
-                    PageIndex = request.pageIndex,
-                    PageSize = request.pageSize,
-                    Items = data
-                };
-
-                return new ApiSuccessResult<PagedResult<UserViewModel>>("Loading List Users Successful!", pagedResult);
+                return new ApiSuccessResult<List<UserViewModel>>("Loading List Users Successful!", userList);
             }
             catch (FakeNewsException e)
             {
-                return new ApiErrorResult<PagedResult<UserViewModel>>("Error System: " + e.Message);
+                return new ApiErrorResult<List<UserViewModel>>("Error System: " + e.Message);
             }
         }
 

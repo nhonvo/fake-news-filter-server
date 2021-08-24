@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -49,7 +50,7 @@ namespace FakeNewsFilter.WebApp.Services
         }
 
         //Lấy danh sách người dùng (phân trang)
-        public async Task<ApiResult<PagedResult<UserViewModel>>> GetUsersPaging(GetUserPagingRequest request)
+        public async Task<ApiResult<List<UserViewModel>>> GetUsers()
         {
            
             var client = _httpClientFactory.CreateClient();
@@ -60,11 +61,11 @@ namespace FakeNewsFilter.WebApp.Services
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
 
-            var respone = await client.GetAsync($"/api/users/paging?pageIndex={request.pageIndex}&pageSize={request.pageSize}&keyWord={request.keyWord}");
+            var respone = await client.GetAsync($"/api/users/list");
 
             var body = await respone.Content.ReadAsStringAsync();
 
-            var users = JsonConvert.DeserializeObject<ApiSuccessResult<PagedResult<UserViewModel>>>(body);
+            var users = JsonConvert.DeserializeObject<ApiSuccessResult<List<UserViewModel>>>(body);
 
             return users;
         }
