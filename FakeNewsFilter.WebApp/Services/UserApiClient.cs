@@ -1,4 +1,5 @@
-﻿using FakeNewsFilter.ViewModel.Common;
+﻿using FakeNewsFilter.Utilities.Exceptions;
+using FakeNewsFilter.ViewModel.Common;
 using FakeNewsFilter.ViewModel.System.Users;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -30,65 +31,88 @@ namespace FakeNewsFilter.WebApp.Services
         //Đăng nhập 
         public async Task<ApiResult<string>> Authenticate(LoginRequest request)
         {
-            var json = JsonConvert.SerializeObject(request);
-
-            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
-
-
-            var client = _httpClientFactory.CreateClient();
-
-            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
-
-            var respone = await client.PostAsync("/api/Users/Authenticate", httpContent);
-
-            if(respone.IsSuccessStatusCode)
+            try
             {
-                return JsonConvert.DeserializeObject<ApiSuccessResult<string>>(await respone.Content.ReadAsStringAsync());
-            }
+                var json = JsonConvert.SerializeObject(request);
 
-            return JsonConvert.DeserializeObject<ApiErrorResult<string>>(await respone.Content.ReadAsStringAsync());
+                var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+
+                var client = _httpClientFactory.CreateClient();
+
+                client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+
+                var respone = await client.PostAsync("/api/Users/Authenticate", httpContent);
+
+                var content = await respone.Content.ReadAsStringAsync();
+
+                if (respone.IsSuccessStatusCode)
+                {
+                    return JsonConvert.DeserializeObject<ApiSuccessResult<string>>(content);
+                }
+
+                return JsonConvert.DeserializeObject<ApiErrorResult<string>>(content);
+            }
+            catch(FakeNewsException e)
+            {
+                return new ApiErrorResult<string>("Error System: " + e.Message);
+            }
+            
         }
 
         //Lấy danh sách người dùng (phân trang)
         public async Task<ApiResult<List<UserViewModel>>> GetUsers()
         {
-           
-            var client = _httpClientFactory.CreateClient();
+           try { 
+                var client = _httpClientFactory.CreateClient();
 
-            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+                client.BaseAddress = new Uri(_configuration["BaseAddress"]);
 
-            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+                var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
 
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
 
-            var respone = await client.GetAsync($"/api/users/list");
+                var respone = await client.GetAsync($"/api/users/list");
 
-            var body = await respone.Content.ReadAsStringAsync();
+                var body = await respone.Content.ReadAsStringAsync();
 
-            var users = JsonConvert.DeserializeObject<ApiSuccessResult<List<UserViewModel>>>(body);
+                var users = JsonConvert.DeserializeObject<ApiSuccessResult<List<UserViewModel>>>(body);
 
-            return users;
+                return users;
+            }
+            catch (FakeNewsException e)
+            {
+                return new ApiErrorResult<List<UserViewModel>>("Error System: " + e.Message);
+            }
         }
 
         //Tạo tài khoản mới
         public async Task<ApiResult<bool>> RegisterUser(RegisterRequest request)
         {
-            var json = JsonConvert.SerializeObject(request);
+            try
+            {
+                var json = JsonConvert.SerializeObject(request);
 
-            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+                var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var client = _httpClientFactory.CreateClient();
+                var client = _httpClientFactory.CreateClient();
 
-            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+                client.BaseAddress = new Uri(_configuration["BaseAddress"]);
 
-            var response = await client.PostAsync("/api/Users/Register", httpContent);
+                var response = await client.PostAsync("/api/Users/Register", httpContent);
 
-            var result = await response.Content.ReadAsStringAsync();
+                var result = await response.Content.ReadAsStringAsync();
 
-            if (response.IsSuccessStatusCode)
-                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);
+                if (response.IsSuccessStatusCode)
+                    return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);
 
-            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
+                return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
+            }
+            catch (FakeNewsException e)
+            {
+                return new ApiErrorResult<bool>("Error System: " + e.Message);
+            }
+
         }
 
         //Cập nhật tài khoản

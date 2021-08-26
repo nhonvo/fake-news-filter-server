@@ -7,15 +7,22 @@
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'FakeNewsFilter.WebApp' " />
   <ItemGroup>
     <Content Remove="wwwroot\" />
+    <Content Remove="wwwroot\src\js\admin\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\" />
     <Folder Include="Views\User\" />
     <Folder Include="Services\" />
     <Folder Include="Views\Login\" />
+    <Folder Include="Controllers\Components\" />
+    <Folder Include="Views\Shared\Components\" />
+    <Folder Include="wwwroot\src\js\admin\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FakeNewsFilter.ViewModel\FakeNewsFilter.ViewModel.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+    <ProjectReference Include="..\FakeNewsFilter.Utilities\FakeNewsFilter.Utilities.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
   </ItemGroup>
@@ -27,6 +34,8 @@
     <None Remove="Microsoft.AspNetCore.Session" />
     <None Remove="Microsoft.VisualStudio.Web.CodeGeneration.Design" />
     <None Remove="Views\Login\" />
+    <None Remove="Controllers\Components\" />
+    <None Remove="Views\Shared\Components\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.18" />

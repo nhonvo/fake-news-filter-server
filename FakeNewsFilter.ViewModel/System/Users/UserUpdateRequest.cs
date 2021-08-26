@@ -1,4 +1,6 @@
 ﻿using System;
+using Microsoft.AspNetCore.Http;
+
 namespace FakeNewsFilter.ViewModel.System.Users
 {
     public class UserUpdateRequest
@@ -12,5 +14,8 @@ namespace FakeNewsFilter.ViewModel.System.Users
         public string Email { get; set; }
 
         public string PhoneNumber { get; set; }
+
+        public IFormFile MediaFile { get; set; }
+
     }
 }

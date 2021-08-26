@@ -11,8 +11,6 @@ namespace FakeNewsFilter.Data.Entities
 
         public string PathMedia { get; set; }
 
-        public string Url { get; set; }
-
         public string Caption { get; set; }
 
         public int SortOrder { get; set; }
@@ -26,6 +24,8 @@ namespace FakeNewsFilter.Data.Entities
         public News News { get; set; }
        
         public TopicNews TopicNews { get; set; }
+
+        public User User { get; set; }
 
     }
 }

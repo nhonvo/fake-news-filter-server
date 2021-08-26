@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using FakeNewsFilter.AdminApp.Controllers;
 using FakeNewsFilter.AdminApp.Services;
 using FakeNewsFilter.ViewModel.Common;
 using FakeNewsFilter.ViewModel.System.Users;
 using FakeNewsFilter.WebApp.Services;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -32,6 +27,14 @@ namespace FakeNewsFilter.WebApp.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
+            if (TempData["result"] != null)
+            {
+                ViewBag.SuccessMsg = TempData["Result"];
+            }
+            if (TempData["Error"] != null)
+            {
+                ViewBag.Error = TempData["Error"];
+            }
             return View();
         }
 
@@ -39,11 +42,6 @@ namespace FakeNewsFilter.WebApp.Controllers
         public async Task<IActionResult> GetUsers()
         {
             var data = await _userApiClient.GetUsers();
-
-            if (TempData["result"] != null)
-            {
-                ViewBag.SuccessMsg = TempData["Result"];
-            }
 
             return Json(new
             {
@@ -70,9 +68,8 @@ namespace FakeNewsFilter.WebApp.Controllers
                 return RedirectToAction("Index");
             }
 
-            ModelState.AddModelError("", result.Message);
-
-            return RedirectToAction("Index", request);
+            TempData["Error"] = result.Message;
+            return RedirectToAction("Index");
         }
 
         [HttpGet]

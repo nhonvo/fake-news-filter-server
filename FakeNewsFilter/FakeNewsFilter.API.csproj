@@ -50,9 +50,11 @@
   <ItemGroup>
     <Content Remove="wwwroot\" />
     <Content Remove="wwwroot\images\" />
+    <Content Remove="wwwroot\images\avatars\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\" />
     <Folder Include="wwwroot\images\" />
+    <Folder Include="wwwroot\images\avatars\" />
   </ItemGroup>
 </Project>

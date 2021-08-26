@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,35 +42,57 @@ namespace FakeNewsFilter.AdminApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(LoginRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(ModelState);
-            }
+                if (!ModelState.IsValid)
+                {
+                    ViewBag.ModelState = ModelState;
+                    return View();
+                }
 
-            var result = await _userApiClient.Authenticate(request);
+                var result = await _userApiClient.Authenticate(request);
 
-            if(result.ResultObj == null)
-            {
-                ModelState.AddModelError("", result.Message);
-                return View();
-            }
+                if(result.ResultObj == null)
+                {
+                    ViewBag.Error = result.Message;
+                    return View();
+                }
 
+               
+                
             var userPrincipal = this.ValidateToken(result.ResultObj);
 
-            var authProperties = new AuthenticationProperties
+            // Gets list of claims.
+            IEnumerable<Claim> claim = userPrincipal.Claims;
+
+            var role = claim
+                .Where(x => x.Type == ClaimTypes.Role)
+                .FirstOrDefault();
+
+            if (role.Value.Contains("Admin"))
             {
-                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
-                IsPersistent = false
-            };
 
-            HttpContext.Session.SetString("Token", result.ResultObj);
+                var authProperties = new AuthenticationProperties
+                    {
+                        ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
+                        IsPersistent = false
+                    };
 
-            await HttpContext.SignInAsync(
-                        CookieAuthenticationDefaults.AuthenticationScheme,
-                        userPrincipal,
-                        authProperties);
+                    HttpContext.Session.SetString("Token", result.ResultObj);
 
-            return RedirectToAction("Index", "Home");
+                    await HttpContext.SignInAsync(
+                                CookieAuthenticationDefaults.AuthenticationScheme,
+                                userPrincipal,
+                                authProperties);
+
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ViewBag.Error = "You don't have role to access ";
+                    return View();
+                }
+
+            
+            
         }
 
         private ClaimsPrincipal ValidateToken(string jwtToken)
@@ -88,7 +112,6 @@ namespace FakeNewsFilter.AdminApp.Controllers
 
             return principal;
         }
-
 
         [HttpPost]
         public async Task<IActionResult> Logout()

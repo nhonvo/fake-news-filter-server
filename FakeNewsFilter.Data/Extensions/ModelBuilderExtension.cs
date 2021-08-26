@@ -104,14 +104,14 @@ namespace FakeNewsFilter.Data.Extensions
                 {
                     MediaId = 1,
                     Type = Enums.MediaType.Image,
-                    Url = "https://static01.nyt.com/images/2021/08/15/world/15afghanistan-kabul-airport/merlin_193320777_09900a3b-bd82-47c6-ad73-fddc1219018d-superJumbo.jpg?quality=90&auto=webp",
+                    PathMedia = "https://static01.nyt.com/images/2021/08/15/world/15afghanistan-kabul-airport/merlin_193320777_09900a3b-bd82-47c6-ad73-fddc1219018d-superJumbo.jpg?quality=90&auto=webp",
                     DateCreated = DateTime.Now,
                 },
                 new Media
                 {
                     MediaId = 2,
                     Type = Enums.MediaType.Image,
-                    Url = "https://media-cldnry.s-nbcnews.com/image/upload/t_fit-2000w,f_auto,q_auto:best/newscms/2021_30/3495573/210730-greg-abbott-ew-617p.jpg",
+                    PathMedia = "https://media-cldnry.s-nbcnews.com/image/upload/t_fit-2000w,f_auto,q_auto:best/newscms/2021_30/3495573/210730-greg-abbott-ew-617p.jpg",
                     DateCreated = DateTime.Now,
                 }
            );

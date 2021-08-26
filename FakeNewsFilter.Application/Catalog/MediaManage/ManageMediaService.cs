@@ -48,8 +48,6 @@ namespace FakeNewsFilter.Application.Catalog.MediaManager
                 media.FileSize = request.MediaFile.Length;
             }
 
-            media.Url = request.MediaLink;
-
             _context.Media.Update(media);
 
             return await _context.SaveChangesAsync();

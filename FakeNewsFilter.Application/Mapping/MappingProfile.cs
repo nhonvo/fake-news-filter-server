@@ -17,7 +17,6 @@ namespace FakeNewsFilter.Application.Mapping
                   .ForMember(d => d.PathMedia, o => o.MapFrom(s => s.PathMedia))
                    .ForMember(d => d.FileSize, o => o.MapFrom(s => s.FileSize))
                     .ForMember(d => d.Type, o => o.MapFrom(s => s.Type))
-                     .ForMember(d => d.Url, o => o.MapFrom(s => s.Url))
                       .ForMember(d => d.DateCreated, o => o.MapFrom(s => s.DateCreated));
 
             CreateMap<TopicNews, TopicNewsViewModel>()

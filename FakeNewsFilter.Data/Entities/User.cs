@@ -13,6 +13,10 @@ namespace FakeNewsFilter.Data.Entities
 
         public Status Status { get; set; }
 
+        public int? AvatarId { get; set; }
+
+        public Media Avatar { get; set; }
+
         public virtual ICollection<UserRoles> UserRoles { get; set; }
     }
 }

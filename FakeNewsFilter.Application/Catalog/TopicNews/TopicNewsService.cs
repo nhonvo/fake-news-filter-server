@@ -56,17 +56,6 @@ namespace FakeNewsFilter.Application.Catalog.TopicNews
                 Timestamp = DateTime.Now
             };
 
-            if (request.MediaLink != null)
-            {
-                topic.Media = new Media()
-                {
-                    Caption = "Thumbnail Image",
-                    DateCreated = DateTime.Now,
-                    Url = request.MediaLink,
-                    Type = request.Type,
-                    SortOrder = 1
-                };
-            };
             //Save Media
             if (request.ThumbnailMedia != null)
             {
@@ -113,26 +102,19 @@ namespace FakeNewsFilter.Application.Catalog.TopicNews
             topic.Description = request.Description;
             topic.Timestamp = DateTime.Now;
 
-            if (request.ThumbnailMedia != null || request.MediaLink != null)
+            if (request.ThumbnailMedia != null)
             {
                 var thumb = _context.Media.FirstOrDefault(i => i.MediaId == topic.MediaTopic);
-
-                thumb.FileSize = 0;
 
                 if (thumb.PathMedia != null)
                 {
                     await _storageService.DeleteFileAsync(thumb.PathMedia);
-                    thumb.PathMedia = null;
                 }
-
-                if (request.ThumbnailMedia != null)
-                {
-                    thumb.FileSize = request.ThumbnailMedia.Length;
-                    thumb.PathMedia = await SaveFile(request.ThumbnailMedia);
-                }
+                
+                thumb.FileSize = request.ThumbnailMedia.Length;
+                thumb.PathMedia = await SaveFile(request.ThumbnailMedia);
 
                 thumb.Type = request.Type;
-                thumb.Url = request.MediaLink;
 
                 _context.Media.Update(thumb);
             }

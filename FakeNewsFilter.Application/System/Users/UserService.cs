@@ -14,11 +14,19 @@ using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using FakeNewsFilter.Utilities.Exceptions;
 using System.Collections.Generic;
+using FakeNewsFilter.Data.EF;
+using FakeNewsFilter.Application.Common;
+using Microsoft.AspNetCore.Http;
+using System.Net.Http.Headers;
+using System.IO;
+using FakeNewsFilter.Data.Enums;
 
 namespace FakeNewsFilter.Application.System.Users
 {
     public class UserService : IUserService
     {
+        private readonly ApplicationDBContext _context;
+
         private readonly UserManager<User> _userManager;
 
         private readonly SignInManager<User> _signInManager;
@@ -29,16 +37,22 @@ namespace FakeNewsFilter.Application.System.Users
 
         private readonly RoleManager<Role> _roleManager;
 
+        private FileStorageService _storageService;
 
-        public UserService(UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration config, IMapper mapper, RoleManager<Role> roleManager)
+        
+        public UserService(ApplicationDBContext context, UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration config, IMapper mapper, RoleManager<Role> roleManager, FileStorageService storageService)
         {
+            _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
             _config = config;
             _mapper = mapper;
             _roleManager = roleManager;
+            _storageService = storageService;
+
+            _storageService.USER_CONTENT_FOLDER_NAME = "images/avatars";
         }
-        
+              
         //Đăng nhập
         public async Task<ApiResult<string>> Authencate(LoginRequest request)
         {
@@ -57,8 +71,11 @@ namespace FakeNewsFilter.Application.System.Users
 
                 var roles = await _userManager.GetRolesAsync(user);
 
+                var avatar = _context.Media.Where(m => m.MediaId == user.AvatarId).Select(m => m.PathMedia).FirstOrDefault();
+
                 var claims = new[]
                 {
+                    new Claim(ClaimTypes.Uri, avatar ?? "default.png"),
                     new Claim(ClaimTypes.Email,user.Email),
                     new Claim(ClaimTypes.GivenName,user.Name),
                     new Claim(ClaimTypes.Role, string.Join(";",roles)),
@@ -113,7 +130,7 @@ namespace FakeNewsFilter.Application.System.Users
                 {
                     await _userManager.AddToRoleAsync(user, "Subscriber");
 
-                    return new ApiSuccessResult<bool>("Register Successful.", true);
+                    return new ApiSuccessResult<bool>("Register Successful.", false);
                 }
                 return new ApiErrorResult<bool>("Register Unsuccessful.");
             }
@@ -140,6 +157,7 @@ namespace FakeNewsFilter.Application.System.Users
                                           Status = x.Status,
                                           UserName = x.UserName,
                                           PhoneNumber = x.PhoneNumber,
+                                          Avatar = _context.Media.Where(m => m.MediaId == x.AvatarId).Select(m => m.PathMedia).FirstOrDefault(),
                                           RoleNames = (from userRole in x.UserRoles 
                                                        join role in _roleManager.Roles 
                                                        on userRole.RoleId
@@ -154,6 +172,7 @@ namespace FakeNewsFilter.Application.System.Users
                         Status = p.Status,
                         UserName = p.UserName,
                         PhoneNumber = p.PhoneNumber,
+                        Avatar = p.Avatar,
                         Roles = p.RoleNames
                     }
                    ).ToListAsync();
@@ -168,25 +187,75 @@ namespace FakeNewsFilter.Application.System.Users
         }
 
         //Cập nhật người dùng
-        public async Task<ApiResult<bool>> Update(Guid UserId, UserUpdateRequest request)
+        public async Task<ApiResult<bool>> Update(UserUpdateRequest request)
         {
             try
             {
-                if (await _userManager.Users.AnyAsync(x => x.Email == request.Email && x.Id != UserId))
+                var user = await _userManager.FindByIdAsync(request.UserId.ToString());
+
+                //Tài khoản không tồn tại
+                if (user == null)
+                {
+                    return new ApiErrorResult<bool>("Account does not exist");
+                }
+
+                //Kiểm tra trùng Email
+                if (await _userManager.Users.AnyAsync(x => x.Email == request.Email && x.Id != request.UserId))
                 {
                     return new ApiErrorResult<bool>("Email is available!");
                 }
 
-                var user = await _userManager.FindByIdAsync(UserId.ToString());
-           
-                user.Email = request.Email;
-                user.Name = request.Name;
-                user.PhoneNumber = request.PhoneNumber;
+                user.Email = request.Email ?? user.Email;
+                user.Name = request.Name ?? user.Name;
+                user.PhoneNumber = request.PhoneNumber ?? user.PhoneNumber;
+
+                //Lưu Avatar vào Host
+                if (request.MediaFile != null)
+                {
+                    
+
+                    var thumb = _context.Media.FirstOrDefault(i => i.MediaId == user.AvatarId);
+
+                    //Thêm mới Avatar nếu Tài khoản chưa có
+                    if(thumb == null)
+                    {
+                        
+                        var avatar = new Media()
+                        {
+                            Caption = "Avatar User",
+                            DateCreated = DateTime.Now,
+                            FileSize = request.MediaFile.Length,
+                            PathMedia = await this.SaveFile(request.MediaFile),
+                            Type = MediaType.Image,
+                            SortOrder = 1
+                        };
+                        _context.Media.Add(avatar);
+
+                        await _context.SaveChangesAsync();
+
+                        user.Avatar = avatar;
+                        
+                    }
+                    else
+                    {
+                        //Cập nhật Avatar
+                        if (thumb.PathMedia != null)
+                        {
+                            await _storageService.DeleteFileAsync(thumb.PathMedia);
+                        }
+
+                        thumb.FileSize = request.MediaFile.Length;
+                        thumb.PathMedia = await SaveFile(request.MediaFile);
+
+                        _context.Media.Update(thumb);
+                    }
+                    
+                }
 
                 var result = await _userManager.UpdateAsync(user);
                 if (result.Succeeded)
                 {
-                    return new ApiSuccessResult<bool>();
+                    return new ApiSuccessResult<bool>("Update User Successful!", false);
                 }
                 return new ApiErrorResult<bool>("Update Unsuccessful.");
             }
@@ -212,9 +281,12 @@ namespace FakeNewsFilter.Application.System.Users
 
                 var roles = await _userManager.GetRolesAsync(user);
 
+                var avatar = _context.Media.Where(m => m.MediaId == user.AvatarId).Select(m => m.PathMedia).FirstOrDefault();
+
                 var userVm = _mapper.Map<UserViewModel>(user);
 
                 userVm.Roles = roles;
+                userVm.Avatar = avatar;
 
                 return new ApiSuccessResult<UserViewModel>("Get Info User Successful!",userVm);
             }
@@ -237,7 +309,7 @@ namespace FakeNewsFilter.Application.System.Users
                 }
                 var reult = await _userManager.DeleteAsync(user);
                 if (reult.Succeeded)
-                    return new ApiSuccessResult<bool>("Delete Successfull!",true);
+                    return new ApiSuccessResult<bool>("Delete Successfull!", false);
 
                 return new ApiErrorResult<bool>("Delete Unsuccessfull!");
             }
@@ -253,7 +325,7 @@ namespace FakeNewsFilter.Application.System.Users
             var user = await _userManager.FindByIdAsync(id.ToString());
             if (user == null)
             {
-                return new ApiErrorResult<bool>("Tài khoản không tồn tại");
+                return new ApiErrorResult<bool>("User does not exists!");
             }
 
             var removedRoles = request.Roles.Where(x => x.Selected == false).Select(x => x.Name).ToList();
@@ -277,7 +349,17 @@ namespace FakeNewsFilter.Application.System.Users
                 }
             }
 
-            return new ApiSuccessResult<bool>();
+            return new ApiSuccessResult<bool>("Role Assign Successful!", false);
+        }
+
+
+        //Lưu ảnh
+        private async Task<string> SaveFile(IFormFile file)
+        {
+            var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
+            await _storageService.SaveFileAsync(file.OpenReadStream(), fileName);
+            return fileName;
         }
     }
 }

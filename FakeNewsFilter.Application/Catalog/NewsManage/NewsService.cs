@@ -117,18 +117,6 @@ namespace FakeNewsFilter.Application.Catalog.NewsManage
             };
            
 
-            //If exists MediaLink
-            if (request.MediaLink != null)
-            {
-                news.Media = new Media()
-                {
-                    Caption = "Thumbnail Image",
-                    DateCreated = DateTime.Now,
-                    Url = request.MediaLink,
-                    Type = (Data.Enums.MediaType)request.Type,
-                };
-            };
-
             //Save Image on Host
             if (request.ThumbnailMedia != null)
             {
@@ -231,7 +219,6 @@ namespace FakeNewsFilter.Application.Catalog.NewsManage
                 }
 
                 thumb.Type = request.Type;
-                thumb.Url = request.MediaLink;
 
                 _context.Media.Update(thumb);
             }

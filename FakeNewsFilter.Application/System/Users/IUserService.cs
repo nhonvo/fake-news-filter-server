@@ -14,7 +14,7 @@ namespace FakeNewsFilter.Application.System.Users
 
         Task<ApiResult<List<UserViewModel>>> GetUsers();
 
-        Task<ApiResult<bool>> Update(Guid UserId, UserUpdateRequest request);
+        Task<ApiResult<bool>> Update(UserUpdateRequest request);
 
         Task<ApiResult<UserViewModel>> GetById(Guid id);
 

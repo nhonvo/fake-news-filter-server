@@ -7,18 +7,13 @@ namespace FakeNewsFilter.ViewModel.Common
 
         public ApiErrorResult()
         {
+
         }
 
         public ApiErrorResult(string message)
         {
             IsSuccessed = false;
             Message = message;
-        }
-
-        public ApiErrorResult(string[] validationErrors)
-        {
-            IsSuccessed = false;
-            ValidationErrors = validationErrors;
         }
     }
 }

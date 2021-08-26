@@ -35,8 +35,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 if (string.IsNullOrEmpty(resultToken.ResultObj))
                 {
-                    return BadRequest("Username and Password is incorrect.");
-
+                    return BadRequest(resultToken);
                 }
 
                 return Ok(resultToken);
@@ -55,14 +54,14 @@ namespace FakeNewsFilter.API.Controllers
 
             if (!result.IsSuccessed)
             {
-                return BadRequest(result.Message);
+                return BadRequest(result);
 
             }
             return Ok(result);
         }
 
        
-        [HttpGet("list")]
+        [HttpGet("List")]
         public async Task<IActionResult> GetAllPaging()
         {
             var users = await _userService.GetUsers();
@@ -78,13 +77,13 @@ namespace FakeNewsFilter.API.Controllers
         }
 
         //PUT: http://localhost/api/users/id
-        [HttpPut("{UserId}")]
-        public async Task<IActionResult> Update(Guid UserId, [FromBody] UserUpdateRequest request)
+        [HttpPut()]
+        public async Task<IActionResult> Update([FromForm] UserUpdateRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var result = await _userService.Update(UserId, request);
+            var result = await _userService.Update(request);
             if (!result.IsSuccessed)
             {
                 return BadRequest(result);

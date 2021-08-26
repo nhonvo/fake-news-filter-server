@@ -16,8 +16,6 @@ namespace FakeNewsFilter.ViewModel.Catalog.NewsManage
 
         public string SourceLink { get; set; }
 
-        public string MediaLink { get; set; }
-
         public MediaType? Type { get; set; }
 
         public IFormFile ThumbnailMedia { get; set;}
