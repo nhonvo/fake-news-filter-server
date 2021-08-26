@@ -31,3 +31,4 @@ Z:/FakeNewsFilter/FakeNewsFilter.Application/obj/Debug/netcoreapp3.1/FakeNewsFil
 /Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Application/obj/Debug/netcoreapp3.1/FakeNewsFilter.Application.csproj.CopyComplete
 /Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Application/obj/Debug/netcoreapp3.1/FakeNewsFilter.Application.dll
 /Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Application/obj/Debug/netcoreapp3.1/FakeNewsFilter.Application.pdb
+Z:/FakeNewsFilter/FakeNewsFilter.Application/obj/Debug/netcoreapp3.1/FakeNewsFilter.Application.GeneratedMSBuildEditorConfig.editorconfig

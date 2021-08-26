@@ -14,7 +14,7 @@
         "outputPath": "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Data/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/buiphukhuyen/.nuget/NuGet/NuGet.Config"
+          "/Users/buiphukhuyen/.config/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"

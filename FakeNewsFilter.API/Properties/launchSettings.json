@@ -1,24 +1,27 @@
-{
+﻿{
+  "$schema": "http://json.schemastore.org/launchsettings.json",
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:23008",
-      "sslPort": 44302
+      "applicationUrl": "http://localhost:36675",
+      "sslPort": 44354
     }
   },
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
+      "launchUrl": "weatherforecast",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "FakeNewsFilter.API": {
+    "FakeNewsFilter": {
       "commandName": "Project",
-      "launchBrowser": true,
-      "applicationUrl": "https://localhost:44771;http://localhost:60859",
+      "launchBrowser": false,
+      "launchUrl": "swagger",
+      "applicationUrl": "http://localhost:5001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
