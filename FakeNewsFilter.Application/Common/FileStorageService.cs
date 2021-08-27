@@ -7,7 +7,8 @@ namespace FakeNewsFilter.Application.Common
 {
     public class FileStorageService : IFileStorageService
     {
-        public string USER_CONTENT_FOLDER_NAME = "images";
+        public static string USER_CONTENT_FOLDER_NAME { get; set; } = "images";
+
         private readonly string _userContentFolder;
 
         public FileStorageService(IWebHostEnvironment webHostEnvironment)

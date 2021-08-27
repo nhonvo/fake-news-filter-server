@@ -15,6 +15,8 @@ namespace FakeNewsFilter.ViewModel.System.Users
 
         public string PhoneNumber { get; set; }
 
+        public string Avatar { get; set; }
+
         public IFormFile MediaFile { get; set; }
 
     }

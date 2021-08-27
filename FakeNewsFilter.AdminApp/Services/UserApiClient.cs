@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -116,7 +117,7 @@ namespace FakeNewsFilter.WebApp.Services
         }
 
         //Cập nhật tài khoản
-        public async Task<ApiResult<bool>> UpdateUser(Guid UserId, UserUpdateRequest request)
+        public async Task<ApiResult<bool>> UpdateUser(UserUpdateRequest request)
         {
             var client = _httpClientFactory.CreateClient();
 
@@ -126,12 +127,30 @@ namespace FakeNewsFilter.WebApp.Services
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
 
-            var json = JsonConvert.SerializeObject(request);
+            var requestContent = new MultipartFormDataContent();
 
-            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+            if (request.MediaFile != null)
+            {
+                byte[] data;
+                using (var br = new BinaryReader(request.MediaFile.OpenReadStream()))
+                {
+                    data = br.ReadBytes((int)request.MediaFile.OpenReadStream().Length);
+                }
+                ByteArrayContent bytes = new ByteArrayContent(data);
+                requestContent.Add(bytes, "MediaFile", request.MediaFile.FileName);
+            }
 
-            var response = await client.PutAsync($"/api/users/{UserId}", httpContent);
+            requestContent.Add(new StringContent(request.UserId.ToString()), "UserId");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.UserName) ? "" : request.UserName.ToString()), "UserName");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Name) ? "" : request.Name.ToString()), "Name");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Email) ? "" : request.Email.ToString()), "Email");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.PhoneNumber) ? "" : request.PhoneNumber.ToString()), "PhoneNumber");
+
+           
+            var response = await client.PutAsync($"/api/users/", requestContent);
+
             var result = await response.Content.ReadAsStringAsync();
+
             if (response.IsSuccessStatusCode)
 
                 return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);

@@ -7,26 +7,7 @@
 
 <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css">
 
-<div class="content-header-left col-md-9 col-12 mb-2">
-    <div class="row breadcrumbs-top">
-        <div class="col-12">
-            <h2 class="content-header-title float-start mb-0">List Users</h2>
-            <div class="breadcrumb-wrapper">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item">
-                        <a href="index.html">Home</a>
-                    </li>
-                    <li class="breadcrumb-item">
-                        <a href="#">User Manages</a>
-                    </li>
-                    <li class="breadcrumb-item active">
-                        List Users
-                    </li>
-                </ol>
-            </div>
-        </div>
-    </div>
-</div>
+           
 
 
 @if (ViewBag.SuccessMsg != null)
@@ -38,6 +19,7 @@
                 'Success', {
                     closeButton: true,
                     tapToDismiss: false,
+                    positionClass: "toast-bottom-left",
                     rtl: $('html').attr('data-textdirection') === 'rtl'
                 }
             );
@@ -55,6 +37,7 @@
                 'Error', {
                     closeButton: true,
                     tapToDismiss: false,
+                    positionClass: "toast-bottom-left",
                     rtl: $('html').attr('data-textdirection') === 'rtl'
                 }
             );
@@ -80,12 +63,24 @@
 }
 
 <div class="card">
+   
     <div id="DataTables_Table_0_wrapper" class=" card-body pb-50 dataTables_wrapper dt-bootstrap5 no-footer">
         <!-- Basic table -->
         <section id="basic-datatable">
             <div class="row">
                 <div class="col-12">
                     <div class="card">
+                        <h2 class="content-header-title float-start mb-0">List Users</h2>
+
+                        <!-- users filter start -->
+                        <div class="card">
+                            <h5 class="card-header">Search Filter</h5>
+                            <div class="d-flex justify-content-between align-items-center mx-50 row">
+                                <div class="col-md-6 user_role"></div>
+                                <div class="col-md-6 user_status"></div>
+                            </div>
+                        </div>
+
                         <table class="datatables-basic table" id="list_users">
                             <thead>
                                 <tr>
@@ -149,15 +144,15 @@
 
 @section scripts{
 
-    <script src="app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js"></script>
-    <script src="app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js"></script>
-    <script src="app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js"></script>
-    <script src="app-assets/vendors/js/tables/datatable/responsive.bootstrap4.js"></script>
-    <script src="app-assets/vendors/js/tables/datatable/responsive.bootstrap4.js"></script>
-    <script src="app-assets/vendors/js/tables/datatable/datatables.buttons.min.js"></script>
-    <script src="app-assets/vendors/js/tables/datatable/buttons.bootstrap5.min.js"></script>
-    <script src="app-assets/vendors/js/forms/validation/jquery.validate.min.js"></script>
+    <script src="/app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js"></script>
+    <script src="/app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js"></script>
+    <script src="/app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js"></script>
+    <script src="/app-assets/vendors/js/tables/datatable/responsive.bootstrap4.js"></script>
+    <script src="/app-assets/vendors/js/tables/datatable/responsive.bootstrap4.js"></script>
+    <script src="/app-assets/vendors/js/tables/datatable/datatables.buttons.min.js"></script>
+    <script src="/app-assets/vendors/js/tables/datatable/buttons.bootstrap5.min.js"></script>
+    <script src="/app-assets/vendors/js/forms/validation/jquery.validate.min.js"></script>
 
-    <script src="src/js/admin/user.js"></script>
+    <script src="/src/js/admin/user.js"></script>
 }
 

@@ -1,80 +1,110 @@
-﻿@model FakeNewsFilter.ViewModel.System.Users.UserUpdateRequest
+﻿@model FakeNewsFilter.ViewModel.System.Roles.UserRoleViewModel
 @{
     ViewData["Title"] = "Update User";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-    <div class="breadcrumb-title pe-3">Users Manager</div>
-    <div class="ps-3">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb mb-0 p-0">
-                <li class="breadcrumb-item">
-                    <a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+<section class="app-user-edit">
+    <div class="card">
+        <div class="card-body">
+            <ul class="nav nav-pills" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center active" id="information-tab" data-bs-toggle="tab" href="#information" aria-controls="account" role="tab" aria-selected="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><span class="d-none d-sm-block">Information</span>
+                    </a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">
-                    <a asp-action="Index" asp-controller="User">List User</a>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" id="role-tab" data-bs-toggle="tab" href="#role" aria-controls="role" role="tab" aria-selected="false">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-info"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg><span class="d-none d-sm-block">Roles</span>
+                    </a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
-            </ol>
-        </nav>
-    </div>
-</div>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" id="social-tab" data-bs-toggle="tab" href="#social" aria-controls="social" role="tab" aria-selected="false">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-share-2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg><span class="d-none d-sm-block">Social</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <!-- Account Tab starts -->
+                @{Html.RenderPartial("EditInfo", @Model.EditUser); }
+                <!-- Account Tab ends -->
+                <!-- Information Tab starts -->
+                @{Html.RenderPartial("EditRole", @Model.EditRole); }
+                <!-- Information Tab ends -->
+                <!-- Social Tab starts -->
+                <div class="tab-pane" id="social" aria-labelledby="social-tab" role="tabpanel">
+                    <!-- users edit social form start -->
+                    <form class="form-validate" novalidate="novalidate">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-6 mb-1">
+                                <label class="form-label" for="twitter-input">Twitter</label>
+                                <div class="input-group input-group-merge">
+                                    <span class="input-group-text" id="basic-addon3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter font-medium-2"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+                                    </span>
+                                    <input id="twitter-input" type="text" class="form-control" value="https://www.twitter.com/adoptionism744" placeholder="https://www.twitter.com/" aria-describedby="basic-addon3">
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 mb-1">
+                                <label class="form-label" for="facebook-input">Facebook</label>
+                                <div class="input-group input-group-merge">
+                                    <span class="input-group-text" id="basic-addon4">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-facebook font-medium-2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                                    </span>
+                                    <input id="facebook-input" type="text" class="form-control" value="https://www.facebook.com/adoptionism664" placeholder="https://www.facebook.com/" aria-describedby="basic-addon4">
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 mb-1">
+                                <label class="form-label" for="instagram-input">Instagram</label>
+                                <div class="input-group input-group-merge">
+                                    <span class="input-group-text" id="basic-addon5">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-instagram font-medium-2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                                    </span>
+                                    <input id="instagram-input" type="text" class="form-control" value="https://www.instagram.com/adopt-ionism744" placeholder="https://www.instagram.com/" aria-describedby="basic-addon5">
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 mb-1">
+                                <label class="form-label" for="github-input">Github</label>
+                                <div class="input-group input-group-merge">
+                                    <span class="input-group-text" id="basic-addon9">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github font-medium-2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                                    </span>
+                                    <input id="github-input" type="text" class="form-control" value="https://www.github.com/madop818" placeholder="https://www.github.com/" aria-describedby="basic-addon9">
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 mb-1">
+                                <label class="form-label" for="codepen-input">Codepen</label>
+                                <div class="input-group input-group-merge">
+                                    <span class="input-group-text" id="basic-addon12">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-codepen font-medium-2"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"></polygon><line x1="12" y1="22" x2="12" y2="15.5"></line><polyline points="22 8.5 12 15.5 2 8.5"></polyline><polyline points="2 15.5 12 8.5 22 15.5"></polyline><line x1="12" y1="2" x2="12" y2="8.5"></line></svg>
+                                    </span>
+                                    <input id="codepen-input" type="text" class="form-control" value="https://www.codepen.com/adoptism243" placeholder="https://www.codepen.com/" aria-describedby="basic-addon12">
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 mb-1">
+                                <label class="form-label" for="slack-input">Slack</label>
+                                <div class="input-group input-group-merge">
+                                    <span class="input-group-text" id="basic-addon11">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-slack font-medium-2"><path d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5z"></path><path d="M20.5 10H19V8.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"></path><path d="M9.5 14c.83 0 1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5S8 21.33 8 20.5v-5c0-.83.67-1.5 1.5-1.5z"></path><path d="M3.5 14H5v1.5c0 .83-.67 1.5-1.5 1.5S2 16.33 2 15.5 2.67 14 3.5 14z"></path><path d="M14 14.5c0-.83.67-1.5 1.5-1.5h5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-5c-.83 0-1.5-.67-1.5-1.5z"></path><path d="M15.5 19H14v1.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"></path><path d="M10 9.5C10 8.67 9.33 8 8.5 8h-5C2.67 8 2 8.67 2 9.5S2.67 11 3.5 11h5c.83 0 1.5-.67 1.5-1.5z"></path><path d="M8.5 5H10V3.5C10 2.67 9.33 2 8.5 2S7 2.67 7 3.5 7.67 5 8.5 5z"></path></svg>
+                                    </span>
+                                    <input id="slack-input" type="text" class="form-control" value="" placeholder="https://www.slack.com/" aria-describedby="basic-addon11">
+                                </div>
+                            </div>
 
-<ul>
-    @foreach (var error in ViewData.ModelState.SelectMany(x => x.Value.Errors))
-    {
-        <li style="list-style: none;">
-            <div class="alert  border-0 border-start border-5 border-danger alert-dismissible fade show">
-                <div>@error.ErrorMessage</div>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            <div class="col-12 d-flex flex-sm-row flex-column mt-2">
+                                <button type="submit" class="btn btn-primary mb-1 mb-sm-0 me-0 me-sm-1 waves-effect waves-float waves-light">Save Changes</button>
+                                <button type="reset" class="btn btn-outline-secondary waves-effect">Reset</button>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- users edit social form ends -->
+                </div>
+                <!-- Social Tab ends -->
             </div>
-        </li>
-    }
-</ul>
-
-<div class="card border-top border-0 border-4 border-success">
-    <div class="card-body p-5">
-        <div class="card-title d-flex align-items-center">
-            <div>
-                <i class="bx bxs-user me-1 font-22 text-success"></i>
-            </div>
-            <h5 class="mb-0 text-success">USER UPDATE</h5>
         </div>
-        <hr>
-        <form class="row g-3" asp-action="Edit" asp-controller="User" method="post">
-            <div class="col-md-6">
-                <input type="text" asp-for="UserId" class="form-control border-start-0" hidden>
-                <label for="inputLastName1" class="form-label">User Name</label>
-                <div class="input-group">
-                    <span class="input-group-text bg-transparent"><i class="bx bxs-user"></i></span>
-                    <input type="text" asp-for="UserName" class="form-control border-start-0" readonly>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <label for="inputLastName1" class="form-label">Full Name</label>
-                <div class="input-group">
-                    <span class="input-group-text bg-transparent"><i class="bx bxs-user"></i></span>
-                    <input type="text" asp-for="Name" class="form-control border-start-0" placeholder="Full Name" required>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <label for="inputPhoneNo" class="form-label">Phone No</label>
-                <div class="input-group">
-                    <span class="input-group-text bg-transparent"><i class="bx bxs-microphone"></i></span>
-                    <input type="text" class="form-control border-start-0" asp-for="PhoneNumber" placeholder="Phone No" required>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <label for="inputEmailAddress" class="form-label">Email Address</label>
-                <div class="input-group">
-                    <span class="input-group-text bg-transparent"><i class="bx bxs-message"></i></span>
-                    <input type="email" class="form-control border-start-0" asp-for="Email" placeholder="Email Address" required>
-                </div>
-            </div>
-            <div class="col-md-6 center">
-                <button type="submit" class="btn btn-success px-5">Update</button>
-            </div>
-        </form>
     </div>
-</div>
+</section>
+
+@section scripts{
+    <script src="/src/js/admin/edituser.js"></script>
+}

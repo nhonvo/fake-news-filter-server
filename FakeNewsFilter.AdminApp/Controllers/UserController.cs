@@ -3,15 +3,16 @@ using System.Threading.Tasks;
 using FakeNewsFilter.AdminApp.Controllers;
 using FakeNewsFilter.AdminApp.Services;
 using FakeNewsFilter.ViewModel.Common;
+using FakeNewsFilter.ViewModel.System.Roles;
 using FakeNewsFilter.ViewModel.System.Users;
 using FakeNewsFilter.WebApp.Services;
 using Microsoft.AspNetCore.Mvc;
+using SmartBreadcrumbs.Attributes;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace FakeNewsFilter.WebApp.Controllers
 {
-
     public class UserController : BaseController
     {
         private readonly IUserApiClient _userApiClient;
@@ -24,7 +25,7 @@ namespace FakeNewsFilter.WebApp.Controllers
             _roleApiClient = roleApiClient;
         }
 
-        // GET: /<controller>/
+        [Breadcrumb("User Manager")]
         public IActionResult Index()
         {
             if (TempData["result"] != null)
@@ -73,8 +74,11 @@ namespace FakeNewsFilter.WebApp.Controllers
         }
 
         [HttpGet]
+        [Breadcrumb("Edit User", FromController = typeof(UserController), FromPage = typeof(Index))]
         public async Task<IActionResult> Edit(Guid id)
         {
+            var model = new UserRoleViewModel();
+
             var result = await _userApiClient.GetById(id);
 
             if (result.IsSuccessed)
@@ -87,12 +91,21 @@ namespace FakeNewsFilter.WebApp.Controllers
                     Email = user.Email,
                     Name = user.FullName,
                     UserName = user.UserName,
-                    PhoneNumber = user.PhoneNumber
+                    PhoneNumber = user.PhoneNumber,
+                    Avatar = user.Avatar ?? "default.png"
                 };
 
-                return View(updateRequest);
+                var roleAssignRequest = await GetRoleAssignRequest(id);
+
+                model.EditUser = updateRequest;
+
+                model.EditRole = roleAssignRequest;
+
+                return View(model);
             }
-            return RedirectToAction("Error", "Home");
+
+            return View("Error", "Index");
+            
         }
 
         [HttpPost]
@@ -101,7 +114,7 @@ namespace FakeNewsFilter.WebApp.Controllers
             if (!ModelState.IsValid)
                 return View();
 
-            var result = await _userApiClient.UpdateUser(request.UserId, request);
+            var result = await _userApiClient.UpdateUser(request);
             if (result.IsSuccessed)
             {
                 TempData["result"] = $"Update User {request.UserName} successful!";

@@ -13,11 +13,10 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SmartBreadcrumbs.Extensions;
 
 namespace FakeNewsFilter.WebApp
 {
@@ -33,7 +32,16 @@ namespace FakeNewsFilter.WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-           
+            //Initialize Breadcrumb
+            services.AddBreadcrumbs(GetType().Assembly, options =>
+            {
+                options.TagName = "nav";
+                options.TagClasses = "";
+                options.OlClasses = "breadcrumb mb-0 p-0";
+                options.LiClasses = "breadcrumb-item";
+                options.ActiveLiClasses = "breadcrumb-item active";
+            });
+
             //HttpClient
             services.AddHttpClient();
             services.AddTransient<IUserApiClient, UserApiClient>();

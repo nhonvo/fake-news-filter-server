@@ -38,19 +38,19 @@ namespace FakeNewsFilter.Application.System.Users
         private readonly RoleManager<Role> _roleManager;
 
         private FileStorageService _storageService;
-
+        
         
         public UserService(ApplicationDBContext context, UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration config, IMapper mapper, RoleManager<Role> roleManager, FileStorageService storageService)
         {
+
             _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
             _config = config;
             _mapper = mapper;
             _roleManager = roleManager;
+            FileStorageService.USER_CONTENT_FOLDER_NAME= "images/avatars";
             _storageService = storageService;
-
-            _storageService.USER_CONTENT_FOLDER_NAME = "images/avatars";
         }
               
         //Đăng nhập

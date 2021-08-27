@@ -18,9 +18,7 @@ $(document).ready(function () {
             2: { title: 'Inactive', class: 'badge-light-secondary' }
         };
 
-    $("#list_users").DataTable({
-        processing: true,
-        searching: true,
+    $("#list_users").DataTable({        
         ajax: {
             url: "/User/GetUsers",
             type: "get",
@@ -30,29 +28,7 @@ $(document).ready(function () {
                 return JSON.stringify(data);
             }
         },
-        dom:
-            '<"d-flex justify-content-between align-items-center header-actions mx-1 row mt-75"' +
-            '<"col-sm-12 col-md-4 col-lg-6" l>' +
-            '<"col-sm-12 col-md-8 col-lg-6 ps-xl-75 ps-0"<"dt-action-buttons text-xl-end text-lg-start text-md-end text-start d-flex align-items-center justify-content-md-end align-items-center flex-sm-nowrap flex-wrap me-1"<"me-1"f>B>>' +
-            '>t' +
-            '<"d-flex justify-content-between mx-2 row mb-1"' +
-            '<"col-sm-12 col-md-6"i>' +
-            '<"col-sm-12 col-md-6"p>' +
-            '>',
-        // Buttons with Dropdown
-        buttons: [
-            {
-                text: 'Add New User',
-                className: 'add-new btn btn-primary mt-50',
-                attr: {
-                    'data-bs-toggle': 'modal',
-                    'data-bs-target': '#modals-slide-in'
-                },
-                init: function (api, node, config) {
-                    $(node).removeClass('btn-secondary');
-                }
-            }
-        ],
+       
         columns: [
             { "data": 'userId' },
             { "data": 'fullName' },
@@ -110,7 +86,6 @@ $(document).ready(function () {
                         '</div>' +
                         '<div class="d-flex flex-column">' +
                         '<a href="' +
-
                         '" class="user_name text-truncate"><span class="fw-bold">' +
                         $name +
                         '</span></a>' +
@@ -125,6 +100,7 @@ $(document).ready(function () {
             {
                 // User Role
                 targets: 3,
+                orderable: false,
                 render: function (data, type, full, meta) {
                     var $role = full['roles'];
                     var roleBadgeObj = {
@@ -136,7 +112,7 @@ $(document).ready(function () {
                     };
                     var list = '';
                     $.each($role, function (key, value) {
-                        list += "<span class='text-truncate align-middle'>" + roleBadgeObj[value] + value + '</span>';
+                        list += "<div> <span class='text-truncate align-middle'>" + roleBadgeObj[value] + value + '</span></div>';
                     });
                     return list;
                 }
@@ -144,6 +120,7 @@ $(document).ready(function () {
             {
                 // User Status
                 targets: 4,
+                orderable: false,
                 render: function (data, type, full, meta) {
                     var $status = full['status'];
                     return (
@@ -157,12 +134,13 @@ $(document).ready(function () {
             },
             {
                 // Actions
-                targets: 5,
+                targets: -1,
                 orderable: false,
                 render: function (data, type, full, meta) {
+                    var $userid = full['userId'];
                     return (
-                        '<div class="d-flex align-items-center col-actions">' +
-                        '<a class="me-1" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">' +
+                    '<div class="d-flex align-items-center col-actions">' +
+                        '<a class="me-1" href="/User/Edit/' + $userid+ ' "data - bs - toggle="tooltip" data - bs - placement="top" title = "Edit" > ' +
                         feather.icons['edit'].toSvg({ class: 'font-medium-1 text-warning' }) +
                         '</a>' +
                         '<a class="me-1" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">' +
@@ -176,14 +154,142 @@ $(document).ready(function () {
                     );
                 }
             }
+
         ],
+        dom:
+            '<"d-flex justify-content-between align-items-center header-actions mx-1 row mt-75"' +
+            '<"col-sm-12 col-md-4 col-lg-6" l>' +
+            '<"col-sm-12 col-md-8 col-lg-6 ps-xl-75 ps-0"<"dt-action-buttons text-xl-end text-lg-start text-md-end text-start d-flex align-items-center justify-content-md-end align-items-center flex-sm-nowrap flex-wrap me-1"<"me-1"f>B>>' +
+            '>t' +
+            '<"d-flex justify-content-between mx-2 row mb-1"' +
+            '<"col-sm-12 col-md-6"i>' +
+            '<"col-sm-12 col-md-6"p>' +
+            '>',
+        language: {
+            sLengthMenu: 'Show _MENU_',
+            search: 'Search',
+            searchPlaceholder: 'Search...'
+        },
+
+        // Buttons with Dropdown
+        buttons: [
+            {
+                text: 'Add New User',
+                className: 'add-new btn btn-primary mt-50',
+                attr: {
+                    'data-bs-toggle': 'modal',
+                    'data-bs-target': '#modals-slide-in'
+                },
+                init: function (api, node, config) {
+                    $(node).removeClass('btn-secondary');
+                }
+            }
+        ],
+        language: {
+            paginate: {
+                // remove previous & next text from pagination
+                previous: '&nbsp;',
+                next: '&nbsp;'
+            }
+        },
+        // For responsive popup
+        responsive: {
+            details: {
+                display: $.fn.dataTable.Responsive.display.modal({
+                    header: function (row) {
+                        var data = row.data();
+                        return 'Details of ' + data['full_name'];
+                    }
+                }),
+                type: 'column',
+                renderer: $.fn.dataTable.Responsive.renderer.tableAll({
+                    tableClass: 'table',
+                    columnDefs: [
+                        {
+                            targets: 2,
+                            visible: false
+                        },
+                        {
+                            targets: 3,
+                            visible: false
+                        }
+                    ]
+                })
+            }
+        },
         //Tooltip
         drawCallback: function () {
             $(document).find('[data-bs-toggle="tooltip"]').tooltip();
+        },
+        
+        initComplete: function () {
+            // Adding role filter once table initialized
+
+            this.api()
+                .columns(3)
+                .every(function () {
+                    var that = this;
+
+                    // Create the `select` element
+                    var select = $('<select id="UserRole" class="form-select text-capitalize mb-md-0 mb-2"><option value=""> Select Role </option></select>')
+                        .appendTo('.user_role')
+                        .on('change', function () {
+                            that
+                                .search($(this).val())
+                                .draw();
+                        });
+
+                    // Add data
+                    var newArray =
+                        this
+                            .data()
+                            .sort()
+                            .map(function (d) {
+                                return d.toString().toLowerCase().replace(/\b\w/g, function (l) { return l.toUpperCase() })
+                            })
+                            .unique()
+                            .each(function (d) {
+                                select.append('<option value="' + d + '" class="text-capitalize">' + d + '</option>');
+                            });
+
+                    // Restore state saved values
+                    var state = this.state.loaded();
+                    if (state) {
+                        var val = state.columns[this.index()];
+                        select.val(val.search.search);
+                    }
+                });
+            // Adding status filter once table initialized
+            this.api()
+                .columns(4)
+                .every(function () {
+                   
+                    var column = this;
+                    var select = $(
+                        '<select id="FilterTransaction" class="form-select text-capitalize mb-md-0 mb-2xx"><option value=""> Select Status </option></select>'
+                    )
+                        .appendTo('.user_status')
+                        .on('change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                            column.search(val ? '^' + val + '$' : '', true, false).draw();
+                        });
+
+                    column
+                        .data()
+                        .unique()
+                        .sort()
+                        .each(function (d, j) {
+                            select.append(
+                                '<option value="' +
+                                statusObj[d].title +
+                                '" class="text-capitalize">' +
+                                statusObj[d].title +
+                                '</option>'
+                            );
+                        });
+                   
+                });
         }
-
-
-    }
-    );
+    });
 });
 

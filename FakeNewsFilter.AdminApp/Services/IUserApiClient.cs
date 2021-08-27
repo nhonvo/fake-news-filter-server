@@ -14,7 +14,7 @@ namespace FakeNewsFilter.WebApp.Services
 
         Task<ApiResult<bool>> RegisterUser(RegisterRequest request);
 
-        Task<ApiResult<bool>> UpdateUser(Guid id, UserUpdateRequest request);
+        Task<ApiResult<bool>> UpdateUser(UserUpdateRequest request);
 
         Task<ApiResult<UserViewModel>> GetById(Guid id);
 
