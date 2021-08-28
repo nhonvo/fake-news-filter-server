@@ -19,7 +19,7 @@ namespace FakeNewsFilter.Data.Entities
 
         public List<Follow> Follows { get; set; }
 
-        public int? MediaTopic { get; set; }
+        public int? ThumbTopic { get; set; }
 
         public Media Media { get; set; }
         

@@ -26,10 +26,10 @@
             </ul>
             <div class="tab-content">
                 <!-- Account Tab starts -->
-                @{Html.RenderPartial("EditInfo", @Model.EditUser); }
+                <partial name="EditInfo" model="@Model.EditUser" />
                 <!-- Account Tab ends -->
                 <!-- Information Tab starts -->
-                @{Html.RenderPartial("EditRole", @Model.EditRole); }
+                <partial name="EditRole" model="@Model.EditRole" />
                 <!-- Information Tab ends -->
                 <!-- Social Tab starts -->
                 <div class="tab-pane" id="social" aria-labelledby="social-tab" role="tabpanel">

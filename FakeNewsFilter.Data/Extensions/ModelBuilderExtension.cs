@@ -123,7 +123,7 @@ namespace FakeNewsFilter.Data.Extensions
                     Name = "Kabul’s Sudden Fall to Taliban Ends U.S. Era in Afghanistan",
                     Description = "Taliban fighters poured into the Afghan capital on Sunday amid scenes of panic and chaos, bringing a swift and shocking close to the Afghan government and the 20-year American era in the country.",
                     SourceLink = "https://www.nytimes.com/2021/08/15/world/asia/afghanistan-taliban-kabul-surrender.html",
-                    MediaNews = 1,
+                    ThumbNews = 1,
                     Timestamp = DateTime.Now,
                 },
                 new News
@@ -132,7 +132,7 @@ namespace FakeNewsFilter.Data.Extensions
                     Name = "Texas high court blocks mask mandates in two of state's largest counties",
                     Description = "The masking orders in Dallas and Bexar counties were issued after a lower court ruled last week in favor of local officials.",
                     SourceLink = "https://www.nbcnews.com/news/us-news/texas-high-court-blocks-mask-mandates-two-state-s-largest-n1276884",
-                    MediaNews = 2,
+                    ThumbNews = 2,
                     Timestamp = DateTime.Now,
                 },
                 new News

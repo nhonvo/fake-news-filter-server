@@ -85,9 +85,6 @@ namespace FakeNewsFilter.Data.Migrations
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
-                    b.Property<string>("Url")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("MediaId");
 
                     b.ToTable("Media");
@@ -96,22 +93,22 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 1,
-                            DateCreated = new DateTime(2021, 8, 26, 11, 34, 59, 200, DateTimeKind.Local).AddTicks(9340),
+                            DateCreated = new DateTime(2021, 8, 28, 15, 17, 47, 243, DateTimeKind.Local).AddTicks(8890),
                             Duration = 0,
                             FileSize = 0L,
+                            PathMedia = "https://static01.nyt.com/images/2021/08/15/world/15afghanistan-kabul-airport/merlin_193320777_09900a3b-bd82-47c6-ad73-fddc1219018d-superJumbo.jpg?quality=90&auto=webp",
                             SortOrder = 0,
-                            Type = 1,
-                            Url = "https://static01.nyt.com/images/2021/08/15/world/15afghanistan-kabul-airport/merlin_193320777_09900a3b-bd82-47c6-ad73-fddc1219018d-superJumbo.jpg?quality=90&auto=webp"
+                            Type = 1
                         },
                         new
                         {
                             MediaId = 2,
-                            DateCreated = new DateTime(2021, 8, 26, 11, 34, 59, 219, DateTimeKind.Local).AddTicks(1740),
+                            DateCreated = new DateTime(2021, 8, 28, 15, 17, 47, 244, DateTimeKind.Local).AddTicks(960),
                             Duration = 0,
                             FileSize = 0L,
+                            PathMedia = "https://media-cldnry.s-nbcnews.com/image/upload/t_fit-2000w,f_auto,q_auto:best/newscms/2021_30/3495573/210730-greg-abbott-ew-617p.jpg",
                             SortOrder = 0,
-                            Type = 1,
-                            Url = "https://media-cldnry.s-nbcnews.com/image/upload/t_fit-2000w,f_auto,q_auto:best/newscms/2021_30/3495573/210730-greg-abbott-ew-617p.jpg"
+                            Type = 1
                         });
                 });
 
@@ -128,9 +125,6 @@ namespace FakeNewsFilter.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
-
-                    b.Property<int?>("MediaNews")
-                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -149,14 +143,17 @@ namespace FakeNewsFilter.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ThumbNews")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime2");
 
                     b.HasKey("NewsId");
 
-                    b.HasIndex("MediaNews")
+                    b.HasIndex("ThumbNews")
                         .IsUnique()
-                        .HasFilter("[MediaNews] IS NOT NULL");
+                        .HasFilter("[ThumbNews] IS NOT NULL");
 
                     b.ToTable("News");
 
@@ -165,21 +162,21 @@ namespace FakeNewsFilter.Data.Migrations
                         {
                             NewsId = 1,
                             Description = "Taliban fighters poured into the Afghan capital on Sunday amid scenes of panic and chaos, bringing a swift and shocking close to the Afghan government and the 20-year American era in the country.",
-                            MediaNews = 1,
                             Name = "Kabul’s Sudden Fall to Taliban Ends U.S. Era in Afghanistan",
                             SocialBeliefs = 0.0,
                             SourceLink = "https://www.nytimes.com/2021/08/15/world/asia/afghanistan-taliban-kabul-surrender.html",
-                            Timestamp = new DateTime(2021, 8, 26, 11, 34, 59, 219, DateTimeKind.Local).AddTicks(7020)
+                            ThumbNews = 1,
+                            Timestamp = new DateTime(2021, 8, 28, 15, 17, 47, 244, DateTimeKind.Local).AddTicks(4680)
                         },
                         new
                         {
                             NewsId = 2,
                             Description = "The masking orders in Dallas and Bexar counties were issued after a lower court ruled last week in favor of local officials.",
-                            MediaNews = 2,
                             Name = "Texas high court blocks mask mandates in two of state's largest counties",
                             SocialBeliefs = 0.0,
                             SourceLink = "https://www.nbcnews.com/news/us-news/texas-high-court-blocks-mask-mandates-two-state-s-largest-n1276884",
-                            Timestamp = new DateTime(2021, 8, 26, 11, 34, 59, 219, DateTimeKind.Local).AddTicks(9280)
+                            ThumbNews = 2,
+                            Timestamp = new DateTime(2021, 8, 28, 15, 17, 47, 244, DateTimeKind.Local).AddTicks(7070)
                         },
                         new
                         {
@@ -188,7 +185,7 @@ namespace FakeNewsFilter.Data.Migrations
                             Name = "Hospitalizations of Americans under 50 have reached new pandemic highs",
                             SocialBeliefs = 0.0,
                             SourceLink = "https://www.nytimes.com/live/2021/08/15/world/covid-delta-variant-vaccine/covid-hospitalizations-cdc",
-                            Timestamp = new DateTime(2021, 8, 26, 11, 34, 59, 219, DateTimeKind.Local).AddTicks(9850)
+                            Timestamp = new DateTime(2021, 8, 28, 15, 17, 47, 244, DateTimeKind.Local).AddTicks(7480)
                         });
                 });
 
@@ -200,6 +197,11 @@ namespace FakeNewsFilter.Data.Migrations
                     b.Property<int>("NewsId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("Timestamp")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2021, 8, 28, 15, 17, 47, 160, DateTimeKind.Local).AddTicks(210));
+
                     b.HasKey("TopicId", "NewsId");
 
                     b.HasIndex("NewsId");
@@ -210,17 +212,20 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             TopicId = 2,
-                            NewsId = 3
+                            NewsId = 3,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             TopicId = 2,
-                            NewsId = 2
+                            NewsId = 2,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             TopicId = 1,
-                            NewsId = 1
+                            NewsId = 1,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -247,14 +252,14 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             Id = new Guid("a3314be5-4c77-4fb6-82ad-302014682a73"),
-                            ConcurrencyStamp = "81f3b660-9280-453a-80d1-e2e3e60006ae",
+                            ConcurrencyStamp = "d710e2b9-abe4-46ab-966f-00fc59d4d5bf",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
                             Id = new Guid("b4314be5-4c77-4fb6-82ad-302014682b13"),
-                            ConcurrencyStamp = "9bf39f2a-1b2e-4835-ad14-61554dd730c3",
+                            ConcurrencyStamp = "9adff7ff-50aa-4537-9b20-1d08cab8be1e",
                             Name = "Subscriber",
                             NormalizedName = "Subscriber"
                         });
@@ -276,22 +281,22 @@ namespace FakeNewsFilter.Data.Migrations
                     b.Property<string>("Label")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("MediaTopic")
-                        .HasColumnType("int");
-
                     b.Property<string>("Tag")
                         .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
+
+                    b.Property<int?>("ThumbTopic")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime2");
 
                     b.HasKey("TopicId");
 
-                    b.HasIndex("MediaTopic")
+                    b.HasIndex("ThumbTopic")
                         .IsUnique()
-                        .HasFilter("[MediaTopic] IS NOT NULL");
+                        .HasFilter("[ThumbTopic] IS NOT NULL");
 
                     b.ToTable("TopicNews");
 
@@ -424,14 +429,14 @@ namespace FakeNewsFilter.Data.Migrations
                         {
                             Id = new Guid("69db714f-9576-45ba-b5b7-f00649be00de"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8d546014-fceb-4c43-a1e7-3bfb065b498f",
+                            ConcurrencyStamp = "acd2d4b2-bbfc-4331-a200-06179ec2b7be",
                             Email = "bp.khuyen@hutech.edu.vn",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Bui Phu Khuyen",
                             NormalizedEmail = "BP.KHUYEN@HUTECH.EDU.VN",
                             NormalizedUserName = "khuyenpb",
-                            PasswordHash = "AQAAAAEAACcQAAAAEL5DAk1KHs4ttggC49Rw2Bli93xR4ykegzTt/uiM/eKZtEwvY34HgwUa6jFtpj3HTA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEEPW5iJHf0tynL00TqC4gjHJ3Pyr05huWhdAbb8klwHYAJYImu2Ax/xLLohLCqKDjw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             Status = 0,
@@ -567,7 +572,7 @@ namespace FakeNewsFilter.Data.Migrations
                 {
                     b.HasOne("FakeNewsFilter.Data.Entities.Media", "Media")
                         .WithOne("News")
-                        .HasForeignKey("FakeNewsFilter.Data.Entities.News", "MediaNews");
+                        .HasForeignKey("FakeNewsFilter.Data.Entities.News", "ThumbNews");
 
                     b.Navigation("Media");
                 });
@@ -595,18 +600,18 @@ namespace FakeNewsFilter.Data.Migrations
                 {
                     b.HasOne("FakeNewsFilter.Data.Entities.Media", "Media")
                         .WithOne("TopicNews")
-                        .HasForeignKey("FakeNewsFilter.Data.Entities.TopicNews", "MediaTopic");
+                        .HasForeignKey("FakeNewsFilter.Data.Entities.TopicNews", "ThumbTopic");
 
                     b.Navigation("Media");
                 });
 
             modelBuilder.Entity("FakeNewsFilter.Data.Entities.User", b =>
                 {
-                    b.HasOne("FakeNewsFilter.Data.Entities.Media", "Media")
+                    b.HasOne("FakeNewsFilter.Data.Entities.Media", "Avatar")
                         .WithOne("User")
                         .HasForeignKey("FakeNewsFilter.Data.Entities.User", "AvatarId");
 
-                    b.Navigation("Media");
+                    b.Navigation("Avatar");
                 });
 
             modelBuilder.Entity("FakeNewsFilter.Data.Entities.UserRoles", b =>

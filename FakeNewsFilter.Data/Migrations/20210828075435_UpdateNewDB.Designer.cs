@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FakeNewsFilter.Data.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20210826043500_UpdateNewDBs")]
-    partial class UpdateNewDBs
+    [Migration("20210828075435_UpdateNewDB")]
+    partial class UpdateNewDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -87,9 +87,6 @@ namespace FakeNewsFilter.Data.Migrations
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
-                    b.Property<string>("Url")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("MediaId");
 
                     b.ToTable("Media");
@@ -98,22 +95,22 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 1,
-                            DateCreated = new DateTime(2021, 8, 26, 11, 34, 59, 200, DateTimeKind.Local).AddTicks(9340),
+                            DateCreated = new DateTime(2021, 8, 28, 14, 54, 34, 777, DateTimeKind.Local).AddTicks(5540),
                             Duration = 0,
                             FileSize = 0L,
+                            PathMedia = "https://static01.nyt.com/images/2021/08/15/world/15afghanistan-kabul-airport/merlin_193320777_09900a3b-bd82-47c6-ad73-fddc1219018d-superJumbo.jpg?quality=90&auto=webp",
                             SortOrder = 0,
-                            Type = 1,
-                            Url = "https://static01.nyt.com/images/2021/08/15/world/15afghanistan-kabul-airport/merlin_193320777_09900a3b-bd82-47c6-ad73-fddc1219018d-superJumbo.jpg?quality=90&auto=webp"
+                            Type = 1
                         },
                         new
                         {
                             MediaId = 2,
-                            DateCreated = new DateTime(2021, 8, 26, 11, 34, 59, 219, DateTimeKind.Local).AddTicks(1740),
+                            DateCreated = new DateTime(2021, 8, 28, 14, 54, 34, 777, DateTimeKind.Local).AddTicks(7960),
                             Duration = 0,
                             FileSize = 0L,
+                            PathMedia = "https://media-cldnry.s-nbcnews.com/image/upload/t_fit-2000w,f_auto,q_auto:best/newscms/2021_30/3495573/210730-greg-abbott-ew-617p.jpg",
                             SortOrder = 0,
-                            Type = 1,
-                            Url = "https://media-cldnry.s-nbcnews.com/image/upload/t_fit-2000w,f_auto,q_auto:best/newscms/2021_30/3495573/210730-greg-abbott-ew-617p.jpg"
+                            Type = 1
                         });
                 });
 
@@ -171,7 +168,7 @@ namespace FakeNewsFilter.Data.Migrations
                             Name = "Kabul’s Sudden Fall to Taliban Ends U.S. Era in Afghanistan",
                             SocialBeliefs = 0.0,
                             SourceLink = "https://www.nytimes.com/2021/08/15/world/asia/afghanistan-taliban-kabul-surrender.html",
-                            Timestamp = new DateTime(2021, 8, 26, 11, 34, 59, 219, DateTimeKind.Local).AddTicks(7020)
+                            Timestamp = new DateTime(2021, 8, 28, 14, 54, 34, 778, DateTimeKind.Local).AddTicks(2250)
                         },
                         new
                         {
@@ -181,7 +178,7 @@ namespace FakeNewsFilter.Data.Migrations
                             Name = "Texas high court blocks mask mandates in two of state's largest counties",
                             SocialBeliefs = 0.0,
                             SourceLink = "https://www.nbcnews.com/news/us-news/texas-high-court-blocks-mask-mandates-two-state-s-largest-n1276884",
-                            Timestamp = new DateTime(2021, 8, 26, 11, 34, 59, 219, DateTimeKind.Local).AddTicks(9280)
+                            Timestamp = new DateTime(2021, 8, 28, 14, 54, 34, 778, DateTimeKind.Local).AddTicks(4910)
                         },
                         new
                         {
@@ -190,7 +187,7 @@ namespace FakeNewsFilter.Data.Migrations
                             Name = "Hospitalizations of Americans under 50 have reached new pandemic highs",
                             SocialBeliefs = 0.0,
                             SourceLink = "https://www.nytimes.com/live/2021/08/15/world/covid-delta-variant-vaccine/covid-hospitalizations-cdc",
-                            Timestamp = new DateTime(2021, 8, 26, 11, 34, 59, 219, DateTimeKind.Local).AddTicks(9850)
+                            Timestamp = new DateTime(2021, 8, 28, 14, 54, 34, 778, DateTimeKind.Local).AddTicks(5250)
                         });
                 });
 
@@ -202,6 +199,11 @@ namespace FakeNewsFilter.Data.Migrations
                     b.Property<int>("NewsId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("Timestamp")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2021, 8, 28, 14, 54, 34, 679, DateTimeKind.Local).AddTicks(2500));
+
                     b.HasKey("TopicId", "NewsId");
 
                     b.HasIndex("NewsId");
@@ -212,17 +214,20 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             TopicId = 2,
-                            NewsId = 3
+                            NewsId = 3,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             TopicId = 2,
-                            NewsId = 2
+                            NewsId = 2,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             TopicId = 1,
-                            NewsId = 1
+                            NewsId = 1,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -249,14 +254,14 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             Id = new Guid("a3314be5-4c77-4fb6-82ad-302014682a73"),
-                            ConcurrencyStamp = "81f3b660-9280-453a-80d1-e2e3e60006ae",
+                            ConcurrencyStamp = "d4885485-b7ab-4319-b891-e2c50899e71c",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
                             Id = new Guid("b4314be5-4c77-4fb6-82ad-302014682b13"),
-                            ConcurrencyStamp = "9bf39f2a-1b2e-4835-ad14-61554dd730c3",
+                            ConcurrencyStamp = "4b04756f-9d51-4c58-810c-3c5081b36ecc",
                             Name = "Subscriber",
                             NormalizedName = "Subscriber"
                         });
@@ -426,14 +431,14 @@ namespace FakeNewsFilter.Data.Migrations
                         {
                             Id = new Guid("69db714f-9576-45ba-b5b7-f00649be00de"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8d546014-fceb-4c43-a1e7-3bfb065b498f",
+                            ConcurrencyStamp = "49883870-1dfe-4718-9087-94f5bc73c397",
                             Email = "bp.khuyen@hutech.edu.vn",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Bui Phu Khuyen",
                             NormalizedEmail = "BP.KHUYEN@HUTECH.EDU.VN",
                             NormalizedUserName = "khuyenpb",
-                            PasswordHash = "AQAAAAEAACcQAAAAEL5DAk1KHs4ttggC49Rw2Bli93xR4ykegzTt/uiM/eKZtEwvY34HgwUa6jFtpj3HTA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAENB9uXuTTMJ5n1LBZ7Cy5wdUNvgiENY+CgFOEItmh2SfgqC5ZcbAW139vTRis3GL/w==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             Status = 0,
@@ -604,11 +609,11 @@ namespace FakeNewsFilter.Data.Migrations
 
             modelBuilder.Entity("FakeNewsFilter.Data.Entities.User", b =>
                 {
-                    b.HasOne("FakeNewsFilter.Data.Entities.Media", "Media")
+                    b.HasOne("FakeNewsFilter.Data.Entities.Media", "Avatar")
                         .WithOne("User")
                         .HasForeignKey("FakeNewsFilter.Data.Entities.User", "AvatarId");
 
-                    b.Navigation("Media");
+                    b.Navigation("Avatar");
                 });
 
             modelBuilder.Entity("FakeNewsFilter.Data.Entities.UserRoles", b =>

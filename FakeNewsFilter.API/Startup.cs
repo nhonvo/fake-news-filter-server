@@ -47,14 +47,16 @@ namespace FakeNewsFilter
                 .AddDefaultTokenProviders();
 
             //Declare DI
-            services.AddTransient<NewsService, NewsService>();
-            services.AddTransient<FileStorageService, FileStorageService>();
-            services.AddTransient<ITopicNewsService, TopicNewsService>();
+            services.AddTransient<FileStorageService>();
+            services.AddTransient<TopicService>();
+            services.AddTransient<NewsService>();
             services.AddTransient<UserManager<User>, UserManager<User>>();
             services.AddTransient<SignInManager<User>, SignInManager<User>>();
             services.AddTransient<RoleManager<Role>, RoleManager<Role>>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IRoleService, RoleService>();
+
+
 
             //Fluent Validation   
             services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
@@ -135,6 +137,7 @@ namespace FakeNewsFilter
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseAuthentication();

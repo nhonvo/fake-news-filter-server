@@ -9,13 +9,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace FakeNewsFilter.API.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
     [Authorize]
-    public class TopicController : Controller
+    public class TopicController : ControllerBase
     {
-        private readonly TopicNewsService _topicNewsService;
+        private readonly TopicService _topicNewsService;
 
-        public TopicController(TopicNewsService topicNewsService)
+        public TopicController(TopicService topicNewsService)
         {
             _topicNewsService = topicNewsService;
         }
@@ -26,12 +25,12 @@ namespace FakeNewsFilter.API.Controllers
         {
             var result = await _topicNewsService.Create(request);
 
-            if (result == 0)
+            if (result.IsSuccessed == false)
             {
-                return BadRequest();
+                return BadRequest(result);
             }
 
-            return Ok();
+            return Ok(result);
         }
 
         [HttpDelete("{topicId}")]
@@ -39,11 +38,11 @@ namespace FakeNewsFilter.API.Controllers
         {
             var result = await _topicNewsService.Delete(topicId);
 
-            if (result == 0)
+            if (result.IsSuccessed == false)
             {
-                return BadRequest("Cannot delete this topic");
+                return BadRequest(result);
             }
-            return Ok("Deleted successfully");
+            return Ok(result);
         }
 
         // GET: api/topic
@@ -53,6 +52,10 @@ namespace FakeNewsFilter.API.Controllers
         {
             var topics = await _topicNewsService.GetTopicHotNews();
 
+            if(topics.IsSuccessed == false)
+            {
+                return BadRequest(topics);
+            }
             return Ok(topics);
         }
 
@@ -66,11 +69,11 @@ namespace FakeNewsFilter.API.Controllers
 
             var result = await _topicNewsService.Update(request);
 
-            if (result == 0)
+            if (result.IsSuccessed == false)
             {
-                return BadRequest("Cannot update this topic");
+                return BadRequest(result);
             }
-            return Ok("Updated successfully");
+            return Ok(result);
         }
     }
 }

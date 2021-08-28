@@ -19,9 +19,9 @@ namespace FakeNewsFilter.Data.Configurations
 
             builder.Property(x => x.DateCreated);
 
-            builder.HasOne(x => x.News).WithOne(x => x.Media).HasForeignKey<News>(x => x.MediaNews);
+            builder.HasOne(x => x.News).WithOne(x => x.Media).HasForeignKey<News>(x => x.ThumbNews);
 
-            builder.HasOne(x => x.TopicNews).WithOne(x => x.Media).HasForeignKey<TopicNews>(x => x.MediaTopic);
+            builder.HasOne(x => x.TopicNews).WithOne(x => x.Media).HasForeignKey<TopicNews>(x => x.ThumbTopic);
 
             builder.HasOne(x => x.User).WithOne(x => x.Avatar).HasForeignKey<User>(x => x.AvatarId);
         }

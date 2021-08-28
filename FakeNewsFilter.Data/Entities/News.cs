@@ -19,7 +19,7 @@ namespace FakeNewsFilter.Data.Entities
 
         public DateTime Timestamp { get; set; }
 
-        public int? MediaNews { get; set; }
+        public int? ThumbNews { get; set; }
 
         public Media Media { get; set; }
 

@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 namespace FakeNewsFilter.API.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
     [Authorize]
     public class NewsController : ControllerBase
     {

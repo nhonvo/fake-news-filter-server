@@ -213,7 +213,6 @@ namespace FakeNewsFilter.Application.System.Users
                 if (request.MediaFile != null)
                 {
                     
-
                     var thumb = _context.Media.FirstOrDefault(i => i.MediaId == user.AvatarId);
 
                     //Thêm mới Avatar nếu Tài khoản chưa có

@@ -171,7 +171,7 @@ namespace FakeNewsFilter.Application.Catalog.NewsManage
             {
                 var topic = _context.NewsInTopics.Where(x => x.NewsId == newsId).FirstOrDefault();
                 var labeltopic = _context.TopicNews.Find(topic.TopicId);
-                var media = _context.Media.Where(x => x.MediaId == news.MediaNews).FirstOrDefault();
+                var media = _context.Media.Where(x => x.MediaId == news.ThumbNews).FirstOrDefault();
 
                 result = new NewsViewModel()
                 {
@@ -203,7 +203,7 @@ namespace FakeNewsFilter.Application.Catalog.NewsManage
             //Save Image
             if (request.ThumbnailMedia != null || request.MediaLink != null)
             {
-                var thumb = _context.Media.FirstOrDefault(i => i.MediaId == news_update.MediaNews);
+                var thumb = _context.Media.FirstOrDefault(i => i.MediaId == news_update.ThumbNews);
 
                 thumb.FileSize = 0;
 

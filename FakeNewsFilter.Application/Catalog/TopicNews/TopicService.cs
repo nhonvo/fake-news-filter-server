@@ -8,45 +8,56 @@ using AutoMapper;
 using FakeNewsFilter.Application.Common;
 using FakeNewsFilter.Data.EF;
 using FakeNewsFilter.Data.Entities;
+using FakeNewsFilter.Data.Enums;
 using FakeNewsFilter.Utilities.Exceptions;
 using FakeNewsFilter.ViewModel.Catalog.TopicNews;
+using FakeNewsFilter.ViewModel.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace FakeNewsFilter.Application.Catalog.TopicNews
 {
-    public class TopicNewsService : ITopicNewsService
+    public class TopicService : ITopicService
     {
         private readonly ApplicationDBContext _context;
 
-        private readonly IMapper _mapper;
         private FileStorageService _storageService;
 
-        public TopicNewsService(ApplicationDBContext context, FileStorageService storageService, IMapper mapper)
+        public TopicService(ApplicationDBContext context, FileStorageService storageService)
         {
             _context = context;
             _storageService = storageService;
-            _mapper = mapper;
         }
 
         //Get 10 Topic News Hot
-        public async Task<List<TopicNewsViewModel>> GetTopicHotNews()
+        public async Task<ApiResult<List<TopicInfoVM>>> GetTopicHotNews()
         {
-            var query = _context.TopicNews.Select(x => x).Take(10);
 
-            var topics = await query.Select(x => new TopicNewsViewModel()
+            var query = from t in _context.TopicNews
+                        select new
+                        {
+                            topic = t,
+                            newscount = _context.NewsInTopics.Where(n => n.TopicId == t.TopicId).Count(),
+                            thumb = _context.Media.Where(m => m.MediaId == t.ThumbTopic).Select(m => m.PathMedia).FirstOrDefault(),
+                            synctime = _context.NewsInTopics.Where(n => n.TopicId == t.TopicId).Max(n=>n.Timestamp)
+                        };
+
+            var topics = await query.Select(x => new TopicInfoVM()
             {
-                TopicId = x.TopicId,
-                Label = x.Label,
-                Tag = x.Tag,
-                Description = x.Description,
+                TopicId = x.topic.TopicId,
+                Label = x.topic.Label,
+                Tag = x.topic.Tag,
+                Description = x.topic.Description,
+                NONews = x.newscount,
+                ThumbImage = x.thumb,
+                RealTime = x.synctime,
             }).ToListAsync();
 
-            return topics;
+            return new ApiSuccessResult<List<TopicInfoVM>>("Get 10 Topic News Hot Successful!",topics) ;
         }
 
         //Create Topic News
-        public async Task<int> Create(TopicNewsCreateRequest request)
+        public async Task<ApiResult<bool>> Create(TopicNewsCreateRequest request)
         {
             var topic = new Data.Entities.TopicNews()
             {
@@ -61,21 +72,30 @@ namespace FakeNewsFilter.Application.Catalog.TopicNews
             {
                 topic.Media = new Media()
                 {
-                    Caption = "Thumbnail Image",
+                    Caption = "Thumbnail Topic",
                     DateCreated = DateTime.Now,
                     FileSize = request.ThumbnailMedia.Length,
                     PathMedia = await this.SaveFile(request.ThumbnailMedia),
-                    Type = request.Type,
+                    Type = MediaType.Image,
                     SortOrder = 1
                 };
             }
 
             _context.TopicNews.Add(topic);
 
-            return await _context.SaveChangesAsync();
+            var result = await _context.SaveChangesAsync();
+
+            if (result > 0)
+            {
+                return new ApiSuccessResult<bool>("Create Topic Successful!", false);
+            }
+
+            return new ApiErrorResult<bool>("Create Unsuccessful.");
+
+            
         }
 
-        public async Task<int> Delete(int TopicId)
+        public async Task<ApiResult<bool>> Delete(int TopicId)
         {
             var topic = await _context.TopicNews.FindAsync(TopicId);
 
@@ -88,10 +108,17 @@ namespace FakeNewsFilter.Application.Catalog.TopicNews
 
             _context.TopicNews.Remove(topic);
 
-            return await _context.SaveChangesAsync();
+            var result = await _context.SaveChangesAsync();
+
+            if (result > 0)
+            {
+                return new ApiSuccessResult<bool>("Delete Topic Successful!", false);
+            }
+
+            return new ApiErrorResult<bool>("Delete Unsuccessful.");
         }
 
-        public async Task<int> Update(TopicNewsUpdateRequest request)
+        public async Task<ApiResult<bool>> Update(TopicNewsUpdateRequest request)
         {
             var topic = await _context.TopicNews.FindAsync(request.TopicId);
 
@@ -104,7 +131,7 @@ namespace FakeNewsFilter.Application.Catalog.TopicNews
 
             if (request.ThumbnailMedia != null)
             {
-                var thumb = _context.Media.FirstOrDefault(i => i.MediaId == topic.MediaTopic);
+                var thumb = _context.Media.FirstOrDefault(i => i.MediaId == topic.ThumbTopic);
 
                 if (thumb.PathMedia != null)
                 {
@@ -119,7 +146,14 @@ namespace FakeNewsFilter.Application.Catalog.TopicNews
                 _context.Media.Update(thumb);
             }
 
-            return await _context.SaveChangesAsync();
+            var result = await _context.SaveChangesAsync();
+
+            if (result > 0)
+            {
+                return new ApiSuccessResult<bool>("Update Topic Successful!", false);
+            }
+
+            return new ApiErrorResult<bool>("Update Unsuccessful.");
         }
 
         private async Task<string> SaveFile(IFormFile file)
