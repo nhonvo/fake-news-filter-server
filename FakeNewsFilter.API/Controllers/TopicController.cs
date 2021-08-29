@@ -12,18 +12,18 @@ namespace FakeNewsFilter.API.Controllers
     [Authorize]
     public class TopicController : ControllerBase
     {
-        private readonly TopicService _topicNewsService;
+        private readonly TopicService _topicService;
 
-        public TopicController(TopicService topicNewsService)
+        public TopicController(TopicService topicService)
         {
-            _topicNewsService = topicNewsService;
+            _topicService = topicService;
         }
 
         // POST api/values
         [HttpPost]
         public async Task<IActionResult> Create([FromForm] TopicNewsCreateRequest request)
         {
-            var result = await _topicNewsService.Create(request);
+            var result = await _topicService.Create(request);
 
             if (result.IsSuccessed == false)
             {
@@ -36,7 +36,7 @@ namespace FakeNewsFilter.API.Controllers
         [HttpDelete("{topicId}")]
         public async Task<IActionResult> Delete(int topicId)
         {
-            var result = await _topicNewsService.Delete(topicId);
+            var result = await _topicService.Delete(topicId);
 
             if (result.IsSuccessed == false)
             {
@@ -46,11 +46,11 @@ namespace FakeNewsFilter.API.Controllers
         }
 
         // GET: api/topic
-        [HttpGet]
+        [HttpGet("List")]
         [AllowAnonymous]
         public async Task<IActionResult> Get()
         {
-            var topics = await _topicNewsService.GetTopicHotNews();
+            var topics = await _topicService.GetTopicHotNews();
 
             if(topics.IsSuccessed == false)
             {
@@ -67,7 +67,7 @@ namespace FakeNewsFilter.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var result = await _topicNewsService.Update(request);
+            var result = await _topicService.Update(request);
 
             if (result.IsSuccessed == false)
             {

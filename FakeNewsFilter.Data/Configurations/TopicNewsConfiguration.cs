@@ -1,5 +1,6 @@
 ﻿using System;
 using FakeNewsFilter.Data.Entities;
+using FakeNewsFilter.Data.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -18,6 +19,8 @@ namespace FakeNewsFilter.Data.Configurations
             builder.Property(x => x.Tag).IsRequired().HasMaxLength(15);
 
             builder.Property(x => x.Description).IsRequired();
+
+            builder.Property(x => x.Status).HasDefaultValue(Status.Active);
 
             builder.Property(x => x.Timestamp);
         }

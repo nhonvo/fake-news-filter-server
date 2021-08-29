@@ -298,7 +298,7 @@ namespace FakeNewsFilter.Application.System.Users
         }
 
         //Xoá người dùng
-        public async Task<ApiResult<bool>> Delete(String UserId)
+        public async Task<ApiResult<bool>> Delete(string UserId)
         {
             try {
                 var user = await _userManager.FindByIdAsync(UserId);

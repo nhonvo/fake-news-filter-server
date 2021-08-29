@@ -1,4 +1,6 @@
 ﻿using System;
+using FakeNewsFilter.Data.Enums;
+
 namespace FakeNewsFilter.ViewModel.Catalog.TopicNews
 {
     public class TopicInfoVM
@@ -12,6 +14,8 @@ namespace FakeNewsFilter.ViewModel.Catalog.TopicNews
         public string Description { get; set; }
 
         public string ThumbImage { get; set; }
+
+        public Status Status { get; set; }
 
         public int NONews { get; set; }
 

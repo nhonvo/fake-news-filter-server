@@ -1,26 +1,24 @@
 ﻿/*=========================================================================================
-  File Name: user.js
-  Description: User Manage JS
+  File Name: topic.js
+  Description: Topic Manage JS
   ----------------------------------------------------------------------------------------
   Item Name: Fake News Filter - Admin
   Author: Bui Phu Khuyen
   Author URL: fb.com/buiphukhuyen
 ==========================================================================================*/
 
-//Load Datatable List Users
+//Load Datatable List Topic
 $(document).ready(function () {
-    var dtUserTable = $('.user-list-table'),
-        newUserSidebar = $('.new-user-modal'),
-        newUserForm = $('.add-new-user'),
+    var 
         statusObj = {
             0: { title: 'Pending', class: 'badge-light-warning' },
             1: { title: 'Active', class: 'badge-light-success' },
             2: { title: 'Inactive', class: 'badge-light-secondary' }
         };
 
-    $("#list_users").DataTable({        
+    $("#list_topic").DataTable({
         ajax: {
-            url: "/User/GetUsers",
+            url: "/Topic/GetTopics",
             type: "get",
             contentType: "application/json",
             dataType: "json",
@@ -28,12 +26,13 @@ $(document).ready(function () {
                 return JSON.stringify(data);
             }
         },
-       
+
         columns: [
-            { "data": 'userId' },
-            { "data": 'fullName' },
-            { "data": 'email' },
-            { "data": 'roles' },
+            { "data": 'topicId' },
+            { "data": 'label' },
+            { "data": 'description' },
+            { "data": 'noNews' },
+            { "data": 'realTime' },
             { "data": 'status' },
             { "data": ''}
         ],
@@ -51,20 +50,20 @@ $(document).ready(function () {
                 targets: 1,
                 responsivePriority: 4,
                 render: function (data, type, full, meta) {
-                    var $name = full['fullName'],
-                        $uname = full['userName'],
-                        $image = full['avatar'],
+                    var $name = full['tag'],
+                        $uname = full['label'],
+                        $image = full['thumbImage'],
                         $assetPath = "http://localhost:5001/";
                     if ($image) {
                         // For Avatar image
                         var $output =
-                            '<img src="' + $assetPath + 'images/avatars/' + $image + '" alt="Avatar" height="32" width="32">';
+                            '<img src="' + $assetPath + 'images/topics/' + $image + '" alt="Avatar" height="32" width="32">';
                     } else {
                         // For Avatar badge
                         var stateNum = Math.floor(Math.random() * 6) + 1;
                         var states = ['success', 'danger', 'warning', 'info', 'dark', 'primary', 'secondary'];
                         var $state = states[stateNum],
-                            $name = full['fullName'],
+                            $name = full['tag'],
                             $initials = $name.match(/\b\w/g) || [];
                         $initials = (($initials.shift() || '') + ($initials.pop() || '')).toUpperCase();
                         $output = '<span class="avatar-content">' + $initials + '</span>';
@@ -85,7 +84,7 @@ $(document).ready(function () {
                         '" class="user_name text-truncate"><span class="fw-bold">' +
                         $name +
                         '</span></a>' +
-                        '<small class="emp_post text-muted">&#x00040;' +
+                        '<small class="emp_post text-muted">#' +
                         $uname +
                         '</small>' +
                         '</div>' +
@@ -94,28 +93,19 @@ $(document).ready(function () {
                 }
             },
             {
-                // User Role
-                targets: 3,
-                orderable: false,
+                targets: 2,
+                orderable: false
+            },
+            {
+                targets: 4,
                 render: function (data, type, full, meta) {
-                    var $role = full['roles'];
-                    var roleBadgeObj = {
-                        Subscriber: feather.icons['user'].toSvg({ class: 'font-medium-3 text-primary me-50' }),
-                        Author: feather.icons['settings'].toSvg({ class: 'font-medium-3 text-warning me-50' }),
-                        Maintainer: feather.icons['database'].toSvg({ class: 'font-medium-3 text-success me-50' }),
-                        Editor: feather.icons['edit-2'].toSvg({ class: 'font-medium-3 text-info me-50' }),
-                        Admin: feather.icons['slack'].toSvg({ class: 'font-medium-3 text-danger me-50' })
-                    };
-                    var list = '';
-                    $.each($role, function (key, value) {
-                        list += "<div> <span class='text-truncate align-middle'>" + roleBadgeObj[value] + value + '</span></div>';
-                    });
-                    return list;
+                    var $time = full['realTime'];
+                    return moment($time).fromNow();
                 }
             },
             {
                 // User Status
-                targets: 4,
+                targets: 5,
                 orderable: false,
                 render: function (data, type, full, meta) {
                     var $status = full['status'];
@@ -133,10 +123,10 @@ $(document).ready(function () {
                 targets: -1,
                 orderable: false,
                 render: function (data, type, full, meta) {
-                    var $userid = full['userId'];
+                    var $topicId = full['topicId'];
                     return (
-                    '<div class="d-flex align-items-center col-actions">' +
-                        '<a class="me-1" href="/User/Edit/' + $userid+ ' "data-bs-toggle="tooltip" data-bs-placement="top" title = "Edit" > ' +
+                        '<div class="d-flex align-items-center col-actions">' +
+                        '<a class="me-1" href="/Topic/Edit/' + $topicId + ' "data-bs-toggle="tooltip" data-bs-placement="top" title = "Edit" > ' +
                         feather.icons['edit'].toSvg({ class: 'font-medium-1 text-warning' }) +
                         '</a>' +
                         '<a class="me-1" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">' +
@@ -170,7 +160,7 @@ $(document).ready(function () {
         // Buttons with Dropdown
         buttons: [
             {
-                text: 'Add New User',
+                text: 'Add New Topic',
                 className: 'add-new btn btn-primary mt-50',
                 attr: {
                     'data-bs-toggle': 'modal',
@@ -188,46 +178,22 @@ $(document).ready(function () {
                 next: '&nbsp;'
             }
         },
-        // For responsive popup
-        responsive: {
-            details: {
-                display: $.fn.dataTable.Responsive.display.modal({
-                    header: function (row) {
-                        var data = row.data();
-                        return 'Details of ' + data['full_name'];
-                    }
-                }),
-                type: 'column',
-                renderer: $.fn.dataTable.Responsive.renderer.tableAll({
-                    tableClass: 'table',
-                    columnDefs: [
-                        {
-                            targets: 2,
-                            visible: false
-                        },
-                        {
-                            targets: 3,
-                            visible: false
-                        }
-                    ]
-                })
-            }
-        },
         //Tooltip
+
         drawCallback: function () {
             $(document).find('[data-bs-toggle="tooltip"]').tooltip();
         },
-        
+
         initComplete: function () {
             // Adding role filter once table initialized
             this.api()
-                .columns(3)
+                .columns(1)
                 .every(function () {
                     var that = this;
 
                     // Create the `select` element
-                    var select = $('<select id="UserRole" class="form-select text-capitalize mb-md-0 mb-2"><option value=""> Select Role </option></select>')
-                        .appendTo('.user_role')
+                    var select = $('<select id="FilterLabelTopic" class="form-select text-capitalize mb-md-0 mb-2"><option value=""> Select Label </option></select>')
+                        .appendTo('.topic_label')
                         .on('change', function () {
                             that
                                 .search($(this).val())
@@ -256,14 +222,14 @@ $(document).ready(function () {
                 });
             // Adding status filter once table initialized
             this.api()
-                .columns(4)
+                .columns(5)
                 .every(function () {
-                   
+
                     var column = this;
                     var select = $(
-                        '<select id="FilterStatus" class="form-select text-capitalize mb-md-0 mb-2xx"><option value=""> Select Status </option></select>'
+                        '<select id="FilterTopicStatus" class="form-select text-capitalize mb-md-0 mb-2xx"><option value=""> Select Status </option></select>'
                     )
-                        .appendTo('.user_status')
+                        .appendTo('.topic_status')
                         .on('change', function () {
                             var val = $.fn.dataTable.util.escapeRegex($(this).val());
                             column.search(val ? '^' + val + '$' : '', true, false).draw();
@@ -282,9 +248,10 @@ $(document).ready(function () {
                                 '</option>'
                             );
                         });
-                   
+
                 });
         }
+      
     });
 });
 

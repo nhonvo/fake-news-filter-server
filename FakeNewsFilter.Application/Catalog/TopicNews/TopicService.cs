@@ -50,6 +50,7 @@ namespace FakeNewsFilter.Application.Catalog.TopicNews
                 Description = x.topic.Description,
                 NONews = x.newscount,
                 ThumbImage = x.thumb,
+                Status = x.topic.Status,
                 RealTime = x.synctime,
             }).ToListAsync();
 

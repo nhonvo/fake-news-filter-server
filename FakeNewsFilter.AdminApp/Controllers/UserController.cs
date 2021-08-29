@@ -48,7 +48,6 @@ namespace FakeNewsFilter.WebApp.Controllers
             {
                 data = data.ResultObj
             });
-
         }
 
         [HttpPost]

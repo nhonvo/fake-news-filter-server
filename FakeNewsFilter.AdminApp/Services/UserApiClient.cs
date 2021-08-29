@@ -64,7 +64,8 @@ namespace FakeNewsFilter.WebApp.Services
         //Lấy danh sách người dùng (phân trang)
         public async Task<ApiResult<List<UserViewModel>>> GetUsers()
         {
-           try { 
+            try
+            {
                 var client = _httpClientFactory.CreateClient();
 
                 client.BaseAddress = new Uri(_configuration["BaseAddress"]);
@@ -76,10 +77,11 @@ namespace FakeNewsFilter.WebApp.Services
                 var respone = await client.GetAsync($"/api/users/list");
 
                 var body = await respone.Content.ReadAsStringAsync();
+                if (respone.IsSuccessStatusCode) {
 
-                var users = JsonConvert.DeserializeObject<ApiSuccessResult<List<UserViewModel>>>(body);
-
-                return users;
+                    return JsonConvert.DeserializeObject<ApiSuccessResult<List<UserViewModel>>>(body);
+                }
+                return JsonConvert.DeserializeObject<ApiErrorResult<List<UserViewModel>>>(body);
             }
             catch (FakeNewsException e)
             {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using FakeNewsFilter.Data.Enums;
 
 namespace FakeNewsFilter.Data.Entities
 {
@@ -14,6 +15,8 @@ namespace FakeNewsFilter.Data.Entities
         public string Description { get; set; }
 
         public DateTime Timestamp { get; set; }
+
+        public Status Status { get; set; }
 
         public List<NewsInTopics> NewsInTopics { get; set; }
 
