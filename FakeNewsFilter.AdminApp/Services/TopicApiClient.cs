@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -27,7 +28,7 @@ namespace FakeNewsFilter.AdminApp.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-
+        //Lấy danh sách Topic 
         public async Task<ApiResult<List<TopicInfoVM>>> GetTopicInfo()
         {
             try
@@ -57,5 +58,46 @@ namespace FakeNewsFilter.AdminApp.Services
                 return new ApiErrorResult<List<TopicInfoVM>>("Error System: " + e.Message);
             }
         }
+
+        //Tạo mới Topic
+        public async Task<ApiResult<bool>> CreateTopic(TopicCreateRequest request)
+        {
+            var client = _httpClientFactory.CreateClient();
+
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+
+            var requestContent = new MultipartFormDataContent();
+
+            if (request.ThumbTopic != null)
+            {
+                byte[] data;
+                using (var br = new BinaryReader(request.ThumbTopic.OpenReadStream()))
+                {
+                    data = br.ReadBytes((int)request.ThumbTopic.OpenReadStream().Length);
+                }
+                ByteArrayContent bytes = new ByteArrayContent(data);
+                requestContent.Add(bytes, "ThumbTopic", request.ThumbTopic.FileName);
+            }
+
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Tag) ? "" : request.Tag.ToString()), "Tag");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Label) ? "" : request.Label.ToString()), "Label");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Description) ? "" : request.Description.ToString()), "Description");
+
+
+            var response = await client.PostAsync($"/api/topic/", requestContent);
+
+            var result = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+
+                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);
+
+            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
+        }
+
     }
 }

@@ -306,6 +306,13 @@ namespace FakeNewsFilter.Application.System.Users
                 {
                     return new ApiErrorResult<bool>("User does not exists!");
                 }
+
+                //Xoá Avatar ra khỏi Source
+                var avatar = _context.Media.Find(UserId);
+
+                if (avatar != null && avatar.PathMedia != null)
+                    await _storageService.DeleteFileAsync(avatar.PathMedia);
+
                 var reult = await _userManager.DeleteAsync(user);
                 if (reult.Succeeded)
                     return new ApiSuccessResult<bool>("Delete Successfull!", false);

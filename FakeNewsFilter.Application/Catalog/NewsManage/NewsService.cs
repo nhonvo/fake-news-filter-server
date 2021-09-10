@@ -48,7 +48,7 @@ namespace FakeNewsFilter.Application.Catalog.NewsManage
                    TopicId = x.c.TopicId,
                    LabelTopic = x.c.Label,
                    Description = x.c.Description,
-                   SourceLink = x.n.SourceLink,
+                   PostURL = x.n.PostURL,
                    Media = _mapper.Map<MediaViewModel>(x.n.Media),
                    Timestamp = x.n.Timestamp,
                }).ToListAsync();
@@ -94,7 +94,7 @@ namespace FakeNewsFilter.Application.Catalog.NewsManage
                     TopicId = x.c.TopicId,
                     LabelTopic = x.c.Label,
                     Description = x.c.Description,
-                    SourceLink = x.n.SourceLink,
+                    PostURL = x.n.PostURL,
                     Media = _mapper.Map<MediaViewModel>(x.n.Media),
                     Timestamp = x.n.Timestamp,
                 }).ToListAsync();
@@ -111,7 +111,7 @@ namespace FakeNewsFilter.Application.Catalog.NewsManage
 
                 Description = request.Description,
 
-                SourceLink = request.SourceLink,
+                PostURL = request.PostURL,
 
                 Timestamp = DateTime.Now
             };
@@ -178,7 +178,7 @@ namespace FakeNewsFilter.Application.Catalog.NewsManage
                     NewsId = news.NewsId,
                     Name = news.Name,
                     Description = news.Description,
-                    SourceLink = news.SourceLink,
+                    PostURL = news.PostURL,
                     Media = _mapper.Map<MediaViewModel>(media),
                     Timestamp = news.Timestamp,
                     TopicId = topic.TopicId,
@@ -198,7 +198,7 @@ namespace FakeNewsFilter.Application.Catalog.NewsManage
 
             news_update.Name = request.Name;
             news_update.Description = request.Description;
-            news_update.SourceLink = request.SourceLink;
+            news_update.PostURL = request.SourceLink;
 
             //Save Image
             if (request.ThumbnailMedia != null || request.MediaLink != null)
@@ -233,7 +233,7 @@ namespace FakeNewsFilter.Application.Catalog.NewsManage
 
             if (news_update == null) throw new FakeNewsException($"Cannont find a news with Id is: {newsId}");
 
-            news_update.SourceLink = newLink;
+            news_update.PostURL = newLink;
 
             return await _context.SaveChangesAsync() > 0;
         }

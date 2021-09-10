@@ -19,7 +19,7 @@ namespace FakeNewsFilter.Data.Configurations
 
             builder.Property(x => x.Description).IsRequired().HasMaxLength(250);
 
-            builder.Property(x => x.SourceLink).IsRequired();
+            builder.Property(x => x.PostURL).IsRequired();
 
             builder.Property(x => x.SocialBeliefs).HasDefaultValue(0);
 

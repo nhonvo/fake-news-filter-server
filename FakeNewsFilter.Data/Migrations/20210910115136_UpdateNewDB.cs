@@ -120,16 +120,19 @@ namespace FakeNewsFilter.Data.Migrations
                     Description = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     OfficialRating = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SocialBeliefs = table.Column<double>(type: "float", nullable: false, defaultValue: 0.0),
-                    SourceLink = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PostURL = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LanguageCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Publisher = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DatePublished = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    MediaNews = table.Column<int>(type: "int", nullable: true)
+                    ThumbNews = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_News", x => x.NewsId);
                     table.ForeignKey(
-                        name: "FK_News_Media_MediaNews",
-                        column: x => x.MediaNews,
+                        name: "FK_News_Media_ThumbNews",
+                        column: x => x.ThumbNews,
                         principalTable: "Media",
                         principalColumn: "MediaId",
                         onDelete: ReferentialAction.Restrict);
@@ -141,18 +144,19 @@ namespace FakeNewsFilter.Data.Migrations
                 {
                     TopicId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Label = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Label = table.Column<string>(type: "nvarchar(max)", nullable: true, defaultValue: "normal"),
                     Tag = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    MediaTopic = table.Column<int>(type: "int", nullable: true)
+                    Status = table.Column<int>(type: "int", nullable: false, defaultValue: 1),
+                    ThumbTopic = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TopicNews", x => x.TopicId);
                     table.ForeignKey(
-                        name: "FK_TopicNews_Media_MediaTopic",
-                        column: x => x.MediaTopic,
+                        name: "FK_TopicNews_Media_ThumbTopic",
+                        column: x => x.ThumbTopic,
                         principalTable: "Media",
                         principalColumn: "MediaId",
                         onDelete: ReferentialAction.Restrict);
@@ -198,7 +202,7 @@ namespace FakeNewsFilter.Data.Migrations
                 {
                     NewsId = table.Column<int>(type: "int", nullable: false),
                     TopicId = table.Column<int>(type: "int", nullable: false),
-                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2021, 8, 28, 14, 54, 34, 679, DateTimeKind.Local).AddTicks(2500))
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2021, 9, 10, 18, 51, 35, 426, DateTimeKind.Local).AddTicks(2890))
                 },
                 constraints: table =>
                 {
@@ -275,50 +279,57 @@ namespace FakeNewsFilter.Data.Migrations
                 columns: new[] { "MediaId", "Caption", "DateCreated", "Duration", "FileSize", "PathMedia", "SortOrder", "Type" },
                 values: new object[,]
                 {
-                    { 1, null, new DateTime(2021, 8, 28, 14, 54, 34, 777, DateTimeKind.Local).AddTicks(5540), 0, 0L, "https://static01.nyt.com/images/2021/08/15/world/15afghanistan-kabul-airport/merlin_193320777_09900a3b-bd82-47c6-ad73-fddc1219018d-superJumbo.jpg?quality=90&auto=webp", 0, 1 },
-                    { 2, null, new DateTime(2021, 8, 28, 14, 54, 34, 777, DateTimeKind.Local).AddTicks(7960), 0, 0L, "https://media-cldnry.s-nbcnews.com/image/upload/t_fit-2000w,f_auto,q_auto:best/newscms/2021_30/3495573/210730-greg-abbott-ew-617p.jpg", 0, 1 }
+                    { 1, null, new DateTime(2021, 9, 10, 18, 51, 35, 514, DateTimeKind.Local).AddTicks(630), 0, 0L, "covid.jpeg", 0, 1 },
+                    { 2, null, new DateTime(2021, 9, 10, 18, 51, 35, 514, DateTimeKind.Local).AddTicks(2870), 0, 0L, "taliban.jpeg", 0, 1 }
                 });
 
             migrationBuilder.InsertData(
                 table: "News",
-                columns: new[] { "NewsId", "Description", "MediaNews", "Name", "OfficialRating", "SourceLink", "Timestamp" },
-                values: new object[] { 3, "A lagging vaccination campaign and the spread of the highly contagious Delta variant are driving a surge in Covid-19 hospitalizations in the United States..", null, "Hospitalizations of Americans under 50 have reached new pandemic highs", null, "https://www.nytimes.com/live/2021/08/15/world/covid-delta-variant-vaccine/covid-hospitalizations-cdc", new DateTime(2021, 8, 28, 14, 54, 34, 778, DateTimeKind.Local).AddTicks(5250) });
+                columns: new[] { "NewsId", "DatePublished", "Description", "LanguageCode", "Name", "OfficialRating", "PostURL", "Publisher", "ThumbNews", "Timestamp" },
+                values: new object[] { 3, new DateTime(2021, 4, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "A lagging vaccination campaign and the spread of the highly contagious Delta variant are driving a surge in Covid-19 hospitalizations in the United States..", "EN", "Hospitalizations of Americans under 50 have reached new pandemic highs", null, "https://www.nytimes.com/live/2021/08/15/world/covid-delta-variant-vaccine/covid-hospitalizations-cdc", null, null, new DateTime(2021, 9, 10, 18, 51, 35, 515, DateTimeKind.Local).AddTicks(2520) });
 
             migrationBuilder.InsertData(
                 table: "Role",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { new Guid("a3314be5-4c77-4fb6-82ad-302014682a73"), "d4885485-b7ab-4319-b891-e2c50899e71c", "Admin", "Admin" },
-                    { new Guid("b4314be5-4c77-4fb6-82ad-302014682b13"), "4b04756f-9d51-4c58-810c-3c5081b36ecc", "Subscriber", "Subscriber" }
+                    { new Guid("a3314be5-4c77-4fb6-82ad-302014682a73"), "9a1a0935-f55d-4227-803d-62488439ee15", "Admin", "Admin" },
+                    { new Guid("b4314be5-4c77-4fb6-82ad-302014682b13"), "cfe05bfa-3dc7-4788-b9c2-2d73358d14cd", "Subscriber", "Subscriber" }
                 });
 
             migrationBuilder.InsertData(
                 table: "TopicNews",
-                columns: new[] { "TopicId", "Description", "Label", "MediaTopic", "Tag", "Timestamp" },
+                columns: new[] { "TopicId", "Description", "Label", "Tag", "ThumbTopic", "Timestamp" },
                 values: new object[,]
                 {
-                    { 1, "Follow live as the Taliban seizes territory across Afghanistan in the wake of the U.S. withdrawal.", "breaking", null, "afghanistan", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, "Best nonfiction features, in-depth stores and other long-form content from across the web.", "featured", null, "in-depth", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 3, "Outbreak of respiratory virus that has killed over 1 million and infected 100 milion worldwide.", "feature", null, "coronavirus", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 4, "The top business and economic news from around the world with a focus on the United State.", "feature", null, "top-business", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 5, "Follow the presidential transition of Joe Biden, including policy plans, appointments and more.", "feature", null, "biden-admin", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 6, "Top stories from around the world with a focus on news not covered in other feeds.", null, null, "top-news", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 7, "Follow important local news: politics, business, top events and more. Updated everything evening.", null, null, "boston", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, "Follow live as the Taliban seizes territory across Afghanistan in the wake of the U.S. withdrawal.", "breaking", "afghanistan", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, "Best nonfiction features, in-depth stores and other long-form content from across the web.", "featured", "in-depth", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, "Outbreak of respiratory virus that has killed over 1 million and infected 100 milion worldwide.", "featured", "coronavirus", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 4, "The top business and economic news from around the world with a focus on the United State.", "featured", "top-business", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 5, "Follow the presidential transition of Joe Biden, including policy plans, appointments and more.", "featured", "biden-admin", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                });
+
+            migrationBuilder.InsertData(
+                table: "TopicNews",
+                columns: new[] { "TopicId", "Description", "Tag", "ThumbTopic", "Timestamp" },
+                values: new object[,]
+                {
+                    { 6, "Top stories from around the world with a focus on news not covered in other feeds.", "top-news", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 7, "Follow important local news: politics, business, top events and more. Updated everything evening.", "boston", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AccessFailedCount", "AvatarId", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { new Guid("69db714f-9576-45ba-b5b7-f00649be00de"), 0, null, "49883870-1dfe-4718-9087-94f5bc73c397", "bp.khuyen@hutech.edu.vn", true, false, null, "Bui Phu Khuyen", "BP.KHUYEN@HUTECH.EDU.VN", "khuyenpb", "AQAAAAEAACcQAAAAENB9uXuTTMJ5n1LBZ7Cy5wdUNvgiENY+CgFOEItmh2SfgqC5ZcbAW139vTRis3GL/w==", null, false, "", false, "khuyenpb" });
+                values: new object[] { new Guid("69db714f-9576-45ba-b5b7-f00649be00de"), 0, null, "fbedf18e-1802-4e9b-8e0a-6911e2a63bc0", "bp.khuyen@hutech.edu.vn", true, false, null, "Bui Phu Khuyen", "BP.KHUYEN@HUTECH.EDU.VN", "khuyenpb", "AQAAAAEAACcQAAAAEJy2n5VMoQE9vhQzeaRvq2HNFB50uQdNdniFmovhkdp3/++ovbsmS4ubG6T8CpNF2A==", null, false, "", false, "khuyenpb" });
 
             migrationBuilder.InsertData(
                 table: "News",
-                columns: new[] { "NewsId", "Description", "MediaNews", "Name", "OfficialRating", "SourceLink", "Timestamp" },
+                columns: new[] { "NewsId", "DatePublished", "Description", "LanguageCode", "Name", "OfficialRating", "PostURL", "Publisher", "ThumbNews", "Timestamp" },
                 values: new object[,]
                 {
-                    { 1, "Taliban fighters poured into the Afghan capital on Sunday amid scenes of panic and chaos, bringing a swift and shocking close to the Afghan government and the 20-year American era in the country.", 1, "Kabul’s Sudden Fall to Taliban Ends U.S. Era in Afghanistan", null, "https://www.nytimes.com/2021/08/15/world/asia/afghanistan-taliban-kabul-surrender.html", new DateTime(2021, 8, 28, 14, 54, 34, 778, DateTimeKind.Local).AddTicks(2250) },
-                    { 2, "The masking orders in Dallas and Bexar counties were issued after a lower court ruled last week in favor of local officials.", 2, "Texas high court blocks mask mandates in two of state's largest counties", null, "https://www.nbcnews.com/news/us-news/texas-high-court-blocks-mask-mandates-two-state-s-largest-n1276884", new DateTime(2021, 8, 28, 14, 54, 34, 778, DateTimeKind.Local).AddTicks(4910) }
+                    { 1, new DateTime(2021, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "Taliban fighters poured into the Afghan capital on Sunday amid scenes of panic and chaos, bringing a swift and shocking close to the Afghan government and the 20-year American era in the country.", "EN", "Kabul’s Sudden Fall to Taliban Ends U.S. Era in Afghanistan", null, "https://www.nytimes.com/2021/08/15/world/asia/afghanistan-taliban-kabul-surrender.html", "New York Times", 1, new DateTime(2021, 9, 10, 18, 51, 35, 514, DateTimeKind.Local).AddTicks(8670) },
+                    { 2, new DateTime(2021, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "The masking orders in Dallas and Bexar counties were issued after a lower court ruled last week in favor of local officials.", "EN", "Texas high court blocks mask mandates in two of state's largest counties", null, "https://www.nbcnews.com/news/us-news/texas-high-court-blocks-mask-mandates-two-state-s-largest-n1276884", "NBC News", 2, new DateTime(2021, 9, 10, 18, 51, 35, 515, DateTimeKind.Local).AddTicks(2090) }
                 });
 
             migrationBuilder.InsertData(
@@ -347,11 +358,11 @@ namespace FakeNewsFilter.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_News_MediaNews",
+                name: "IX_News_ThumbNews",
                 table: "News",
-                column: "MediaNews",
+                column: "ThumbNews",
                 unique: true,
-                filter: "[MediaNews] IS NOT NULL");
+                filter: "[ThumbNews] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_NewsInTopics_NewsId",
@@ -359,11 +370,11 @@ namespace FakeNewsFilter.Data.Migrations
                 column: "NewsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TopicNews_MediaTopic",
+                name: "IX_TopicNews_ThumbTopic",
                 table: "TopicNews",
-                column: "MediaTopic",
+                column: "ThumbTopic",
                 unique: true,
-                filter: "[MediaTopic] IS NOT NULL");
+                filter: "[ThumbTopic] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserRoles_RoleId",

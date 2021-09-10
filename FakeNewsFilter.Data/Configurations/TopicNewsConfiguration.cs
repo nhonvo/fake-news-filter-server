@@ -22,6 +22,8 @@ namespace FakeNewsFilter.Data.Configurations
 
             builder.Property(x => x.Status).HasDefaultValue(Status.Active);
 
+            builder.Property(x => x.Label).HasDefaultValue("normal");
+
             builder.Property(x => x.Timestamp);
         }
     }

@@ -10,10 +10,10 @@ namespace FakeNewsFilter.Application.Catalog.TopicNews
     {
         public Task<ApiResult<List<TopicInfoVM>>> GetTopicHotNews();
 
-        Task<ApiResult<bool>> Create(TopicNewsCreateRequest request);
+        Task<ApiResult<bool>> Create(TopicCreateRequest request);
 
         Task<ApiResult<bool>> Delete(int TopicId);
 
-        Task<ApiResult<bool>> Update(TopicNewsUpdateRequest request);
+        Task<ApiResult<bool>> Update(TopicUpdateRequest request);
     }
 }

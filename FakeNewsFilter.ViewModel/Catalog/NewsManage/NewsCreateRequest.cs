@@ -14,7 +14,7 @@ namespace FakeNewsFilter.ViewModel.Catalog.NewsManage
 
         public double? SocialBeliefs { get; set; }
 
-        public string SourceLink { get; set; }
+        public string PostURL { get; set; }
 
         public MediaType? Type { get; set; }
 

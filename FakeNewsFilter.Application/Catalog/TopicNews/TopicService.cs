@@ -26,6 +26,7 @@ namespace FakeNewsFilter.Application.Catalog.TopicNews
         public TopicService(ApplicationDBContext context, FileStorageService storageService)
         {
             _context = context;
+            FileStorageService.USER_CONTENT_FOLDER_NAME = "images/topics";
             _storageService = storageService;
         }
 
@@ -58,7 +59,7 @@ namespace FakeNewsFilter.Application.Catalog.TopicNews
         }
 
         //Create Topic News
-        public async Task<ApiResult<bool>> Create(TopicNewsCreateRequest request)
+        public async Task<ApiResult<bool>> Create(TopicCreateRequest request)
         {
             var topic = new Data.Entities.TopicNews()
             {
@@ -69,14 +70,14 @@ namespace FakeNewsFilter.Application.Catalog.TopicNews
             };
 
             //Save Media
-            if (request.ThumbnailMedia != null)
+            if (request.ThumbTopic != null)
             {
                 topic.Media = new Media()
                 {
                     Caption = "Thumbnail Topic",
                     DateCreated = DateTime.Now,
-                    FileSize = request.ThumbnailMedia.Length,
-                    PathMedia = await this.SaveFile(request.ThumbnailMedia),
+                    FileSize = request.ThumbTopic.Length,
+                    PathMedia = await this.SaveFile(request.ThumbTopic),
                     Type = MediaType.Image,
                     SortOrder = 1
                 };
@@ -119,15 +120,15 @@ namespace FakeNewsFilter.Application.Catalog.TopicNews
             return new ApiErrorResult<bool>("Delete Unsuccessful.");
         }
 
-        public async Task<ApiResult<bool>> Update(TopicNewsUpdateRequest request)
+        public async Task<ApiResult<bool>> Update(TopicUpdateRequest request)
         {
             var topic = await _context.TopicNews.FindAsync(request.TopicId);
 
             if (topic == null)
                 throw new FakeNewsException($"Cannont find a topic news with Id is: {request.TopicId}");
 
-            topic.Label = request.Label;
-            topic.Description = request.Description;
+            topic.Label = request.Label ?? topic.Label;
+            topic.Description = request.Description ?? topic.Description;
             topic.Timestamp = DateTime.Now;
 
             if (request.ThumbnailMedia != null)
@@ -142,7 +143,7 @@ namespace FakeNewsFilter.Application.Catalog.TopicNews
                 thumb.FileSize = request.ThumbnailMedia.Length;
                 thumb.PathMedia = await SaveFile(request.ThumbnailMedia);
 
-                thumb.Type = request.Type;
+                thumb.Type = MediaType.Image;
 
                 _context.Media.Update(thumb);
             }

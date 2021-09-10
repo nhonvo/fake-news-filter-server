@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using FakeNewsFilter.Data.Enums;
 
 namespace FakeNewsFilter.Data.Entities
 {
@@ -15,7 +16,13 @@ namespace FakeNewsFilter.Data.Entities
 
         public double SocialBeliefs { get; set; }
 
-        public string SourceLink { get; set; }
+        public string PostURL { get; set; }
+
+        public string LanguageCode { get; set; }
+
+        public string Publisher { get; set; }
+
+        public DateTime DatePublished { get; set; }
 
         public DateTime Timestamp { get; set; }
 
@@ -24,9 +31,6 @@ namespace FakeNewsFilter.Data.Entities
         public Media Media { get; set; }
 
         public List<NewsInTopics> NewsInTopics { get; set; }
-
-       
-
 
     }
 }

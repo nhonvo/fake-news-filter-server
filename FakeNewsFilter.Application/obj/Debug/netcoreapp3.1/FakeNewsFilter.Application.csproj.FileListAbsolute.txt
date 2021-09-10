@@ -14,6 +14,12 @@ Z:/FakeNewsFilter/FakeNewsFilter.Application/bin/Debug/netcoreapp3.1/FakeNewsFil
 Z:/FakeNewsFilter/FakeNewsFilter.Application/bin/Debug/netcoreapp3.1/FakeNewsFilter.Utilities.pdb
 Z:/FakeNewsFilter/FakeNewsFilter.Application/bin/Debug/netcoreapp3.1/FakeNewsFilter.ViewModel.pdb
 Z:/FakeNewsFilter/FakeNewsFilter.Application/obj/Debug/netcoreapp3.1/FakeNewsFilter.Application.csproj.CopyComplete
+Z:/FakeNewsFilter/FakeNewsFilter.Application/obj/Debug/netcoreapp3.1/FakeNewsFilter.Application.GeneratedMSBuildEditorConfig.editorconfig
+/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Application/obj/Debug/netcoreapp3.1/FakeNewsFilter.Application.csproj.AssemblyReference.cache
+/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Application/obj/Debug/netcoreapp3.1/FakeNewsFilter.Application.GeneratedMSBuildEditorConfig.editorconfig
+/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Application/obj/Debug/netcoreapp3.1/FakeNewsFilter.Application.AssemblyInfoInputs.cache
+/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Application/obj/Debug/netcoreapp3.1/FakeNewsFilter.Application.AssemblyInfo.cs
+/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Application/obj/Debug/netcoreapp3.1/FakeNewsFilter.Application.csproj.CoreCompileInputs.cache
 /Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Application/bin/Debug/netcoreapp3.1/FakeNewsFilter.Application.deps.json
 /Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Application/bin/Debug/netcoreapp3.1/FakeNewsFilter.Application.dll
 /Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Application/bin/Debug/netcoreapp3.1/FakeNewsFilter.Application.pdb
@@ -23,12 +29,6 @@ Z:/FakeNewsFilter/FakeNewsFilter.Application/obj/Debug/netcoreapp3.1/FakeNewsFil
 /Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Application/bin/Debug/netcoreapp3.1/FakeNewsFilter.Data.pdb
 /Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Application/bin/Debug/netcoreapp3.1/FakeNewsFilter.Utilities.pdb
 /Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Application/bin/Debug/netcoreapp3.1/FakeNewsFilter.ViewModel.pdb
-/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Application/obj/Debug/netcoreapp3.1/FakeNewsFilter.Application.csproj.AssemblyReference.cache
-/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Application/obj/Debug/netcoreapp3.1/FakeNewsFilter.Application.GeneratedMSBuildEditorConfig.editorconfig
-/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Application/obj/Debug/netcoreapp3.1/FakeNewsFilter.Application.AssemblyInfoInputs.cache
-/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Application/obj/Debug/netcoreapp3.1/FakeNewsFilter.Application.AssemblyInfo.cs
-/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Application/obj/Debug/netcoreapp3.1/FakeNewsFilter.Application.csproj.CoreCompileInputs.cache
 /Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Application/obj/Debug/netcoreapp3.1/FakeNewsFilter.Application.csproj.CopyComplete
 /Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Application/obj/Debug/netcoreapp3.1/FakeNewsFilter.Application.dll
 /Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Application/obj/Debug/netcoreapp3.1/FakeNewsFilter.Application.pdb
-Z:/FakeNewsFilter/FakeNewsFilter.Application/obj/Debug/netcoreapp3.1/FakeNewsFilter.Application.GeneratedMSBuildEditorConfig.editorconfig

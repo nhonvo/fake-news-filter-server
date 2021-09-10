@@ -21,8 +21,11 @@ namespace FakeNewsFilter.API.Controllers
 
         // POST api/values
         [HttpPost]
-        public async Task<IActionResult> Create([FromForm] TopicNewsCreateRequest request)
+        public async Task<IActionResult> Create([FromForm]TopicCreateRequest request)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var result = await _topicService.Create(request);
 
             if (result.IsSuccessed == false)
@@ -60,7 +63,7 @@ namespace FakeNewsFilter.API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromForm] TopicNewsUpdateRequest request)
+        public async Task<IActionResult> Update([FromForm] TopicUpdateRequest request)
         {
             if (!ModelState.IsValid)
             {

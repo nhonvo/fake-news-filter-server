@@ -253,5 +253,79 @@ $(document).ready(function () {
         }
       
     });
+
 });
+
+$(function () {
+    //Select
+    // Loading array data
+    var data = [
+        { id: 0, text: 'breaking' },
+        { id: 1, text: 'featured' },
+        { id: 2, text: 'normal' }
+    ];
+
+    selectArray = $('.select2-data-array'),
+
+        selectArray.wrap('<div class="position-relative"></div>').select2({
+            dropdownAutoWidth: true,
+            dropdownParent: selectArray.parent(),
+            width: '100%',
+            data: data
+        });
+
+    var changePicture = $('#ThumbTopic'),
+        userAvatar = $('.topic-thumb'),
+        form = $('.form-validate');
+
+    // Change user profile picture
+    if (changePicture.length) {
+        $(changePicture).on('change', function (e) {
+            var reader = new FileReader(),
+                files = e.target.files;
+            reader.onload = function () {
+                if (userAvatar.length) {
+                    userAvatar.attr('src', reader.result);
+                }
+            };
+            reader.readAsDataURL(files[0]);
+        });
+    }
+
+    // Validation
+    if (form.length) {
+        $(form).each(function () {
+            var $this = $(this);
+            $this.validate({
+                submitHandler: function (form, event) {
+                    event.preventDefault();
+                },
+                rules: {
+                    username: {
+                        required: true
+                    },
+                    name: {
+                        required: true
+                    },
+                    email: {
+                        required: true,
+                        email: true
+                    },
+                    phone: {
+                        required: true
+                    },
+
+
+                }
+            });
+        });
+
+        $(this).on('submit', function (event) {
+            event.preventDefault();
+        });
+    }
+});
+
+
+
 

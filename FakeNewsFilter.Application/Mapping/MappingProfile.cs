@@ -19,7 +19,7 @@ namespace FakeNewsFilter.Application.Mapping
                     .ForMember(d => d.Type, o => o.MapFrom(s => s.Type))
                       .ForMember(d => d.DateCreated, o => o.MapFrom(s => s.DateCreated));
 
-            CreateMap<TopicNews, TopicNewsViewModel>()
+            CreateMap<TopicNews, TopicViewModel>()
                 .ForMember(d => d.TopicId, o => o.MapFrom(s => s.TopicId))
                  .ForMember(d => d.Description, o => o.MapFrom(s => s.Description))
                   .ForMember(d => d.Label, o => o.MapFrom(s => s.Label))

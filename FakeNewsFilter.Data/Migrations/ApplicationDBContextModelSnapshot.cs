@@ -93,20 +93,20 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 1,
-                            DateCreated = new DateTime(2021, 8, 29, 12, 51, 15, 853, DateTimeKind.Local).AddTicks(9370),
+                            DateCreated = new DateTime(2021, 9, 10, 18, 51, 35, 514, DateTimeKind.Local).AddTicks(630),
                             Duration = 0,
                             FileSize = 0L,
-                            PathMedia = "https://static01.nyt.com/images/2021/08/15/world/15afghanistan-kabul-airport/merlin_193320777_09900a3b-bd82-47c6-ad73-fddc1219018d-superJumbo.jpg?quality=90&auto=webp",
+                            PathMedia = "covid.jpeg",
                             SortOrder = 0,
                             Type = 1
                         },
                         new
                         {
                             MediaId = 2,
-                            DateCreated = new DateTime(2021, 8, 29, 12, 51, 15, 854, DateTimeKind.Local).AddTicks(1770),
+                            DateCreated = new DateTime(2021, 9, 10, 18, 51, 35, 514, DateTimeKind.Local).AddTicks(2870),
                             Duration = 0,
                             FileSize = 0L,
-                            PathMedia = "https://media-cldnry.s-nbcnews.com/image/upload/t_fit-2000w,f_auto,q_auto:best/newscms/2021_30/3495573/210730-greg-abbott-ew-617p.jpg",
+                            PathMedia = "taliban.jpeg",
                             SortOrder = 0,
                             Type = 1
                         });
@@ -121,10 +121,16 @@ namespace FakeNewsFilter.Data.Migrations
                         .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime>("DatePublished")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("LanguageCode")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -134,14 +140,17 @@ namespace FakeNewsFilter.Data.Migrations
                     b.Property<string>("OfficialRating")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PostURL")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Publisher")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double>("SocialBeliefs")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("float")
                         .HasDefaultValue(0.0);
-
-                    b.Property<string>("SourceLink")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("ThumbNews")
                         .HasColumnType("int");
@@ -161,31 +170,39 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             NewsId = 1,
+                            DatePublished = new DateTime(2021, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Taliban fighters poured into the Afghan capital on Sunday amid scenes of panic and chaos, bringing a swift and shocking close to the Afghan government and the 20-year American era in the country.",
+                            LanguageCode = "EN",
                             Name = "Kabul’s Sudden Fall to Taliban Ends U.S. Era in Afghanistan",
+                            PostURL = "https://www.nytimes.com/2021/08/15/world/asia/afghanistan-taliban-kabul-surrender.html",
+                            Publisher = "New York Times",
                             SocialBeliefs = 0.0,
-                            SourceLink = "https://www.nytimes.com/2021/08/15/world/asia/afghanistan-taliban-kabul-surrender.html",
                             ThumbNews = 1,
-                            Timestamp = new DateTime(2021, 8, 29, 12, 51, 15, 854, DateTimeKind.Local).AddTicks(6300)
+                            Timestamp = new DateTime(2021, 9, 10, 18, 51, 35, 514, DateTimeKind.Local).AddTicks(8670)
                         },
                         new
                         {
                             NewsId = 2,
+                            DatePublished = new DateTime(2021, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "The masking orders in Dallas and Bexar counties were issued after a lower court ruled last week in favor of local officials.",
+                            LanguageCode = "EN",
                             Name = "Texas high court blocks mask mandates in two of state's largest counties",
+                            PostURL = "https://www.nbcnews.com/news/us-news/texas-high-court-blocks-mask-mandates-two-state-s-largest-n1276884",
+                            Publisher = "NBC News",
                             SocialBeliefs = 0.0,
-                            SourceLink = "https://www.nbcnews.com/news/us-news/texas-high-court-blocks-mask-mandates-two-state-s-largest-n1276884",
                             ThumbNews = 2,
-                            Timestamp = new DateTime(2021, 8, 29, 12, 51, 15, 854, DateTimeKind.Local).AddTicks(8370)
+                            Timestamp = new DateTime(2021, 9, 10, 18, 51, 35, 515, DateTimeKind.Local).AddTicks(2090)
                         },
                         new
                         {
                             NewsId = 3,
+                            DatePublished = new DateTime(2021, 4, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "A lagging vaccination campaign and the spread of the highly contagious Delta variant are driving a surge in Covid-19 hospitalizations in the United States..",
+                            LanguageCode = "EN",
                             Name = "Hospitalizations of Americans under 50 have reached new pandemic highs",
+                            PostURL = "https://www.nytimes.com/live/2021/08/15/world/covid-delta-variant-vaccine/covid-hospitalizations-cdc",
                             SocialBeliefs = 0.0,
-                            SourceLink = "https://www.nytimes.com/live/2021/08/15/world/covid-delta-variant-vaccine/covid-hospitalizations-cdc",
-                            Timestamp = new DateTime(2021, 8, 29, 12, 51, 15, 854, DateTimeKind.Local).AddTicks(8730)
+                            Timestamp = new DateTime(2021, 9, 10, 18, 51, 35, 515, DateTimeKind.Local).AddTicks(2520)
                         });
                 });
 
@@ -200,7 +217,7 @@ namespace FakeNewsFilter.Data.Migrations
                     b.Property<DateTime>("Timestamp")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 8, 29, 12, 51, 15, 768, DateTimeKind.Local).AddTicks(470));
+                        .HasDefaultValue(new DateTime(2021, 9, 10, 18, 51, 35, 426, DateTimeKind.Local).AddTicks(2890));
 
                     b.HasKey("TopicId", "NewsId");
 
@@ -252,14 +269,14 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             Id = new Guid("a3314be5-4c77-4fb6-82ad-302014682a73"),
-                            ConcurrencyStamp = "91fd2ac5-231f-43d6-807c-827790875db4",
+                            ConcurrencyStamp = "9a1a0935-f55d-4227-803d-62488439ee15",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
                             Id = new Guid("b4314be5-4c77-4fb6-82ad-302014682b13"),
-                            ConcurrencyStamp = "c05d5e14-7cb2-4656-8bde-704b2131d377",
+                            ConcurrencyStamp = "cfe05bfa-3dc7-4788-b9c2-2d73358d14cd",
                             Name = "Subscriber",
                             NormalizedName = "Subscriber"
                         });
@@ -279,7 +296,9 @@ namespace FakeNewsFilter.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Label")
-                        .HasColumnType("nvarchar(max)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("normal");
 
                     b.Property<int>("Status")
                         .ValueGeneratedOnAdd()
@@ -328,7 +347,7 @@ namespace FakeNewsFilter.Data.Migrations
                         {
                             TopicId = 3,
                             Description = "Outbreak of respiratory virus that has killed over 1 million and infected 100 milion worldwide.",
-                            Label = "feature",
+                            Label = "featured",
                             Status = 0,
                             Tag = "coronavirus",
                             Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -337,7 +356,7 @@ namespace FakeNewsFilter.Data.Migrations
                         {
                             TopicId = 4,
                             Description = "The top business and economic news from around the world with a focus on the United State.",
-                            Label = "feature",
+                            Label = "featured",
                             Status = 0,
                             Tag = "top-business",
                             Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -346,7 +365,7 @@ namespace FakeNewsFilter.Data.Migrations
                         {
                             TopicId = 5,
                             Description = "Follow the presidential transition of Joe Biden, including policy plans, appointments and more.",
-                            Label = "feature",
+                            Label = "featured",
                             Status = 0,
                             Tag = "biden-admin",
                             Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -441,14 +460,14 @@ namespace FakeNewsFilter.Data.Migrations
                         {
                             Id = new Guid("69db714f-9576-45ba-b5b7-f00649be00de"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d7875449-5dff-4a9c-a4d1-7d9820bb999c",
+                            ConcurrencyStamp = "fbedf18e-1802-4e9b-8e0a-6911e2a63bc0",
                             Email = "bp.khuyen@hutech.edu.vn",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Bui Phu Khuyen",
                             NormalizedEmail = "BP.KHUYEN@HUTECH.EDU.VN",
                             NormalizedUserName = "khuyenpb",
-                            PasswordHash = "AQAAAAEAACcQAAAAELJ94uELzZuWT9ZE5xnZTfHydTmNHcxw1xRGTdxCZcKl/ZHGYgxhcXOZGAK6PkzK9g==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJy2n5VMoQE9vhQzeaRvq2HNFB50uQdNdniFmovhkdp3/++ovbsmS4ubG6T8CpNF2A==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             Status = 0,

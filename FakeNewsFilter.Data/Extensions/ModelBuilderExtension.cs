@@ -67,21 +67,21 @@ namespace FakeNewsFilter.Data.Extensions
                new TopicNews()
                {
                    TopicId = 3,
-                   Label = "feature",
+                   Label = "featured",
                    Tag = "coronavirus",
                    Description = "Outbreak of respiratory virus that has killed over 1 million and infected 100 milion worldwide."
                },
                new TopicNews()
                {
                    TopicId = 4,
-                   Label = "feature",
+                   Label = "featured",
                    Tag = "top-business",
                    Description = "The top business and economic news from around the world with a focus on the United State."
                },
                new TopicNews()
                {
                    TopicId = 5,
-                   Label = "feature",
+                   Label = "featured",
                    Tag = "biden-admin",
                    Description = "Follow the presidential transition of Joe Biden, including policy plans, appointments and more."
                },
@@ -122,8 +122,11 @@ namespace FakeNewsFilter.Data.Extensions
                     NewsId = 1,
                     Name = "Kabul’s Sudden Fall to Taliban Ends U.S. Era in Afghanistan",
                     Description = "Taliban fighters poured into the Afghan capital on Sunday amid scenes of panic and chaos, bringing a swift and shocking close to the Afghan government and the 20-year American era in the country.",
-                    SourceLink = "https://www.nytimes.com/2021/08/15/world/asia/afghanistan-taliban-kabul-surrender.html",
+                    PostURL = "https://www.nytimes.com/2021/08/15/world/asia/afghanistan-taliban-kabul-surrender.html",
                     ThumbNews = 1,
+                    LanguageCode = "EN",
+                    Publisher = "New York Times",
+                    DatePublished = new DateTime(2021,02,10),
                     Timestamp = DateTime.Now,
                 },
                 new News
@@ -131,8 +134,11 @@ namespace FakeNewsFilter.Data.Extensions
                     NewsId = 2,
                     Name = "Texas high court blocks mask mandates in two of state's largest counties",
                     Description = "The masking orders in Dallas and Bexar counties were issued after a lower court ruled last week in favor of local officials.",
-                    SourceLink = "https://www.nbcnews.com/news/us-news/texas-high-court-blocks-mask-mandates-two-state-s-largest-n1276884",
+                    PostURL = "https://www.nbcnews.com/news/us-news/texas-high-court-blocks-mask-mandates-two-state-s-largest-n1276884",
                     ThumbNews = 2,
+                    LanguageCode = "EN",
+                    Publisher = "NBC News",
+                    DatePublished = new DateTime(2021, 02, 20),
                     Timestamp = DateTime.Now,
                 },
                 new News
@@ -140,7 +146,9 @@ namespace FakeNewsFilter.Data.Extensions
                     NewsId = 3,
                     Name = "Hospitalizations of Americans under 50 have reached new pandemic highs",
                     Description = "A lagging vaccination campaign and the spread of the highly contagious Delta variant are driving a surge in Covid-19 hospitalizations in the United States..",
-                    SourceLink = "https://www.nytimes.com/live/2021/08/15/world/covid-delta-variant-vaccine/covid-hospitalizations-cdc",
+                    PostURL = "https://www.nytimes.com/live/2021/08/15/world/covid-delta-variant-vaccine/covid-hospitalizations-cdc",
+                    LanguageCode = "EN",
+                    DatePublished = new DateTime(2021, 04, 12),
                     Timestamp = DateTime.Now,
                 }
 

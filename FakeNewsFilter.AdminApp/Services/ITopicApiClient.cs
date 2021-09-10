@@ -10,5 +10,7 @@ namespace FakeNewsFilter.AdminApp.Services
     {
         Task<ApiResult<List<TopicInfoVM>>> GetTopicInfo();
 
+        Task<ApiResult<bool>> CreateTopic(TopicCreateRequest request);
     }
+
 }
