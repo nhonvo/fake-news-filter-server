@@ -7,6 +7,7 @@
   Author URL: fb.com/buiphukhuyen
 ==========================================================================================*/
 
+
 //Load Datatable List Users
 $(document).ready(function () {
     var dtUserTable = $('.user-list-table'),
@@ -139,14 +140,14 @@ $(document).ready(function () {
                         '<a class="me-1" href="/User/Edit/' + $userid+ ' "data-bs-toggle="tooltip" data-bs-placement="top" title = "Edit" > ' +
                         feather.icons['edit'].toSvg({ class: 'font-medium-1 text-warning' }) +
                         '</a>' +
-                        '<a class="me-1" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">' +
+                        '<a class="me-1" onclick=DeleteData("'+$userid+'"); title="Delete">' +
                         feather.icons['trash'].toSvg({ class: 'font-medium-1 text-danger' }) +
                         '</a>' +
                         '<a class="me-1" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="View">' +
                         feather.icons['eye'].toSvg({ class: 'font-medium-1' }) +
                         '</a>'
                         +
-                        '</div>'
+                   '</div>'
                     );
                 }
             }
@@ -287,3 +288,20 @@ $(document).ready(function () {
         }
     });
 });
+
+function DeleteData(UserId) {
+    if (confirm("Are you sure want to delele this user?")) {
+        Delete(UserId);
+    }
+    else {
+        return false;
+    }
+}
+
+function Delete(UserId) {
+    var url = "/User/Delete";
+    $.post(url, { UserId: UserId }, function (data) {
+        window.location.href = '/User/Index';
+    });
+}
+

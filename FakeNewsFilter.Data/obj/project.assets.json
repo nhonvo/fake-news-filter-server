@@ -6202,7 +6202,7 @@
       "outputPath": "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Data/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/buiphukhuyen/.nuget/NuGet/NuGet.Config"
+        "/Users/buiphukhuyen/.config/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
@@ -6268,7 +6268,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.400/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.100-preview.7.21379.14/RuntimeIdentifierGraph.json"
       }
     }
   }

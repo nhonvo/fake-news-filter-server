@@ -308,7 +308,7 @@ namespace FakeNewsFilter.Application.System.Users
                 }
 
                 //Xoá Avatar ra khỏi Source
-                var avatar = _context.Media.Find(UserId);
+                var avatar = _context.Media.Find(user.AvatarId);
 
                 if (avatar != null && avatar.PathMedia != null)
                     await _storageService.DeleteFileAsync(avatar.PathMedia);

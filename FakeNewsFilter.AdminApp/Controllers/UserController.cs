@@ -133,12 +133,12 @@ namespace FakeNewsFilter.WebApp.Controllers
             var result = await _userApiClient.Delete(UserId);
             if (result.IsSuccessed)
             {
-                TempData["result"] = $"Delete User {UserId} successful!";
-                return RedirectToAction("Index");
+                TempData["result"] = $"Delete User successful!";
+                return Json("done");
             }
 
             ModelState.AddModelError("", result.Message);
-            return RedirectToAction("Index");
+            return Json("error");
         }
 
         [HttpGet]
