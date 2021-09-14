@@ -36,18 +36,7 @@ namespace FakeNewsFilter.API.Controllers
             return Ok(result);
         }
 
-        [HttpDelete("{topicId}")]
-        public async Task<IActionResult> Delete(int topicId)
-        {
-            var result = await _topicService.Delete(topicId);
-
-            if (result.IsSuccessed == false)
-            {
-                return BadRequest(result);
-            }
-            return Ok(result);
-        }
-
+        
         // GET: api/topic
         [HttpGet("List")]
         [AllowAnonymous]
@@ -62,13 +51,22 @@ namespace FakeNewsFilter.API.Controllers
             return Ok(topics);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Update([FromForm] TopicUpdateRequest request)
+       
+        [HttpGet("{Id}")]
+        public async Task<IActionResult> GetById(int Id)
+        {
+            var topic = await _topicService.GetTopicById(Id);
+            return Ok(topic);
+        }
+
+        [HttpPut("{topicId}")]
+        public async Task<IActionResult> Update([FromRoute]int topicId, [FromForm] TopicUpdateRequest request)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+            request.TopicId = topicId;
 
             var result = await _topicService.Update(request);
 
@@ -78,5 +76,18 @@ namespace FakeNewsFilter.API.Controllers
             }
             return Ok(result);
         }
+
+        [HttpDelete("{topicId}")]
+        public async Task<IActionResult> Delete(int topicId)
+        {
+            var result = await _topicService.Delete(topicId);
+
+            if (result.IsSuccessed == false)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+
     }
 }

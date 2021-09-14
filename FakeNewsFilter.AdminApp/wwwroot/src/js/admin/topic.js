@@ -57,7 +57,7 @@ $(document).ready(function () {
                     if ($image) {
                         // For Avatar image
                         var $output =
-                            '<img src="' + $assetPath + 'images/topics/' + $image + '" alt="Avatar" height="32" width="32">';
+                            '<img src="' + $assetPath + 'images/topics/' + $image + '" alt="Thumb Topic" height="32" width="32">';
                     } else {
                         // For Avatar badge
                         var stateNum = Math.floor(Math.random() * 6) + 1;
@@ -129,7 +129,7 @@ $(document).ready(function () {
                         '<a class="me-1" href="/Topic/Edit/' + $topicId + ' "data-bs-toggle="tooltip" data-bs-placement="top" title = "Edit" > ' +
                         feather.icons['edit'].toSvg({ class: 'font-medium-1 text-warning' }) +
                         '</a>' +
-                        '<a class="me-1" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">' +
+                        '<a class="me-1" onclick=DeleteData("' + $topicId + '"); data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">' +
                         feather.icons['trash'].toSvg({ class: 'font-medium-1 text-danger' }) +
                         '</a>' +
                         '<a class="me-1" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="View">' +
@@ -325,6 +325,22 @@ $(function () {
         });
     }
 });
+
+function DeleteData(topicId) {
+    if (confirm("Are you sure want to delele this user?")) {
+        Delete(topicId);
+    }
+    else {
+        return false;
+    }
+}
+
+function Delete(topicId) {
+    var url = "/Topic/Delete";
+    $.post(url, { topicId: topicId }, function (data) {
+        location.reload();
+    });
+}
 
 
 

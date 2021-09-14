@@ -218,8 +218,7 @@ namespace FakeNewsFilter.Application.System.Users
                     //Thêm mới Avatar nếu Tài khoản chưa có
                     if(thumb == null)
                     {
-                        
-                        var avatar = new Media()
+                        user.Avatar = new Media()
                         {
                             Caption = "Avatar User",
                             DateCreated = DateTime.Now,
@@ -227,13 +226,7 @@ namespace FakeNewsFilter.Application.System.Users
                             PathMedia = await this.SaveFile(request.MediaFile),
                             Type = MediaType.Image,
                             SortOrder = 1
-                        };
-                        _context.Media.Add(avatar);
-
-                        await _context.SaveChangesAsync();
-
-                        user.Avatar = avatar;
-                        
+                        }; 
                     }
                     else
                     {

@@ -99,5 +99,79 @@ namespace FakeNewsFilter.AdminApp.Services
             return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
         }
 
+        //Lấy thông tin topic (dựa vào Id)
+        public async Task<ApiResult<TopicInfoVM>> GetById(int Id)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+
+            var response = await client.GetAsync($"/api/topic/{Id}");
+            var body = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<TopicInfoVM>>(body);
+
+            return JsonConvert.DeserializeObject<ApiErrorResult<TopicInfoVM>>(body);
+        }
+
+        //Cập nhật tài khoản
+        public async Task<ApiResult<bool>> UpdateTopic(TopicUpdateRequest request)
+        {
+            var client = _httpClientFactory.CreateClient();
+
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+
+            var requestContent = new MultipartFormDataContent();
+
+            if (request.ThumbImage != null)
+            {
+                byte[] data;
+                using (var br = new BinaryReader(request.ThumbImage.OpenReadStream()))
+                {
+                    data = br.ReadBytes((int)request.ThumbImage.OpenReadStream().Length);
+                }
+                ByteArrayContent bytes = new ByteArrayContent(data);
+                requestContent.Add(bytes, "ThumbImage", request.ThumbImage.FileName);
+            }
+
+            
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Label) ? "" : request.Label.ToString()), "Label");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Tag) ? "" : request.Tag.ToString()), "Tag");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Description) ? "" : request.Description.ToString()), "Description");
+
+
+            var response = await client.PutAsync($"/api/topic/" + request.TopicId, requestContent);
+
+            var result = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+
+                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);
+
+            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
+        }
+
+        //Xoá người dùng
+        public async Task<ApiResult<bool>> Delete(int topicId)
+        {
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+            var response = await client.DeleteAsync($"/api/topic/"+topicId);
+            var body = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(body);
+
+            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(body);
+        }
     }
 }

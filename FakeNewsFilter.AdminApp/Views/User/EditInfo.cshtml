@@ -2,7 +2,7 @@
     
     <div class="tab-pane active" id="information" aria-labelledby="information-tab" role="tabpanel">
         <!-- users edit start -->
-        <form class="row g-3" asp-action="Edit" asp-controller="User" method="post" enctype="multipart/form-data">
+        <form class="row g-3" asp-action="Edit" asp-controller="User" method="post" enctype="multipart/form-data" id="form-validate">
             <div class="d-flex mb-2">
                 <img src="http://localhost:5001/images/avatars/@Model.Avatar" alt="users avatar" class="user-avatar users-avatar-shadow rounded me-2 my-25 cursor-pointer" height="90" width="90">
                 <div class="mt-50">
@@ -27,7 +27,7 @@
             <!-- users edit ends -->
             <!-- users edit account form start -->
             <div class="col-md-6">
-                <input type="text" asp-for="UserId" class="form-control border-start-0" hidden>
+                <input type="number" asp-for="UserId" class="form-control border-start-0" hidden>
                 <label for="inputLastName1" class="form-label">User Name</label>
                 <div class="input-group">
                     <span class="input-group-text bg-transparent"><i data-feather="at-sign"></i></span>

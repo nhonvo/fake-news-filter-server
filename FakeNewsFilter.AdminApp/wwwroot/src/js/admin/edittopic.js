@@ -1,7 +1,7 @@
 ﻿
 /*=========================================================================================
-  File Name: edituser.js
-  Description: User Manage JS
+  File Name: edittopic.js
+  Description: Topic Manage JS
   ----------------------------------------------------------------------------------------
   Item Name: Fake News Filter - Admin
   Author: Bui Phu Khuyen
@@ -11,9 +11,9 @@
 //Change Picture
 $(function () {
 
-    var changePicture = $('#MediaFile'),
-        userAvatar = $('.user-avatar'),
-        form = $('.form-validate');
+    var changePicture = $('#ThumbImage'),
+        userAvatar = $('.thumb-image'),
+        form = $('#form-validate');
 
     // Change user profile picture
     if (changePicture.length) {
@@ -38,15 +38,14 @@ $(function () {
                     event.preventDefault();
                 },
                 rules: {
-                    UserName: {
+                    Label: {
                         required: true
                     },
-                    Name: {
+                    Tag: {
                         required: true
                     },
-                    Email: {
+                    Description: {
                         required: true,
-                        email: true
                     }
                 }
             });

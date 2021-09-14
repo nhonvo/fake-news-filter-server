@@ -95,6 +95,10 @@ namespace FakeNewsFilter.API.Controllers
         public async Task<IActionResult> Delete(String id)
         {
             var result = await _userService.Delete(id);
+            if (result.IsSuccessed == false)
+            {
+                return BadRequest(result);
+            }
             return Ok(result);
         }
 

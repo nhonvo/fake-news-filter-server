@@ -68,5 +68,56 @@ namespace FakeNewsFilter.AdminApp.Controllers
 
             return RedirectToAction("Index");
         }
+
+        [HttpGet]
+        [Breadcrumb("Edit Topic", FromController = typeof(TopicController), FromPage = typeof(Index))]
+        public async Task<IActionResult> Edit(int Id)
+        {
+     
+            var result = await _topicApiClient.GetById(Id);
+
+            if(result.IsSuccessed)
+            {
+                return View(result.ResultObj);
+            }
+
+            return View("Error", "Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(TopicUpdateRequest request)
+        {
+            if (!ModelState.IsValid)
+                return View();
+
+            var result = await _topicApiClient.UpdateTopic(request);
+
+            if (result.IsSuccessed)
+            {
+                TempData["result"] = $"Update Topic {request.Tag} successful!";
+                return RedirectToAction("Index");
+            }
+
+            ModelState.AddModelError("", result.Message);
+
+            return View(request);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int topicId)
+        {
+            if (!ModelState.IsValid)
+                return View();
+
+            var result = await _topicApiClient.Delete(topicId);
+            if (result.IsSuccessed)
+            {
+                TempData["result"] = $"Delete Topic successful!";
+                return Json("done");
+            }
+
+            ModelState.AddModelError("", result.Message);
+            return Json("error");
+        }
     }
 }

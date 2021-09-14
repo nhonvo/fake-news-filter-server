@@ -140,7 +140,7 @@ $(document).ready(function () {
                         '<a class="me-1" href="/User/Edit/' + $userid+ ' "data-bs-toggle="tooltip" data-bs-placement="top" title = "Edit" > ' +
                         feather.icons['edit'].toSvg({ class: 'font-medium-1 text-warning' }) +
                         '</a>' +
-                        '<a class="me-1" onclick=DeleteData("'+$userid+'"); title="Delete">' +
+                        '<a class="me-1" onclick=DeleteData("' + $userid +'"); data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">' +
                         feather.icons['trash'].toSvg({ class: 'font-medium-1 text-danger' }) +
                         '</a>' +
                         '<a class="me-1" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="View">' +
@@ -301,7 +301,7 @@ function DeleteData(UserId) {
 function Delete(UserId) {
     var url = "/User/Delete";
     $.post(url, { UserId: UserId }, function (data) {
-        window.location.href = '/User/Index';
+        location.reload();
     });
 }
 

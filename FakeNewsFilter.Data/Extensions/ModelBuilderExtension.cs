@@ -55,7 +55,9 @@ namespace FakeNewsFilter.Data.Extensions
                    TopicId = 1,
                    Label = "breaking",
                    Tag = "afghanistan",
+                   ThumbTopic = 2,
                    Description = "Follow live as the Taliban seizes territory across Afghanistan in the wake of the U.S. withdrawal."
+                   
                },
                new TopicNews()
                {
@@ -69,6 +71,7 @@ namespace FakeNewsFilter.Data.Extensions
                    TopicId = 3,
                    Label = "featured",
                    Tag = "coronavirus",
+                   ThumbTopic = 1,
                    Description = "Outbreak of respiratory virus that has killed over 1 million and infected 100 milion worldwide."
                },
                new TopicNews()
@@ -123,7 +126,6 @@ namespace FakeNewsFilter.Data.Extensions
                     Name = "Kabul’s Sudden Fall to Taliban Ends U.S. Era in Afghanistan",
                     Description = "Taliban fighters poured into the Afghan capital on Sunday amid scenes of panic and chaos, bringing a swift and shocking close to the Afghan government and the 20-year American era in the country.",
                     PostURL = "https://www.nytimes.com/2021/08/15/world/asia/afghanistan-taliban-kabul-surrender.html",
-                    ThumbNews = 1,
                     LanguageCode = "EN",
                     Publisher = "New York Times",
                     DatePublished = new DateTime(2021,02,10),
@@ -135,7 +137,6 @@ namespace FakeNewsFilter.Data.Extensions
                     Name = "Texas high court blocks mask mandates in two of state's largest counties",
                     Description = "The masking orders in Dallas and Bexar counties were issued after a lower court ruled last week in favor of local officials.",
                     PostURL = "https://www.nbcnews.com/news/us-news/texas-high-court-blocks-mask-mandates-two-state-s-largest-n1276884",
-                    ThumbNews = 2,
                     LanguageCode = "EN",
                     Publisher = "NBC News",
                     DatePublished = new DateTime(2021, 02, 20),
