@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FakeNewsFilter.API.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class TopicController : ControllerBase
     {
         private readonly TopicService _topicService;

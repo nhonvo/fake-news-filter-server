@@ -1,5 +1,4 @@
-﻿using System;
-namespace FakeNewsFilter.ViewModel.Common
+﻿namespace FakeNewsFilter.ViewModel.Common
 {
     public class ApiResult<T>
     {

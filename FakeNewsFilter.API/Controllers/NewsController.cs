@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace FakeNewsFilter.API.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class NewsController : ControllerBase
     {
         private readonly INewsService _newsService;

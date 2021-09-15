@@ -156,11 +156,6 @@ namespace FakeNewsFilter
             {
                 endpoints.MapControllers();
             });
-
-            
-
-
-
         }
     }
 }
