@@ -28,19 +28,20 @@ namespace FakeNewsFilter.Application.Catalog.NewsManage
         public NewsService(ApplicationDBContext context, FileStorageService storageService, IMapper mapper)
         {
             _context = context;
+            FileStorageService.USER_CONTENT_FOLDER_NAME = "images/news";
             _storageService = storageService;
             _mapper = mapper;
         }
 
         //Get All News
-        public async Task<List<NewsViewModel>> GetAll()
+        public async Task<ApiResult<List<NewsViewModel>>> GetAll(string language)
         {
             var query = from n in _context.News
                         join nit in _context.NewsInTopics on n.NewsId equals nit.NewsId
                         join c in _context.TopicNews on nit.TopicId equals c.TopicId
                         select new { n, nit, c };
 
-            var data = await query
+            var list_news = await query.Where(t => string.IsNullOrEmpty(language) || t.n.LanguageCode == language)
                .Select(x => new NewsViewModel()
                {
                    NewsId = x.n.NewsId,
@@ -53,115 +54,16 @@ namespace FakeNewsFilter.Application.Catalog.NewsManage
                    Timestamp = x.n.Timestamp,
                }).ToListAsync();
 
-            return data;
-        }
-
-        public async Task<List<NewsViewModel>> GetAllByTopicId(GetPublicNewsRequest request)
-        {
-            var query = from n in _context.News
-                        join nit in _context.NewsInTopics on n.NewsId equals nit.NewsId
-                        join c in _context.TopicNews on nit.TopicId equals c.TopicId
-                        select new { n, nit, c };
-
-
-            var data = await query
-                .Select(x => new NewsViewModel()
-                {
-                    NewsId = x.n.NewsId,
-                    Name = x.n.Name,
-                    TopicId = x.c.TopicId,
-                    LabelTopic = x.c.Label,
-                }).ToListAsync();
-
-            return data;
-        }
-
-        //Get All News In Topic (Limit 50)
-        public async Task<List<NewsViewModel>> GetNewsInTopic(GetPublicNewsRequest request)
-        {
-            var query = from n in _context.News
-                        join nit in _context.NewsInTopics on n.NewsId equals nit.NewsId
-                        join c in _context.TopicNews on nit.TopicId equals c.TopicId
-                        select new { n, nit, c };
-
-            query = query.Where(t => request.TopicId == t.nit.TopicId);
-
-            var data = await query
-                .Select(x => new NewsViewModel()
-                {
-                    NewsId = x.n.NewsId,
-                    Name = x.n.Name,
-                    TopicId = x.c.TopicId,
-                    LabelTopic = x.c.Label,
-                    Description = x.c.Description,
-                    PostURL = x.n.PostURL,
-                    Media = _mapper.Map<MediaViewModel>(x.n.Media),
-                    Timestamp = x.n.Timestamp,
-                }).ToListAsync();
-
-            return data;
-        }
-
-        //Create News
-        public async Task<int> Create(NewsCreateRequest request)
-        {
-            var news = new News()
+            if(list_news == null)
             {
-                Name = request.Name,
-
-                Description = request.Description,
-
-                PostURL = request.PostURL,
-
-                Timestamp = DateTime.Now
-            };
-           
-
-            //Save Image on Host
-            if (request.ThumbnailMedia != null)
-            {
-                news.Media = new Media()
-                {
-                    Caption = "Thumbnail Image",
-                    DateCreated = DateTime.Now,
-                    FileSize = request.ThumbnailMedia.Length,
-                    PathMedia = await SaveFile(request.ThumbnailMedia),
-                    Type = (Data.Enums.MediaType)request.Type,
-                };
+                return new ApiErrorResult<List<NewsViewModel>>("Get All News Unsuccessful!");
             }
 
-            _context.News.Add(news);
-
-
-            _context.NewsInTopics.Add(new NewsInTopics()
-            {
-                NewsId = news.NewsId,
-                TopicId = request.TopicId
-            });
-
-            await _context.SaveChangesAsync();
-
-            return news.NewsId;
+            return new ApiSuccessResult<List<NewsViewModel>>("Get All News Successful!", list_news);
         }
 
-        //Delete News
-        public async Task<int> Delete(int newsId)
-        {
-            var news = await _context.News.FindAsync(newsId);
-
-            if (news == null) throw new FakeNewsException($"Cannot find a News with Id: {newsId}");
-
-            var media = _context.Media.Find(newsId);
-
-            if (media != null && media.PathMedia != null)
-                await _storageService.DeleteFileAsync(media.PathMedia);
-
-            _context.News.Remove(news);
-
-            return await _context.SaveChangesAsync();
-        }
-
-        public async Task<NewsViewModel> GetById(int newsId)
+        //Lấy thông tin News thông qua Id
+        public async Task<ApiResult<NewsViewModel>> GetById(int newsId)
         {
             var news = await _context.News.FindAsync(newsId);
 
@@ -184,24 +86,140 @@ namespace FakeNewsFilter.Application.Catalog.NewsManage
                     TopicId = topic.TopicId,
                     LabelTopic = labeltopic.Label
                 };
-            }
 
-            return result;
+                return new ApiSuccessResult<NewsViewModel>("Get This News Successful!", result);
+            }
+            else
+            {
+                return new ApiErrorResult<NewsViewModel>("Get This News Unsuccessful!");
+            }
         }
 
-        //Update News
-        public async Task<int> Update(NewsUpdateRequest request)
+
+        //Lấy tất cả các tin tức có trong chủ đề
+        public async Task<ApiResult<List<NewsViewModel>>> GetNewsInTopic(GetPublicNewsRequest request)
+        {
+                var query = from n in _context.News
+                        join nit in _context.NewsInTopics on n.NewsId equals nit.NewsId
+                        join c in _context.TopicNews on nit.TopicId equals c.TopicId
+                        select new { n, nit, c };
+
+            query = query.Where(t => request.TopicId == t.nit.TopicId).Where(t => string.IsNullOrEmpty(request.LanguageCode) || t.n.LanguageCode == request.LanguageCode) ;
+
+            var data = await query
+                .Select(x => new NewsViewModel()
+                {
+                    NewsId = x.n.NewsId,
+                    Name = x.n.Name,
+                    TopicId = x.c.TopicId,
+                    LabelTopic = x.c.Label,
+                    Description = x.c.Description,
+                    PostURL = x.n.PostURL,
+                    Media = _mapper.Map<MediaViewModel>(x.n.Media),
+                    Timestamp = x.n.Timestamp,
+                }).ToListAsync();
+
+            if (data == null)
+            {
+                return new ApiErrorResult<List<NewsViewModel>>("Get All News In Topic Unsuccessful!");
+            }
+
+            return new ApiSuccessResult<List<NewsViewModel>>("Get All News In Topic Successful!", data);
+        }
+
+        //Tạo mới 1 tin tức
+        public async Task<ApiResult<int>> Create(NewsCreateRequest request)
+        {
+            var news = new News()
+            {
+                Name = request.Name,
+
+                Description = request.Description,
+
+                PostURL = request.PostURL,
+
+                DatePublished = request.DatePublished ?? DateTime.Now,
+
+                Publisher = request.Publisher,
+
+                LanguageCode = request.LanguageCode,
+
+                Timestamp = DateTime.Now
+            };
+           
+
+            //Save Image on Host
+            if (request.ThumbNews != null)
+            {
+                news.Media = new Media()
+                {
+                    Caption = "Thumbnail Image",
+                    DateCreated = DateTime.Now,
+                    FileSize = request.ThumbNews.Length,
+                    PathMedia = await SaveFile(request.ThumbNews),
+                    Type = (Data.Enums.MediaType)request.Type,
+                };
+            }
+
+            _context.News.Add(news);
+
+            await _context.SaveChangesAsync();
+
+            _context.NewsInTopics.Add(new NewsInTopics()
+            {
+                NewsId = news.NewsId,
+                TopicId = request.TopicId
+            });
+
+            if(await _context.SaveChangesAsync() == 0)
+            {
+                await _storageService.DeleteFileAsync(news.Media.PathMedia);
+                return new ApiErrorResult<int>("Create News Unsuccessful! Try again");
+            }
+
+            return new ApiSuccessResult<int>("Create News Successful!", news.NewsId);
+        }
+
+        //Xoá tin tức
+        public async Task<ApiResult<bool>> Delete(int newsId)
+        {
+            var news = await _context.News.FindAsync(newsId);
+
+            if (news == null)
+                return new ApiErrorResult<bool>($"Cannont find a news with Id is: {newsId}");
+
+            var media = _context.Media.Find(news.ThumbNews);
+
+            if (media != null && media.PathMedia != null)
+            {
+                await _storageService.DeleteFileAsync(media.PathMedia);
+                _context.Media.Remove(media);
+            }
+            _context.News.Remove(news);
+
+            if(await _context.SaveChangesAsync() == 0)
+            {
+                return new ApiErrorResult<bool>("Delete News Unsuccessful! Try again");
+            }
+
+            return new ApiSuccessResult<bool>("Delete News Successful!", false);
+        }
+
+        
+        //Cập nhật tin tức
+        public async Task<ApiResult<bool>> Update(NewsUpdateRequest request)
         {
             var news_update = await _context.News.FindAsync(request.Id);
 
-            if (news_update == null) throw new FakeNewsException($"Cannont find a news with Id is: {request.Id}");
+            if (news_update == null)
+                return new ApiErrorResult<bool>($"Cannont find a news with Id is: {request.Id}");
 
-            news_update.Name = request.Name;
-            news_update.Description = request.Description;
-            news_update.PostURL = request.SourceLink;
+            news_update.Name = request.Name ?? news_update.Name ;
+            news_update.Description = request.Description ?? news_update.Description;
+            news_update.PostURL = request.SourceLink ?? news_update.PostURL;
 
             //Save Image
-            if (request.ThumbnailMedia != null || request.MediaLink != null)
+            if (request.ThumbNews != null || request.MediaLink != null)
             {
                 var thumb = _context.Media.FirstOrDefault(i => i.MediaId == news_update.ThumbNews);
 
@@ -212,10 +230,10 @@ namespace FakeNewsFilter.Application.Catalog.NewsManage
                     await _storageService.DeleteFileAsync(thumb.PathMedia);
                     thumb.PathMedia = null;
                 }
-                if (request.ThumbnailMedia != null)
+                if (request.ThumbNews != null)
                 {
-                    thumb.FileSize = request.ThumbnailMedia.Length;
-                    thumb.PathMedia = await SaveFile(request.ThumbnailMedia);
+                    thumb.FileSize = request.ThumbNews.Length;
+                    thumb.PathMedia = await SaveFile(request.ThumbNews);
                 }
 
                 thumb.Type = request.Type;
@@ -223,19 +241,30 @@ namespace FakeNewsFilter.Application.Catalog.NewsManage
                 _context.Media.Update(thumb);
             }
 
-            return await _context.SaveChangesAsync();
+            if (await _context.SaveChangesAsync() == 0)
+            {
+                return new ApiErrorResult<bool>("Update News Unsuccessful! Try again");
+            }
+
+            return new ApiSuccessResult<bool>("Update News Successful!", false);
         }
 
         //Update Link News
-        public async Task<bool> UpdateLink(int newsId, string newLink)
+        public async Task<ApiResult<bool>> UpdateLink(int newsId, string newLink)
         {
             var news_update = await _context.News.FindAsync(newsId);
 
-            if (news_update == null) throw new FakeNewsException($"Cannont find a news with Id is: {newsId}");
+            if (news_update == null) 
+                   return new ApiErrorResult<bool>($"Cannont find a news with Id is: {newsId}");
 
             news_update.PostURL = newLink;
 
-            return await _context.SaveChangesAsync() > 0;
+            if (await _context.SaveChangesAsync() == 0)
+            {
+                return new ApiErrorResult<bool>("Update Link News Unsuccessful! Try again");
+            }
+
+            return new ApiSuccessResult<bool>("Update Link News Successful!", false);
         }
 
         private async Task<string> SaveFile(IFormFile file)

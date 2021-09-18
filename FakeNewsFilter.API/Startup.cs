@@ -49,18 +49,19 @@ namespace FakeNewsFilter
             //Declare DI
             services.AddTransient<FileStorageService>();
             services.AddTransient<TopicService>();
-            services.AddTransient<NewsService>();
             services.AddTransient<UserManager<User>, UserManager<User>>();
             services.AddTransient<SignInManager<User>, SignInManager<User>>();
             services.AddTransient<RoleManager<Role>, RoleManager<Role>>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IRoleService, RoleService>();
+            services.AddTransient<INewsService, NewsService>();
 
 
 
             //Fluent Validation   
             services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
-            
+
+
             //Swagger
             services.AddSwaggerGen(c =>
             {

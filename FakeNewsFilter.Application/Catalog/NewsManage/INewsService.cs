@@ -1,26 +1,24 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using FakeNewsFilter.ViewModel.Catalog.Media;
 using FakeNewsFilter.ViewModel.Catalog.NewsManage;
 using FakeNewsFilter.ViewModel.Common;
-using Microsoft.AspNetCore.Http;
 
 namespace FakeNewsFilter.Application.Catalog.NewsManage
 {
     public interface INewsService
     {
-        Task<List<NewsViewModel>> GetAll();
+        Task<ApiResult<List<NewsViewModel>>> GetAll(string language);
 
-        public Task<List<NewsViewModel>> GetNewsInTopic(GetPublicNewsRequest request);
+        Task<ApiResult<List<NewsViewModel>>> GetNewsInTopic(GetPublicNewsRequest request);
 
-        Task<int> Create(NewsCreateRequest request);
+        Task<ApiResult<int>> Create(NewsCreateRequest request);
 
-        Task<int> Delete(int NewsId);
+        Task<ApiResult<bool>> Delete(int NewsId);
 
-        Task<NewsViewModel> GetById(int newsId);
+        Task<ApiResult<NewsViewModel>> GetById(int newsId);
 
-        Task<int> Update(NewsUpdateRequest request);
+        Task<ApiResult<bool>> Update(NewsUpdateRequest request);
 
-        Task<bool> UpdateLink(int newsId, string newLink);
+        Task<ApiResult<bool>> UpdateLink(int newsId, string newLink);
     }
 }

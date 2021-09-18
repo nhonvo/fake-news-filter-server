@@ -12,8 +12,6 @@ namespace FakeNewsFilter.ViewModel.Catalog.Media
 
         public string PathMedia { get; set; }
 
-        public string Url { get; set; }
-
         public string Caption { get; set; }
 
         public int Duration { get; set; }
@@ -22,6 +20,5 @@ namespace FakeNewsFilter.ViewModel.Catalog.Media
 
         public long FileSize { get; set; }
 
-        public IFormFile MediaFile { get; set; }
     }
 }

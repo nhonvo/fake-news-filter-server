@@ -1,7 +1,5 @@
 ﻿using FakeNewsFilter.Application.Catalog.NewsManage;
 using FakeNewsFilter.ViewModel.Catalog.NewsManage;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -28,12 +26,12 @@ namespace FakeNewsFilter.API.Controllers
             }
             var newsId = await _newsService.Create(request);
 
-            if (newsId == 0)
+            if (newsId.ResultObj == 0)
             {
                 return BadRequest("Cannot create news");
             }
 
-            var news = await _newsService.GetById(newsId);
+            var news = await _newsService.GetById(newsId.ResultObj);
 
             return CreatedAtAction(nameof(GetById), new { newsId = newsId }, news);
         }
@@ -43,19 +41,19 @@ namespace FakeNewsFilter.API.Controllers
         {
             var result = await _newsService.Delete(newsId);
 
-            if (result == 0)
+            if (result.ResultObj != false)
             {
-                return BadRequest("Cannot delete this news");
+                return BadRequest(result);
             }
-            return Ok("Deleted successfully");
+            return Ok(result);
         }
 
         // GET: api/news
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetNews(string languageCode)
         {
-            var topics = await _newsService.GetAll();
+            var topics = await _newsService.GetAll(languageCode);
 
             return Ok(topics);
         }
@@ -68,21 +66,21 @@ namespace FakeNewsFilter.API.Controllers
 
             if (news == null)
             {
-                return NotFound("Cannot find product");
+                return NotFound(news);
             }
             return Ok(news);
         }
 
         // GET: api/news/topic
-        [HttpGet("topic")]
+        [HttpGet("Topic")]
         [AllowAnonymous]
         public async Task<IActionResult> GetNewsInTopic([FromQuery] GetPublicNewsRequest request)
         {
             var newsintopics = await _newsService.GetNewsInTopic(request);
 
-            if (newsintopics.Count == 0)
+            if (newsintopics.ResultObj.Count == 0)
             {
-                return NotFound($"Cannot find product in topic {request.TopicId}");
+                return NotFound(newsintopics);
             }
             return Ok(newsintopics);
         }
@@ -97,11 +95,11 @@ namespace FakeNewsFilter.API.Controllers
 
             var result = await _newsService.Update(request);
 
-            if (result == 0)
+            if (result.ResultObj != false)
             {
-                return BadRequest("Cannot update this news");
+                return BadRequest(result);
             }
-            return Ok("Updated successfully");
+            return Ok(result);
         }
 
         [HttpPatch("link/{newsId}/{newLink}")]
@@ -113,11 +111,11 @@ namespace FakeNewsFilter.API.Controllers
             }
             var result = await _newsService.UpdateLink(newsId, newLink);
 
-            if (result == false)
+            if (result.ResultObj == false)
             {
-                return BadRequest("Cannot update link this news");
+                return BadRequest(result);
             }
-            return Ok("Updated link successfully");
+            return Ok(result);
         }
     }
 }

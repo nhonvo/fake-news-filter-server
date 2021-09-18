@@ -54,6 +54,10 @@ namespace FakeNewsFilter.Application.Catalog.TopicNews
                 RealTime = x.synctime,
             }).ToListAsync();
 
+            if(topics == null)
+            {
+                return new ApiErrorResult<List<TopicInfoVM>>("Get Topic Unsuccessful!");
+            }
             return new ApiSuccessResult<List<TopicInfoVM>>("Get 10 Topic News Hot Successful!",topics) ;
         }
 
@@ -195,8 +199,11 @@ namespace FakeNewsFilter.Application.Catalog.TopicNews
             var media = _context.Media.Find(TopicId);
 
             if (media != null && media.PathMedia != null)
+            {
                 await _storageService.DeleteFileAsync(media.PathMedia);
-
+                _context.Media.Remove(media);
+            }
+                
             _context.TopicNews.Remove(topic);
 
             var result = await _context.SaveChangesAsync();
