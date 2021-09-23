@@ -6,6 +6,7 @@ using FakeNewsFilter.ViewModel.Common;
 using FakeNewsFilter.ViewModel.System.Roles;
 using FakeNewsFilter.ViewModel.System.Users;
 using FakeNewsFilter.WebApp.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartBreadcrumbs.Attributes;
 
@@ -13,16 +14,17 @@ using SmartBreadcrumbs.Attributes;
 
 namespace FakeNewsFilter.WebApp.Controllers
 {
+    [Authorize]
     public class UserController : BaseController
     {
-        private readonly IUserApiClient _userApiClient;
+        private readonly IUserApi _userApi;
 
-        private readonly IRoleApiClient _roleApiClient;
+        private readonly IRoleApi _roleApi;
 
-        public UserController(IUserApiClient userApiClient, IRoleApiClient roleApiClient)
+        public UserController(IUserApi userApi, IRoleApi roleApi)
         {
-            _userApiClient = userApiClient;
-            _roleApiClient = roleApiClient;
+            _userApi = userApi;
+            _roleApi = roleApi;
         }
 
         [Breadcrumb("User Manager")]
@@ -42,7 +44,7 @@ namespace FakeNewsFilter.WebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> GetUsers()
         {
-            var data = await _userApiClient.GetUsers();
+            var data = await _userApi.GetUsers();
 
             return Json(new
             {
@@ -59,7 +61,7 @@ namespace FakeNewsFilter.WebApp.Controllers
                 return RedirectToAction("Index");
             }
 
-            var result = await _userApiClient.RegisterUser(request);
+            var result = await _userApi.RegisterUser(request);
 
             if(result.IsSuccessed)
             {
@@ -78,7 +80,7 @@ namespace FakeNewsFilter.WebApp.Controllers
         {
             var model = new UserRoleViewModel();
 
-            var result = await _userApiClient.GetById(id);
+            var result = await _userApi.GetById(id);
 
             if (result.IsSuccessed)
             {
@@ -113,7 +115,7 @@ namespace FakeNewsFilter.WebApp.Controllers
             if (!ModelState.IsValid)
                 return View();
 
-            var result = await _userApiClient.UpdateUser(request);
+            var result = await _userApi.UpdateUser(request);
             if (result.IsSuccessed)
             {
                 TempData["result"] = $"Update User {request.UserName} successful!";
@@ -130,7 +132,7 @@ namespace FakeNewsFilter.WebApp.Controllers
             if (!ModelState.IsValid)
                 return View();
 
-            var result = await _userApiClient.Delete(UserId);
+            var result = await _userApi.Delete(UserId);
             if (result.IsSuccessed)
             {
                 TempData["result"] = $"Delete User successful!";
@@ -156,7 +158,7 @@ namespace FakeNewsFilter.WebApp.Controllers
             if (!ModelState.IsValid)
                 return View();
 
-            var result = await _userApiClient.RoleAssign(request.Id, request);
+            var result = await _userApi.RoleAssign(request.Id, request);
 
             if (result.IsSuccessed)
             {
@@ -173,8 +175,8 @@ namespace FakeNewsFilter.WebApp.Controllers
 
         private async Task<RoleAssignRequest> GetRoleAssignRequest(Guid id)
         {
-            var userObj = await _userApiClient.GetById(id);
-            var roleObj = await _roleApiClient.GetAll();
+            var userObj = await _userApi.GetById(id);
+            var roleObj = await _roleApi.GetAll();
             var roleAssignRequest = new RoleAssignRequest();
             foreach (var role in roleObj.ResultObj)
             {
@@ -187,7 +189,6 @@ namespace FakeNewsFilter.WebApp.Controllers
             }
             return roleAssignRequest;
         }
-
 
     }
 }

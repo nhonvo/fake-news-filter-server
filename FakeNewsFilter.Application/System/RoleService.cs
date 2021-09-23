@@ -7,8 +7,13 @@ using FakeNewsFilter.ViewModel.System.Roles;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace FakeNewsFilter.Application.System.Roles
+namespace FakeNewsFilter.Application.System
 {
+    public interface IRoleService
+    {
+        Task<List<RoleViewModel>> GetAll();
+    }
+
     public class RoleService : IRoleService
     {
         private readonly RoleManager<Role> _roleManager;

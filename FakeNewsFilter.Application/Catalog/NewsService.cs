@@ -15,8 +15,25 @@ using FakeNewsFilter.ViewModel.Catalog.NewsManage;
 using FakeNewsFilter.ViewModel.Catalog.Media;
 using AutoMapper;
 
-namespace FakeNewsFilter.Application.Catalog.NewsManage
+namespace FakeNewsFilter.Application.Catalog
 {
+    public interface INewsService
+    {
+        Task<ApiResult<List<NewsViewModel>>> GetAll(string language);
+
+        Task<ApiResult<List<NewsViewModel>>> GetNewsInTopic(GetPublicNewsRequest request);
+
+        Task<ApiResult<int>> Create(NewsCreateRequest request);
+
+        Task<ApiResult<bool>> Delete(int NewsId);
+
+        Task<ApiResult<NewsViewModel>> GetById(int newsId);
+
+        Task<ApiResult<bool>> Update(NewsUpdateRequest request);
+
+        Task<ApiResult<bool>> UpdateLink(int newsId, string newLink);
+    }
+
     public class NewsService : INewsService
     {
         private readonly ApplicationDBContext _context;

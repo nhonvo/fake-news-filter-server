@@ -8,8 +8,15 @@ using FakeNewsFilter.Utilities.Exceptions;
 using FakeNewsFilter.ViewModel.Catalog.Media;
 using Microsoft.AspNetCore.Http;
 
-namespace FakeNewsFilter.Application.Catalog.MediaManager
+namespace FakeNewsFilter.Application.Catalog
 {
+    public interface IManageMediaService
+    {
+        Task<int> RemoveMedia(int mediaId);
+
+        Task<int> UpdateMedia(int mediaId, NewsMediaCreateRequest request);
+    }
+
     public class ManageMediaService : IManageMediaService
     {
         private readonly ApplicationDBContext _context;

@@ -11,13 +11,18 @@ using Newtonsoft.Json;
 
 namespace FakeNewsFilter.AdminApp.Services
 {
-    public class RoleApiClient : IRoleApiClient
+    public interface IRoleApi
+    {
+        Task<ApiResult<List<RoleViewModel>>> GetAll();
+    }
+
+    public class RoleApi : IRoleApi
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _configuration;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public RoleApiClient(IHttpClientFactory httpClientFactory,
+        public RoleApi(IHttpClientFactory httpClientFactory,
                    IHttpContextAccessor httpContextAccessor,
                     IConfiguration configuration)
         {

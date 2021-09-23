@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FakeNewsFilter.AdminApp.Services;
 using FakeNewsFilter.ViewModel.Catalog.TopicNews;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartBreadcrumbs.Attributes;
 
@@ -11,14 +12,15 @@ using SmartBreadcrumbs.Attributes;
 
 namespace FakeNewsFilter.AdminApp.Controllers
 {
+    [Authorize]
     public class TopicController : BaseController
     {
-        private readonly TopicApiClient _topicApiClient;
+        private readonly TopicApi _topicApi;
         // GET: /<controller>/
 
-        public TopicController(TopicApiClient topicApiClient)
+        public TopicController(TopicApi topicApi)
         {
-            _topicApiClient = topicApiClient;
+            _topicApi = topicApi;
         }
 
         [Breadcrumb("Topic Manager")]
@@ -38,7 +40,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
         [HttpGet]
         public async Task<IActionResult> GetTopics()
         {
-            var data = await _topicApiClient.GetTopicInfo();
+            var data = await _topicApi.GetTopicInfo();
 
             return Json(new
             {
@@ -55,7 +57,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
                 return RedirectToAction("Index");
             }
 
-            var result = await _topicApiClient.CreateTopic(request);
+            var result = await _topicApi.CreateTopic(request);
 
             if (result.IsSuccessed)
             {
@@ -74,7 +76,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
         public async Task<IActionResult> Edit(int Id)
         {
      
-            var result = await _topicApiClient.GetById(Id);
+            var result = await _topicApi.GetById(Id);
 
             if(result.IsSuccessed)
             {
@@ -90,7 +92,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
             if (!ModelState.IsValid)
                 return View();
 
-            var result = await _topicApiClient.UpdateTopic(request);
+            var result = await _topicApi.UpdateTopic(request);
 
             if (result.IsSuccessed)
             {
@@ -109,7 +111,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
             if (!ModelState.IsValid)
                 return View();
 
-            var result = await _topicApiClient.Delete(topicId);
+            var result = await _topicApi.Delete(topicId);
             if (result.IsSuccessed)
             {
                 TempData["result"] = $"Delete Topic successful!";

@@ -44,9 +44,9 @@ namespace FakeNewsFilter.WebApp
 
             //HttpClient
             services.AddHttpClient();
-            services.AddTransient<IUserApiClient, UserApiClient>();
-            services.AddTransient<IRoleApiClient, RoleApiClient>();
-            services.AddTransient<TopicApiClient>();
+            services.AddTransient<IUserApi, UserApi>();
+            services.AddTransient<IRoleApi, RoleApi>();
+            services.AddTransient<TopicApi>();
 
             //Authen
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using FakeNewsFilter.Application.System.Users;
+using FakeNewsFilter.Application.System;
 using FakeNewsFilter.Utilities.Exceptions;
 using FakeNewsFilter.ViewModel.System.Users;
 using Microsoft.AspNetCore.Authorization;

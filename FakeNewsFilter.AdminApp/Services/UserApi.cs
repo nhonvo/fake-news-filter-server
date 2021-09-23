@@ -14,7 +14,24 @@ using System.Threading.Tasks;
 
 namespace FakeNewsFilter.WebApp.Services
 {
-    public class UserApiClient : IUserApiClient
+    public interface IUserApi
+    {
+        Task<ApiResult<string>> Authenticate(LoginRequest request);
+
+        Task<ApiResult<List<UserViewModel>>> GetUsers();
+
+        Task<ApiResult<bool>> RegisterUser(RegisterRequest request);
+
+        Task<ApiResult<bool>> UpdateUser(UserUpdateRequest request);
+
+        Task<ApiResult<UserViewModel>> GetById(Guid id);
+
+        Task<ApiResult<bool>> Delete(String UserId);
+
+        Task<ApiResult<bool>> RoleAssign(Guid id, RoleAssignRequest request);
+    }
+
+    public class UserApi : IUserApi
     {
         private readonly IHttpClientFactory _httpClientFactory;
 
@@ -22,7 +39,7 @@ namespace FakeNewsFilter.WebApp.Services
 
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public UserApiClient(IHttpClientFactory httpClientFactory, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+        public UserApi(IHttpClientFactory httpClientFactory, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _httpClientFactory = httpClientFactory;
             _configuration = configuration;

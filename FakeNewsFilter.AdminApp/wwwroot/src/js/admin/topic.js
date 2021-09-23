@@ -327,7 +327,7 @@ $(function () {
 });
 
 function DeleteData(topicId) {
-    if (confirm("Are you sure want to delele this user?")) {
+    if (confirm("Are you sure want to delele this topic?")) {
         Delete(topicId);
     }
     else {

@@ -14,8 +14,21 @@ using FakeNewsFilter.ViewModel.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
-namespace FakeNewsFilter.Application.Catalog.TopicNews
+namespace FakeNewsFilter.Application.Catalog
 {
+    public interface ITopicService
+    {
+        Task<ApiResult<List<TopicInfoVM>>> GetTopicHotNews();
+
+        Task<ApiResult<bool>> Create(TopicCreateRequest request);
+
+        Task<ApiResult<TopicInfoVM>> GetTopicById(int Id);
+
+        Task<ApiResult<bool>> Delete(int TopicId);
+
+        Task<ApiResult<bool>> Update(TopicUpdateRequest request);
+    }
+
     public class TopicService : ITopicService
     {
         private readonly ApplicationDBContext _context;

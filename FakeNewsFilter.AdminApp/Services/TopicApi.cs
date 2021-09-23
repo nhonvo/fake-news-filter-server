@@ -13,7 +13,14 @@ using Newtonsoft.Json;
 
 namespace FakeNewsFilter.AdminApp.Services
 {
-    public class TopicApiClient : ITopicApiClient
+    public interface ITopicApi
+    {
+        Task<ApiResult<List<TopicInfoVM>>> GetTopicInfo();
+
+        Task<ApiResult<bool>> CreateTopic(TopicCreateRequest request);
+    }
+
+    public class TopicApi : ITopicApi
     {
         private readonly IHttpClientFactory _httpClientFactory;
 
@@ -21,7 +28,7 @@ namespace FakeNewsFilter.AdminApp.Services
 
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public TopicApiClient(IHttpClientFactory httpClientFactory, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+        public TopicApi(IHttpClientFactory httpClientFactory, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _httpClientFactory = httpClientFactory;
             _configuration = configuration;

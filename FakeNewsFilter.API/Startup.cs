@@ -1,10 +1,8 @@
 using System.Collections.Generic;
-using FakeNewsFilter.Application.Catalog.NewsManage;
-using FakeNewsFilter.Application.Catalog.TopicNews;
+using FakeNewsFilter.Application.Catalog;
 using FakeNewsFilter.Application.Common;
 using FakeNewsFilter.Application.Mapping;
-using FakeNewsFilter.Application.System.Roles;
-using FakeNewsFilter.Application.System.Users;
+using FakeNewsFilter.Application.System;
 using FakeNewsFilter.Data.EF;
 using FakeNewsFilter.Data.Entities;
 using FakeNewsFilter.Utilities.Constants;

@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using FakeNewsFilter.Application.Catalog.TopicNews;
+using FakeNewsFilter.Application.Catalog;
 using FakeNewsFilter.ViewModel.Catalog.TopicNews;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

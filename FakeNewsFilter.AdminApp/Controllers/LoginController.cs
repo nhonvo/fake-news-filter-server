@@ -22,12 +22,12 @@ namespace FakeNewsFilter.AdminApp.Controllers
 
     public class LoginController : Controller
     {
-        private readonly IUserApiClient _userApiClient;
+        private readonly IUserApi _userApi;
         private readonly IConfiguration _configuration;
 
-        public LoginController(IUserApiClient userApiClient, IConfiguration configuration)
+        public LoginController(IUserApi userApi, IConfiguration configuration)
         {
-            _userApiClient = userApiClient;
+            _userApi = userApi;
             _configuration = configuration;
         }
 
@@ -48,7 +48,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
                     return View();
                 }
 
-                var result = await _userApiClient.Authenticate(request);
+                var result = await _userApi.Authenticate(request);
 
                 if(result.ResultObj == null)
                 {
@@ -89,10 +89,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
                 {
                     ViewBag.Error = "You don't have role to access ";
                     return View();
-                }
-
-            
-            
+                }      
         }
 
         private ClaimsPrincipal ValidateToken(string jwtToken)

@@ -5,6 +5,15 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace FakeNewsFilter.Application.Common
 {
+    public interface IFileStorageService
+    {
+        Task DeleteFileAsync(string fileName);
+
+        string GetFileUrl(string fileName);
+
+        Task SaveFileAsync(Stream mediaBinaryStream, string fileName);
+    }
+
     public class FileStorageService : IFileStorageService
     {
         public static string USER_CONTENT_FOLDER_NAME { get; set; } = "images";

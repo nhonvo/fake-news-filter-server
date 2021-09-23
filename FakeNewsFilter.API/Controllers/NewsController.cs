@@ -1,4 +1,4 @@
-﻿using FakeNewsFilter.Application.Catalog.NewsManage;
+﻿using FakeNewsFilter.Application.Catalog;
 using FakeNewsFilter.ViewModel.Catalog.NewsManage;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

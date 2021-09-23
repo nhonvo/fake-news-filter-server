@@ -26,11 +26,8 @@
   <ItemGroup>
     <Folder Include="Catalog\" />
     <Folder Include="Common\" />
-    <Folder Include="Catalog\MediaManage\" />
     <Folder Include="Mapping\" />
     <Folder Include="System\" />
-    <Folder Include="System\Users\" />
-    <Folder Include="System\Roles\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FakeNewsFilter.Data\FakeNewsFilter.Data.csproj" />
