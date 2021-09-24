@@ -10,6 +10,7 @@ namespace FakeNewsFilter.ViewModel.Catalog.TopicNews
 
         public string Description { get; set; }
 
+
         public IFormFile ThumbTopic { get; set; }
     }
 }

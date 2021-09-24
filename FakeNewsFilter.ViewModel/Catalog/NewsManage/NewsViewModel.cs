@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using FakeNewsFilter.Data.Enums;
 using FakeNewsFilter.ViewModel.Catalog.Media;
+using FakeNewsFilter.ViewModel.Catalog.TopicNews;
 
 namespace FakeNewsFilter.ViewModel.Catalog.NewsManage
 {
@@ -17,13 +20,15 @@ namespace FakeNewsFilter.ViewModel.Catalog.NewsManage
 
         public string PostURL { get; set; }
 
-        public MediaViewModel Media { get; set; }
+        public MediaViewModel ThumbNews { get; set; }
+
+        public Status Status { get; set; }
 
         public DateTime Timestamp { get; set; }
 
-        public int TopicId { get; set; }
+        public string LanguageCode { get; set; }
 
-        public string LabelTopic { get; set; }
+        public List<TopicInfo> TopicInfo { get; set; }
 
     }
 }

@@ -18,6 +18,7 @@
     <Folder Include="Views\Shared\Components\" />
     <Folder Include="wwwroot\src\js\admin\" />
     <Folder Include="Views\Topic\" />
+    <Folder Include="Views\News\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FakeNewsFilter.ViewModel\FakeNewsFilter.ViewModel.csproj">
@@ -39,6 +40,7 @@
     <None Remove="Views\Shared\Components\" />
     <None Remove="SmartBreadcrumbs" />
     <None Remove="Views\Topic\" />
+    <None Remove="Views\News\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.18" />

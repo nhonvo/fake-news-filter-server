@@ -18,6 +18,8 @@ namespace FakeNewsFilter.ViewModel.Catalog.Media
 
         public DateTime DateCreated { get; set; }
 
+        public Status Status { get; set; }
+
         public long FileSize { get; set; }
 
     }

@@ -30,6 +30,8 @@ namespace FakeNewsFilter.Data.Entities
 
         public Media Media { get; set; }
 
+        public Status Status { get; set; }
+
         public List<NewsInTopics> NewsInTopics { get; set; }
 
     }

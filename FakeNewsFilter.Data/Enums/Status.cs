@@ -4,9 +4,9 @@ namespace FakeNewsFilter.Data.Enums
 {
     public enum Status
     {
-        InActive,
-        Active,
         Pending,
+        Active,
+        InActive,
         Archive
     }
 }

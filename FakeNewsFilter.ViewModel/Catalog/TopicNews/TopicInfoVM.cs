@@ -3,6 +3,12 @@ using FakeNewsFilter.Data.Enums;
 
 namespace FakeNewsFilter.ViewModel.Catalog.TopicNews
 {
+    public class TopicInfo
+    {
+        public int TopicId { get; set; }
+        public string TopicName { get; set; }
+    }
+
     public class TopicInfoVM
     {
         public int TopicId { get; set; }

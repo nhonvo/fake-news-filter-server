@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using FakeNewsFilter.Data.EF;
 using FakeNewsFilter.Data.Entities;
-using FakeNewsFilter.Utilities.Exceptions;
 using FakeNewsFilter.ViewModel.Common;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +13,7 @@ using FakeNewsFilter.Application.Common;
 using FakeNewsFilter.ViewModel.Catalog.NewsManage;
 using FakeNewsFilter.ViewModel.Catalog.Media;
 using AutoMapper;
+using FakeNewsFilter.ViewModel.Catalog.TopicNews;
 
 namespace FakeNewsFilter.Application.Catalog
 {
@@ -53,22 +53,18 @@ namespace FakeNewsFilter.Application.Catalog
         //Get All News
         public async Task<ApiResult<List<NewsViewModel>>> GetAll(string language)
         {
-            var query = from n in _context.News
-                        join nit in _context.NewsInTopics on n.NewsId equals nit.NewsId
-                        join c in _context.TopicNews on nit.TopicId equals c.TopicId
-                        select new { n, nit, c };
-
-            var list_news = await query.Where(t => string.IsNullOrEmpty(language) || t.n.LanguageCode == language)
-               .Select(x => new NewsViewModel()
+            var list_news = await _context.News.Where(t => string.IsNullOrEmpty(language) || t.LanguageCode == language)
+                .Select(x => new NewsViewModel()
                {
-                   NewsId = x.n.NewsId,
-                   Name = x.n.Name,
-                   TopicId = x.c.TopicId,
-                   LabelTopic = x.c.Label,
-                   Description = x.c.Description,
-                   PostURL = x.n.PostURL,
-                   Media = _mapper.Map<MediaViewModel>(x.n.Media),
-                   Timestamp = x.n.Timestamp,
+                   NewsId = x.NewsId,
+                   Name = x.Name,
+                   TopicInfo = x.NewsInTopics.Select(o => new TopicInfo { TopicId = o.TopicId, TopicName = o.TopicNews.Tag}).ToList(),
+                   Description = x.Description,
+                   PostURL = x.PostURL,
+                   Status = x.Status,
+                   ThumbNews = _mapper.Map<MediaViewModel>(x.Media),
+                   LanguageCode = x.LanguageCode,
+                   Timestamp = x.Timestamp,      
                }).ToListAsync();
 
             if(list_news == null)
@@ -89,7 +85,7 @@ namespace FakeNewsFilter.Application.Catalog
             if (news != null)
             {
                 var topic = _context.NewsInTopics.Where(x => x.NewsId == newsId).FirstOrDefault();
-                var labeltopic = _context.TopicNews.Find(topic.TopicId);
+                var tagtopic = _context.TopicNews.Find(topic.TopicId);
                 var media = _context.Media.Where(x => x.MediaId == news.ThumbNews).FirstOrDefault();
 
                 result = new NewsViewModel()
@@ -98,17 +94,18 @@ namespace FakeNewsFilter.Application.Catalog
                     Name = news.Name,
                     Description = news.Description,
                     PostURL = news.PostURL,
-                    Media = _mapper.Map<MediaViewModel>(media),
+                    ThumbNews = _mapper.Map<MediaViewModel>(media),
+                    LanguageCode = news.LanguageCode,
                     Timestamp = news.Timestamp,
-                    TopicId = topic.TopicId,
-                    LabelTopic = labeltopic.Label
+                    Status = news.Status,
+                    TopicInfo = news.NewsInTopics.Select(o => new TopicInfo { TopicId = o.TopicId, TopicName = o.TopicNews.Tag }).ToList(),
                 };
 
                 return new ApiSuccessResult<NewsViewModel>("Get This News Successful!", result);
             }
             else
             {
-                return new ApiErrorResult<NewsViewModel>("Get This News Unsuccessful!");
+                return new ApiErrorResult<NewsViewModel>("News is not found!");
             }
         }
 
@@ -128,11 +125,11 @@ namespace FakeNewsFilter.Application.Catalog
                 {
                     NewsId = x.n.NewsId,
                     Name = x.n.Name,
-                    TopicId = x.c.TopicId,
-                    LabelTopic = x.c.Label,
+                    LanguageCode = x.n.LanguageCode,
                     Description = x.c.Description,
                     PostURL = x.n.PostURL,
-                    Media = _mapper.Map<MediaViewModel>(x.n.Media),
+                    Status = x.n.Status,
+                    ThumbNews = _mapper.Map<MediaViewModel>(x.n.Media),
                     Timestamp = x.n.Timestamp,
                 }).ToListAsync();
 

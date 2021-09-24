@@ -6,6 +6,7 @@ using FakeNewsFilter.AdminApp.Services;
 using FakeNewsFilter.ViewModel.Catalog.TopicNews;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using SmartBreadcrumbs.Attributes;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -24,7 +25,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
         }
 
         [Breadcrumb("Topic Manager")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             if (TempData["result"] != null)
             {
@@ -34,6 +35,10 @@ namespace FakeNewsFilter.AdminApp.Controllers
             {
                 ViewBag.Error = TempData["Error"];
             }
+            var data = await _topicApi.GetTopicInfo();
+
+            ViewBag.ListTopic = new SelectList(data.ResultObj.GroupBy(x => x.Label).Select(y => y.First()).Distinct(), "Label", "Label");
+
             return View();
         }
 
