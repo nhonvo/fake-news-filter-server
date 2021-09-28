@@ -93,7 +93,7 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 1,
-                            DateCreated = new DateTime(2021, 9, 24, 20, 48, 25, 90, DateTimeKind.Local).AddTicks(730),
+                            DateCreated = new DateTime(2021, 9, 28, 13, 38, 16, 917, DateTimeKind.Local).AddTicks(8990),
                             Duration = 0,
                             FileSize = 0L,
                             PathMedia = "covid.jpeg",
@@ -103,7 +103,7 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 2,
-                            DateCreated = new DateTime(2021, 9, 24, 20, 48, 25, 90, DateTimeKind.Local).AddTicks(2730),
+                            DateCreated = new DateTime(2021, 9, 28, 13, 38, 16, 918, DateTimeKind.Local).AddTicks(1380),
                             Duration = 0,
                             FileSize = 0L,
                             PathMedia = "taliban.jpeg",
@@ -183,7 +183,7 @@ namespace FakeNewsFilter.Data.Migrations
                             Publisher = "New York Times",
                             SocialBeliefs = 0.0,
                             Status = 0,
-                            Timestamp = new DateTime(2021, 9, 24, 20, 48, 25, 90, DateTimeKind.Local).AddTicks(7810)
+                            Timestamp = new DateTime(2021, 9, 28, 13, 38, 16, 918, DateTimeKind.Local).AddTicks(7090)
                         },
                         new
                         {
@@ -196,7 +196,7 @@ namespace FakeNewsFilter.Data.Migrations
                             Publisher = "NBC News",
                             SocialBeliefs = 0.0,
                             Status = 0,
-                            Timestamp = new DateTime(2021, 9, 24, 20, 48, 25, 91, DateTimeKind.Local).AddTicks(720)
+                            Timestamp = new DateTime(2021, 9, 28, 13, 38, 16, 918, DateTimeKind.Local).AddTicks(9960)
                         },
                         new
                         {
@@ -208,7 +208,7 @@ namespace FakeNewsFilter.Data.Migrations
                             PostURL = "https://www.nytimes.com/live/2021/08/15/world/covid-delta-variant-vaccine/covid-hospitalizations-cdc",
                             SocialBeliefs = 0.0,
                             Status = 0,
-                            Timestamp = new DateTime(2021, 9, 24, 20, 48, 25, 91, DateTimeKind.Local).AddTicks(1150)
+                            Timestamp = new DateTime(2021, 9, 28, 13, 38, 16, 919, DateTimeKind.Local).AddTicks(770)
                         });
                 });
 
@@ -223,7 +223,7 @@ namespace FakeNewsFilter.Data.Migrations
                     b.Property<DateTime>("Timestamp")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 9, 24, 20, 48, 24, 996, DateTimeKind.Local).AddTicks(7270));
+                        .HasDefaultValue(new DateTime(2021, 9, 28, 13, 38, 16, 831, DateTimeKind.Local).AddTicks(1990));
 
                     b.HasKey("TopicId", "NewsId");
 
@@ -275,14 +275,14 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             Id = new Guid("a3314be5-4c77-4fb6-82ad-302014682a73"),
-                            ConcurrencyStamp = "f1ecfd3a-3c4b-4696-88e0-5f69ab4f4d64",
+                            ConcurrencyStamp = "32c51a50-ea0b-4bf8-9314-35ce3eea0b67",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
                             Id = new Guid("b4314be5-4c77-4fb6-82ad-302014682b13"),
-                            ConcurrencyStamp = "43d9ab47-4715-4124-8d53-2fc41d13e762",
+                            ConcurrencyStamp = "26b7417c-8272-4a79-8f0b-75c92eb6a313",
                             Name = "Subscriber",
                             NormalizedName = "Subscriber"
                         });
@@ -468,14 +468,14 @@ namespace FakeNewsFilter.Data.Migrations
                         {
                             Id = new Guid("69db714f-9576-45ba-b5b7-f00649be00de"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "675df427-4111-4c23-be8e-5113f32377d1",
+                            ConcurrencyStamp = "f4b6a10a-a96d-4206-92aa-879a6e4fb17f",
                             Email = "bp.khuyen@hutech.edu.vn",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Bui Phu Khuyen",
                             NormalizedEmail = "BP.KHUYEN@HUTECH.EDU.VN",
                             NormalizedUserName = "khuyenpb",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOp/05CREDiqeh08HrvfS6YRWhbuC85K7in8QCwwZPhfhnXnT4SL7kQu1FRW6E0Ctg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPBu9zPAXydr6uoNgCfzTCj5C/wzSzI52+IksLoCqV+BFKkVqpzF+LOLqYa8F47n6w==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             Status = 0,

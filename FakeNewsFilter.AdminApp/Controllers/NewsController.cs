@@ -1,6 +1,7 @@
 ﻿
 using System.Threading.Tasks;
 using FakeNewsFilter.AdminApp.Services;
+using FakeNewsFilter.ViewModel.Catalog.NewsManage;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -53,6 +54,28 @@ namespace FakeNewsFilter.AdminApp.Controllers
             });
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Create(NewsCreateRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.ModelState = ModelState;
+                return RedirectToAction("Index");
+            }
+
+            var result = await _newsApi.CreateNews(request);
+
+            if (result.IsSuccessed)
+            {
+                TempData["Result"] = $"Create News Successful!";
+
+                return RedirectToAction("Index");
+            }
+
+            TempData["Error"] = result.Message;
+
+            return RedirectToAction("Index");
+        }
 
     }
 }

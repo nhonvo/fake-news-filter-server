@@ -14,6 +14,7 @@ using FakeNewsFilter.ViewModel.Catalog.NewsManage;
 using FakeNewsFilter.ViewModel.Catalog.Media;
 using AutoMapper;
 using FakeNewsFilter.ViewModel.Catalog.TopicNews;
+using FakeNewsFilter.Data.Enums;
 
 namespace FakeNewsFilter.Application.Catalog
 {
@@ -41,6 +42,8 @@ namespace FakeNewsFilter.Application.Catalog
         private readonly IMapper _mapper;
 
         private readonly FileStorageService _storageService;
+
+        public static readonly List<string> ImageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG" };
 
         public NewsService(ApplicationDBContext context, FileStorageService storageService, IMapper mapper)
         {
@@ -78,14 +81,14 @@ namespace FakeNewsFilter.Application.Catalog
         //Lấy thông tin News thông qua Id
         public async Task<ApiResult<NewsViewModel>> GetById(int newsId)
         {
-            var news = await _context.News.FindAsync(newsId);
+            var news = await _context.News.Include(t=>t.NewsInTopics).FirstOrDefaultAsync(t=>t.NewsId == newsId);
 
             NewsViewModel result = null;
 
             if (news != null)
             {
-                var topic = _context.NewsInTopics.Where(x => x.NewsId == newsId).FirstOrDefault();
-                var tagtopic = _context.TopicNews.Find(topic.TopicId);
+                var topic = news.NewsInTopics.Select(o => new TopicInfo { TopicId = o.TopicId, TopicName = _context.TopicNews.FirstOrDefault(m=>m.TopicId == o.TopicId).Tag}).ToList();
+
                 var media = _context.Media.Where(x => x.MediaId == news.ThumbNews).FirstOrDefault();
 
                 result = new NewsViewModel()
@@ -98,7 +101,7 @@ namespace FakeNewsFilter.Application.Catalog
                     LanguageCode = news.LanguageCode,
                     Timestamp = news.Timestamp,
                     Status = news.Status,
-                    TopicInfo = news.NewsInTopics.Select(o => new TopicInfo { TopicId = o.TopicId, TopicName = o.TopicNews.Tag }).ToList(),
+                    TopicInfo = topic.ToList(),
                 };
 
                 return new ApiSuccessResult<NewsViewModel>("Get This News Successful!", result);
@@ -152,6 +155,8 @@ namespace FakeNewsFilter.Application.Catalog
 
                 PostURL = request.PostURL,
 
+                OfficialRating = request.OfficialRating,
+
                 DatePublished = request.DatePublished ?? DateTime.Now,
 
                 Publisher = request.Publisher,
@@ -165,13 +170,15 @@ namespace FakeNewsFilter.Application.Catalog
             //Save Image on Host
             if (request.ThumbNews != null)
             {
+                bool checkExtension = ImageExtensions.Contains(Path.GetExtension(request.ThumbNews.FileName).ToUpperInvariant());
                 news.Media = new Media()
                 {
-                    Caption = "Thumbnail Image",
+                    
                     DateCreated = DateTime.Now,
                     FileSize = request.ThumbNews.Length,
                     PathMedia = await SaveFile(request.ThumbNews),
-                    Type = (Data.Enums.MediaType)request.Type,
+                    Type = checkExtension ? MediaType.Image : MediaType.Video,
+                    Caption = "Thumb News " + (checkExtension ? "Image" : "Video")
                 };
             }
 
@@ -179,12 +186,15 @@ namespace FakeNewsFilter.Application.Catalog
 
             await _context.SaveChangesAsync();
 
-            _context.NewsInTopics.Add(new NewsInTopics()
+            foreach(int topicId in request.TopicId)
             {
-                NewsId = news.NewsId,
-                TopicId = request.TopicId
-            });
-
+                _context.NewsInTopics.Add(new NewsInTopics()
+                {
+                    NewsId = news.NewsId,
+                    TopicId = topicId
+                });
+            }    
+            
             if(await _context.SaveChangesAsync() == 0)
             {
                 await _storageService.DeleteFileAsync(news.Media.PathMedia);
@@ -202,7 +212,7 @@ namespace FakeNewsFilter.Application.Catalog
             if (news == null)
                 return new ApiErrorResult<bool>($"Cannont find a news with Id is: {newsId}");
 
-            var media = _context.Media.Find(news.ThumbNews);
+            var media = _context.Media.Single(x => x.MediaId == news.ThumbNews);
 
             if (media != null && media.PathMedia != null)
             {

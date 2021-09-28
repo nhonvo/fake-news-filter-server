@@ -318,13 +318,17 @@ namespace FakeNewsFilter.Application.System
                 }
 
                 //Xoá Avatar ra khỏi Source
-                var avatar = _context.Media.Find(user.AvatarId);
+                var avatar = _context.Media.Single(x => x.MediaId == user.AvatarId);
 
-                if (avatar != null && avatar.PathMedia != null)
-                    await _storageService.DeleteFileAsync(avatar.PathMedia);
+                if (avatar != null )
+                    if(avatar.PathMedia != null)
+                        await _storageService.DeleteFileAsync(avatar.PathMedia);
+                _context.Media.Remove(avatar);
 
-                var reult = await _userManager.DeleteAsync(user);
-                if (reult.Succeeded)
+                
+                var result = await _userManager.DeleteAsync(user);
+
+                if (result.Succeeded)
                     return new ApiSuccessResult<bool>("Delete Successfull!", false);
 
                 return new ApiErrorResult<bool>("Delete Unsuccessfull!");

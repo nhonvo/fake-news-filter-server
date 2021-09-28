@@ -315,7 +315,6 @@ $(function () {
                         required: true
                     },
 
-
                 }
             });
         });

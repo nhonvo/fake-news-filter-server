@@ -24,9 +24,6 @@ $(document).ready(function () {
             2: { title: 'Inactive', class: 'badge-light-secondary' }
         };
 
-    
-
-
     select.each(function () {
         var $this = $(this);
         $this.wrap('<div class="position-relative"></div>');
@@ -127,7 +124,7 @@ $(document).ready(function () {
                 render: function (data, type, full, meta) {
                     var $status = full['languageCode'];
                     return (
-                        '<i class="' + language[$status] + '"></i>'
+                        '<div><i class="' + language[$status] + '"></i><span hidden>'+ $status + '</span></div>'
                     );
                 }
             },
@@ -252,47 +249,41 @@ $(document).ready(function () {
             this.api()
                 .columns(5)
                 .every(function () {
-                    var that = this;
-
-                    // Create the `select` element
-                    var select = $('<select id="FilterLabelTopic" class="form-select text-capitalize mb-md-0 mb-2"><option value=""> Select Label </option></select>')
-                        .appendTo('.topic_label')
+                    var column = this;
+                    var select = $(
+                        '<select id="FilterNewsLanguage" class="form-select text-capitalize mb-md-0 mb-2xx"><option value=""> Select Language </option></select>'
+                    )
+                        .appendTo('.news_language')
                         .on('change', function () {
-                            that
-                                .search($(this).val())
-                                .draw();
+                            var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                            column.search(val ? '^' + val + '$' : '', true, false).draw();
                         });
 
-                    // Add data
-                    var newArray =
-                        this
-                            .data()
-                            .sort()
-                            .map(function (d) {
-                                return d.toString().toLowerCase().replace(/\b\w/g, function (l) { return l.toUpperCase() })
-                            })
-                            .unique()
-                            .each(function (d) {
-                                select.append('<option value="' + d + '" class="text-capitalize">' + d + '</option>');
-                            });
+                    column
+                        .data()
+                        .unique()
+                        .sort()
+                        .each(function (d, j) {
+                            select.append(
+                                '<option value="' +
+                                    d +
+                                    '" class="text-capitalize">' +
+                                    d +
+                                '</option>'
+                            );
+                        });
 
-                    // Restore state saved values
-                    var state = this.state.loaded();
-                    if (state) {
-                        var val = state.columns[this.index()];
-                        select.val(val.search.search);
-                    }
                 });
             // Adding status filter once table initialized
             this.api()
-                .columns(6)
+                .columns(7)
                 .every(function () {
 
                     var column = this;
                     var select = $(
-                        '<select id="FilterTopicStatus" class="form-select text-capitalize mb-md-0 mb-2xx"><option value=""> Select Status </option></select>'
+                        '<select id="FilterNewsStatus" class="form-select text-capitalize mb-md-0 mb-2xx"><option value=""> Select Status </option></select>'
                     )
-                        .appendTo('.topic_status')
+                        .appendTo('.news_status')
                         .on('change', function () {
                             var val = $.fn.dataTable.util.escapeRegex($(this).val());
                             column.search(val ? '^' + val + '$' : '', true, false).draw();
@@ -337,8 +328,8 @@ $(function () {
             data: data
         });
 
-    var changePicture = $('#ThumbTopic'),
-        userAvatar = $('.topic-thumb'),
+    var changePicture = $('#ThumbNews'),
+        userAvatar = $('.news-thumb'),
         form = $('.form-validate');
 
     // Change user profile picture

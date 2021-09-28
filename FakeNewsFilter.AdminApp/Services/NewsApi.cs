@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -68,9 +69,49 @@ namespace FakeNewsFilter.AdminApp.Services
         }
 
 
-        public Task<ApiResult<bool>> CreateNews(NewsCreateRequest request)
+        public async Task<ApiResult<bool>> CreateNews(NewsCreateRequest request)
         {
-            throw new System.NotImplementedException();
+            var client = _httpClientFactory.CreateClient();
+
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+
+            var requestContent = new MultipartFormDataContent();
+
+            if (request.ThumbNews != null)
+            {
+                byte[] data;
+                using (var br = new BinaryReader(request.ThumbNews.OpenReadStream()))
+                {
+                    data = br.ReadBytes((int)request.ThumbNews.OpenReadStream().Length);
+                }
+                ByteArrayContent bytes = new ByteArrayContent(data);
+                requestContent.Add(bytes, "ThumbNews", request.ThumbNews.FileName);
+            }
+
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Name) ? "" : request.Name.ToString()), "Name");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.OfficialRating) ? "" : request.OfficialRating.ToString()), "OfficialRating");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Description) ? "" : request.Description.ToString()), "Description");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.PostURL) ? "" : request.PostURL.ToString()), "PostURL");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.LanguageCode) ? "" : request.LanguageCode.ToString()), "LanguageCode");
+
+            foreach(int topicId in request.TopicId)
+            {
+                requestContent.Add(new StringContent(string.IsNullOrEmpty(topicId.ToString()) ? "" : topicId.ToString()), "TopicId");
+            }
+
+            var response = await client.PostAsync($"/api/news/", requestContent);
+
+            var result = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+
+                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);
+
+            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
         }
     }
 }

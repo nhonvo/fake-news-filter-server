@@ -17,7 +17,7 @@
             <div class="tab-content">
                 <div class="tab-pane active" id="information" aria-labelledby="information-tab" role="tabpanel">
                     <!-- topic edit start -->
-                    <form class="row g-3" asp-action="Edit" asp-controller="Topic" method="post" enctype="multipart/form-data" id="form-validate" novalidate="novalidate">
+                    <form class="row g-3" asp-action="Edit" asp-controller="Topic" method="post" enctype="multipart/form-data">
                         <input type="hidden" asp-for="TopicId" />
                         <div class="d-flex mb-2">
                             <img src="http://localhost:5001/images/topics/@Model.ThumbImage" alt="thumb topic" class="thumb-image users-avatar-shadow rounded me-2 my-25 cursor-pointer" height="90" width="90">

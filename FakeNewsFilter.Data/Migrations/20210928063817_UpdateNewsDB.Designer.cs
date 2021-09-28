@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FakeNewsFilter.Data.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20210910115136_UpdateNewDB")]
-    partial class UpdateNewDB
+    [Migration("20210928063817_UpdateNewsDB")]
+    partial class UpdateNewsDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -95,7 +95,7 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 1,
-                            DateCreated = new DateTime(2021, 9, 10, 18, 51, 35, 514, DateTimeKind.Local).AddTicks(630),
+                            DateCreated = new DateTime(2021, 9, 28, 13, 38, 16, 917, DateTimeKind.Local).AddTicks(8990),
                             Duration = 0,
                             FileSize = 0L,
                             PathMedia = "covid.jpeg",
@@ -105,7 +105,7 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 2,
-                            DateCreated = new DateTime(2021, 9, 10, 18, 51, 35, 514, DateTimeKind.Local).AddTicks(2870),
+                            DateCreated = new DateTime(2021, 9, 28, 13, 38, 16, 918, DateTimeKind.Local).AddTicks(1380),
                             Duration = 0,
                             FileSize = 0L,
                             PathMedia = "taliban.jpeg",
@@ -154,6 +154,11 @@ namespace FakeNewsFilter.Data.Migrations
                         .HasColumnType("float")
                         .HasDefaultValue(0.0);
 
+                    b.Property<int>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
                     b.Property<int?>("ThumbNews")
                         .HasColumnType("int");
 
@@ -179,8 +184,8 @@ namespace FakeNewsFilter.Data.Migrations
                             PostURL = "https://www.nytimes.com/2021/08/15/world/asia/afghanistan-taliban-kabul-surrender.html",
                             Publisher = "New York Times",
                             SocialBeliefs = 0.0,
-                            ThumbNews = 1,
-                            Timestamp = new DateTime(2021, 9, 10, 18, 51, 35, 514, DateTimeKind.Local).AddTicks(8670)
+                            Status = 0,
+                            Timestamp = new DateTime(2021, 9, 28, 13, 38, 16, 918, DateTimeKind.Local).AddTicks(7090)
                         },
                         new
                         {
@@ -192,8 +197,8 @@ namespace FakeNewsFilter.Data.Migrations
                             PostURL = "https://www.nbcnews.com/news/us-news/texas-high-court-blocks-mask-mandates-two-state-s-largest-n1276884",
                             Publisher = "NBC News",
                             SocialBeliefs = 0.0,
-                            ThumbNews = 2,
-                            Timestamp = new DateTime(2021, 9, 10, 18, 51, 35, 515, DateTimeKind.Local).AddTicks(2090)
+                            Status = 0,
+                            Timestamp = new DateTime(2021, 9, 28, 13, 38, 16, 918, DateTimeKind.Local).AddTicks(9960)
                         },
                         new
                         {
@@ -204,7 +209,8 @@ namespace FakeNewsFilter.Data.Migrations
                             Name = "Hospitalizations of Americans under 50 have reached new pandemic highs",
                             PostURL = "https://www.nytimes.com/live/2021/08/15/world/covid-delta-variant-vaccine/covid-hospitalizations-cdc",
                             SocialBeliefs = 0.0,
-                            Timestamp = new DateTime(2021, 9, 10, 18, 51, 35, 515, DateTimeKind.Local).AddTicks(2520)
+                            Status = 0,
+                            Timestamp = new DateTime(2021, 9, 28, 13, 38, 16, 919, DateTimeKind.Local).AddTicks(770)
                         });
                 });
 
@@ -219,7 +225,7 @@ namespace FakeNewsFilter.Data.Migrations
                     b.Property<DateTime>("Timestamp")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 9, 10, 18, 51, 35, 426, DateTimeKind.Local).AddTicks(2890));
+                        .HasDefaultValue(new DateTime(2021, 9, 28, 13, 38, 16, 831, DateTimeKind.Local).AddTicks(1990));
 
                     b.HasKey("TopicId", "NewsId");
 
@@ -271,14 +277,14 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             Id = new Guid("a3314be5-4c77-4fb6-82ad-302014682a73"),
-                            ConcurrencyStamp = "9a1a0935-f55d-4227-803d-62488439ee15",
+                            ConcurrencyStamp = "32c51a50-ea0b-4bf8-9314-35ce3eea0b67",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
                             Id = new Guid("b4314be5-4c77-4fb6-82ad-302014682b13"),
-                            ConcurrencyStamp = "cfe05bfa-3dc7-4788-b9c2-2d73358d14cd",
+                            ConcurrencyStamp = "26b7417c-8272-4a79-8f0b-75c92eb6a313",
                             Name = "Subscriber",
                             NormalizedName = "Subscriber"
                         });
@@ -334,6 +340,7 @@ namespace FakeNewsFilter.Data.Migrations
                             Label = "breaking",
                             Status = 0,
                             Tag = "afghanistan",
+                            ThumbTopic = 2,
                             Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -352,6 +359,7 @@ namespace FakeNewsFilter.Data.Migrations
                             Label = "featured",
                             Status = 0,
                             Tag = "coronavirus",
+                            ThumbTopic = 1,
                             Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -462,14 +470,14 @@ namespace FakeNewsFilter.Data.Migrations
                         {
                             Id = new Guid("69db714f-9576-45ba-b5b7-f00649be00de"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "fbedf18e-1802-4e9b-8e0a-6911e2a63bc0",
+                            ConcurrencyStamp = "f4b6a10a-a96d-4206-92aa-879a6e4fb17f",
                             Email = "bp.khuyen@hutech.edu.vn",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Bui Phu Khuyen",
                             NormalizedEmail = "BP.KHUYEN@HUTECH.EDU.VN",
                             NormalizedUserName = "khuyenpb",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJy2n5VMoQE9vhQzeaRvq2HNFB50uQdNdniFmovhkdp3/++ovbsmS4ubG6T8CpNF2A==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPBu9zPAXydr6uoNgCfzTCj5C/wzSzI52+IksLoCqV+BFKkVqpzF+LOLqYa8F47n6w==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             Status = 0,

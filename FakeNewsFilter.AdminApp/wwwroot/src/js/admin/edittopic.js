@@ -13,7 +13,6 @@ $(function () {
 
     var changePicture = $('#ThumbImage'),
         userAvatar = $('.thumb-image'),
-        form = $('#form-validate');
 
     // Change user profile picture
     if (changePicture.length) {
@@ -26,33 +25,6 @@ $(function () {
                 }
             };
             reader.readAsDataURL(files[0]);
-        });
-    }
-
-    // Validation
-    if (form.length) {
-        $(form).each(function () {
-            var $this = $(this);
-            $this.validate({
-                submitHandler: function (form, event) {
-                    event.preventDefault();
-                },
-                rules: {
-                    Label: {
-                        required: true
-                    },
-                    Tag: {
-                        required: true
-                    },
-                    Description: {
-                        required: true,
-                    }
-                }
-            });
-        });
-
-        $(this).on('submit', function (event) {
-            event.preventDefault();
         });
     }
 });

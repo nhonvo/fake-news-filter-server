@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using FakeNewsFilter.Data.Enums;
 using Microsoft.AspNetCore.Http;
 
@@ -26,6 +27,6 @@ namespace FakeNewsFilter.ViewModel.Catalog.NewsManage
 
         public DateTime? DatePublished { get; set; }
 
-        public int TopicId { get; set; }
+        public List<int> TopicId { get; set; }
     }
 }
