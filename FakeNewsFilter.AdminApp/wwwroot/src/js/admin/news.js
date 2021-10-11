@@ -107,7 +107,7 @@ $(document).ready(function () {
                         '<a target="_blank" href="' + $link +
                         '" class="user_name text-truncate"><span class="fw-bold">' +
                         $name +
-                        '</span></a> <span class="fw-bold"> <i data-feather="copy"></i>' +
+                        '</span></a> <span class="fw-bold"> <i data-feather="code"></i>' +
                         $uname +
                         '</span></a> ' +
                         '<small class="emp_post text-muted">' +
