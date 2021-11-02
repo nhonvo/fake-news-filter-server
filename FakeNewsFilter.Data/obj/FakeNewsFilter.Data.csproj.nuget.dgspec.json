@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Data/FakeNewsFilter.Data.csproj": {}
+    "/Users/buiphukhuyen/fake-news-filter-server/FakeNewsFilter.Data/FakeNewsFilter.Data.csproj": {}
   },
   "projects": {
-    "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Data/FakeNewsFilter.Data.csproj": {
+    "/Users/buiphukhuyen/fake-news-filter-server/FakeNewsFilter.Data/FakeNewsFilter.Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Data/FakeNewsFilter.Data.csproj",
+        "projectUniqueName": "/Users/buiphukhuyen/fake-news-filter-server/FakeNewsFilter.Data/FakeNewsFilter.Data.csproj",
         "projectName": "FakeNewsFilter.Data",
-        "projectPath": "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Data/FakeNewsFilter.Data.csproj",
+        "projectPath": "/Users/buiphukhuyen/fake-news-filter-server/FakeNewsFilter.Data/FakeNewsFilter.Data.csproj",
         "packagesPath": "/Users/buiphukhuyen/.nuget/packages/",
-        "outputPath": "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Data/obj/",
+        "outputPath": "/Users/buiphukhuyen/fake-news-filter-server/FakeNewsFilter.Data/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/buiphukhuyen/.config/NuGet/NuGet.Config"
+          "/Users/buiphukhuyen/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"

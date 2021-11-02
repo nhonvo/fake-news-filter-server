@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FakeNewsFilter.Data.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20210928063817_UpdateNewsDB")]
-    partial class UpdateNewsDB
+    [Migration("20211102033359_UpdateNewDB")]
+    partial class UpdateNewDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -57,6 +57,40 @@ namespace FakeNewsFilter.Data.Migrations
                     b.ToTable("Follow");
                 });
 
+            modelBuilder.Entity("FakeNewsFilter.Data.Entities.Language", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(5)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(5)");
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Languages");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "vi",
+                            IsDefault = true,
+                            Name = "Tiếng Việt"
+                        },
+                        new
+                        {
+                            Id = "en",
+                            IsDefault = false,
+                            Name = "English"
+                        });
+                });
+
             modelBuilder.Entity("FakeNewsFilter.Data.Entities.Media", b =>
                 {
                     b.Property<int>("MediaId")
@@ -95,7 +129,7 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 1,
-                            DateCreated = new DateTime(2021, 9, 28, 13, 38, 16, 917, DateTimeKind.Local).AddTicks(8990),
+                            DateCreated = new DateTime(2021, 11, 2, 10, 33, 58, 611, DateTimeKind.Local).AddTicks(1960),
                             Duration = 0,
                             FileSize = 0L,
                             PathMedia = "covid.jpeg",
@@ -105,7 +139,7 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 2,
-                            DateCreated = new DateTime(2021, 9, 28, 13, 38, 16, 918, DateTimeKind.Local).AddTicks(1380),
+                            DateCreated = new DateTime(2021, 11, 2, 10, 33, 58, 611, DateTimeKind.Local).AddTicks(4040),
                             Duration = 0,
                             FileSize = 0L,
                             PathMedia = "taliban.jpeg",
@@ -131,8 +165,11 @@ namespace FakeNewsFilter.Data.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
-                    b.Property<string>("LanguageCode")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("LanguageId")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(5)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -167,6 +204,8 @@ namespace FakeNewsFilter.Data.Migrations
 
                     b.HasKey("NewsId");
 
+                    b.HasIndex("LanguageId");
+
                     b.HasIndex("ThumbNews")
                         .IsUnique()
                         .HasFilter("[ThumbNews] IS NOT NULL");
@@ -179,38 +218,38 @@ namespace FakeNewsFilter.Data.Migrations
                             NewsId = 1,
                             DatePublished = new DateTime(2021, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Taliban fighters poured into the Afghan capital on Sunday amid scenes of panic and chaos, bringing a swift and shocking close to the Afghan government and the 20-year American era in the country.",
-                            LanguageCode = "EN",
+                            LanguageId = "en",
                             Name = "Kabul’s Sudden Fall to Taliban Ends U.S. Era in Afghanistan",
                             PostURL = "https://www.nytimes.com/2021/08/15/world/asia/afghanistan-taliban-kabul-surrender.html",
                             Publisher = "New York Times",
                             SocialBeliefs = 0.0,
                             Status = 0,
-                            Timestamp = new DateTime(2021, 9, 28, 13, 38, 16, 918, DateTimeKind.Local).AddTicks(7090)
+                            Timestamp = new DateTime(2021, 11, 2, 10, 33, 58, 611, DateTimeKind.Local).AddTicks(9350)
                         },
                         new
                         {
                             NewsId = 2,
                             DatePublished = new DateTime(2021, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "The masking orders in Dallas and Bexar counties were issued after a lower court ruled last week in favor of local officials.",
-                            LanguageCode = "EN",
+                            LanguageId = "en",
                             Name = "Texas high court blocks mask mandates in two of state's largest counties",
                             PostURL = "https://www.nbcnews.com/news/us-news/texas-high-court-blocks-mask-mandates-two-state-s-largest-n1276884",
                             Publisher = "NBC News",
                             SocialBeliefs = 0.0,
                             Status = 0,
-                            Timestamp = new DateTime(2021, 9, 28, 13, 38, 16, 918, DateTimeKind.Local).AddTicks(9960)
+                            Timestamp = new DateTime(2021, 11, 2, 10, 33, 58, 612, DateTimeKind.Local).AddTicks(2170)
                         },
                         new
                         {
                             NewsId = 3,
                             DatePublished = new DateTime(2021, 4, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "A lagging vaccination campaign and the spread of the highly contagious Delta variant are driving a surge in Covid-19 hospitalizations in the United States..",
-                            LanguageCode = "EN",
+                            LanguageId = "en",
                             Name = "Hospitalizations of Americans under 50 have reached new pandemic highs",
                             PostURL = "https://www.nytimes.com/live/2021/08/15/world/covid-delta-variant-vaccine/covid-hospitalizations-cdc",
                             SocialBeliefs = 0.0,
                             Status = 0,
-                            Timestamp = new DateTime(2021, 9, 28, 13, 38, 16, 919, DateTimeKind.Local).AddTicks(770)
+                            Timestamp = new DateTime(2021, 11, 2, 10, 33, 58, 612, DateTimeKind.Local).AddTicks(2620)
                         });
                 });
 
@@ -225,7 +264,7 @@ namespace FakeNewsFilter.Data.Migrations
                     b.Property<DateTime>("Timestamp")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 9, 28, 13, 38, 16, 831, DateTimeKind.Local).AddTicks(1990));
+                        .HasDefaultValue(new DateTime(2021, 11, 2, 10, 33, 58, 537, DateTimeKind.Local).AddTicks(9810));
 
                     b.HasKey("TopicId", "NewsId");
 
@@ -277,14 +316,14 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             Id = new Guid("a3314be5-4c77-4fb6-82ad-302014682a73"),
-                            ConcurrencyStamp = "32c51a50-ea0b-4bf8-9314-35ce3eea0b67",
+                            ConcurrencyStamp = "5d27d846-d868-4ba3-820c-ada9e5357319",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
                             Id = new Guid("b4314be5-4c77-4fb6-82ad-302014682b13"),
-                            ConcurrencyStamp = "26b7417c-8272-4a79-8f0b-75c92eb6a313",
+                            ConcurrencyStamp = "e17fdbf9-4974-4af7-a814-6722afab8886",
                             Name = "Subscriber",
                             NormalizedName = "Subscriber"
                         });
@@ -308,6 +347,12 @@ namespace FakeNewsFilter.Data.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasDefaultValue("normal");
 
+                    b.Property<string>("LanguageId")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(5)");
+
                     b.Property<int>("Status")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
@@ -326,6 +371,8 @@ namespace FakeNewsFilter.Data.Migrations
 
                     b.HasKey("TopicId");
 
+                    b.HasIndex("LanguageId");
+
                     b.HasIndex("ThumbTopic")
                         .IsUnique()
                         .HasFilter("[ThumbTopic] IS NOT NULL");
@@ -338,6 +385,7 @@ namespace FakeNewsFilter.Data.Migrations
                             TopicId = 1,
                             Description = "Follow live as the Taliban seizes territory across Afghanistan in the wake of the U.S. withdrawal.",
                             Label = "breaking",
+                            LanguageId = "en",
                             Status = 0,
                             Tag = "afghanistan",
                             ThumbTopic = 2,
@@ -348,6 +396,7 @@ namespace FakeNewsFilter.Data.Migrations
                             TopicId = 2,
                             Description = "Best nonfiction features, in-depth stores and other long-form content from across the web.",
                             Label = "featured",
+                            LanguageId = "en",
                             Status = 0,
                             Tag = "in-depth",
                             Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -357,6 +406,7 @@ namespace FakeNewsFilter.Data.Migrations
                             TopicId = 3,
                             Description = "Outbreak of respiratory virus that has killed over 1 million and infected 100 milion worldwide.",
                             Label = "featured",
+                            LanguageId = "en",
                             Status = 0,
                             Tag = "coronavirus",
                             ThumbTopic = 1,
@@ -367,6 +417,7 @@ namespace FakeNewsFilter.Data.Migrations
                             TopicId = 4,
                             Description = "The top business and economic news from around the world with a focus on the United State.",
                             Label = "featured",
+                            LanguageId = "en",
                             Status = 0,
                             Tag = "top-business",
                             Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -376,6 +427,7 @@ namespace FakeNewsFilter.Data.Migrations
                             TopicId = 5,
                             Description = "Follow the presidential transition of Joe Biden, including policy plans, appointments and more.",
                             Label = "featured",
+                            LanguageId = "en",
                             Status = 0,
                             Tag = "biden-admin",
                             Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -384,6 +436,7 @@ namespace FakeNewsFilter.Data.Migrations
                         {
                             TopicId = 6,
                             Description = "Top stories from around the world with a focus on news not covered in other feeds.",
+                            LanguageId = "en",
                             Status = 0,
                             Tag = "top-news",
                             Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -392,6 +445,7 @@ namespace FakeNewsFilter.Data.Migrations
                         {
                             TopicId = 7,
                             Description = "Follow important local news: politics, business, top events and more. Updated everything evening.",
+                            LanguageId = "en",
                             Status = 0,
                             Tag = "boston",
                             Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -470,14 +524,14 @@ namespace FakeNewsFilter.Data.Migrations
                         {
                             Id = new Guid("69db714f-9576-45ba-b5b7-f00649be00de"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f4b6a10a-a96d-4206-92aa-879a6e4fb17f",
+                            ConcurrencyStamp = "d38825d9-7f75-4dae-a3ba-135d30caa993",
                             Email = "bp.khuyen@hutech.edu.vn",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Bui Phu Khuyen",
                             NormalizedEmail = "BP.KHUYEN@HUTECH.EDU.VN",
                             NormalizedUserName = "khuyenpb",
-                            PasswordHash = "AQAAAAEAACcQAAAAEPBu9zPAXydr6uoNgCfzTCj5C/wzSzI52+IksLoCqV+BFKkVqpzF+LOLqYa8F47n6w==",
+                            PasswordHash = "AQAAAAEAACcQAAAAECL7ef49iia4m6YlpbTEFna6783GzdN2M+tPcTloKeRJSVBnmwXftYIwWlgWjdQ5Xg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             Status = 0,
@@ -611,9 +665,17 @@ namespace FakeNewsFilter.Data.Migrations
 
             modelBuilder.Entity("FakeNewsFilter.Data.Entities.News", b =>
                 {
+                    b.HasOne("FakeNewsFilter.Data.Entities.Language", "Language")
+                        .WithMany("News")
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("FakeNewsFilter.Data.Entities.Media", "Media")
                         .WithOne("News")
                         .HasForeignKey("FakeNewsFilter.Data.Entities.News", "ThumbNews");
+
+                    b.Navigation("Language");
 
                     b.Navigation("Media");
                 });
@@ -639,9 +701,17 @@ namespace FakeNewsFilter.Data.Migrations
 
             modelBuilder.Entity("FakeNewsFilter.Data.Entities.TopicNews", b =>
                 {
+                    b.HasOne("FakeNewsFilter.Data.Entities.Language", "Language")
+                        .WithMany("TopicNews")
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("FakeNewsFilter.Data.Entities.Media", "Media")
                         .WithOne("TopicNews")
                         .HasForeignKey("FakeNewsFilter.Data.Entities.TopicNews", "ThumbTopic");
+
+                    b.Navigation("Language");
 
                     b.Navigation("Media");
                 });
@@ -672,6 +742,13 @@ namespace FakeNewsFilter.Data.Migrations
                     b.Navigation("Role");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("FakeNewsFilter.Data.Entities.Language", b =>
+                {
+                    b.Navigation("News");
+
+                    b.Navigation("TopicNews");
                 });
 
             modelBuilder.Entity("FakeNewsFilter.Data.Entities.Media", b =>

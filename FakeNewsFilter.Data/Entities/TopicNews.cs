@@ -18,13 +18,17 @@ namespace FakeNewsFilter.Data.Entities
 
         public Status Status { get; set; }
 
+        public int? ThumbTopic { get; set; }
+
+        public Media Media { get; set; }
+
+        public string LanguageId { set; get; }
+
+        public Language Language { get; set; }
+
         public List<NewsInTopics> NewsInTopics { get; set; }
 
         public List<Follow> Follows { get; set; }
 
-        public int? ThumbTopic { get; set; }
-
-        public Media Media { get; set; }
-        
     }
 }

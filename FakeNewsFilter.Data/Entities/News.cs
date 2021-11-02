@@ -18,8 +18,6 @@ namespace FakeNewsFilter.Data.Entities
 
         public string PostURL { get; set; }
 
-        public string LanguageCode { get; set; }
-
         public string Publisher { get; set; }
 
         public DateTime DatePublished { get; set; }
@@ -32,7 +30,13 @@ namespace FakeNewsFilter.Data.Entities
 
         public Status Status { get; set; }
 
+        public string LanguageId { set; get; }
+
+        public Language Language { get; set; }
+
         public List<NewsInTopics> NewsInTopics { get; set; }
+
+        
 
     }
 }

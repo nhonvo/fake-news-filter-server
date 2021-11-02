@@ -18,7 +18,7 @@ namespace FakeNewsFilter.Application.Catalog
 {
     public interface ITopicService
     {
-        Task<ApiResult<List<TopicInfoVM>>> GetTopicHotNews();
+        Task<ApiResult<List<TopicInfoVM>>> GetTopicHotNews(string languageId);
 
         Task<ApiResult<bool>> Create(TopicCreateRequest request);
 
@@ -43,12 +43,12 @@ namespace FakeNewsFilter.Application.Catalog
         }
 
         //Get 10 Topic News Hot
-        public async Task<ApiResult<List<TopicInfoVM>>> GetTopicHotNews()
+        public async Task<ApiResult<List<TopicInfoVM>>> GetTopicHotNews(string languageId)
         {
             try
             {
-                var query = from t in _context.TopicNews
-                            select new
+                var query = from t in _context.TopicNews where t.LanguageId == languageId
+                            select new 
                             {
                                 topic = t,
                                 newscount = _context.NewsInTopics.Where(n => n.TopicId == t.TopicId).Count(),
@@ -65,6 +65,7 @@ namespace FakeNewsFilter.Application.Catalog
                     NONews = x.newscount,
                     ThumbImage = x.thumb,
                     Status = x.topic.Status,
+                    LanguageId = x.topic.LanguageId,
                     RealTime = x.synctime,
                 }).ToListAsync();
 
@@ -91,7 +92,8 @@ namespace FakeNewsFilter.Application.Catalog
                     Label = request.Label,
                     Description = request.Description,
                     Tag = request.Tag,
-                    Timestamp = DateTime.Now
+                    Timestamp = DateTime.Now,
+                    LanguageId = request.LanguageId
                 };
 
                 //Save Media

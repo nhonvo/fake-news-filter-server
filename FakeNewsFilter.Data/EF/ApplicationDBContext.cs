@@ -20,22 +20,27 @@ namespace FakeNewsFilter.Data.EF
 
         public DbSet<News> News { get; set; }
 
+        public DbSet<TopicNews> TopicNews { get; set; }
+
+        public DbSet<Language> Languages { get; set; }
+
         public DbSet<NewsInTopics> NewsInTopics { get; set; }
 
-        public DbSet<TopicNews> TopicNews { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //Configuration using Fluent API
             modelBuilder.ApplyConfiguration(new AppConfigConfiguration());
-            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration()); 
             modelBuilder.ApplyConfiguration(new TopicNewsConfiguration());
+            modelBuilder.ApplyConfiguration(new LanguageConfiguration());
             modelBuilder.ApplyConfiguration(new NewsConfiguration());
             modelBuilder.ApplyConfiguration(new NewsInTopicsConfiguration());
             modelBuilder.ApplyConfiguration(new FollowConfiguration());
             modelBuilder.ApplyConfiguration(new UserRoleConfiguration());
             modelBuilder.ApplyConfiguration(new MediaConfiguration());
             modelBuilder.ApplyConfiguration(new UserRolesConfiguration());
+
 
             modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("UserClaims");
             modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("UserLogin").HasKey(x => x.UserId);

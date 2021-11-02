@@ -21,7 +21,7 @@ namespace FakeNewsFilter.ViewModel.Catalog.NewsManage
 
         public IFormFile ThumbNews{ get; set;}
 
-        public string LanguageCode { get; set; }
+        public string LanguageId { get; set; }
 
         public string Publisher { get; set; }
 

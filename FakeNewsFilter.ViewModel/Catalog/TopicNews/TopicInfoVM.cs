@@ -26,5 +26,7 @@ namespace FakeNewsFilter.ViewModel.Catalog.TopicNews
         public int NONews { get; set; }
 
         public DateTime? RealTime { get; set; }
+
+        public string LanguageId { get; set; }
     }
 }

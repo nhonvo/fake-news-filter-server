@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "SOlmx0YiDW/NherJ4OCPzpOPREXSGv5019kZHtYssTjSEdRrOpkr0/5Wb+moVb8t89yrFLCfIPv0fBhrOyOvSg==",
+  "dgSpecHash": "O9vIev+XdmYq2R4NEyR9WdDH4/KdJIq1slOePP30KVcnPnsUp8NVg3K5SOloyLcFDbo8U4qIYuM9dZrNVO5nVA==",
   "success": true,
-  "projectFilePath": "/Users/buiphukhuyen/FakeNewsFilter/FakeNewsFilter.Data/FakeNewsFilter.Data.csproj",
+  "projectFilePath": "/Users/buiphukhuyen/fake-news-filter-server/FakeNewsFilter.Data/FakeNewsFilter.Data.csproj",
   "expectedPackageFiles": [
     "/Users/buiphukhuyen/.nuget/packages/humanizer.core/2.8.26/humanizer.core.2.8.26.nupkg.sha512",
     "/Users/buiphukhuyen/.nuget/packages/microsoft.aspnetcore.cryptography.internal/5.0.9/microsoft.aspnetcore.cryptography.internal.5.0.9.nupkg.sha512",

@@ -24,9 +24,16 @@ namespace FakeNewsFilter.Data.Configurations
 
             builder.Property(x => x.Label).HasDefaultValue("normal");
 
+            builder.Property(x => x.LanguageId).IsUnicode(false).IsRequired().HasMaxLength(5);
+
+            builder.HasOne(x => x.Language).WithMany(x => x.TopicNews).HasForeignKey(x => x.LanguageId).OnDelete(DeleteBehavior.Restrict);
+
             builder.Property(x => x.Timestamp);
 
             builder.HasOne(x => x.Media).WithOne(x => x.TopicNews).HasForeignKey<TopicNews>(x => x.ThumbTopic);
+
+            
+
         }
     }
 }

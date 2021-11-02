@@ -20,7 +20,7 @@ namespace FakeNewsFilter.Application.Catalog
 {
     public interface INewsService
     {
-        Task<ApiResult<List<NewsViewModel>>> GetAll(string language);
+        Task<ApiResult<List<NewsViewModel>>> GetAll(string languageId);
 
         Task<ApiResult<List<NewsViewModel>>> GetNewsInTopic(GetPublicNewsRequest request);
 
@@ -54,9 +54,9 @@ namespace FakeNewsFilter.Application.Catalog
         }
 
         //Get All News
-        public async Task<ApiResult<List<NewsViewModel>>> GetAll(string language)
+        public async Task<ApiResult<List<NewsViewModel>>> GetAll(string languageId)
         {
-            var list_news = await _context.News.Where(t => string.IsNullOrEmpty(language) || t.LanguageCode == language)
+            var list_news = await _context.News.Where(t => t.LanguageId == languageId)
                 .Select(x => new NewsViewModel()
                {
                    NewsId = x.NewsId,
@@ -66,7 +66,7 @@ namespace FakeNewsFilter.Application.Catalog
                    PostURL = x.PostURL,
                    Status = x.Status,
                    ThumbNews = _mapper.Map<MediaViewModel>(x.Media),
-                   LanguageCode = x.LanguageCode,
+                   LanguageId = x.LanguageId,
                    Timestamp = x.Timestamp,      
                }).ToListAsync();
 
@@ -98,7 +98,7 @@ namespace FakeNewsFilter.Application.Catalog
                     Description = news.Description,
                     PostURL = news.PostURL,
                     ThumbNews = _mapper.Map<MediaViewModel>(media),
-                    LanguageCode = news.LanguageCode,
+                    LanguageId = news.LanguageId,
                     Timestamp = news.Timestamp,
                     Status = news.Status,
                     TopicInfo = topic.ToList(),
@@ -121,14 +121,14 @@ namespace FakeNewsFilter.Application.Catalog
                         join c in _context.TopicNews on nit.TopicId equals c.TopicId
                         select new { n, nit, c };
 
-            query = query.Where(t => request.TopicId == t.nit.TopicId).Where(t => string.IsNullOrEmpty(request.LanguageCode) || t.n.LanguageCode == request.LanguageCode) ;
+            query = query.Where(t => request.TopicId == t.nit.TopicId);
 
             var data = await query
                 .Select(x => new NewsViewModel()
                 {
                     NewsId = x.n.NewsId,
                     Name = x.n.Name,
-                    LanguageCode = x.n.LanguageCode,
+                    LanguageId = x.n.LanguageId,
                     Description = x.c.Description,
                     PostURL = x.n.PostURL,
                     Status = x.n.Status,
@@ -161,7 +161,7 @@ namespace FakeNewsFilter.Application.Catalog
 
                 Publisher = request.Publisher,
 
-                LanguageCode = request.LanguageCode,
+                LanguageId = request.LanguageId,
 
                 Timestamp = DateTime.Now
             };

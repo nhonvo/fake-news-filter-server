@@ -51,9 +51,9 @@ namespace FakeNewsFilter.API.Controllers
         // GET: api/news
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetNews(string languageCode)
+        public async Task<IActionResult> GetNews(string languageId)
         {
-            var topics = await _newsService.GetAll(languageCode);
+            var topics = await _newsService.GetAll(languageId);
 
             return Ok(topics);
         }

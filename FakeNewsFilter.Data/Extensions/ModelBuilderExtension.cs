@@ -43,6 +43,11 @@ namespace FakeNewsFilter.Data.Extensions
                 Name = "Bui Phu Khuyen",
             });
 
+            modelBuilder.Entity<Language>().HasData(
+               new Language() { Id = "vi", Name = "Tiếng Việt", IsDefault = true },
+               new Language() { Id = "en", Name = "English", IsDefault = false });
+
+
             modelBuilder.Entity<UserRoles>().HasData(new UserRoles
             {
                 RoleId = RoleId,
@@ -56,6 +61,7 @@ namespace FakeNewsFilter.Data.Extensions
                    Label = "breaking",
                    Tag = "afghanistan",
                    ThumbTopic = 2,
+                   LanguageId = "en",
                    Description = "Follow live as the Taliban seizes territory across Afghanistan in the wake of the U.S. withdrawal."
                    
                },
@@ -64,6 +70,7 @@ namespace FakeNewsFilter.Data.Extensions
                    TopicId = 2,
                    Label = "featured",
                    Tag = "in-depth",
+                   LanguageId = "en",
                    Description = "Best nonfiction features, in-depth stores and other long-form content from across the web."
                },
                new TopicNews()
@@ -72,6 +79,7 @@ namespace FakeNewsFilter.Data.Extensions
                    Label = "featured",
                    Tag = "coronavirus",
                    ThumbTopic = 1,
+                   LanguageId = "en",
                    Description = "Outbreak of respiratory virus that has killed over 1 million and infected 100 milion worldwide."
                },
                new TopicNews()
@@ -79,6 +87,7 @@ namespace FakeNewsFilter.Data.Extensions
                    TopicId = 4,
                    Label = "featured",
                    Tag = "top-business",
+                   LanguageId = "en",
                    Description = "The top business and economic news from around the world with a focus on the United State."
                },
                new TopicNews()
@@ -86,18 +95,21 @@ namespace FakeNewsFilter.Data.Extensions
                    TopicId = 5,
                    Label = "featured",
                    Tag = "biden-admin",
+                   LanguageId = "en",
                    Description = "Follow the presidential transition of Joe Biden, including policy plans, appointments and more."
                },
                new TopicNews()
                {
                    TopicId = 6,
                    Tag = "top-news",
+                   LanguageId = "en",
                    Description = "Top stories from around the world with a focus on news not covered in other feeds."
                },
                new TopicNews()
                {
                    TopicId = 7,
                    Tag = "boston",
+                   LanguageId = "en",
                    Description = "Follow important local news: politics, business, top events and more. Updated everything evening."
                }
                );
@@ -126,7 +138,7 @@ namespace FakeNewsFilter.Data.Extensions
                     Name = "Kabul’s Sudden Fall to Taliban Ends U.S. Era in Afghanistan",
                     Description = "Taliban fighters poured into the Afghan capital on Sunday amid scenes of panic and chaos, bringing a swift and shocking close to the Afghan government and the 20-year American era in the country.",
                     PostURL = "https://www.nytimes.com/2021/08/15/world/asia/afghanistan-taliban-kabul-surrender.html",
-                    LanguageCode = "EN",
+                    LanguageId = "en",
                     Publisher = "New York Times",
                     DatePublished = new DateTime(2021,02,10),
                     Timestamp = DateTime.Now,
@@ -137,7 +149,7 @@ namespace FakeNewsFilter.Data.Extensions
                     Name = "Texas high court blocks mask mandates in two of state's largest counties",
                     Description = "The masking orders in Dallas and Bexar counties were issued after a lower court ruled last week in favor of local officials.",
                     PostURL = "https://www.nbcnews.com/news/us-news/texas-high-court-blocks-mask-mandates-two-state-s-largest-n1276884",
-                    LanguageCode = "EN",
+                    LanguageId = "en",
                     Publisher = "NBC News",
                     DatePublished = new DateTime(2021, 02, 20),
                     Timestamp = DateTime.Now,
@@ -148,7 +160,7 @@ namespace FakeNewsFilter.Data.Extensions
                     Name = "Hospitalizations of Americans under 50 have reached new pandemic highs",
                     Description = "A lagging vaccination campaign and the spread of the highly contagious Delta variant are driving a surge in Covid-19 hospitalizations in the United States..",
                     PostURL = "https://www.nytimes.com/live/2021/08/15/world/covid-delta-variant-vaccine/covid-hospitalizations-cdc",
-                    LanguageCode = "EN",
+                    LanguageId = "en",
                     DatePublished = new DateTime(2021, 04, 12),
                     Timestamp = DateTime.Now,
                 }

@@ -40,9 +40,9 @@ namespace FakeNewsFilter.API.Controllers
         // GET: api/topic
         [HttpGet("List")]
         [AllowAnonymous]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get(string languageId)
         {
-            var topics = await _topicService.GetTopicHotNews();
+            var topics = await _topicService.GetTopicHotNews(languageId);
 
             if(topics.IsSuccessed == false)
             {

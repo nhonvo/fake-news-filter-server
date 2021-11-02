@@ -6,7 +6,5 @@ namespace FakeNewsFilter.ViewModel.Catalog.NewsManage
     public class GetPublicNewsRequest
     {
         public int? TopicId { get; set; }
-
-        public string LanguageCode { get; set; }
     }
 }
