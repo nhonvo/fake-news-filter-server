@@ -15,6 +15,7 @@
     <None Remove="System\Users\" />
     <None Remove="FluentValidation.AspNetCore" />
     <None Remove="System\Roles\" />
+    <None Remove="Catalog\Vote\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,5 +32,6 @@
     <Folder Include="System\" />
     <Folder Include="System\Users\" />
     <Folder Include="System\Roles\" />
+    <Folder Include="Catalog\Vote\" />
   </ItemGroup>
 </Project>

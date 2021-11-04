@@ -25,7 +25,7 @@ namespace FakeNewsFilter.Application.System
 {
     public interface IUserService
     {
-        Task<ApiResult<string>> Authencate(LoginRequest request);
+        Task<ApiResult<TokenResult>> Authencate(LoginRequest request);
 
         Task<ApiResult<bool>> Register(RegisterRequest request);
 
@@ -71,19 +71,19 @@ namespace FakeNewsFilter.Application.System
         }
               
         //Đăng nhập
-        public async Task<ApiResult<string>> Authencate(LoginRequest request)
+        public async Task<ApiResult<TokenResult>> Authencate(LoginRequest request)
         {
             try
             {
                 var user = await _userManager.FindByNameAsync(request.UserName);
 
-                if (user == null) return new ApiErrorResult<string>("Account does not exist");
+                if (user == null) return new ApiErrorResult<TokenResult>("Account does not exist");
 
                 var result = await _signInManager.PasswordSignInAsync(user, request.Password, request.RememberMe, true);
 
                 if (!result.Succeeded)
                 {
-                    return new ApiErrorResult<string>("Login Unsuccessful. Please Check Username or Password!");
+                    return new ApiErrorResult<TokenResult>("Login Unsuccessful. Please Check Username or Password!");
                 }
 
                 var roles = await _userManager.GetRolesAsync(user);
@@ -108,12 +108,14 @@ namespace FakeNewsFilter.Application.System
                     expires: DateTime.Now.AddHours(3),
                     signingCredentials: creds);
 
-                return new ApiSuccessResult<string>("Login successful!", new JwtSecurityTokenHandler().WriteToken(token));
+                var returnResult = new TokenResult{Token = new JwtSecurityTokenHandler().WriteToken(token), UserId = user.Id};
+
+                return new ApiSuccessResult<TokenResult>("Login successful!", returnResult);
             }
 
             catch (FakeNewsException e)
             {
-                return new ApiErrorResult<string>("Error System: " + e.Message);
+                return new ApiErrorResult<TokenResult>("Error System: " + e.Message);
             }
         }
 

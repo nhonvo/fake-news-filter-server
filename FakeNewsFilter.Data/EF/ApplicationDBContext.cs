@@ -26,6 +26,9 @@ namespace FakeNewsFilter.Data.EF
 
         public DbSet<NewsInTopics> NewsInTopics { get; set; }
 
+        public DbSet<Vote> Vote { get; set; }
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,7 +43,7 @@ namespace FakeNewsFilter.Data.EF
             modelBuilder.ApplyConfiguration(new UserRoleConfiguration());
             modelBuilder.ApplyConfiguration(new MediaConfiguration());
             modelBuilder.ApplyConfiguration(new UserRolesConfiguration());
-
+            modelBuilder.ApplyConfiguration(new VoteConfiguration());
 
             modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("UserClaims");
             modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("UserLogin").HasKey(x => x.UserId);

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FakeNewsFilter.Data.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20211102033359_UpdateNewDB")]
-    partial class UpdateNewDB
+    [Migration("20211104133818_VoteMigration")]
+    partial class VoteMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -129,7 +129,7 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 1,
-                            DateCreated = new DateTime(2021, 11, 2, 10, 33, 58, 611, DateTimeKind.Local).AddTicks(1960),
+                            DateCreated = new DateTime(2021, 11, 4, 20, 38, 17, 459, DateTimeKind.Local).AddTicks(9330),
                             Duration = 0,
                             FileSize = 0L,
                             PathMedia = "covid.jpeg",
@@ -139,7 +139,7 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 2,
-                            DateCreated = new DateTime(2021, 11, 2, 10, 33, 58, 611, DateTimeKind.Local).AddTicks(4040),
+                            DateCreated = new DateTime(2021, 11, 4, 20, 38, 17, 460, DateTimeKind.Local).AddTicks(2430),
                             Duration = 0,
                             FileSize = 0L,
                             PathMedia = "taliban.jpeg",
@@ -224,7 +224,7 @@ namespace FakeNewsFilter.Data.Migrations
                             Publisher = "New York Times",
                             SocialBeliefs = 0.0,
                             Status = 0,
-                            Timestamp = new DateTime(2021, 11, 2, 10, 33, 58, 611, DateTimeKind.Local).AddTicks(9350)
+                            Timestamp = new DateTime(2021, 11, 4, 20, 38, 17, 461, DateTimeKind.Local).AddTicks(680)
                         },
                         new
                         {
@@ -237,7 +237,7 @@ namespace FakeNewsFilter.Data.Migrations
                             Publisher = "NBC News",
                             SocialBeliefs = 0.0,
                             Status = 0,
-                            Timestamp = new DateTime(2021, 11, 2, 10, 33, 58, 612, DateTimeKind.Local).AddTicks(2170)
+                            Timestamp = new DateTime(2021, 11, 4, 20, 38, 17, 461, DateTimeKind.Local).AddTicks(4540)
                         },
                         new
                         {
@@ -249,7 +249,7 @@ namespace FakeNewsFilter.Data.Migrations
                             PostURL = "https://www.nytimes.com/live/2021/08/15/world/covid-delta-variant-vaccine/covid-hospitalizations-cdc",
                             SocialBeliefs = 0.0,
                             Status = 0,
-                            Timestamp = new DateTime(2021, 11, 2, 10, 33, 58, 612, DateTimeKind.Local).AddTicks(2620)
+                            Timestamp = new DateTime(2021, 11, 4, 20, 38, 17, 461, DateTimeKind.Local).AddTicks(5200)
                         });
                 });
 
@@ -264,7 +264,7 @@ namespace FakeNewsFilter.Data.Migrations
                     b.Property<DateTime>("Timestamp")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 11, 2, 10, 33, 58, 537, DateTimeKind.Local).AddTicks(9810));
+                        .HasDefaultValue(new DateTime(2021, 11, 4, 20, 38, 17, 331, DateTimeKind.Local).AddTicks(7200));
 
                     b.HasKey("TopicId", "NewsId");
 
@@ -316,14 +316,14 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             Id = new Guid("a3314be5-4c77-4fb6-82ad-302014682a73"),
-                            ConcurrencyStamp = "5d27d846-d868-4ba3-820c-ada9e5357319",
+                            ConcurrencyStamp = "85d881fc-6872-4320-90de-354ac78bd675",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
                             Id = new Guid("b4314be5-4c77-4fb6-82ad-302014682b13"),
-                            ConcurrencyStamp = "e17fdbf9-4974-4af7-a814-6722afab8886",
+                            ConcurrencyStamp = "8f06d233-f282-48db-b482-257ec4c6b942",
                             Name = "Subscriber",
                             NormalizedName = "Subscriber"
                         });
@@ -524,14 +524,14 @@ namespace FakeNewsFilter.Data.Migrations
                         {
                             Id = new Guid("69db714f-9576-45ba-b5b7-f00649be00de"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d38825d9-7f75-4dae-a3ba-135d30caa993",
+                            ConcurrencyStamp = "fe50a636-91dd-498b-bfc3-8e5dca910f9a",
                             Email = "bp.khuyen@hutech.edu.vn",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Bui Phu Khuyen",
                             NormalizedEmail = "BP.KHUYEN@HUTECH.EDU.VN",
                             NormalizedUserName = "khuyenpb",
-                            PasswordHash = "AQAAAAEAACcQAAAAECL7ef49iia4m6YlpbTEFna6783GzdN2M+tPcTloKeRJSVBnmwXftYIwWlgWjdQ5Xg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEAtes9LrnGnteCus+ZdrjLiLaH0On6YtTK7CM+0uy3+DvjoIgog2YN/q9GnmZIGOZQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             Status = 0,
@@ -560,6 +560,29 @@ namespace FakeNewsFilter.Data.Migrations
                             UserId = new Guid("69db714f-9576-45ba-b5b7-f00649be00de"),
                             RoleId = new Guid("a3314be5-4c77-4fb6-82ad-302014682a73")
                         });
+                });
+
+            modelBuilder.Entity("FakeNewsFilter.Data.Entities.Vote", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("NewsId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Timestamp")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2021, 11, 4, 20, 38, 17, 407, DateTimeKind.Local).AddTicks(8090));
+
+                    b.Property<bool>("isReal")
+                        .HasColumnType("bit");
+
+                    b.HasKey("UserId", "NewsId");
+
+                    b.HasIndex("NewsId");
+
+                    b.ToTable("Vote");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -704,7 +727,7 @@ namespace FakeNewsFilter.Data.Migrations
                     b.HasOne("FakeNewsFilter.Data.Entities.Language", "Language")
                         .WithMany("TopicNews")
                         .HasForeignKey("LanguageId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("FakeNewsFilter.Data.Entities.Media", "Media")
@@ -744,6 +767,25 @@ namespace FakeNewsFilter.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("FakeNewsFilter.Data.Entities.Vote", b =>
+                {
+                    b.HasOne("FakeNewsFilter.Data.Entities.News", "News")
+                        .WithMany("Vote")
+                        .HasForeignKey("NewsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FakeNewsFilter.Data.Entities.User", "User")
+                        .WithMany("Vote")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("News");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("FakeNewsFilter.Data.Entities.Language", b =>
                 {
                     b.Navigation("News");
@@ -763,6 +805,8 @@ namespace FakeNewsFilter.Data.Migrations
             modelBuilder.Entity("FakeNewsFilter.Data.Entities.News", b =>
                 {
                     b.Navigation("NewsInTopics");
+
+                    b.Navigation("Vote");
                 });
 
             modelBuilder.Entity("FakeNewsFilter.Data.Entities.Role", b =>
@@ -782,6 +826,8 @@ namespace FakeNewsFilter.Data.Migrations
                     b.Navigation("Follows");
 
                     b.Navigation("UserRoles");
+
+                    b.Navigation("Vote");
                 });
 #pragma warning restore 612, 618
         }

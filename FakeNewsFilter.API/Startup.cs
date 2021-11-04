@@ -54,6 +54,8 @@ namespace FakeNewsFilter
             services.AddTransient<IRoleService, RoleService>();
             services.AddTransient<INewsService, NewsService>();
 
+            services.AddTransient<IVoteService, VoteService>();
+
 
 
             //Fluent Validation   

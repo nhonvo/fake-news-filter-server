@@ -36,7 +36,7 @@ namespace FakeNewsFilter.Data.Entities
 
         public List<NewsInTopics> NewsInTopics { get; set; }
 
-        
+        public List<Vote> Vote { get; set; }
 
     }
 }
