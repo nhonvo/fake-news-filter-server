@@ -96,7 +96,7 @@ namespace FakeNewsFilter.AdminApp.Services
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.OfficialRating) ? "" : request.OfficialRating.ToString()), "OfficialRating");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Description) ? "" : request.Description.ToString()), "Description");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.PostURL) ? "" : request.PostURL.ToString()), "PostURL");
-            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.LanguageCode) ? "" : request.LanguageCode.ToString()), "LanguageCode");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.LanguageId) ? "" : request.LanguageId.ToString()), "LanguageCode");
 
             foreach(int topicId in request.TopicId)
             {

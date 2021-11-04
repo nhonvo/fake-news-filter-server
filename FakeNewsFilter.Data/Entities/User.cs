@@ -18,5 +18,7 @@ namespace FakeNewsFilter.Data.Entities
         public Media Avatar { get; set; }
 
         public virtual ICollection<UserRoles> UserRoles { get; set; }
+
+        public List<Vote> Vote { get; set; }
     }
 }
