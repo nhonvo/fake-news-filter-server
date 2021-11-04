@@ -42,7 +42,6 @@ Z:/FakeNewsFilter/FakeNewsFilter.Data/obj/Debug/netcoreapp3.1/FakeNewsFilter.Dat
 /Users/hkhansh/Desktop/Workspace/fake-news/fake-news-filter-server/FakeNewsFilter.Data/bin/Debug/netcoreapp3.1/FakeNewsFilter.Data.runtimeconfig.dev.json
 /Users/hkhansh/Desktop/Workspace/fake-news/fake-news-filter-server/FakeNewsFilter.Data/bin/Debug/netcoreapp3.1/FakeNewsFilter.Data.dll
 /Users/hkhansh/Desktop/Workspace/fake-news/fake-news-filter-server/FakeNewsFilter.Data/bin/Debug/netcoreapp3.1/FakeNewsFilter.Data.pdb
-/Users/hkhansh/Desktop/Workspace/fake-news/fake-news-filter-server/FakeNewsFilter.Data/obj/Debug/netcoreapp3.1/FakeNewsFilter.Data.csproj.AssemblyReference.cache
 /Users/hkhansh/Desktop/Workspace/fake-news/fake-news-filter-server/FakeNewsFilter.Data/obj/Debug/netcoreapp3.1/FakeNewsFilter.Data.GeneratedMSBuildEditorConfig.editorconfig
 /Users/hkhansh/Desktop/Workspace/fake-news/fake-news-filter-server/FakeNewsFilter.Data/obj/Debug/netcoreapp3.1/FakeNewsFilter.Data.AssemblyInfoInputs.cache
 /Users/hkhansh/Desktop/Workspace/fake-news/fake-news-filter-server/FakeNewsFilter.Data/obj/Debug/netcoreapp3.1/FakeNewsFilter.Data.AssemblyInfo.cs

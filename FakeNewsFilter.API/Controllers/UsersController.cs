@@ -33,7 +33,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 var resultToken = await _userService.Authencate(request);
 
-                if (string.IsNullOrEmpty(resultToken.ResultObj))
+                if (string.IsNullOrEmpty(resultToken.ResultObj.Token))
                 {
                     return BadRequest(resultToken);
                 }
