@@ -27,6 +27,7 @@ namespace FakeNewsFilter.Data.EF
         public DbSet<NewsInTopics> NewsInTopics { get; set; }
 
         public DbSet<Vote> Vote { get; set; }
+        public DbSet<Follow> Follow { get; set; }
 
 
 

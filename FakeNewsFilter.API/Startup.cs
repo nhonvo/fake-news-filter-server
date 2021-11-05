@@ -53,6 +53,7 @@ namespace FakeNewsFilter
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IRoleService, RoleService>();
             services.AddTransient<INewsService, NewsService>();
+            services.AddTransient<IFollowService, FollowService>();
 
             services.AddTransient<IVoteService, VoteService>();
 
