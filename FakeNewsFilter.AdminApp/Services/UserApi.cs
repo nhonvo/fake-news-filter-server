@@ -16,7 +16,7 @@ namespace FakeNewsFilter.WebApp.Services
 {
     public interface IUserApi
     {
-        Task<ApiResult<string>> Authenticate(LoginRequest request);
+        Task<ApiResult<TokenResult>> Authenticate(LoginRequest request);
 
         Task<ApiResult<List<UserViewModel>>> GetUsers();
 
@@ -47,7 +47,7 @@ namespace FakeNewsFilter.WebApp.Services
         }
 
         //Đăng nhập 
-        public async Task<ApiResult<string>> Authenticate(LoginRequest request)
+        public async Task<ApiResult<TokenResult>> Authenticate(LoginRequest request)
         {
             try
             {
@@ -66,14 +66,14 @@ namespace FakeNewsFilter.WebApp.Services
 
                 if (respone.IsSuccessStatusCode)
                 {
-                    return JsonConvert.DeserializeObject<ApiSuccessResult<string>>(content);
+                    return JsonConvert.DeserializeObject<ApiSuccessResult<TokenResult>>(content);
                 }
 
-                return JsonConvert.DeserializeObject<ApiErrorResult<string>>(content);
+                return JsonConvert.DeserializeObject<ApiErrorResult<TokenResult>>(content);
             }
             catch(FakeNewsException e)
             {
-                return new ApiErrorResult<string>("Error System: " + e.Message);
+                return new ApiErrorResult<TokenResult>("Error System: " + e.Message);
             }
             
         }

@@ -13,8 +13,8 @@ $(document).ready(function () {
 
     var
         language = {
-            "EN": 'flag-icon flag-icon-us',
-            "VN": 'flag-icon flag-icon-vn'
+            "en": 'flag-icon flag-icon-us',
+            "vi": 'flag-icon flag-icon-vn'
         };
 
     var
@@ -53,7 +53,7 @@ $(document).ready(function () {
             { "data": 'newsId' },
             { "data": 'topicInfo' },
             { "data": 'officialRating' },
-            { "data": 'languageCode' },
+            { "data": 'languageId' },
             { "data": 'timestamp' },
             { "data": 'status' },
             { "data": '' }
@@ -122,7 +122,7 @@ $(document).ready(function () {
                 // User Status
                 targets: 5,
                 render: function (data, type, full, meta) {
-                    var $status = full['languageCode'];
+                    var $status = full['languageId'];
                     return (
                         '<div><i class="' + language[$status] + '"></i><span hidden>'+ $status + '</span></div>'
                     );

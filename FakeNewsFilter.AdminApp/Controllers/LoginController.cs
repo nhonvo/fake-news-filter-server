@@ -50,15 +50,13 @@ namespace FakeNewsFilter.AdminApp.Controllers
 
                 var result = await _userApi.Authenticate(request);
 
-                if(result.ResultObj == null)
+                if(string.IsNullOrEmpty(result.ResultObj?.Token)) 
                 {
                     ViewBag.Error = result.Message;
                     return View();
                 }
 
-               
-                
-            var userPrincipal = this.ValidateToken(result.ResultObj);
+            var userPrincipal = this.ValidateToken(result.ResultObj.Token);
 
             // Gets list of claims.
             IEnumerable<Claim> claim = userPrincipal.Claims;
@@ -76,7 +74,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
                         IsPersistent = false
                     };
 
-                    HttpContext.Session.SetString("Token", result.ResultObj);
+                    HttpContext.Session.SetString("Token", result.ResultObj.Token);
 
                     await HttpContext.SignInAsync(
                                 CookieAuthenticationDefaults.AuthenticationScheme,

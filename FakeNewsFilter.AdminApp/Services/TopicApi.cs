@@ -35,7 +35,7 @@ namespace FakeNewsFilter.AdminApp.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        //Lấy danh sách Topic 
+        //Lấy danh sách Topic theo languageId
         public async Task<ApiResult<List<TopicInfoVM>>> GetTopicInfo()
         {
             try
@@ -48,7 +48,7 @@ namespace FakeNewsFilter.AdminApp.Services
 
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
 
-                var respone = await client.GetAsync($"/api/topic/list");
+                var respone = await client.GetAsync($"/api/topic/List");
 
                 
                 var body = await respone.Content.ReadAsStringAsync();

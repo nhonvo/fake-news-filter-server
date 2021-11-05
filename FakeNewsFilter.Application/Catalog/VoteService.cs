@@ -14,13 +14,7 @@ namespace FakeNewsFilter.Application.Catalog
     {
         Task<ApiResult<bool>> Create(VoteCreateRequest request);
 
-        //Task<ApiResult<bool>> Delete(int NewsId);
-
-        //Task<ApiResult<NewsViewModel>> GetById(int newsId);
-
         Task<ApiResult<bool>> Update(VoteUpdateRequest request);
-
-        //Task<ApiResult<bool>> UpdateLink(int newsId, string newLink);
     }
 
     public class VoteService : IVoteService
