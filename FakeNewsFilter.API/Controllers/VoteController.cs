@@ -2,11 +2,13 @@
 using System.Threading.Tasks;
 using FakeNewsFilter.Application.Catalog;
 using FakeNewsFilter.ViewModel.Catalog.Vote;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FakeNewsFilter.API.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize(Roles = "Subscriber")]
     public class VoteController : ControllerBase
     {
         private readonly IVoteService _voteService;
@@ -15,7 +17,7 @@ namespace FakeNewsFilter.API.Controllers
         {
             _voteService = voteService;
         }
-
+        
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] VoteCreateRequest request)
         {

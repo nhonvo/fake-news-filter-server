@@ -56,7 +56,7 @@ namespace FakeNewsFilter.Application.Catalog
         //Get All News
         public async Task<ApiResult<List<NewsViewModel>>> GetAll(string languageId)
         {
-            var list_news = await _context.News.Where(t => t.LanguageId == languageId)
+            var list_news = await _context.News.Where(n => !string.IsNullOrEmpty(languageId) ? n.LanguageId == languageId : true)
                 .Select(x => new NewsViewModel()
                {
                    NewsId = x.NewsId,

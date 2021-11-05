@@ -47,7 +47,7 @@ namespace FakeNewsFilter.Application.Catalog
         {
             try
             {
-                var query = from t in _context.TopicNews where t.LanguageId == languageId
+                var query = from t in _context.TopicNews where (string.IsNullOrEmpty(languageId) || t.LanguageId == languageId)
                             select new 
                             {
                                 topic = t,
