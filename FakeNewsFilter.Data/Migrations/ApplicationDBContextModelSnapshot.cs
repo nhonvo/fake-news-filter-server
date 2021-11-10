@@ -127,7 +127,7 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 1,
-                            DateCreated = new DateTime(2021, 11, 6, 15, 13, 37, 781, DateTimeKind.Local).AddTicks(4630),
+                            DateCreated = new DateTime(2021, 11, 10, 22, 1, 31, 218, DateTimeKind.Local).AddTicks(1110),
                             Duration = 0,
                             FileSize = 0L,
                             PathMedia = "covid.jpeg",
@@ -137,7 +137,7 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 2,
-                            DateCreated = new DateTime(2021, 11, 6, 15, 13, 37, 781, DateTimeKind.Local).AddTicks(6370),
+                            DateCreated = new DateTime(2021, 11, 10, 22, 1, 31, 218, DateTimeKind.Local).AddTicks(2790),
                             Duration = 0,
                             FileSize = 0L,
                             PathMedia = "taliban.jpeg",
@@ -216,7 +216,7 @@ namespace FakeNewsFilter.Data.Migrations
                             Name = "Kabul’s Sudden Fall to Taliban Ends U.S. Era in Afghanistan",
                             Publisher = "New York Times",
                             Status = 0,
-                            Timestamp = new DateTime(2021, 11, 6, 15, 13, 37, 782, DateTimeKind.Local).AddTicks(2430)
+                            Timestamp = new DateTime(2021, 11, 10, 22, 1, 31, 218, DateTimeKind.Local).AddTicks(8180)
                         },
                         new
                         {
@@ -228,7 +228,7 @@ namespace FakeNewsFilter.Data.Migrations
                             Name = "Texas high court blocks mask mandates in two of state's largest counties",
                             Publisher = "NBC News",
                             Status = 0,
-                            Timestamp = new DateTime(2021, 11, 6, 15, 13, 37, 782, DateTimeKind.Local).AddTicks(5240)
+                            Timestamp = new DateTime(2021, 11, 10, 22, 1, 31, 219, DateTimeKind.Local).AddTicks(810)
                         },
                         new
                         {
@@ -239,7 +239,7 @@ namespace FakeNewsFilter.Data.Migrations
                             LanguageId = "en",
                             Name = "Hospitalizations of Americans under 50 have reached new pandemic highs",
                             Status = 0,
-                            Timestamp = new DateTime(2021, 11, 6, 15, 13, 37, 782, DateTimeKind.Local).AddTicks(5690)
+                            Timestamp = new DateTime(2021, 11, 10, 22, 1, 31, 219, DateTimeKind.Local).AddTicks(1280)
                         });
                 });
 
@@ -254,7 +254,7 @@ namespace FakeNewsFilter.Data.Migrations
                     b.Property<DateTime>("Timestamp")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 11, 6, 15, 13, 37, 672, DateTimeKind.Local).AddTicks(2280));
+                        .HasDefaultValue(new DateTime(2021, 11, 10, 22, 1, 31, 118, DateTimeKind.Local).AddTicks(440));
 
                     b.HasKey("TopicId", "NewsId");
 
@@ -306,14 +306,14 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             Id = new Guid("a3314be5-4c77-4fb6-82ad-302014682a73"),
-                            ConcurrencyStamp = "06f6beef-37b8-44a2-86ed-b5f2298a93f4",
+                            ConcurrencyStamp = "473ee4fc-f93c-4d83-a605-2c72a2c95b8d",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
                             Id = new Guid("b4314be5-4c77-4fb6-82ad-302014682b13"),
-                            ConcurrencyStamp = "62800401-d0f5-46fe-9659-7f5f855908a2",
+                            ConcurrencyStamp = "9ba1cb2d-10f4-4cbc-8c19-32a0cac6b781",
                             Name = "Subscriber",
                             NormalizedName = "Subscriber"
                         });
@@ -369,7 +369,7 @@ namespace FakeNewsFilter.Data.Migrations
                     b.Property<DateTime>("Timestamp")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 11, 10, 21, 39, 16, 59, DateTimeKind.Local).AddTicks(7222));
+                        .HasDefaultValue(new DateTime(2021, 11, 10, 22, 1, 31, 171, DateTimeKind.Local).AddTicks(470));
 
                     b.HasKey("StoryId");
 
@@ -579,14 +579,14 @@ namespace FakeNewsFilter.Data.Migrations
                         {
                             Id = new Guid("69db714f-9576-45ba-b5b7-f00649be00de"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e8788366-44e0-408f-8e2c-3fe799d67085",
+                            ConcurrencyStamp = "cdf47abc-761b-4d30-995c-9a994e7c8493",
                             Email = "bp.khuyen@hutech.edu.vn",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Bui Phu Khuyen",
                             NormalizedEmail = "BP.KHUYEN@HUTECH.EDU.VN",
                             NormalizedUserName = "khuyenpb",
-                            PasswordHash = "AQAAAAEAACcQAAAAEIeuCtMtSBFDzLOAY6FIftHBt8xtbBweo1+QX2un3DfR44N39Z0jb8IDhJZXew9rAw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJ1YdKdIXLp8dhQKTjGGxeD7EW75F0DJdny2io04MXcW9UaNDqioUkBC0eNC/eUNMw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             Status = 0,
@@ -628,7 +628,7 @@ namespace FakeNewsFilter.Data.Migrations
                     b.Property<DateTime>("Timestamp")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 11, 6, 15, 13, 37, 731, DateTimeKind.Local).AddTicks(3690));
+                        .HasDefaultValue(new DateTime(2021, 11, 10, 22, 1, 31, 165, DateTimeKind.Local).AddTicks(860));
 
                     b.Property<bool>("isReal")
                         .HasColumnType("bit");
