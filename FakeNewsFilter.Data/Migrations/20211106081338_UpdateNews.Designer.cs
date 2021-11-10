@@ -4,14 +4,16 @@ using FakeNewsFilter.Data.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FakeNewsFilter.Data.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20211106081338_UpdateNews")]
+    partial class UpdateNews
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -317,71 +319,6 @@ namespace FakeNewsFilter.Data.Migrations
                             Name = "Subscriber",
                             NormalizedName = "Subscriber"
                         });
-                });
-
-            modelBuilder.Entity("FakeNewsFilter.Data.Entities.Source", b =>
-                {
-                    b.Property<int>("SourceId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("LanguageId")
-                        .IsRequired()
-                        .HasMaxLength(5)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(5)");
-
-                    b.Property<string>("SourceName")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.HasKey("SourceId");
-
-                    b.HasIndex("LanguageId");
-
-                    b.ToTable("Source");
-                });
-
-            modelBuilder.Entity("FakeNewsFilter.Data.Entities.Story", b =>
-                {
-                    b.Property<int>("StoryId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("LanguageId")
-                        .IsRequired()
-                        .HasMaxLength(5)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(5)");
-
-                    b.Property<string>("Link")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SourceId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ThumbNews")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Timestamp")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 11, 10, 21, 39, 16, 59, DateTimeKind.Local).AddTicks(7222));
-
-                    b.HasKey("StoryId");
-
-                    b.HasIndex("LanguageId");
-
-                    b.HasIndex("SourceId");
-
-                    b.HasIndex("ThumbNews")
-                        .IsUnique()
-                        .HasFilter("[ThumbNews] IS NOT NULL");
-
-                    b.ToTable("Story");
                 });
 
             modelBuilder.Entity("FakeNewsFilter.Data.Entities.TopicNews", b =>
@@ -777,42 +714,6 @@ namespace FakeNewsFilter.Data.Migrations
                     b.Navigation("TopicNews");
                 });
 
-            modelBuilder.Entity("FakeNewsFilter.Data.Entities.Source", b =>
-                {
-                    b.HasOne("FakeNewsFilter.Data.Entities.Language", "Language")
-                        .WithMany("Source")
-                        .HasForeignKey("LanguageId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Language");
-                });
-
-            modelBuilder.Entity("FakeNewsFilter.Data.Entities.Story", b =>
-                {
-                    b.HasOne("FakeNewsFilter.Data.Entities.Language", "Language")
-                        .WithMany("Story")
-                        .HasForeignKey("LanguageId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("FakeNewsFilter.Data.Entities.Source", "Source")
-                        .WithMany("Story")
-                        .HasForeignKey("SourceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FakeNewsFilter.Data.Entities.Media", "Media")
-                        .WithOne("Story")
-                        .HasForeignKey("FakeNewsFilter.Data.Entities.Story", "ThumbNews");
-
-                    b.Navigation("Language");
-
-                    b.Navigation("Media");
-
-                    b.Navigation("Source");
-                });
-
             modelBuilder.Entity("FakeNewsFilter.Data.Entities.TopicNews", b =>
                 {
                     b.HasOne("FakeNewsFilter.Data.Entities.Language", "Language")
@@ -881,18 +782,12 @@ namespace FakeNewsFilter.Data.Migrations
                 {
                     b.Navigation("News");
 
-                    b.Navigation("Source");
-
-                    b.Navigation("Story");
-
                     b.Navigation("TopicNews");
                 });
 
             modelBuilder.Entity("FakeNewsFilter.Data.Entities.Media", b =>
                 {
                     b.Navigation("News");
-
-                    b.Navigation("Story");
 
                     b.Navigation("TopicNews");
 
@@ -909,11 +804,6 @@ namespace FakeNewsFilter.Data.Migrations
             modelBuilder.Entity("FakeNewsFilter.Data.Entities.Role", b =>
                 {
                     b.Navigation("UserRoles");
-                });
-
-            modelBuilder.Entity("FakeNewsFilter.Data.Entities.Source", b =>
-                {
-                    b.Navigation("Story");
                 });
 
             modelBuilder.Entity("FakeNewsFilter.Data.Entities.TopicNews", b =>

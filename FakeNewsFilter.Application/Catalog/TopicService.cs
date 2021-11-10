@@ -243,15 +243,17 @@ namespace FakeNewsFilter.Application.Catalog
 
                 if (topic == null) throw new FakeNewsException($"Cannot find a Topic with Id: {TopicId}");
 
-                var media = _context.Media.Single(x=>x.MediaId == topic.ThumbTopic);
-
-                if (media != null)
+                if(topic.ThumbTopic != null)
                 {
-                    if(media.PathMedia != null)
-                        await _storageService.DeleteFileAsync(media.PathMedia);
-                    _context.Media.Remove(media);
+                    var media = _context.Media.SingleOrDefault(x => x.MediaId == topic.ThumbTopic);
+
+                    if (media != null)
+                    {
+                        if (media.PathMedia != null)
+                            await _storageService.DeleteFileAsync(media.PathMedia);
+                        _context.Media.Remove(media);
+                    }
                 }
-              
 
                 _context.TopicNews.Remove(topic);
 

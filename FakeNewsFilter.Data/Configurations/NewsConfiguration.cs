@@ -19,9 +19,7 @@ namespace FakeNewsFilter.Data.Configurations
 
             builder.Property(x => x.Description).IsRequired().HasMaxLength(250);
 
-            builder.Property(x => x.PostURL).IsRequired();
-
-            builder.Property(x => x.SocialBeliefs).HasDefaultValue(0);
+            builder.Property(x => x.Content).IsRequired();
 
             builder.Property(x => x.Timestamp);
 

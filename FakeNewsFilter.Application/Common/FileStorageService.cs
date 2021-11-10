@@ -33,7 +33,6 @@ namespace FakeNewsFilter.Application.Common
                 await Task.Run(() => File.Delete(filePath));
             }
         }
-
         public string GetFileUrl(string fileName)
         {
             return $"/{USER_CONTENT_FOLDER_NAME}/{fileName}";

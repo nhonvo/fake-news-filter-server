@@ -13,9 +13,7 @@ namespace FakeNewsFilter.ViewModel.Catalog.NewsManage
 
         public string OfficialRating { get; set; }
 
-        public double? SocialBeliefs { get; set; }
-
-        public string PostURL { get; set; }
+        public string Content { get; set; }
 
         public MediaType? Type { get; set; }
 

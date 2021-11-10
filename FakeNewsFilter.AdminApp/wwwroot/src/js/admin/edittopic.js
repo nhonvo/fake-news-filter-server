@@ -1,6 +1,6 @@
 ﻿
 /*=========================================================================================
-  File Name: edittopic.js
+  File Name: editnews.js
   Description: Topic Manage JS
   ----------------------------------------------------------------------------------------
   Item Name: Fake News Filter - Admin
@@ -9,23 +9,23 @@
 ==========================================================================================*/
 
 //Change Picture
-$(function () {
+//$(function () {
 
-    var changePicture = $('#ThumbImage'),
-        userAvatar = $('.thumb-image'),
+//    var changePicture = $('#ThumbImage'),
+//        userAvatar = $('.thumb-image'),
 
-    // Change user profile picture
-    if (changePicture.length) {
-        $(changePicture).on('change', function (e) {
-            var reader = new FileReader(),
-                files = e.target.files;
-            reader.onload = function () {
-                if (userAvatar.length) {
-                    userAvatar.attr('src', reader.result);
-                }
-            };
-            reader.readAsDataURL(files[0]);
-        });
-    }
-});
+//    // Change user profile picture
+//    if (changePicture.length) {
+//        $(changePicture).on('change', function (e) {
+//            var reader = new FileReader(),
+//                files = e.target.files;
+//            reader.onload = function () {
+//                if (userAvatar.length) {
+//                    userAvatar.attr('src', reader.result);
+//                }
+//            };
+//            reader.readAsDataURL(files[0]);
+//        });
+//    }
+//});
 

@@ -18,7 +18,13 @@ namespace FakeNewsFilter.AdminApp.Services
     {
         Task<ApiResult<List<NewsViewModel>>> GetNewsInfo();
 
-        Task<ApiResult<bool>> CreateNews(NewsCreateRequest request);
+        Task<ApiResult<NewsInfoVM>> CreateNews(NewsCreateRequest request);
+
+        Task<ApiResult<bool>> UpdateNews(NewsUpdateRequest request);
+
+        Task<ApiResult<NewsInfoVM>> GetById(int Id);
+
+        Task<ApiResult<bool>> Delete(int newsId);
     }
 
     public class NewsApi : INewsApi
@@ -69,7 +75,7 @@ namespace FakeNewsFilter.AdminApp.Services
         }
 
 
-        public async Task<ApiResult<bool>> CreateNews(NewsCreateRequest request)
+        public async Task<ApiResult<NewsInfoVM>> CreateNews(NewsCreateRequest request)
         {
             var client = _httpClientFactory.CreateClient();
 
@@ -95,8 +101,8 @@ namespace FakeNewsFilter.AdminApp.Services
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Name) ? "" : request.Name.ToString()), "Name");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.OfficialRating) ? "" : request.OfficialRating.ToString()), "OfficialRating");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Description) ? "" : request.Description.ToString()), "Description");
-            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.PostURL) ? "" : request.PostURL.ToString()), "PostURL");
-            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.LanguageId) ? "" : request.LanguageId.ToString()), "LanguageCode");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Content) ? "" : request.Content.ToString()), "Content");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.LanguageId) ? "" : request.LanguageId.ToString()), "LanguageId");
 
             foreach(int topicId in request.TopicId)
             {
@@ -109,9 +115,87 @@ namespace FakeNewsFilter.AdminApp.Services
 
             if (response.IsSuccessStatusCode)
 
+                return JsonConvert.DeserializeObject<ApiSuccessResult<NewsInfoVM>>(result);
+
+            return JsonConvert.DeserializeObject<ApiErrorResult<NewsInfoVM>>(result);
+        }
+
+        public async Task<ApiResult<NewsInfoVM>> GetById(int Id)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+
+            var response = await client.GetAsync($"/api/News/{Id}");
+            var body = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<NewsInfoVM>>(body);
+
+            return JsonConvert.DeserializeObject<ApiErrorResult<NewsInfoVM>>(body);
+        }
+
+        /////////////update news
+        public async Task<ApiResult<bool>> UpdateNews(NewsUpdateRequest request)
+        {
+            var client = _httpClientFactory.CreateClient();
+
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+
+            var requestContent = new MultipartFormDataContent();
+
+            if (request.ThumbNews != null)
+            {
+                byte[] data;
+                using (var br = new BinaryReader(request.ThumbNews.OpenReadStream()))
+                {
+                    data = br.ReadBytes((int)request.ThumbNews.OpenReadStream().Length);
+                }
+                ByteArrayContent bytes = new ByteArrayContent(data);
+                requestContent.Add(bytes, "ThumbNews", request.ThumbNews.FileName);
+            }
+
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Id.ToString()) ? "" : request.Id.ToString()), "Id");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Name) ? "" : request.Name.ToString()), "Name");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Content) ? "" : request.Content.ToString()), "Content");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Description) ? "" : request.Description.ToString()), "Description");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.LanguageId) ? "" : request.LanguageId.ToString()), "LanguageId");
+
+            foreach (int topicId in request.TopicId)
+            {
+                requestContent.Add(new StringContent(string.IsNullOrEmpty(topicId.ToString()) ? "" : topicId.ToString()), "TopicId");
+            }
+
+            var response = await client.PutAsync($"/api/News/", requestContent);
+
+            var result = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+
                 return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);
 
             return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
+        }
+
+        public async Task<ApiResult<bool>> Delete(int newsId)
+        {
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+            var response = await client.DeleteAsync($"/api/News/" + newsId);
+            var body = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(body);
+
+            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(body);
         }
     }
 }
