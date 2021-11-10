@@ -12,8 +12,9 @@ namespace FakeNewsFilter.Data.Entities
         public bool IsDefault { get; set; }
 
         public List<TopicNews> TopicNews { get; set; }
-
         public List<News> News { get; set; }
+        public List<Source> Source { get; set; }
+        public List<Story> Story { get; set; }
     }
 }
 

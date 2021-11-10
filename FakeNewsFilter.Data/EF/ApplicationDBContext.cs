@@ -28,6 +28,8 @@ namespace FakeNewsFilter.Data.EF
 
         public DbSet<Vote> Vote { get; set; }
         public DbSet<Follow> Follow { get; set; }
+        public DbSet<Source> Source { get; set; }
+        public DbSet<Story> Story { get; set; }
 
 
 
@@ -45,6 +47,8 @@ namespace FakeNewsFilter.Data.EF
             modelBuilder.ApplyConfiguration(new MediaConfiguration());
             modelBuilder.ApplyConfiguration(new UserRolesConfiguration());
             modelBuilder.ApplyConfiguration(new VoteConfiguration());
+            modelBuilder.ApplyConfiguration(new StoryConfiguration());
+            modelBuilder.ApplyConfiguration(new SourceConfiguration());
 
             modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("UserClaims");
             modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("UserLogin").HasKey(x => x.UserId);

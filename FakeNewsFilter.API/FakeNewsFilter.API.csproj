@@ -53,9 +53,8 @@
     <Content Remove="wwwroot\images\news\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="wwwroot\" />
-    <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\images\avatars\" />
+    <Folder Include="wwwroot\images\storys\" />
     <Folder Include="wwwroot\images\news\" />
   </ItemGroup>
 </Project>

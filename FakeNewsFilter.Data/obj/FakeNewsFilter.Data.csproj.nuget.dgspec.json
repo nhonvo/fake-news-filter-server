@@ -1,25 +1,29 @@
 {
   "format": 1,
   "restore": {
-    "/Users/hkhansh/Desktop/Workspace/fake-news/fake-news-filter-server/FakeNewsFilter.Data/FakeNewsFilter.Data.csproj": {}
+    "D:\\hutech\\NCKH\\fakenewsapp\\FakeNewsFilter.Data\\FakeNewsFilter.Data.csproj": {}
   },
   "projects": {
-    "/Users/hkhansh/Desktop/Workspace/fake-news/fake-news-filter-server/FakeNewsFilter.Data/FakeNewsFilter.Data.csproj": {
+    "D:\\hutech\\NCKH\\fakenewsapp\\FakeNewsFilter.Data\\FakeNewsFilter.Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/hkhansh/Desktop/Workspace/fake-news/fake-news-filter-server/FakeNewsFilter.Data/FakeNewsFilter.Data.csproj",
+        "projectUniqueName": "D:\\hutech\\NCKH\\fakenewsapp\\FakeNewsFilter.Data\\FakeNewsFilter.Data.csproj",
         "projectName": "FakeNewsFilter.Data",
-        "projectPath": "/Users/hkhansh/Desktop/Workspace/fake-news/fake-news-filter-server/FakeNewsFilter.Data/FakeNewsFilter.Data.csproj",
-        "packagesPath": "/Users/hkhansh/.nuget/packages/",
-        "outputPath": "/Users/hkhansh/Desktop/Workspace/fake-news/fake-news-filter-server/FakeNewsFilter.Data/obj/",
+        "projectPath": "D:\\hutech\\NCKH\\fakenewsapp\\FakeNewsFilter.Data\\FakeNewsFilter.Data.csproj",
+        "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
+        "outputPath": "D:\\hutech\\NCKH\\fakenewsapp\\FakeNewsFilter.Data\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/hkhansh/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 19.2.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\DevExpress 19.2\\Components\\System\\Components\\Packages": {},
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -80,7 +84,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.402/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.403\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FakeNewsFilter.Data.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20211105145129_followsTopic")]
-    partial class followsTopic
+    [Migration("20211109151736_StoryUpdate")]
+    partial class StoryUpdate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -129,7 +129,7 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 1,
-                            DateCreated = new DateTime(2021, 11, 5, 21, 51, 28, 259, DateTimeKind.Local).AddTicks(6283),
+                            DateCreated = new DateTime(2021, 11, 9, 22, 17, 35, 316, DateTimeKind.Local).AddTicks(8339),
                             Duration = 0,
                             FileSize = 0L,
                             PathMedia = "covid.jpeg",
@@ -139,7 +139,7 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 2,
-                            DateCreated = new DateTime(2021, 11, 5, 21, 51, 28, 259, DateTimeKind.Local).AddTicks(6613),
+                            DateCreated = new DateTime(2021, 11, 9, 22, 17, 35, 316, DateTimeKind.Local).AddTicks(8672),
                             Duration = 0,
                             FileSize = 0L,
                             PathMedia = "taliban.jpeg",
@@ -224,7 +224,7 @@ namespace FakeNewsFilter.Data.Migrations
                             Publisher = "New York Times",
                             SocialBeliefs = 0.0,
                             Status = 0,
-                            Timestamp = new DateTime(2021, 11, 5, 21, 51, 28, 259, DateTimeKind.Local).AddTicks(8441)
+                            Timestamp = new DateTime(2021, 11, 9, 22, 17, 35, 317, DateTimeKind.Local).AddTicks(2128)
                         },
                         new
                         {
@@ -237,7 +237,7 @@ namespace FakeNewsFilter.Data.Migrations
                             Publisher = "NBC News",
                             SocialBeliefs = 0.0,
                             Status = 0,
-                            Timestamp = new DateTime(2021, 11, 5, 21, 51, 28, 259, DateTimeKind.Local).AddTicks(8740)
+                            Timestamp = new DateTime(2021, 11, 9, 22, 17, 35, 317, DateTimeKind.Local).AddTicks(2515)
                         },
                         new
                         {
@@ -249,7 +249,7 @@ namespace FakeNewsFilter.Data.Migrations
                             PostURL = "https://www.nytimes.com/live/2021/08/15/world/covid-delta-variant-vaccine/covid-hospitalizations-cdc",
                             SocialBeliefs = 0.0,
                             Status = 0,
-                            Timestamp = new DateTime(2021, 11, 5, 21, 51, 28, 259, DateTimeKind.Local).AddTicks(8752)
+                            Timestamp = new DateTime(2021, 11, 9, 22, 17, 35, 317, DateTimeKind.Local).AddTicks(2529)
                         });
                 });
 
@@ -264,7 +264,7 @@ namespace FakeNewsFilter.Data.Migrations
                     b.Property<DateTime>("Timestamp")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 11, 5, 21, 51, 28, 226, DateTimeKind.Local).AddTicks(5631));
+                        .HasDefaultValue(new DateTime(2021, 11, 9, 22, 17, 35, 281, DateTimeKind.Local).AddTicks(7016));
 
                     b.HasKey("TopicId", "NewsId");
 
@@ -316,17 +316,74 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             Id = new Guid("a3314be5-4c77-4fb6-82ad-302014682a73"),
-                            ConcurrencyStamp = "59196e13-4c9a-4d71-8ffc-b6c70a9d5328",
+                            ConcurrencyStamp = "d857f1c1-bf15-4ac0-937b-3f9fec9ee156",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
                             Id = new Guid("b4314be5-4c77-4fb6-82ad-302014682b13"),
-                            ConcurrencyStamp = "44086566-f7c8-423c-b44f-4268e420d4c0",
+                            ConcurrencyStamp = "538731a7-92f6-44b8-8406-ace883f06236",
                             Name = "Subscriber",
                             NormalizedName = "Subscriber"
                         });
+                });
+
+            modelBuilder.Entity("FakeNewsFilter.Data.Entities.Source", b =>
+                {
+                    b.Property<int>("SourceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("LanguageId")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(5)");
+
+                    b.Property<string>("SourceName")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.HasKey("SourceId");
+
+                    b.HasIndex("LanguageId");
+
+                    b.ToTable("Source");
+                });
+
+            modelBuilder.Entity("FakeNewsFilter.Data.Entities.Story", b =>
+                {
+                    b.Property<int>("StoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Link")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SourceId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ThumbNews")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Timestamp")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2021, 11, 9, 22, 17, 35, 295, DateTimeKind.Local).AddTicks(2908));
+
+                    b.HasKey("StoryId");
+
+                    b.HasIndex("SourceId");
+
+                    b.HasIndex("ThumbNews")
+                        .IsUnique()
+                        .HasFilter("[ThumbNews] IS NOT NULL");
+
+                    b.ToTable("Story");
                 });
 
             modelBuilder.Entity("FakeNewsFilter.Data.Entities.TopicNews", b =>
@@ -524,14 +581,14 @@ namespace FakeNewsFilter.Data.Migrations
                         {
                             Id = new Guid("69db714f-9576-45ba-b5b7-f00649be00de"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "bd2fb0c2-0c78-4431-a228-3e9846e73572",
+                            ConcurrencyStamp = "3882a386-6f19-49d4-802d-f7cb0b98e78a",
                             Email = "bp.khuyen@hutech.edu.vn",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Bui Phu Khuyen",
                             NormalizedEmail = "BP.KHUYEN@HUTECH.EDU.VN",
                             NormalizedUserName = "khuyenpb",
-                            PasswordHash = "AQAAAAEAACcQAAAAENi7iB0H5Ic7AIxTrZqmnULWqBVMZn5/4lVF5QYHNoREFKvJsDV0rn+Lzz3mMCwwsg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEF/MtHXXNDI/3cc6+eL3OLtGr3bL0KDqbAy6Wfd90H92BeqBfWug5+pwROtxaOIujg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             Status = 0,
@@ -573,7 +630,7 @@ namespace FakeNewsFilter.Data.Migrations
                     b.Property<DateTime>("Timestamp")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 11, 5, 21, 51, 28, 236, DateTimeKind.Local).AddTicks(9066));
+                        .HasDefaultValue(new DateTime(2021, 11, 9, 22, 17, 35, 292, DateTimeKind.Local).AddTicks(7003));
 
                     b.Property<bool>("isReal")
                         .HasColumnType("bit");
@@ -722,6 +779,34 @@ namespace FakeNewsFilter.Data.Migrations
                     b.Navigation("TopicNews");
                 });
 
+            modelBuilder.Entity("FakeNewsFilter.Data.Entities.Source", b =>
+                {
+                    b.HasOne("FakeNewsFilter.Data.Entities.Language", "Language")
+                        .WithMany("Source")
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Language");
+                });
+
+            modelBuilder.Entity("FakeNewsFilter.Data.Entities.Story", b =>
+                {
+                    b.HasOne("FakeNewsFilter.Data.Entities.Source", "Source")
+                        .WithMany("Story")
+                        .HasForeignKey("SourceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FakeNewsFilter.Data.Entities.Media", "Media")
+                        .WithOne("Story")
+                        .HasForeignKey("FakeNewsFilter.Data.Entities.Story", "ThumbNews");
+
+                    b.Navigation("Media");
+
+                    b.Navigation("Source");
+                });
+
             modelBuilder.Entity("FakeNewsFilter.Data.Entities.TopicNews", b =>
                 {
                     b.HasOne("FakeNewsFilter.Data.Entities.Language", "Language")
@@ -790,12 +875,16 @@ namespace FakeNewsFilter.Data.Migrations
                 {
                     b.Navigation("News");
 
+                    b.Navigation("Source");
+
                     b.Navigation("TopicNews");
                 });
 
             modelBuilder.Entity("FakeNewsFilter.Data.Entities.Media", b =>
                 {
                     b.Navigation("News");
+
+                    b.Navigation("Story");
 
                     b.Navigation("TopicNews");
 
@@ -812,6 +901,11 @@ namespace FakeNewsFilter.Data.Migrations
             modelBuilder.Entity("FakeNewsFilter.Data.Entities.Role", b =>
                 {
                     b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("FakeNewsFilter.Data.Entities.Source", b =>
+                {
+                    b.Navigation("Story");
                 });
 
             modelBuilder.Entity("FakeNewsFilter.Data.Entities.TopicNews", b =>

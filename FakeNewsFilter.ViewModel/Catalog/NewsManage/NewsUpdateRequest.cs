@@ -13,8 +13,6 @@ namespace FakeNewsFilter.ViewModel.Catalog.NewsManage
 
         public string Description { get; set; }
 
-        public string MediaLink { get; set; }
-
         public MediaType Type { get; set; }
 
         public IFormFile ThumbNews { get; set; }
