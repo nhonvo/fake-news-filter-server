@@ -63,7 +63,7 @@ namespace FakeNewsFilter.Application.Catalog
                    Name = x.Name,
                    TopicInfo = x.NewsInTopics.Select(o => new TopicInfo { TopicId = o.TopicId, TopicName = o.TopicNews.Tag}).ToList(),
                    Description = x.Description,
-                   PostURL = x.PostURL,
+                   Content = x.Content,
                    Status = x.Status,
                    ThumbNews = _mapper.Map<MediaViewModel>(x.Media),
                    LanguageId = x.LanguageId,
@@ -96,7 +96,9 @@ namespace FakeNewsFilter.Application.Catalog
                     NewsId = news.NewsId,
                     Name = news.Name,
                     Description = news.Description,
-                    PostURL = news.PostURL,
+                    Content = news.Content,
+                    OfficialRating = news.OfficialRating,
+                    Publisher = news.Publisher,
                     ThumbNews = _mapper.Map<MediaViewModel>(media),
                     LanguageId = news.LanguageId,
                     Timestamp = news.Timestamp,
@@ -130,7 +132,7 @@ namespace FakeNewsFilter.Application.Catalog
                     Name = x.n.Name,
                     LanguageId = x.n.LanguageId,
                     Description = x.c.Description,
-                    PostURL = x.n.PostURL,
+                    Content = x.n.Content,
                     Status = x.n.Status,
                     ThumbNews = _mapper.Map<MediaViewModel>(x.n.Media),
                     Timestamp = x.n.Timestamp,
@@ -150,19 +152,12 @@ namespace FakeNewsFilter.Application.Catalog
             var news = new News()
             {
                 Name = request.Name,
-
                 Description = request.Description,
-
-                PostURL = request.PostURL,
-
+                Content = request.Content,
                 OfficialRating = request.OfficialRating,
-
                 DatePublished = request.DatePublished ?? DateTime.Now,
-
                 Publisher = request.Publisher,
-
                 LanguageId = request.LanguageId,
-
                 Timestamp = DateTime.Now
             };
            
@@ -212,13 +207,17 @@ namespace FakeNewsFilter.Application.Catalog
             if (news == null)
                 return new ApiErrorResult<bool>($"Cannont find a news with Id is: {newsId}");
 
-            var media = _context.Media.Single(x => x.MediaId == news.ThumbNews);
-
-            if (media != null && media.PathMedia != null)
+            if (news.ThumbNews != null)
             {
-                await _storageService.DeleteFileAsync(media.PathMedia);
-                _context.Media.Remove(media);
+                var media = _context.Media.Single(x => x.MediaId == news.ThumbNews);
+
+                if (media != null && media.PathMedia != null)
+                {
+                    await _storageService.DeleteFileAsync(media.PathMedia);
+                    _context.Media.Remove(media);
+                }
             }
+
             _context.News.Remove(news);
 
             if(await _context.SaveChangesAsync() == 0)
@@ -240,7 +239,8 @@ namespace FakeNewsFilter.Application.Catalog
 
             news_update.Name = request.Name ?? news_update.Name ;
             news_update.Description = request.Description ?? news_update.Description;
-            news_update.PostURL = request.SourceLink ?? news_update.PostURL;
+            news_update.Content = request.Content ?? news_update.Content;
+            news_update.LanguageId = request.LanguageId ?? news_update.LanguageId;
 
             if (request.ThumbNews != null)
             {
@@ -276,6 +276,37 @@ namespace FakeNewsFilter.Application.Catalog
                 }
             }
 
+            //check topic id
+            foreach (var item in request.TopicId)
+            {
+                var topic = await _context.TopicNews.FirstOrDefaultAsync(t => t.TopicId == item);
+                if (topic == null)
+                {
+                    return new ApiErrorResult<bool>($"Cannont find a topic with Id is: {item}");
+                }
+            }
+
+            var newsListDelete = await _context.NewsInTopics.Where(n => n.NewsId == request.Id).ToListAsync();
+
+            //delete all news in newsInTopics has request.Id equals NewsId in this table
+            foreach (var item in newsListDelete)
+            {
+                _context.NewsInTopics.Remove(item);
+
+            }
+
+            // update news in topic
+            foreach (var item in request.TopicId)
+            {
+                var newsUpdate = new Data.Entities.NewsInTopics()
+                {
+                    NewsId = request.Id,
+                    TopicId = item
+                };
+
+                _context.NewsInTopics.Add(newsUpdate);
+            }
+
             if (await _context.SaveChangesAsync() == 0)
             {
                 return new ApiErrorResult<bool>("Update New Unsuccessful! Try again");
@@ -292,7 +323,7 @@ namespace FakeNewsFilter.Application.Catalog
             if (news_update == null) 
                    return new ApiErrorResult<bool>($"Cannont find a news with Id is: {newsId}");
 
-            news_update.PostURL = newLink;
+            news_update.Content = newLink;
 
             if (await _context.SaveChangesAsync() == 0)
             {

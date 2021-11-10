@@ -18,6 +18,12 @@ namespace FakeNewsFilter.AdminApp.Services
         Task<ApiResult<List<TopicInfoVM>>> GetTopicInfo();
 
         Task<ApiResult<bool>> CreateTopic(TopicCreateRequest request);
+
+        Task<ApiResult<TopicInfoVM>> GetById(int Id);
+
+        Task<ApiResult<bool>> UpdateTopic(TopicUpdateRequest request);
+
+        Task<ApiResult<bool>> Delete(int topicId);
     }
 
     public class TopicApi : ITopicApi
@@ -35,7 +41,6 @@ namespace FakeNewsFilter.AdminApp.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        //Lấy danh sách Topic theo languageId
         public async Task<ApiResult<List<TopicInfoVM>>> GetTopicInfo()
         {
             try
@@ -66,7 +71,6 @@ namespace FakeNewsFilter.AdminApp.Services
             }
         }
 
-        //Tạo mới Topic
         public async Task<ApiResult<bool>> CreateTopic(TopicCreateRequest request)
         {
             var client = _httpClientFactory.CreateClient();
@@ -106,7 +110,6 @@ namespace FakeNewsFilter.AdminApp.Services
             return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
         }
 
-        //Lấy thông tin topic (dựa vào Id)
         public async Task<ApiResult<TopicInfoVM>> GetById(int Id)
         {
             var client = _httpClientFactory.CreateClient();
@@ -125,7 +128,6 @@ namespace FakeNewsFilter.AdminApp.Services
             return JsonConvert.DeserializeObject<ApiErrorResult<TopicInfoVM>>(body);
         }
 
-        //Cập nhật tài khoản
         public async Task<ApiResult<bool>> UpdateTopic(TopicUpdateRequest request)
         {
             var client = _httpClientFactory.CreateClient();
@@ -166,7 +168,6 @@ namespace FakeNewsFilter.AdminApp.Services
             return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
         }
 
-        //Xoá người dùng
         public async Task<ApiResult<bool>> Delete(int topicId)
         {
             var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");

@@ -11,6 +11,8 @@
 $(document).ready(function () {
     var select = $('.select2');
 
+   
+
     var
         language = {
             "en": 'flag-icon flag-icon-us',
@@ -308,6 +310,16 @@ $(document).ready(function () {
 
     });
 
+    ClassicEditor.create(document.querySelector('#txt_content'))
+        .then(editor => {
+            editor.editing.view.change(writer => {
+                writer.setStyle('min-height', '300px', editor.editing.view.document.getRoot());
+            });
+            window.editor = editor;
+        })
+        .catch(error => {
+            console.error(error);
+        });
 });
 
 $(function () {
@@ -380,18 +392,18 @@ $(function () {
     }
 });
 
-function DeleteData(topicId) {
-    if (confirm("Are you sure want to delele this topic?")) {
-        Delete(topicId);
+function DeleteData(newsId) {
+    if (confirm("Are you sure want to delele this news?")) {
+        Delete(newsId);
     }
     else {
         return false;
     }
 }
 
-function Delete(topicId) {
-    var url = "/Topic/Delete";
-    $.post(url, { topicId: topicId }, function (data) {
+function Delete(newsId) {
+    var url = "/News/Delete";
+    $.post(url, { newsId: newsId }, function (data) {
         location.reload();
     });
 }

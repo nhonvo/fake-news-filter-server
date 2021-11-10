@@ -14,9 +14,7 @@ namespace FakeNewsFilter.Data.Entities
 
         public string OfficialRating { get; set; }
 
-        public double SocialBeliefs { get; set; }
-
-        public string PostURL { get; set; }
+        public string Content { get; set; }
 
         public string Publisher { get; set; }
 
