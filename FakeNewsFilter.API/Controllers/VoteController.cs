@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FakeNewsFilter.API.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize(Roles = "Subscriber")]
+    [Authorize]
     public class VoteController : ControllerBase
     {
         private readonly IVoteService _voteService;

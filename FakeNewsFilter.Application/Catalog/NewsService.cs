@@ -242,35 +242,46 @@ namespace FakeNewsFilter.Application.Catalog
             news_update.Description = request.Description ?? news_update.Description;
             news_update.PostURL = request.SourceLink ?? news_update.PostURL;
 
-            //Save Image
-            if (request.ThumbNews != null || request.MediaLink != null)
+            if (request.ThumbNews != null)
             {
+                //Kiểm tra hình đã có trên DB chưa
                 var thumb = _context.Media.FirstOrDefault(i => i.MediaId == news_update.ThumbNews);
 
-                thumb.FileSize = 0;
+                //Nếu chưa có hình thì thêm hình mới
+                if (thumb == null)
+                {
+                    news_update.Media = new Media()
+                    {
+                        Caption = "Thumbnail Topic",
+                        DateCreated = DateTime.Now,
+                        FileSize = request.ThumbNews.Length,
+                        PathMedia = await this.SaveFile(request.ThumbNews),
+                        Type = MediaType.Image,
+                        SortOrder = 1
+                    };
 
-                if (thumb.PathMedia != null)
-                {
-                    await _storageService.DeleteFileAsync(thumb.PathMedia);
-                    thumb.PathMedia = null;
                 }
-                if (request.ThumbNews != null)
+                else
                 {
+                    if (thumb.PathMedia != null)
+                    {
+                        await _storageService.DeleteFileAsync(thumb.PathMedia);
+                    }
                     thumb.FileSize = request.ThumbNews.Length;
                     thumb.PathMedia = await SaveFile(request.ThumbNews);
+
+                    thumb.Type = MediaType.Image;
+
+                    _context.Media.Update(thumb);
                 }
-
-                thumb.Type = request.Type;
-
-                _context.Media.Update(thumb);
             }
 
             if (await _context.SaveChangesAsync() == 0)
             {
-                return new ApiErrorResult<bool>("Update News Unsuccessful! Try again");
+                return new ApiErrorResult<bool>("Update New Unsuccessful! Try again");
             }
 
-            return new ApiSuccessResult<bool>("Update News Successful!", false);
+            return new ApiSuccessResult<bool>("Update New Successful!", false);
         }
 
         //Update Link News

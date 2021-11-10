@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FakeNewsFilter.Data.Migrations
 {
-    public partial class VoteMigration : Migration
+    public partial class StoryUpdate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -124,6 +124,26 @@ namespace FakeNewsFilter.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Source",
+                columns: table => new
+                {
+                    SourceId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SourceName = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    LanguageId = table.Column<string>(type: "varchar(5)", unicode: false, maxLength: 5, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Source", x => x.SourceId);
+                    table.ForeignKey(
+                        name: "FK_Source_Languages_LanguageId",
+                        column: x => x.LanguageId,
+                        principalTable: "Languages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "News",
                 columns: table => new
                 {
@@ -224,12 +244,40 @@ namespace FakeNewsFilter.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Story",
+                columns: table => new
+                {
+                    StoryId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ThumbNews = table.Column<int>(type: "int", nullable: true),
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2021, 11, 9, 22, 17, 35, 295, DateTimeKind.Local).AddTicks(2908)),
+                    Link = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SourceId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Story", x => x.StoryId);
+                    table.ForeignKey(
+                        name: "FK_Story_Media_ThumbNews",
+                        column: x => x.ThumbNews,
+                        principalTable: "Media",
+                        principalColumn: "MediaId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Story_Source_SourceId",
+                        column: x => x.SourceId,
+                        principalTable: "Source",
+                        principalColumn: "SourceId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "NewsInTopics",
                 columns: table => new
                 {
                     NewsId = table.Column<int>(type: "int", nullable: false),
                     TopicId = table.Column<int>(type: "int", nullable: false),
-                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2021, 11, 4, 20, 38, 17, 331, DateTimeKind.Local).AddTicks(7200))
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2021, 11, 9, 22, 17, 35, 281, DateTimeKind.Local).AddTicks(7016))
                 },
                 constraints: table =>
                 {
@@ -303,7 +351,7 @@ namespace FakeNewsFilter.Data.Migrations
                     NewsId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     isReal = table.Column<bool>(type: "bit", nullable: false),
-                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2021, 11, 4, 20, 38, 17, 407, DateTimeKind.Local).AddTicks(8090))
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2021, 11, 9, 22, 17, 35, 292, DateTimeKind.Local).AddTicks(7003))
                 },
                 constraints: table =>
                 {
@@ -341,8 +389,8 @@ namespace FakeNewsFilter.Data.Migrations
                 columns: new[] { "MediaId", "Caption", "DateCreated", "Duration", "FileSize", "PathMedia", "SortOrder", "Type" },
                 values: new object[,]
                 {
-                    { 1, null, new DateTime(2021, 11, 4, 20, 38, 17, 459, DateTimeKind.Local).AddTicks(9330), 0, 0L, "covid.jpeg", 0, 1 },
-                    { 2, null, new DateTime(2021, 11, 4, 20, 38, 17, 460, DateTimeKind.Local).AddTicks(2430), 0, 0L, "taliban.jpeg", 0, 1 }
+                    { 1, null, new DateTime(2021, 11, 9, 22, 17, 35, 316, DateTimeKind.Local).AddTicks(8339), 0, 0L, "covid.jpeg", 0, 1 },
+                    { 2, null, new DateTime(2021, 11, 9, 22, 17, 35, 316, DateTimeKind.Local).AddTicks(8672), 0, 0L, "taliban.jpeg", 0, 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -350,23 +398,23 @@ namespace FakeNewsFilter.Data.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { new Guid("a3314be5-4c77-4fb6-82ad-302014682a73"), "85d881fc-6872-4320-90de-354ac78bd675", "Admin", "Admin" },
-                    { new Guid("b4314be5-4c77-4fb6-82ad-302014682b13"), "8f06d233-f282-48db-b482-257ec4c6b942", "Subscriber", "Subscriber" }
+                    { new Guid("a3314be5-4c77-4fb6-82ad-302014682a73"), "d857f1c1-bf15-4ac0-937b-3f9fec9ee156", "Admin", "Admin" },
+                    { new Guid("b4314be5-4c77-4fb6-82ad-302014682b13"), "538731a7-92f6-44b8-8406-ace883f06236", "Subscriber", "Subscriber" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AccessFailedCount", "AvatarId", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { new Guid("69db714f-9576-45ba-b5b7-f00649be00de"), 0, null, "fe50a636-91dd-498b-bfc3-8e5dca910f9a", "bp.khuyen@hutech.edu.vn", true, false, null, "Bui Phu Khuyen", "BP.KHUYEN@HUTECH.EDU.VN", "khuyenpb", "AQAAAAEAACcQAAAAEAtes9LrnGnteCus+ZdrjLiLaH0On6YtTK7CM+0uy3+DvjoIgog2YN/q9GnmZIGOZQ==", null, false, "", false, "khuyenpb" });
+                values: new object[] { new Guid("69db714f-9576-45ba-b5b7-f00649be00de"), 0, null, "3882a386-6f19-49d4-802d-f7cb0b98e78a", "bp.khuyen@hutech.edu.vn", true, false, null, "Bui Phu Khuyen", "BP.KHUYEN@HUTECH.EDU.VN", "khuyenpb", "AQAAAAEAACcQAAAAEF/MtHXXNDI/3cc6+eL3OLtGr3bL0KDqbAy6Wfd90H92BeqBfWug5+pwROtxaOIujg==", null, false, "", false, "khuyenpb" });
 
             migrationBuilder.InsertData(
                 table: "News",
                 columns: new[] { "NewsId", "DatePublished", "Description", "LanguageId", "Name", "OfficialRating", "PostURL", "Publisher", "ThumbNews", "Timestamp" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2021, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "Taliban fighters poured into the Afghan capital on Sunday amid scenes of panic and chaos, bringing a swift and shocking close to the Afghan government and the 20-year American era in the country.", "en", "Kabul’s Sudden Fall to Taliban Ends U.S. Era in Afghanistan", null, "https://www.nytimes.com/2021/08/15/world/asia/afghanistan-taliban-kabul-surrender.html", "New York Times", null, new DateTime(2021, 11, 4, 20, 38, 17, 461, DateTimeKind.Local).AddTicks(680) },
-                    { 2, new DateTime(2021, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "The masking orders in Dallas and Bexar counties were issued after a lower court ruled last week in favor of local officials.", "en", "Texas high court blocks mask mandates in two of state's largest counties", null, "https://www.nbcnews.com/news/us-news/texas-high-court-blocks-mask-mandates-two-state-s-largest-n1276884", "NBC News", null, new DateTime(2021, 11, 4, 20, 38, 17, 461, DateTimeKind.Local).AddTicks(4540) },
-                    { 3, new DateTime(2021, 4, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "A lagging vaccination campaign and the spread of the highly contagious Delta variant are driving a surge in Covid-19 hospitalizations in the United States..", "en", "Hospitalizations of Americans under 50 have reached new pandemic highs", null, "https://www.nytimes.com/live/2021/08/15/world/covid-delta-variant-vaccine/covid-hospitalizations-cdc", null, null, new DateTime(2021, 11, 4, 20, 38, 17, 461, DateTimeKind.Local).AddTicks(5200) }
+                    { 1, new DateTime(2021, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "Taliban fighters poured into the Afghan capital on Sunday amid scenes of panic and chaos, bringing a swift and shocking close to the Afghan government and the 20-year American era in the country.", "en", "Kabul’s Sudden Fall to Taliban Ends U.S. Era in Afghanistan", null, "https://www.nytimes.com/2021/08/15/world/asia/afghanistan-taliban-kabul-surrender.html", "New York Times", null, new DateTime(2021, 11, 9, 22, 17, 35, 317, DateTimeKind.Local).AddTicks(2128) },
+                    { 2, new DateTime(2021, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "The masking orders in Dallas and Bexar counties were issued after a lower court ruled last week in favor of local officials.", "en", "Texas high court blocks mask mandates in two of state's largest counties", null, "https://www.nbcnews.com/news/us-news/texas-high-court-blocks-mask-mandates-two-state-s-largest-n1276884", "NBC News", null, new DateTime(2021, 11, 9, 22, 17, 35, 317, DateTimeKind.Local).AddTicks(2515) },
+                    { 3, new DateTime(2021, 4, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "A lagging vaccination campaign and the spread of the highly contagious Delta variant are driving a surge in Covid-19 hospitalizations in the United States..", "en", "Hospitalizations of Americans under 50 have reached new pandemic highs", null, "https://www.nytimes.com/live/2021/08/15/world/covid-delta-variant-vaccine/covid-hospitalizations-cdc", null, null, new DateTime(2021, 11, 9, 22, 17, 35, 317, DateTimeKind.Local).AddTicks(2529) }
                 });
 
             migrationBuilder.InsertData(
@@ -440,6 +488,23 @@ namespace FakeNewsFilter.Data.Migrations
                 column: "NewsId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Source_LanguageId",
+                table: "Source",
+                column: "LanguageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Story_SourceId",
+                table: "Story",
+                column: "SourceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Story_ThumbNews",
+                table: "Story",
+                column: "ThumbNews",
+                unique: true,
+                filter: "[ThumbNews] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TopicNews_LanguageId",
                 table: "TopicNews",
                 column: "LanguageId");
@@ -484,6 +549,9 @@ namespace FakeNewsFilter.Data.Migrations
                 name: "RoleClaims");
 
             migrationBuilder.DropTable(
+                name: "Story");
+
+            migrationBuilder.DropTable(
                 name: "UserClaims");
 
             migrationBuilder.DropTable(
@@ -500,6 +568,9 @@ namespace FakeNewsFilter.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "TopicNews");
+
+            migrationBuilder.DropTable(
+                name: "Source");
 
             migrationBuilder.DropTable(
                 name: "Role");

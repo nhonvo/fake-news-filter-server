@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using FakeNewsFilter.Data.Enums;
 
 namespace FakeNewsFilter.Data.Entities
@@ -22,10 +23,10 @@ namespace FakeNewsFilter.Data.Entities
         public DateTime DateCreated { get; set; }
 
         public News News { get; set; }
+        public Story Story { get; set; }
        
         public TopicNews TopicNews { get; set; }
 
         public User User { get; set; }
-
     }
 }

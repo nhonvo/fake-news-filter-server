@@ -38,5 +38,6 @@ namespace FakeNewsFilter.Data.Entities
 
         public List<Vote> Vote { get; set; }
 
+
     }
 }

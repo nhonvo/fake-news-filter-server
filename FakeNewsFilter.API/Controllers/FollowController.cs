@@ -1,5 +1,6 @@
 ﻿using FakeNewsFilter.Application.Catalog;
 using FakeNewsFilter.ViewModel.Catalog.Follows;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,7 +11,9 @@ using System.Threading.Tasks;
 namespace FakeNewsFilter.API.Controllers
 {
     [Route("api/[controller]")]
+
     [ApiController]
+    [Authorize]
     public class FollowController : ControllerBase
     {
         private readonly IFollowService _IFollowService;
