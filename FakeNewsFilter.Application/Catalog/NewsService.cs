@@ -22,7 +22,7 @@ namespace FakeNewsFilter.Application.Catalog
     {
         Task<ApiResult<List<NewsViewModel>>> GetAll(string languageId);
 
-        Task<ApiResult<List<NewsViewModel>>> GetNewsInTopic(GetPublicNewsRequest request);
+        Task<ApiResult<List<NewsViewModel>>> GetNewsInTopic(int topicId);
 
         Task<ApiResult<int>> Create(NewsCreateRequest request);
 
@@ -116,14 +116,14 @@ namespace FakeNewsFilter.Application.Catalog
 
 
         //Lấy tất cả các tin tức có trong chủ đề
-        public async Task<ApiResult<List<NewsViewModel>>> GetNewsInTopic(GetPublicNewsRequest request)
+        public async Task<ApiResult<List<NewsViewModel>>> GetNewsInTopic(int topicId)
         {
                 var query = from n in _context.News
                         join nit in _context.NewsInTopics on n.NewsId equals nit.NewsId
                         join c in _context.TopicNews on nit.TopicId equals c.TopicId
                         select new { n, nit, c };
 
-            query = query.Where(t => request.TopicId == t.nit.TopicId);
+            query = query.Where(t => topicId == t.nit.TopicId);
 
             var data = await query
                 .Select(x => new NewsViewModel()
@@ -142,13 +142,21 @@ namespace FakeNewsFilter.Application.Catalog
             {
                 return new ApiErrorResult<List<NewsViewModel>>("Get All News In Topic Unsuccessful!");
             }
-
+            if (data.Count == 0)
+            {
+                return new ApiSuccessResult<List<NewsViewModel>>("Don't have news in topic " + topicId);
+            }
             return new ApiSuccessResult<List<NewsViewModel>>("Get All News In Topic Successful!", data);
         }
 
         //Tạo mới 1 tin tức
         public async Task<ApiResult<int>> Create(NewsCreateRequest request)
         {
+            var language = await _context.News.FirstOrDefaultAsync(x => x.LanguageId == request.LanguageId);
+            if(language == null)
+            {
+                return new ApiErrorResult<int>("Language not exist");
+            }
             var news = new News()
             {
                 Name = request.Name,
@@ -161,7 +169,6 @@ namespace FakeNewsFilter.Application.Catalog
                 Timestamp = DateTime.Now
             };
            
-
             //Save Image on Host
             if (request.ThumbNews != null)
             {

@@ -76,18 +76,19 @@ namespace FakeNewsFilter.Application.Catalog
         //update source story
         public async Task<ApiResult<bool>> Update(SourceUpdateRequest request)
         {
-            //check Language
-            var language = _context.Languages.FirstOrDefault(x => x.Id == request.LanguageId);
-            if (language == null)
-            {
-                return new ApiErrorResult<bool>("Language not exist");
-            }
             //check SourceName
             var sourcename = _context.Source.FirstOrDefault(x => x.SourceName == request.SourceName);
             if (sourcename == null)
             {
                 return new ApiErrorResult<bool>($"Can not find Source Name {request.SourceName} exist");
             }
+            //check Language
+            var language = _context.Languages.FirstOrDefault(x => x.Id == request.LanguageId);
+            if (language == null)
+            {
+                return new ApiErrorResult<bool>("Language not exist");
+            }
+            
             //remove source name
             var removelanguageid = _context.Source.Where(t => t.LanguageId == request.LanguageId);
             _context.Source.RemoveRange(removelanguageid);

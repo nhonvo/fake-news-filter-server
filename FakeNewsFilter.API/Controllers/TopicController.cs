@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FakeNewsFilter.API.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public class TopicController : ControllerBase
     {
         private readonly TopicService _topicService;
@@ -21,6 +21,7 @@ namespace FakeNewsFilter.API.Controllers
 
         // POST api/values
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromForm]TopicCreateRequest request)
         {
             if (!ModelState.IsValid)
@@ -53,6 +54,7 @@ namespace FakeNewsFilter.API.Controllers
 
        
         [HttpGet("{Id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetById(int Id)
         {
             var topic = await _topicService.GetTopicById(Id);
@@ -60,6 +62,7 @@ namespace FakeNewsFilter.API.Controllers
         }
 
         [HttpPut("{topicId}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update([FromRoute]int topicId, [FromForm] TopicUpdateRequest request)
         {
             if (!ModelState.IsValid)
@@ -78,6 +81,7 @@ namespace FakeNewsFilter.API.Controllers
         }
 
         [HttpDelete("{topicId}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int topicId)
         {
             var result = await _topicService.Delete(topicId);

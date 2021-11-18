@@ -9,6 +9,7 @@ namespace FakeNewsFilter.ViewModel.Common
         public ApiSuccessResult(string v)
         {
             IsSuccessed = true;
+            Message = v;
         }
 
         public ApiSuccessResult(String message, T resultObj)

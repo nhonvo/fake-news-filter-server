@@ -59,7 +59,7 @@ namespace FakeNewsFilter.WebApp
                 });
 
             //Fluent Validation 
-            services.AddControllersWithViews().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>()); ;
+            services.AddControllersWithViews().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestUserValidator>()); ;
 
             //Session
             services.AddSession(options =>

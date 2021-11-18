@@ -12,6 +12,8 @@ namespace FakeNewsFilter.ViewModel.Catalog.TopicNews
 
         public string Tag { get; set; }
 
+        public string LanguageId { set; get; }
+
         public string Description { get; set; }
 
         public IFormFile ThumbImage { get; set; }

@@ -7,6 +7,9 @@ using FakeNewsFilter.Data.EF;
 using FakeNewsFilter.Data.Entities;
 using FakeNewsFilter.Utilities.Constants;
 using FakeNewsFilter.ViewModel.System.Users;
+using FakeNewsFilter.ViewModel.Validator.News;
+using FakeNewsFilter.ViewModel.Validator.Story1;
+using FakeNewsFilter.ViewModel.Validator.Topic1;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -61,9 +64,19 @@ namespace FakeNewsFilter
 
 
 
-            //Fluent Validation   
-            services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
-
+            //Fluent Validation
+            //user
+            services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestUserValidator>());
+            services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RegisterRequestUserValidator>());
+            services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UpdateRequestUserValidator>());
+            //Topic
+            services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateRequestTopicValidator>());
+            services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UpdateRequestTopicValidator>());
+            //News
+            services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateRequestNewsValidator>());
+            services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UpdateRequestNewsValidator>());
+            //Story
+            services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateRequestStoryValidator>());
 
             //Swagger
             services.AddSwaggerGen(c =>
