@@ -151,7 +151,13 @@ namespace FakeNewsFilter.Application.System
 
                     return new ApiSuccessResult<bool>("Register Successful.", false);
                 }
-                return new ApiErrorResult<bool>("Register Unsuccessful.");
+
+                else
+                {
+                    List<IdentityError> errorList = result.Errors.ToList();
+                    var errors = string.Join(", ", errorList.Select(e => e.Description));
+                    return new ApiErrorResult<bool>("Register Unsuccessful. " + errors);
+                }
             }
 
             catch (FakeNewsException e)
@@ -212,14 +218,9 @@ namespace FakeNewsFilter.Application.System
             {
                 var user = await _userManager.FindByIdAsync(request.UserId.ToString());
 
-                //Tài khoản không tồn tại
-                if (user == null)
-                {
-                    return new ApiErrorResult<bool>("Account does not exist");
-                }
-
                 //Kiểm tra trùng Email
-                if (await _userManager.Users.AnyAsync(x => x.Email == request.Email && x.Id != request.UserId))
+                var email = await _userManager.Users.AnyAsync(x => x.Email == request.Email && x.Id != request.UserId);
+                if (email == false)
                 {
                     return new ApiErrorResult<bool>("Email is available!");
                 }
@@ -320,14 +321,15 @@ namespace FakeNewsFilter.Application.System
                 }
 
                 //Xoá Avatar ra khỏi Source
-                var avatar = _context.Media.Single(x => x.MediaId == user.AvatarId);
+                var avatar = _context.Media.SingleOrDefault(x => x.MediaId == user.AvatarId);
 
                 if (avatar != null )
-                    if(avatar.PathMedia != null)
+                {
+                    if (avatar.PathMedia != null)
                         await _storageService.DeleteFileAsync(avatar.PathMedia);
-                _context.Media.Remove(avatar);
+                        _context.Media.Remove(avatar);
+                }
 
-                
                 var result = await _userManager.DeleteAsync(user);
 
                 if (result.Succeeded)
@@ -373,7 +375,6 @@ namespace FakeNewsFilter.Application.System
 
             return new ApiSuccessResult<bool>("Role Assign Successful!", false);
         }
-
 
         //Lưu ảnh
         private async Task<string> SaveFile(IFormFile file)

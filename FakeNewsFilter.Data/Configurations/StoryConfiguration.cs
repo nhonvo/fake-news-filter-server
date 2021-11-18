@@ -15,7 +15,7 @@ namespace FakeNewsFilter.Data.Configurations
 
             builder.HasOne(t => t.Source).WithMany(t => t.Story).HasForeignKey(t => t.SourceId);
 
-            builder.HasOne(x => x.Media).WithOne(x => x.Story).HasForeignKey<Story>(x => x.ThumbNews);
+            builder.HasOne(x => x.Media).WithOne(x => x.Story).HasForeignKey<Story>(x => x.Thumbstory);
 
             builder.Property(t => t.Timestamp).HasDefaultValue(DateTime.Now);
 

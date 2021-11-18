@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FakeNewsFilter.API.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public class UsersController : Controller
     {
         private readonly IUserService _userService;
@@ -62,6 +62,7 @@ namespace FakeNewsFilter.API.Controllers
 
        
         [HttpGet("List")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllPaging()
         {
             var users = await _userService.GetUsers();
@@ -92,6 +93,7 @@ namespace FakeNewsFilter.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")] 
         public async Task<IActionResult> Delete(String id)
         {
             var result = await _userService.Delete(id);

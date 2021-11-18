@@ -23,6 +23,7 @@ namespace FakeNewsFilter.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromForm] StoryCreateRequest request)
         {
             if (!ModelState.IsValid)
@@ -40,6 +41,7 @@ namespace FakeNewsFilter.API.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update([FromForm] StoryUpdateRequest request)
         {
             if (!ModelState.IsValid)
@@ -57,6 +59,7 @@ namespace FakeNewsFilter.API.Controllers
         }
 
         [HttpDelete("{StoryId}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int storyId)
         {
             var result = await _IStoryService.Delete(storyId);
@@ -69,10 +72,20 @@ namespace FakeNewsFilter.API.Controllers
         }
 
         [HttpGet("{StoryId}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetById(int storyId)
         {
             var topic = await _IStoryService.GetOneStory(storyId);
             return Ok(topic);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> Get(string languageId)
+        {
+            var topics = await _IStoryService.GetAllStory(languageId);
+
+            return Ok(topics);
         }
     }
 }

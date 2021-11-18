@@ -8,6 +8,7 @@ namespace FakeNewsFilter.ViewModel.Catalog.Story
     public class StoryCreateRequest
     {
         public int? ThumbNews { get; set; }
+        public string LanguageId { set; get; }
         public IFormFile ThumbStory { get; set; }
         public DateTime Timestamp { get; set; }
         public string Link { get; set; }

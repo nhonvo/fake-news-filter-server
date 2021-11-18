@@ -7,7 +7,7 @@ namespace FakeNewsFilter.Data.Entities
     public class Story
     {
         public int StoryId { get; set; }
-        public int? ThumbNews { get; set; }
+        public int? Thumbstory { get; set; }
         public DateTime Timestamp { get; set; }
         public string Link { get; set; }
         public Media Media { get; set; }

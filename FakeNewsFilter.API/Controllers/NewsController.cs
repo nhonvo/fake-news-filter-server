@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace FakeNewsFilter.API.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public class NewsController : ControllerBase
     {
         private readonly INewsService _newsService;
@@ -18,6 +18,7 @@ namespace FakeNewsFilter.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromForm] NewsCreateRequest request)
         {
             if (!ModelState.IsValid)
@@ -37,6 +38,7 @@ namespace FakeNewsFilter.API.Controllers
         }
 
         [HttpDelete("{newsId}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int newsId)
         {
             var result = await _newsService.Delete(newsId);
@@ -74,18 +76,15 @@ namespace FakeNewsFilter.API.Controllers
         // GET: api/news/topic
         [HttpGet("Topic")]
         [AllowAnonymous]
-        public async Task<IActionResult> GetNewsInTopic([FromQuery] GetPublicNewsRequest request)
+        public async Task<IActionResult> GetNewsInTopic([FromQuery] int topicId)
         {
-            var newsintopics = await _newsService.GetNewsInTopic(request);
+            var newsintopics = await _newsService.GetNewsInTopic(topicId);
 
-            if (newsintopics.ResultObj.Count == 0)
-            {
-                return NotFound(newsintopics);
-            }
             return Ok(newsintopics);
         }
 
         [HttpPut]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update([FromForm] NewsUpdateRequest request)
         {
             if (!ModelState.IsValid)
@@ -103,6 +102,7 @@ namespace FakeNewsFilter.API.Controllers
         }
 
         [HttpPatch("link/{newsId}/{newLink}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateLink(int newsId, string newLink)
         {
             if (!ModelState.IsValid)

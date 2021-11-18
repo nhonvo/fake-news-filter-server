@@ -23,6 +23,7 @@ namespace FakeNewsFilter.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromBody] SourceCreateRequest request)
         {
             if (!ModelState.IsValid)
@@ -39,6 +40,7 @@ namespace FakeNewsFilter.API.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update([FromBody] SourceUpdateRequest request)
         {
             if (!ModelState.IsValid)
@@ -65,6 +67,7 @@ namespace FakeNewsFilter.API.Controllers
         }
 
         [HttpDelete("{SourceId}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int sourceid)
         {
             var result = await _IScourceStoryService.Delete(sourceid);

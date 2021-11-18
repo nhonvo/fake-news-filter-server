@@ -87,6 +87,11 @@ namespace FakeNewsFilter.Application.Catalog
         {
             try
             {
+                var language = await _context.TopicNews.FirstOrDefaultAsync(x => x.LanguageId == request.LanguageId);
+                if (language == null)
+                {
+                    return new ApiErrorResult<bool>("Language not exist.");
+                }
                 var topic = new Data.Entities.TopicNews()
                 {
                     Label = request.Label,
@@ -135,14 +140,22 @@ namespace FakeNewsFilter.Application.Catalog
             try
             {
                 var topic = await _context.TopicNews.FindAsync(request.TopicId);
-
                 if (topic == null)
-                    throw new FakeNewsException($"Cannot find a topic news with Id is: {request.TopicId}");
+                {
+                    return new ApiErrorResult<bool>("topic not exist.");
+                }
 
+                var language = await _context.TopicNews.FirstOrDefaultAsync(x => x.LanguageId == request.LanguageId);
+                if(language == null)
+                {
+                    return new ApiErrorResult<bool>("Language not exist.");
+                }
+                
                 topic.Label = request.Label ?? topic.Label;
                 topic.Tag = request.Tag ?? topic.Tag;
                 topic.Description = request.Description ?? topic.Description;
                 topic.Timestamp = DateTime.Now;
+                topic.LanguageId = request.LanguageId;
 
                 if (request.ThumbImage != null)
                 {
@@ -223,6 +236,7 @@ namespace FakeNewsFilter.Application.Catalog
                     Description = topic.Description,
                     Label = topic.Label,
                     Status = topic.Status,
+                    LanguageId = topic.LanguageId
                 };
 
                 return new ApiSuccessResult<TopicInfoVM>("Get Info Topic successful!", topicvm);
