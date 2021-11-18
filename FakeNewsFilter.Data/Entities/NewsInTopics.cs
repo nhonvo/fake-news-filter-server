@@ -6,6 +6,7 @@ namespace FakeNewsFilter.Data.Entities
     public class NewsInTopics
     {
         public int NewsId { get; set; }
+
         public News News { get; set; }
 
         public int TopicId { get; set; }

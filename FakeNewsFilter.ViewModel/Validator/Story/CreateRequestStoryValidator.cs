@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace FakeNewsFilter.ViewModel.Validator.Story1
+namespace FakeNewsFilter.ViewModel.Validator.Story
 {
     public class CreateRequestStoryValidator : AbstractValidator<StoryCreateRequest>
     {
