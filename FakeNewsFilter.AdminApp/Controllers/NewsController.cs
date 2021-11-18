@@ -71,7 +71,6 @@ namespace FakeNewsFilter.AdminApp.Controllers
             });
         }
 
-
         [HttpPost]
         public async Task<IActionResult> Create(NewsCreateRequest request)
         {

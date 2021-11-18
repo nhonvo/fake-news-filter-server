@@ -1,0 +1,136 @@
+﻿@model FakeNewsFilter.ViewModel.Catalog.Claims.ClaimCreateNewsVM.ClaimCreateNewsVM
+
+
+@section headerscripts{
+    <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/forms/select/select2.min.css">
+
+    <script src="https://cdn.ckeditor.com/ckeditor5/31.0.0/classic/ckeditor.js"></script>
+}
+@{
+    ViewData["Title"] = "LIST TOPIC";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (ViewBag.SuccessMsg != null)
+{
+    <script>setTimeout(function () {
+        toastr['success'](
+            '@ViewBag.SuccessMsg',
+            'Success', {
+            closeButton: true,
+            tapToDismiss: false,
+            positionClass: "toast-bottom-left",
+            rtl: $('html').attr('data-textdirection') === 'rtl'
+        }
+        );
+    }, 2000);</script>
+}
+
+@if (ViewBag.Error != null)
+{
+    <script>setTimeout(function () {
+        toastr['error'](
+            '@ViewBag.Error',
+            'Error', {
+            closeButton: true,
+            tapToDismiss: false,
+            positionClass: "toast-bottom-left",
+            rtl: $('html').attr('data-textdirection') === 'rtl'
+        }
+        );
+    }, 2000);</script>
+}
+
+
+@foreach (var error in ViewData.ModelState.SelectMany(x => x.Value.Errors))
+{
+    <script>setTimeout(function () {
+        toastr['warning'](
+            '@error.ErrorMessage',
+            'Warning', {
+            closeButton: true,
+            tapToDismiss: false,
+            rtl: $('html').attr('data-textdirection') === 'rtl'
+        }
+        );
+    }, 2000);</script>
+}
+
+
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- Basic table -->
+        <section id="input-mask-wrapper">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Clone News</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-xl-8 col-md-6 col-sm-12 mb-2">
+                                    <label for="inputLastName1" class="form-label">Search</label>
+                                    <div class="input-group">
+                                        <button class="btn btn-outline-primary waves-effect" type="button">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                        </button>
+                                        <input id="searchInput" type="text" class="form-control" placeholder="Search" aria-label="Amount">
+                                        <input id="querySearch" type="hidden">
+                                        <button id="searchBtn" class="btn btn-outline-primary waves-effect" type="button">Search</button>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-md-6 col-sm-12 mb-2">
+                                    <label for="inputLastName1" class="form-label">Language</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-transparent"><i data-feather="hash"></i></span>
+                                        <select class="form-select" asp-items="@ViewBag.ListLanguage" aria-invalid="false" placeholder="Language"></select>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-md-6 col-sm-12 mb-2">
+                                    <label for="inputLastName1" class="form-label">Page size</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-transparent"><i data-feather="hash"></i></span>
+                                        <input type="text" class="form-control border-start-0" placeholder="Page size" id="maxAgeDays"/>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-md-6 col-sm-12 mb-2">
+                                    <label class="form-label">Max age days</label>
+                                    <input type="text" class="form-control delimiter-mask" placeholder="Max age days" id="maxAgeDays">
+                                </div>
+                                <div class="col-xl-4 col-md-6 col-sm-12 mb-2">
+                                    <label class="form-label">Offset</label>
+                                    <input type="text" class="form-control delimiter-mask" placeholder="Offset" id="Offset">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="row match-height">
+                        <partial name="CloneNews" model="@Model?.ClaimViewModel" />
+                    </div>
+                </div>
+            </div>
+            <partial name="CreateNews" model="@Model.NewsCreateRequest" />
+        </section>
+    </div>
+</div>
+
+@section footerscripts{
+
+    <script src="/app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js"></script>
+    <script src="/app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js"></script>
+    <script src="/app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js"></script>
+    <script src="/app-assets/vendors/js/tables/datatable/responsive.bootstrap4.js"></script>
+    <script src="/app-assets/vendors/js/tables/datatable/responsive.bootstrap4.js"></script>
+    <script src="/app-assets/vendors/js/tables/datatable/datatables.buttons.min.js"></script>
+    <script src="/app-assets/vendors/js/tables/datatable/buttons.bootstrap5.min.js"></script>
+    <script src="/app-assets/vendors/js/forms/validation/jquery.validate.min.js"></script>
+    <script src="/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
+
+    <script src="/src/js/admin/clonenews.js"></script>
+    <script src="https://momentjs.com/downloads/moment.js"></script>
+}
+
