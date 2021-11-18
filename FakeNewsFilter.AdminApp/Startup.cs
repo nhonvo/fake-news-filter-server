@@ -50,6 +50,8 @@ namespace FakeNewsFilter.WebApp
             services.AddTransient<LanguageApi>();
             services.AddTransient<NewsApi>();
 
+            services.AddTransient<FactCheckApi>();
+
             //Authen
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
