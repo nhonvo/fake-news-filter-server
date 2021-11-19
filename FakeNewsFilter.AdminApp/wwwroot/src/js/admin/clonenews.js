@@ -11,6 +11,10 @@
 
     var select = $('.select2');
 
+    $(window).on('load', function () {
+        $('#loading').hide();
+    }) 
+
     select.each(function () {
         var $this = $(this);
         $this.wrap('<div class="position-relative"></div>');
@@ -63,11 +67,13 @@
             nextPageToken = [...$('.nextPageToken')][[...$('.nextPageToken')].length - 1].value;
 
             console.log(nextPageToken, queryLoadMore);
+            $('#loading').show();
 
             $.ajax({
                 type: "GET",
                 url: `CloneNews/LoadMore/?nextPageToken=${nextPageToken}&query=${queryLoadMore}`,
                 success: function (data) {
+                    $('#loading').hide();
                     parentDiv.insertAdjacentHTML('beforeend', data);
                 }
             });
@@ -75,6 +81,8 @@
     });
 
     $('#searchBtn').click(function () {
+        $('#loading').show();
+
         //convert normal search input to without whitespace and lowercase
         const query = $('#searchInput').val().toLowerCase().replace(/\s/g, "");
 
@@ -87,11 +95,14 @@
             type: "GET",
             url: `CloneNews/Search/?query=${query}`,
             success: function (data) {
+                $('#loading').hide();
                 parentDiv.insertAdjacentHTML('beforeend', data);
             }
         });
     })
 function CreateNews(frm, caller) {
+    $('#loading').show();
+
     caller.preventDefault();
     var fdata = new FormData();
 
@@ -120,6 +131,8 @@ function CreateNews(frm, caller) {
             processData: false,
             contentType: false,
             success: function (data) {
+                $('#loading').hide();
+
                 setTimeout(function () {
                     toastr['success'](
                         'Create News Success', {
@@ -132,6 +145,8 @@ function CreateNews(frm, caller) {
                 }, 2000);
             },
             error: function (data) {
+                $('#loading').hide();
+
                 setTimeout(function () {
                     toastr['success'](
                         'Create News Fail'

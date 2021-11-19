@@ -152,7 +152,7 @@ namespace FakeNewsFilter.Application.Catalog
         //Tạo mới 1 tin tức
         public async Task<ApiResult<int>> Create(NewsCreateRequest request)
         {
-            var language = await _context.News.FirstOrDefaultAsync(x => x.LanguageId == request.LanguageId);
+            var language = await _context.Languages.FirstOrDefaultAsync(x => x.Id == request.LanguageId);
             if(language == null)
             {
                 return new ApiErrorResult<int>("Language not exist");
