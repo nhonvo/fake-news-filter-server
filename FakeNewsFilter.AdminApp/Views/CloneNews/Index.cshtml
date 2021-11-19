@@ -4,6 +4,7 @@
 @section headerscripts{
     <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/forms/select/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
 
     <script src="https://cdn.ckeditor.com/ckeditor5/31.0.0/classic/ckeditor.js"></script>
 }
@@ -92,7 +93,7 @@
                                     <label for="inputLastName1" class="form-label">Page size</label>
                                     <div class="input-group">
                                         <span class="input-group-text bg-transparent"><i data-feather="hash"></i></span>
-                                        <input type="text" class="form-control border-start-0" placeholder="Page size" id="maxAgeDays"/>
+                                        <input type="text" class="form-control border-start-0" placeholder="Page size" id="maxAgeDays" />
                                     </div>
                                 </div>
                                 <div class="col-xl-4 col-md-6 col-sm-12 mb-2">
@@ -112,6 +113,9 @@
                         <partial name="CloneNews" model="@Model?.ClaimViewModel" />
                     </div>
                 </div>
+            </div>
+            <div id="loading">
+                <img id="loading-image" src="/assets/images/ajax-loader.gif" alt="Loading..." />
             </div>
             <partial name="CreateNews" model="@Model.NewsCreateRequest" />
         </section>

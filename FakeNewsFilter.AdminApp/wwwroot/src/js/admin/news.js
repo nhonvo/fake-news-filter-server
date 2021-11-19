@@ -97,31 +97,68 @@ $(document).ready(function () {
                 responsivePriority: 4,
                 render: function (data, type, full, meta) {
                     var $name = full['name'],
+                        $image = full['thumbNews'],
+                        $assetPath = "http://localhost:5001/",
                         $uname = full['topicInfo'].map(function (item) {
                             return ' ' + item['topicName'];
                         }),
                         $description = full['description'],
                         $link = full['postURL'];
+
+                    if ($image) {
+                        // For Avatar image
+                        var $output =
+                            '<img src="' + $assetPath + 'images/news/' + $image.pathMedia + '" alt="Thumb News" height="32" width="32">';
+                    }
+                        else {
+                        // For Avatar badge
+                        var stateNum = Math.floor(Math.random() * 6) + 1;
+                        var states = ['success', 'danger', 'warning', 'info', 'dark', 'primary', 'secondary'];
+                        var $name = full['name'],
+                        $initials = $name.match(/\b\w/g) || [];
+                        $initials = (($initials.shift() || '') + ($initials.pop() || '')).toUpperCase();
+                        $output = '<span class="avatar-content">' + $initials + '</span>';
+                    }
+
+                    var colorClass = $image === '' ? ' bg-light-' + $state + ' ' : '';
                     // Creates full output for row
                     var $row_output =
-                        '<div class="align-items-center"> </div>' +
+                    '<div class="d-flex justify-content-left align-items-center">' +
+                        '<div class="avatar-wrapper">' +
+                        '<div class="avatar ' +
+                        colorClass +
+                        ' me-1">' +
+                        $output +
+                        '</div>' +
+                        '</div>' +
                         '<div class="d-flex flex-column">' +
-                        '<a target="_blank" href="' + $link +
+                        '<a href="' +
                         '" class="user_name text-truncate"><span class="fw-bold">' +
                         $name +
-                        '</span></a> <span class="fw-bold"> <i data-feather="code"></i>' +
+                        '</span></a>' +
+                        '<small class="emp_post text-muted">#' +
                         $uname +
-                        '</span></a> ' +
+                        '</small>' +
                         '<small class="emp_post text-muted">' +
                         $description +
                         '</small>' +
                         '</div>' +
                         '</div>';
+
                     return $row_output;
+
                 }
             },
             {
-                // User Status
+                targets: 4,
+                render: function (data, type, full, meta) {
+                    var $officialRating = full['officialRating'];
+                    return (
+                        '<div>' + $officialRating ? $officialRating : " " + '</div>'
+                    );
+                }
+            },
+            {
                 targets: 5,
                 render: function (data, type, full, meta) {
                     var $status = full['languageId'];
