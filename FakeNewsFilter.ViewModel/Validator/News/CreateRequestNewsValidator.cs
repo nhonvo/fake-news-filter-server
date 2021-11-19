@@ -13,8 +13,6 @@ namespace FakeNewsFilter.ViewModel.Validator.News
             RuleFor(x => x.Name).NotEmpty().WithMessage("Name is required.");
             RuleFor(x => x.Description).NotEmpty().WithMessage("Description is required.");
             RuleFor(x => x.Content).NotEmpty().WithMessage("Content is required.");
-            RuleFor(x => x.OfficialRating).NotEmpty().WithMessage("OfficialRating is required.");
-            RuleFor(x => x.Publisher).NotEmpty().WithMessage("Publisher is required.");
         }
     }
 }

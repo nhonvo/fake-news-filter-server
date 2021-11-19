@@ -64,6 +64,8 @@ namespace FakeNewsFilter.Application.Catalog
                    TopicInfo = x.NewsInTopics.Select(o => new TopicInfo { TopicId = o.TopicId, TopicName = o.TopicNews.Tag}).ToList(),
                    Description = x.Description,
                    Content = x.Content,
+                   OfficialRating = x.OfficialRating,
+                   Publisher = x.Publisher,
                    Status = x.Status,
                    ThumbNews = _mapper.Map<MediaViewModel>(x.Media),
                    LanguageId = x.LanguageId,
@@ -152,7 +154,7 @@ namespace FakeNewsFilter.Application.Catalog
         //Tạo mới 1 tin tức
         public async Task<ApiResult<int>> Create(NewsCreateRequest request)
         {
-            var language = await _context.News.FirstOrDefaultAsync(x => x.LanguageId == request.LanguageId);
+            var language = await _context.Languages.FirstOrDefaultAsync(x => x.Id == request.LanguageId);
             if(language == null)
             {
                 return new ApiErrorResult<int>("Language not exist");

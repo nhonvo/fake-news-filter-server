@@ -11,6 +11,10 @@
 
     var select = $('.select2');
 
+    $(window).on('load', function () {
+        $('#loading').hide();
+    }) 
+
     select.each(function () {
         var $this = $(this);
         $this.wrap('<div class="position-relative"></div>');
@@ -62,12 +66,13 @@
             //get the last value of nextPageToken inputs
             nextPageToken = [...$('.nextPageToken')][[...$('.nextPageToken')].length - 1].value;
 
-            console.log(nextPageToken, queryLoadMore);
+            $('#loading').show();
 
             $.ajax({
                 type: "GET",
                 url: `CloneNews/LoadMore/?nextPageToken=${nextPageToken}&query=${queryLoadMore}`,
                 success: function (data) {
+                    $('#loading').hide();
                     parentDiv.insertAdjacentHTML('beforeend', data);
                 }
             });
@@ -75,6 +80,8 @@
     });
 
     $('#searchBtn').click(function () {
+        $('#loading').show();
+
         //convert normal search input to without whitespace and lowercase
         const query = $('#searchInput').val().toLowerCase().replace(/\s/g, "");
 
@@ -87,11 +94,15 @@
             type: "GET",
             url: `CloneNews/Search/?query=${query}`,
             success: function (data) {
+                $('#loading').hide();
                 parentDiv.insertAdjacentHTML('beforeend', data);
             }
         });
     })
+
 function CreateNews(frm, caller) {
+    $('#loading').show();
+
     caller.preventDefault();
     var fdata = new FormData();
 
@@ -120,9 +131,11 @@ function CreateNews(frm, caller) {
             processData: false,
             contentType: false,
             success: function (data) {
+                $('#loading').hide();
+
                 setTimeout(function () {
                     toastr['success'](
-                        'Create News Success', {
+                        'Create News Successfully','Success', {
                         closeButton: true,
                         tapToDismiss: false,
                         positionClass: "toast-bottom-left",
@@ -132,9 +145,11 @@ function CreateNews(frm, caller) {
                 }, 2000);
             },
             error: function (data) {
+
                 setTimeout(function () {
-                    toastr['success'](
-                        'Create News Fail'
+                    $('#loading').hide();
+                    toastr['error'](
+                        'Create News Unsuccessfully','Error'
                         , {
                         closeButton: true,
                         tapToDismiss: false,
