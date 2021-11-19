@@ -128,6 +128,5 @@ namespace FakeNewsFilter.AdminApp.Controllers
                 ViewData = new ViewDataDictionary<List<ClaimViewModel>>(ViewData, data.Claims)
             };
         }
-
     }
 }

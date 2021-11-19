@@ -66,7 +66,6 @@
             //get the last value of nextPageToken inputs
             nextPageToken = [...$('.nextPageToken')][[...$('.nextPageToken')].length - 1].value;
 
-            console.log(nextPageToken, queryLoadMore);
             $('#loading').show();
 
             $.ajax({
@@ -100,6 +99,7 @@
             }
         });
     })
+
 function CreateNews(frm, caller) {
     $('#loading').show();
 
@@ -135,7 +135,7 @@ function CreateNews(frm, caller) {
 
                 setTimeout(function () {
                     toastr['success'](
-                        'Create News Success', {
+                        'Create News Successfully','Success', {
                         closeButton: true,
                         tapToDismiss: false,
                         positionClass: "toast-bottom-left",
@@ -145,11 +145,11 @@ function CreateNews(frm, caller) {
                 }, 2000);
             },
             error: function (data) {
-                $('#loading').hide();
 
                 setTimeout(function () {
-                    toastr['success'](
-                        'Create News Fail'
+                    $('#loading').hide();
+                    toastr['error'](
+                        'Create News Unsuccessfully','Error'
                         , {
                         closeButton: true,
                         tapToDismiss: false,

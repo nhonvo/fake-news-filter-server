@@ -64,6 +64,8 @@ namespace FakeNewsFilter.Application.Catalog
                    TopicInfo = x.NewsInTopics.Select(o => new TopicInfo { TopicId = o.TopicId, TopicName = o.TopicNews.Tag}).ToList(),
                    Description = x.Description,
                    Content = x.Content,
+                   OfficialRating = x.OfficialRating,
+                   Publisher = x.Publisher,
                    Status = x.Status,
                    ThumbNews = _mapper.Map<MediaViewModel>(x.Media),
                    LanguageId = x.LanguageId,
