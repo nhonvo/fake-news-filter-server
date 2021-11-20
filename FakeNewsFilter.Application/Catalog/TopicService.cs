@@ -87,7 +87,7 @@ namespace FakeNewsFilter.Application.Catalog
         {
             try
             {
-                var language = await _context.TopicNews.FirstOrDefaultAsync(x => x.LanguageId == request.LanguageId);
+                var language = await _context.Languages.FirstOrDefaultAsync(x => x.Id == request.LanguageId);
                 if (language == null)
                 {
                     return new ApiErrorResult<bool>("Language not exist.");
@@ -145,7 +145,7 @@ namespace FakeNewsFilter.Application.Catalog
                     return new ApiErrorResult<bool>("topic not exist.");
                 }
 
-                var language = await _context.TopicNews.FirstOrDefaultAsync(x => x.LanguageId == request.LanguageId);
+                var language = await _context.Languages.FirstOrDefaultAsync(x => x.Id == request.LanguageId);
                 if(language == null)
                 {
                     return new ApiErrorResult<bool>("Language not exist.");
