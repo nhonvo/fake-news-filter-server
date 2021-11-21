@@ -96,6 +96,7 @@ namespace FakeNewsFilter.AdminApp.Services
 
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Tag) ? "" : request.Tag.ToString()), "Tag");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Label) ? "" : request.Label.ToString()), "Label");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.LanguageId) ? "" : request.LanguageId.ToString()), "LanguageId");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Description) ? "" : request.Description.ToString()), "Description");
 
 

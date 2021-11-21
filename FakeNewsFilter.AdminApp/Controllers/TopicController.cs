@@ -17,11 +17,15 @@ namespace FakeNewsFilter.AdminApp.Controllers
     public class TopicController : BaseController
     {
         private readonly TopicApi _topicApi;
+        private readonly LanguageApi _languageApi;
+
         // GET: /<controller>/
 
-        public TopicController(TopicApi topicApi)
+        public TopicController(TopicApi topicApi, LanguageApi languageApi)
         {
             _topicApi = topicApi;
+            _languageApi = languageApi;
+
         }
 
         [Breadcrumb("Topic Manager")]
@@ -36,8 +40,11 @@ namespace FakeNewsFilter.AdminApp.Controllers
                 ViewBag.Error = TempData["Error"];
             }
             var data = await _topicApi.GetTopicInfo();
+            var languageData = await _languageApi.GetLanguageInfo();
 
+           
             ViewBag.ListTopic = new SelectList(data.ResultObj.GroupBy(x => x.Label).Select(y => y.First()).Distinct(), "Label", "Label");
+            ViewBag.ListLanguage = new SelectList(languageData.ResultObj, "Id", "Name");
 
             return View();
         }
@@ -60,6 +67,13 @@ namespace FakeNewsFilter.AdminApp.Controllers
             {
                 ViewBag.ModelState = ModelState;
                 return RedirectToAction("Index");
+            }
+
+            bool allPropertiesNull = request.GetType().GetProperties().Any(prop => prop == null);
+
+            if(allPropertiesNull)
+            {
+                throw new Exception("Cannot create new topic");
             }
 
             var result = await _topicApi.CreateTopic(request);

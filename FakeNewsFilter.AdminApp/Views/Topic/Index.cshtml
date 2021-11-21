@@ -121,7 +121,10 @@
                                 <label class="form-label" for="status">Label</label>
                                 <select class="form-select" asp-for="Label" asp-items="@ViewBag.ListTopic" aria-invalid="false"></select>
                             </div>
-
+                            <div class="mb-1">
+                                <label class="form-label" for="status">Language</label>
+                                <select class="form-select" asp-for="LanguageId" asp-items="@ViewBag.ListLanguage" aria-invalid="false"></select>
+                            </div>
 
                             <div class="mb-4 border">
                                 <div style="text-align: center">
@@ -138,7 +141,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary data-submit me-1">Submit</button>
+                            <button type="submit" class="btn btn-primary data-submit me-1" onclick="CreateTopic(this.parentElement.parentElement, event)">Submit</button>
                             <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
                         </div>
                     </form>
