@@ -46,7 +46,7 @@ namespace FakeNewsFilter.Application.Catalog
         public async Task<ApiResult<int>> Create(StoryCreateRequest request)
         {
             //check LanguageId
-            var language = await _context.Source.FirstOrDefaultAsync(x => x.LanguageId == request.LanguageId);
+            var language = await _context.Languages.FirstOrDefaultAsync(x => x.Id == request.LanguageId);
             if (language == null)
             {
                 return new ApiErrorResult<int>("LanguageId not exist");
@@ -95,7 +95,7 @@ namespace FakeNewsFilter.Application.Catalog
         public async Task<ApiResult<bool>> Update(StoryUpdateRequest request)
         {
             //check LanguageId
-            var language_update = await _context.Source.FirstOrDefaultAsync(x => x.LanguageId == request.LanguageId);
+            var language_update = await _context.Languages.FirstOrDefaultAsync(x => x.Id == request.LanguageId);
             if (language_update == null)
             {
                 return new ApiErrorResult<bool>("LanguageId not exist");
