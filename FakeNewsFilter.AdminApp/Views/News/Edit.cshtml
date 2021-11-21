@@ -3,6 +3,7 @@
 @section headerscripts
 {
     <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/forms/select/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
 }
 
 @{
@@ -23,13 +24,13 @@
                 <div class="tab-pane active" id="information" aria-labelledby="information-tab" role="tabpanel">
                     <!-- topic edit start -->
                     <form class="row g-3" asp-action="Edit" asp-controller="News" method="post" enctype="multipart/form-data">
-                        <input type="hidden" asp-for="thumbNews" />
+                        <input type="hidden" asp-for="NewsId" />
                         <div class="d-flex mb-2">
-                            <img src="http://localhost:5001/images/news/@Model.thumbNews?.PathMedia" alt="thumb news" class="thumb-image users-avatar-shadow rounded me-2 my-25 cursor-pointer" height="90" width="90">
+                            <img src="http://localhost:5001/images/news/@Model.thumbNews.PathMedia" alt="Thumb News" class="thumb-image users-avatar-shadow rounded me-2 my-25 cursor-pointer" height="90" width="90">
                             <div class="mt-50">
                                 <h4>Thumbnail</h4>
                                 <div class="col-12 d-flex mt-1 px-0">
-                                    <label class="btn btn-primary me-75 mb-0 waves-effect waves-float waves-light" for="ThumbNews">
+                                    <label class="btn btn-primary me-75 mb-0 waves-effect waves-float waves-light" for="thumbNews">
                                         <span class="d-none d-sm-block">Change</span>
                                         <input asp-for="thumbNews" class="form-control" type="file" hidden="" accept="image/png, image/jpeg, image/jpg">
                                         <span class="d-block d-sm-none">
@@ -91,16 +92,17 @@
                             <textarea typeof="text" class="form-control border-start-0" asp-for="Content"> </textarea>
                         </div>
                         <div class="mb-1 col-12 d-flex flex-sm-row flex-column mt-2">
-                            <button type="submit" class="btn btn-primary mb-1 mb-sm-0 me-0 me-sm-1 waves-effect waves-float waves-light">Save Changes</button>
+                            <button type="submit" class="btn btn-primary mb-1 mb-sm-0 me-0 me-sm-1 waves-effect waves-float waves-light" onclick="EditNews(this.parentElement.parentElement, event)">Save Changes</button>
                             <button type="reset" class="btn btn-outline-secondary waves-effect">Reset</button>
                         </div>
-
                         @*newsId*@
                         <input id="newsId" type="hidden" asp-for="NewsId" class="form-control border-start-0">
-
                     </form>
                     <!-- topic edit form ends -->
                 </div>
+            </div>
+            <div id="loading">
+                <img id="loading-image" src="/assets/images/ajax-loader.gif" alt="Loading..." />
             </div>
         </div>
     </div>
@@ -109,6 +111,5 @@
 @section footerscripts{
     <script src="/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/31.0.0/classic/ckeditor.js"></script>
-
     <script src="/src/js/admin/editnews.js"></script>
 }

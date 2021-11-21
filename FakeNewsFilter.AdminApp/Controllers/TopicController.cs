@@ -63,17 +63,21 @@ namespace FakeNewsFilter.AdminApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(TopicCreateRequest request)
         {
+            //true if any property is null
+            bool allPropertiesNull = request.GetType()
+                 .GetProperties() //get all properties on object
+                 .Select(pi => pi.GetValue(request)) //get value for the property
+                 .Any(value => value == null);
+
+            if (allPropertiesNull)
+            {
+                throw new Exception("Cannot create new topic");
+            }
+
             if (!ModelState.IsValid)
             {
                 ViewBag.ModelState = ModelState;
                 return RedirectToAction("Index");
-            }
-
-            bool allPropertiesNull = request.GetType().GetProperties().Any(prop => prop == null);
-
-            if(allPropertiesNull)
-            {
-                throw new Exception("Cannot create new topic");
             }
 
             var result = await _topicApi.CreateTopic(request);
@@ -96,8 +100,11 @@ namespace FakeNewsFilter.AdminApp.Controllers
         {
      
             var result = await _topicApi.GetById(Id);
+            var languageData = await _languageApi.GetLanguageInfo();
 
-            if(result.IsSuccessed)
+            ViewBag.ListLanguage = new SelectList(languageData.ResultObj, "Id", "Name");
+
+            if (result.IsSuccessed)
             {
                 return View(result.ResultObj);
             }

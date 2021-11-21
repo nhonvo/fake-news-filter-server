@@ -9,6 +9,8 @@
 
 //Load Datatable List Topic
 $(document).ready(function () {
+    $('#loading').hide();
+
     var 
         statusObj = {
             0: { title: 'Pending', class: 'badge-light-warning' },
@@ -344,6 +346,7 @@ function Delete(topicId) {
 
 
 function CreateTopic(frm, caller) {
+    $('#loading').show();
 
     caller.preventDefault();
     var fdata = new FormData();
@@ -361,8 +364,6 @@ function CreateTopic(frm, caller) {
     fdata.append("Label", label);
     fdata.append("ThumbTopic", thumbTopic);
 
-    console.log(tag, description, languageId, label, thumbTopic);
-
     $.ajax(
         {
             type: frm.method,
@@ -371,10 +372,11 @@ function CreateTopic(frm, caller) {
             processData: false,
             contentType: false,
             success: function (data) {
+                $('#loading').hide();
 
                 setTimeout(function () {
                     toastr['success'](
-                        'Create News Successfully', 'Success', {
+                        'Create Topic Successfully', 'Success', {
                         closeButton: true,
                         tapToDismiss: false,
                         positionClass: "toast-bottom-left",
@@ -384,9 +386,11 @@ function CreateTopic(frm, caller) {
                 }, 2000);
             },
             error: function (data) {
+                $('#loading').hide();
+
                 setTimeout(function () {
                     toastr['error'](
-                        'Create News Unsuccessfully', 'Error'
+                        'Create Topic Unsuccessfully', 'Error'
                         , {
                             closeButton: true,
                             tapToDismiss: false,
