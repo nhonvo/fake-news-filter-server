@@ -74,29 +74,6 @@ namespace FakeNewsFilter.AdminApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(NewsCreateRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                ViewBag.ModelState = ModelState;
-                return RedirectToAction("Index");
-            }
-            
-            var result = await _newsApi.CreateNews(request);
-
-            if (result.IsSuccessed)
-            {
-                TempData["Result"] = $"Create News Successful!";
-
-                return RedirectToAction("Index");
-            }
-
-            TempData["Error"] = result.Message;
-
-            return RedirectToAction("Index");
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> CreateNewsFromClonedNews(NewsCreateRequest request)
-        {
             if (request.TopicId == null || request.Content == null || request.Description == null || request.Name == null || request.LanguageId == null)
             {
                 throw new Exception("Cannot create news");
@@ -107,7 +84,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
                 ViewBag.ModelState = ModelState;
                 return RedirectToAction("Index");
             }
-
+            
             var result = await _newsApi.CreateNews(request);
 
             if (result.IsSuccessed)

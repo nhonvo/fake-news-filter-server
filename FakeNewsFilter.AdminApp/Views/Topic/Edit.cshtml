@@ -1,4 +1,13 @@
 ﻿@model FakeNewsFilter.ViewModel.Catalog.TopicNews.TopicInfoVM
+
+@section headerscripts{
+    <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/forms/select/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+
+    <script src="https://cdn.ckeditor.com/ckeditor5/31.0.0/classic/ckeditor.js"></script>
+}
+
 @{
     ViewData["Title"] = "Update Topic";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -42,20 +51,25 @@
                         </div>
                         <!-- topic edit ends -->
                         <!-- topic edit form start -->
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label for="inputLastName1" class="form-label">Label</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-transparent"><i data-feather="tag"></i></span>
                                 <input type="text" asp-for="Label" class="form-control border-start-0">
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label for="inputLastName1" class="form-label">Tag</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-transparent"><i data-feather="hash"></i></span>
                                 <input type="text" asp-for="Tag" class="form-control border-start-0" placeholder="Tag Topic" />
                             </div>
                         </div>
+                        <div class="col-md-4">
+                            <label class="form-label" for="status">Language</label>
+                            <select class="form-select" asp-for="LanguageId" asp-items="@ViewBag.ListLanguage" aria-invalid="false"></select>
+                        </div>
+
                         <div class="col-md-12">
                             <label for="inputPhoneNo" class="form-label">Description</label>
                             <div class="input-group">
@@ -65,13 +79,16 @@
                         </div>
 
                         <div class="mb-1 col-12 d-flex flex-sm-row flex-column mt-2">
-                            <button type="submit" class="btn btn-primary mb-1 mb-sm-0 me-0 me-sm-1 waves-effect waves-float waves-light">Save Changes</button>
+                            <button type="submit" class="btn btn-primary mb-1 mb-sm-0 me-0 me-sm-1 waves-effect waves-float waves-light" onclick="EditTopic(this.parentElement.parentElement, event)">Save Changes</button>
                             <button type="reset" class="btn btn-outline-secondary waves-effect">Reset</button>
                         </div>
 
                     </form>
                     <!-- topic edit form ends -->
                 </div>
+            </div>
+            <div id="loading">
+                <img id="loading-image" src="/assets/images/ajax-loader.gif" alt="Loading..." />
             </div>
         </div>
     </div>
