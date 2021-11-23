@@ -7,6 +7,8 @@
     <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/tables/datatable/responsive.bootstrap4.min.css">
     <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+
 
 }
 
@@ -102,7 +104,9 @@
                     </div>
                 </div>
             </div>
-
+            <div id="loading">
+                <img id="loading-image" src="/assets/images/ajax-loader.gif" alt="Loading..." />
+            </div>
             <!-- Modal to add new record -->
             <div class="modal modal-slide-in fade" id="modals-slide-in">
                 <div class="modal-dialog sidebar-sm">
@@ -141,8 +145,6 @@
                                 <label class="form-label" for="status">Label</label>
                                 <select class="select2 form-select" asp-for="TopicId" asp-items="@ViewBag.ListTopic" aria-invalid="false" multiple="multiple"></select>
                             </div>
-
-
                             <div class="mb-4 border">
                                 <div style="text-align: center">
                                     <img class="topic-thumb rounded me-2 my-25 cursor-pointer" height="100">
@@ -157,7 +159,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary data-submit me-1">Submit</button>
+                            <button type="submit" class="btn btn-primary data-submit me-1" onclick="CreateNews(this.parentElement.parentElement, event)">Submit</button>
                             <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
                         </div>
                     </form>
@@ -168,7 +170,6 @@
 </div>
 
 @section footerscripts{
-
     <script src="/app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js"></script>
     <script src="/app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js"></script>
     <script src="/app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js"></script>
@@ -181,9 +182,6 @@
     <script src="/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/31.0.0/classic/ckeditor.js"></script>
     <script src="https://momentjs.com/downloads/moment.js"></script>
-    
     <script src="/src/js/admin/news.js"></script>
-
-
 }
 

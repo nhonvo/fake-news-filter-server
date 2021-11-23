@@ -3,6 +3,7 @@
 @section headerscripts{
     <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/forms/select/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
 }
 
 @{
@@ -97,7 +98,9 @@
                     </div>
                 </div>
             </div>
-
+            <div id="loading">
+                <img id="loading-image" src="/assets/images/ajax-loader.gif" alt="Loading..." />
+            </div>
             <!-- Modal to add new record -->
             <div class="modal modal-slide-in fade" id="modals-slide-in">
                 <div class="modal-dialog sidebar-sm">
@@ -121,7 +124,10 @@
                                 <label class="form-label" for="status">Label</label>
                                 <select class="form-select" asp-for="Label" asp-items="@ViewBag.ListTopic" aria-invalid="false"></select>
                             </div>
-
+                            <div class="mb-1">
+                                <label class="form-label" for="status">Language</label>
+                                <select class="form-select" asp-for="LanguageId" asp-items="@ViewBag.ListLanguage" aria-invalid="false"></select>
+                            </div>
 
                             <div class="mb-4 border">
                                 <div style="text-align: center">
@@ -138,7 +144,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary data-submit me-1">Submit</button>
+                            <button type="submit" class="btn btn-primary data-submit me-1" onclick="CreateTopic(this.parentElement.parentElement, event)">Submit</button>
                             <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
                         </div>
                     </form>
