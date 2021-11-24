@@ -3,6 +3,7 @@ using FakeNewsFilter.Application.Catalog;
 using FakeNewsFilter.ViewModel.Catalog.TopicNews;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,11 +13,13 @@ namespace FakeNewsFilter.API.Controllers
     [Authorize]
     public class TopicController : ControllerBase
     {
+        private readonly IStringLocalizer<TopicController> _localizer;
         private readonly TopicService _topicService;
 
-        public TopicController(TopicService topicService)
+        public TopicController(TopicService topicService, IStringLocalizer<TopicController> localizer)
         {
             _topicService = topicService;
+            _localizer = localizer;
         }
 
         // POST api/values
@@ -28,6 +31,8 @@ namespace FakeNewsFilter.API.Controllers
                 return BadRequest(ModelState);
 
             var result = await _topicService.Create(request);
+
+            result.Message = _localizer[result.Message].Value;
 
             if (result.IsSuccessed == false)
             {
@@ -45,19 +50,26 @@ namespace FakeNewsFilter.API.Controllers
         {
             var topics = await _topicService.GetTopicHotNews(languageId);
 
-            if(topics.IsSuccessed == false)
+            topics.Message = _localizer[topics.Message].Value;
+
+            if (topics.IsSuccessed == false)
             {
                 return BadRequest(topics);
             }
+            
             return Ok(topics);
+
         }
 
-       
+
         [HttpGet("{Id}")]
         [AllowAnonymous]
         public async Task<IActionResult> GetById(int Id)
         {
             var topic = await _topicService.GetTopicById(Id);
+
+            topic.Message = _localizer[topic.Message].Value;
+
             return Ok(topic);
         }
 
@@ -73,6 +85,8 @@ namespace FakeNewsFilter.API.Controllers
 
             var result = await _topicService.Update(request);
 
+            result.Message = _localizer[result.Message].Value;
+
             if (result.IsSuccessed == false)
             {
                 return BadRequest(result);
@@ -85,6 +99,8 @@ namespace FakeNewsFilter.API.Controllers
         public async Task<IActionResult> Delete(int topicId)
         {
             var result = await _topicService.Delete(topicId);
+
+            result.Message = _localizer[result.Message].Value;
 
             if (result.IsSuccessed == false)
             {

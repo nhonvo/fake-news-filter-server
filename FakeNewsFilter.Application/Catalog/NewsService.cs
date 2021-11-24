@@ -56,6 +56,11 @@ namespace FakeNewsFilter.Application.Catalog
         //Get All News
         public async Task<ApiResult<List<NewsViewModel>>> GetAll(string languageId)
         {
+            var language = await _context.Languages.SingleOrDefaultAsync(x => x.Id == languageId);
+            if (language == null)
+            {
+                return new ApiErrorResult<List<NewsViewModel>>("LanguageNotFound");
+            }
             var list_news = await _context.News.Where(n => !string.IsNullOrEmpty(languageId) ? n.LanguageId == languageId : true)
                 .Select(x => new NewsViewModel()
                {
@@ -74,10 +79,10 @@ namespace FakeNewsFilter.Application.Catalog
 
             if(list_news == null)
             {
-                return new ApiErrorResult<List<NewsViewModel>>("Get All News Unsuccessful!");
+                return new ApiErrorResult<List<NewsViewModel>>("GetAllNewsUnsuccessful");
             }
 
-            return new ApiSuccessResult<List<NewsViewModel>>("Get All News Successful!", list_news);
+            return new ApiSuccessResult<List<NewsViewModel>>("GetAllNewsSuccessful", list_news);
         }
 
         //Lấy thông tin News thông qua Id
@@ -108,11 +113,11 @@ namespace FakeNewsFilter.Application.Catalog
                     TopicInfo = topic.ToList(),
                 };
 
-                return new ApiSuccessResult<NewsViewModel>("Get This News Successful!", result);
+                return new ApiSuccessResult<NewsViewModel>("GetThisNewsSuccessful", result);
             }
             else
             {
-                return new ApiErrorResult<NewsViewModel>("News is not found!");
+                return new ApiErrorResult<NewsViewModel>("NewsIsNotFound");
             }
         }
 
@@ -142,22 +147,32 @@ namespace FakeNewsFilter.Application.Catalog
 
             if (data == null)
             {
-                return new ApiErrorResult<List<NewsViewModel>>("Get All News In Topic Unsuccessful!");
+                return new ApiErrorResult<List<NewsViewModel>>("GetAllNewsInTopicUnsuccessful");
             }
             if (data.Count == 0)
             {
-                return new ApiSuccessResult<List<NewsViewModel>>("Don't have news in topic " + topicId);
+                return new ApiSuccessResult<List<NewsViewModel>>("DoNotHaveNewsInTopic");
             }
-            return new ApiSuccessResult<List<NewsViewModel>>("Get All News In Topic Successful!", data);
+            return new ApiSuccessResult<List<NewsViewModel>>("GetAllNewsInTopicSuccessful", data);
         }
 
         //Tạo mới 1 tin tức
         public async Task<ApiResult<int>> Create(NewsCreateRequest request)
         {
+            //check language
             var language = await _context.Languages.FirstOrDefaultAsync(x => x.Id == request.LanguageId);
             if(language == null)
             {
-                return new ApiErrorResult<int>("Language not exist");
+                return new ApiErrorResult<int>("LanguageNotFound");
+            }
+            //check topic id
+            foreach (var item in request.TopicId)
+            {
+                var topic = await _context.TopicNews.FirstOrDefaultAsync(t => t.TopicId == item);
+                if (topic == null)
+                {
+                    return new ApiErrorResult<int>("TopicNotFound");
+                }
             }
             var news = new News()
             {
@@ -202,10 +217,10 @@ namespace FakeNewsFilter.Application.Catalog
             if(await _context.SaveChangesAsync() == 0)
             {
                 await _storageService.DeleteFileAsync(news.Media.PathMedia);
-                return new ApiErrorResult<int>("Create News Unsuccessful! Try again");
+                return new ApiErrorResult<int>("CreateNewsUnsuccessful");
             }
 
-            return new ApiSuccessResult<int>("Create News Successful!", news.NewsId);
+            return new ApiSuccessResult<int>("CreateNewsSuccessful", news.NewsId);
         }
 
         //Xoá tin tức
@@ -214,7 +229,7 @@ namespace FakeNewsFilter.Application.Catalog
             var news = await _context.News.FindAsync(newsId);
 
             if (news == null)
-                return new ApiErrorResult<bool>($"Cannont find a news with Id is: {newsId}");
+                return new ApiErrorResult<bool>("CannontFindANewsWithId");
 
             if (news.ThumbNews != null)
             {
@@ -231,10 +246,10 @@ namespace FakeNewsFilter.Application.Catalog
 
             if(await _context.SaveChangesAsync() == 0)
             {
-                return new ApiErrorResult<bool>("Delete News Unsuccessful! Try again");
+                return new ApiErrorResult<bool>("DeleteNewsUnsuccessful");
             }
 
-            return new ApiSuccessResult<bool>("Delete News Successful!", false);
+            return new ApiSuccessResult<bool>("DeleteNewsSuccessful", false);
         }
 
         
@@ -244,7 +259,7 @@ namespace FakeNewsFilter.Application.Catalog
             var news_update = await _context.News.FindAsync(request.Id);
 
             if (news_update == null)
-                return new ApiErrorResult<bool>($"Cannont find a news with Id is: {request.Id}");
+                return new ApiErrorResult<bool>("CannontFindANewsWithId");
 
             news_update.Name = request.Name ?? news_update.Name ;
             news_update.Description = request.Description ?? news_update.Description;
@@ -291,7 +306,7 @@ namespace FakeNewsFilter.Application.Catalog
                 var topic = await _context.TopicNews.FirstOrDefaultAsync(t => t.TopicId == item);
                 if (topic == null)
                 {
-                    return new ApiErrorResult<bool>($"Cannont find a topic with Id is: {item}");
+                    return new ApiErrorResult<bool>($"CannontFindATopicWithId");
                 }
             }
 
@@ -318,10 +333,10 @@ namespace FakeNewsFilter.Application.Catalog
 
             if (await _context.SaveChangesAsync() == 0)
             {
-                return new ApiErrorResult<bool>("Update New Unsuccessful! Try again");
+                return new ApiErrorResult<bool>("UpdateNewsUnsuccessful");
             }
 
-            return new ApiSuccessResult<bool>("Update New Successful!", false);
+            return new ApiSuccessResult<bool>("UpdateNewsSuccessful", false);
         }
 
         //Update Link News
@@ -330,16 +345,16 @@ namespace FakeNewsFilter.Application.Catalog
             var news_update = await _context.News.FindAsync(newsId);
 
             if (news_update == null) 
-                   return new ApiErrorResult<bool>($"Cannont find a news with Id is: {newsId}");
+                   return new ApiErrorResult<bool>($"CannontFindANewsWithId");
 
             news_update.Content = newLink;
 
             if (await _context.SaveChangesAsync() == 0)
             {
-                return new ApiErrorResult<bool>("Update Link News Unsuccessful! Try again");
+                return new ApiErrorResult<bool>("UpdateLinkNewsUnsuccessful");
             }
 
-            return new ApiSuccessResult<bool>("Update Link News Successful!", false);
+            return new ApiSuccessResult<bool>("UpdateLinkNewsSuccessful", false);
         }
 
         private async Task<string> SaveFile(IFormFile file)

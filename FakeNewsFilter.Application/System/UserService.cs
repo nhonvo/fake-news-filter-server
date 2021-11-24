@@ -77,13 +77,13 @@ namespace FakeNewsFilter.Application.System
             {
                 var user = await _userManager.FindByNameAsync(request.UserName);
 
-                if (user == null) return new ApiErrorResult<TokenResult>("Account does not exist");
+                if (user == null) return new ApiErrorResult<TokenResult>("AccountDoesNotExist");
 
                 var result = await _signInManager.PasswordSignInAsync(user, request.Password, request.RememberMe, true);
 
                 if (!result.Succeeded)
                 {
-                    return new ApiErrorResult<TokenResult>("Login Unsuccessful. Please Check Username or Password!");
+                    return new ApiErrorResult<TokenResult>("LoginUnsuccessful");
                 }
 
                 var roles = await _userManager.GetRolesAsync(user);
@@ -110,12 +110,12 @@ namespace FakeNewsFilter.Application.System
 
                 var returnResult = new TokenResult{Token = new JwtSecurityTokenHandler().WriteToken(token), UserId = user.Id};
 
-                return new ApiSuccessResult<TokenResult>("Login successful!", returnResult);
+                return new ApiSuccessResult<TokenResult>("LoginSuccessful", returnResult);
             }
 
             catch (FakeNewsException e)
             {
-                return new ApiErrorResult<TokenResult>("Error System: " + e.Message);
+                return new ApiErrorResult<TokenResult>("ErrorSystem: " + e.Message);
             }
         }
 
@@ -128,12 +128,12 @@ namespace FakeNewsFilter.Application.System
 
                 if(user != null)
                 {
-                    return new ApiErrorResult<bool>("Username is available");
+                    return new ApiErrorResult<bool>("UsernameIsvAvailable");
                 }
 
                 if (await _userManager.FindByEmailAsync(request.Email) != null)
                 {
-                    return new ApiErrorResult<bool>("Email is available");
+                    return new ApiErrorResult<bool>("EmailIsAvailable");
                 }    
 
                 user = new User()
@@ -149,20 +149,20 @@ namespace FakeNewsFilter.Application.System
                 {
                     await _userManager.AddToRoleAsync(user, "Subscriber");
 
-                    return new ApiSuccessResult<bool>("Register Successful.", false);
+                    return new ApiSuccessResult<bool>("RegisterSuccessful", false);
                 }
 
                 else
                 {
                     List<IdentityError> errorList = result.Errors.ToList();
                     var errors = string.Join(", ", errorList.Select(e => e.Description));
-                    return new ApiErrorResult<bool>("Register Unsuccessful. " + errors);
+                    return new ApiErrorResult<bool>("RegisterUnsuccessful " + errors);
                 }
             }
 
             catch (FakeNewsException e)
             {
-                return new ApiErrorResult<bool>("Error System: " + e.Message);
+                return new ApiErrorResult<bool>("ErrorSystem: " + e.Message);
             }
         }
 
@@ -203,11 +203,11 @@ namespace FakeNewsFilter.Application.System
                    ).ToListAsync();
 
 
-                return new ApiSuccessResult<List<UserViewModel>>("Loading List Users Successful!", userList);
+                return new ApiSuccessResult<List<UserViewModel>>("LoadingListUsersSuccessful", userList);
             }
             catch (FakeNewsException e)
             {
-                return new ApiErrorResult<List<UserViewModel>>("Error System: " + e.Message);
+                return new ApiErrorResult<List<UserViewModel>>("ErrorSystem: " + e.Message);
             }
         }
 
@@ -222,7 +222,7 @@ namespace FakeNewsFilter.Application.System
                 var email = await _userManager.Users.AnyAsync(x => x.Email == request.Email && x.Id != request.UserId);
                 if (email == false)
                 {
-                    return new ApiErrorResult<bool>("Email is available!");
+                    return new ApiErrorResult<bool>("EmailIsAvailable");
                 }
 
                 user.Email = request.Email ?? user.Email;
@@ -267,13 +267,13 @@ namespace FakeNewsFilter.Application.System
                 var result = await _userManager.UpdateAsync(user);
                 if (result.Succeeded)
                 {
-                    return new ApiSuccessResult<bool>("Update User Successful!", false);
+                    return new ApiSuccessResult<bool>("UpdateUserSuccessful", false);
                 }
-                return new ApiErrorResult<bool>("Update Unsuccessful.");
+                return new ApiErrorResult<bool>("UpdateUnsuccessful");
             }
             catch (FakeNewsException e)
             {
-                return new ApiErrorResult<bool>("Error System: " + e.Message);
+                return new ApiErrorResult<bool>("ErrorSystem: " + e.Message);
             }
         }
 
@@ -288,7 +288,7 @@ namespace FakeNewsFilter.Application.System
 
                 if (user == null)
                 {
-                    return new ApiErrorResult<UserViewModel>("User is not exist!");
+                    return new ApiErrorResult<UserViewModel>("AccountDoesNotExist");
                 }
 
                 var roles = await _userManager.GetRolesAsync(user);
@@ -300,12 +300,12 @@ namespace FakeNewsFilter.Application.System
                 userVm.Roles = roles;
                 userVm.Avatar = avatar;
 
-                return new ApiSuccessResult<UserViewModel>("Get Info User Successful!",userVm);
+                return new ApiSuccessResult<UserViewModel>("GetInfoUserSuccessful",userVm);
             }
 
             catch (FakeNewsException e)
             {
-                return new ApiErrorResult<UserViewModel>("Error System: " + e.Message);
+                return new ApiErrorResult<UserViewModel>("ErrorSystem: " + e.Message);
             }
 
         }
@@ -317,7 +317,7 @@ namespace FakeNewsFilter.Application.System
                 var user = await _userManager.FindByIdAsync(UserId);
                 if (user == null)
                 {
-                    return new ApiErrorResult<bool>("User does not exists!");
+                    return new ApiErrorResult<bool>("AccountDoesNotExist");
                 }
 
                 //Xoá Avatar ra khỏi Source
@@ -333,13 +333,13 @@ namespace FakeNewsFilter.Application.System
                 var result = await _userManager.DeleteAsync(user);
 
                 if (result.Succeeded)
-                    return new ApiSuccessResult<bool>("Delete Successfull!", false);
+                    return new ApiSuccessResult<bool>("DeleteSuccessfull", false);
 
-                return new ApiErrorResult<bool>("Delete Unsuccessfull!");
+                return new ApiErrorResult<bool>("DeleteUnsuccessfull");
             }
             catch (FakeNewsException e)
             {
-                return new ApiErrorResult<bool>("Error System: " + e.Message);
+                return new ApiErrorResult<bool>("ErrorSystem: " + e.Message);
             }
         }
 
@@ -349,7 +349,7 @@ namespace FakeNewsFilter.Application.System
             var user = await _userManager.FindByIdAsync(id.ToString());
             if (user == null)
             {
-                return new ApiErrorResult<bool>("User does not exists!");
+                return new ApiErrorResult<bool>("AccountDoesNotExist");
             }
 
             var removedRoles = request.Roles.Where(x => x.Selected == false).Select(x => x.Name).ToList();
@@ -373,7 +373,7 @@ namespace FakeNewsFilter.Application.System
                 }
             }
 
-            return new ApiSuccessResult<bool>("Role Assign Successful!", false);
+            return new ApiSuccessResult<bool>("RoleAssignSuccessful", false);
         }
 
         //Lưu ảnh
