@@ -10,7 +10,7 @@ namespace FakeNewsFilter.ViewModel.Validator.Story
     {
         public CreateRequestStoryValidator()
         {
-            RuleFor(x => x.Link).NotEmpty().WithMessage("Link is required.");
+            RuleFor(x => x.Link).NotEmpty().WithMessage("Linkisrequired");
         }
     }
 }

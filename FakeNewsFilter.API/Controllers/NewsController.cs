@@ -2,6 +2,7 @@
 using FakeNewsFilter.ViewModel.Catalog.NewsManage;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using System.Threading.Tasks;
 
 namespace FakeNewsFilter.API.Controllers
@@ -11,10 +12,12 @@ namespace FakeNewsFilter.API.Controllers
     public class NewsController : ControllerBase
     {
         private readonly INewsService _newsService;
+        private readonly IStringLocalizer<NewsController> _localizer;
 
-        public NewsController(INewsService newsService)
+        public NewsController(INewsService newsService, IStringLocalizer<NewsController> localizer)
         {
             _newsService = newsService;
+            _localizer = localizer;
         }
 
         [HttpPost]
@@ -27,12 +30,14 @@ namespace FakeNewsFilter.API.Controllers
             }
             var newsId = await _newsService.Create(request);
 
-            if (newsId.ResultObj == 0)
+            if (newsId.ResultObj != 0)
             {
                 return BadRequest("Cannot create news");
             }
 
             var news = await _newsService.GetById(newsId.ResultObj);
+
+            news.Message = _localizer[news.Message].Value;
 
             return CreatedAtAction(nameof(GetById), new { newsId = newsId }, news);
         }
@@ -42,6 +47,8 @@ namespace FakeNewsFilter.API.Controllers
         public async Task<IActionResult> Delete(int newsId)
         {
             var result = await _newsService.Delete(newsId);
+
+            result.Message = _localizer[result.Message].Value;
 
             if (result.ResultObj != false)
             {
@@ -57,6 +64,8 @@ namespace FakeNewsFilter.API.Controllers
         {
             var topics = await _newsService.GetAll(languageId);
 
+            topics.Message = _localizer[topics.Message].Value;
+
             return Ok(topics);
         }
 
@@ -65,6 +74,8 @@ namespace FakeNewsFilter.API.Controllers
         public async Task<IActionResult> GetById(int newsId)
         {
             var news = await _newsService.GetById(newsId);
+
+            news.Message = _localizer[news.Message].Value;
 
             if (news == null)
             {
@@ -80,6 +91,8 @@ namespace FakeNewsFilter.API.Controllers
         {
             var newsintopics = await _newsService.GetNewsInTopic(topicId);
 
+            newsintopics.Message = _localizer[newsintopics.Message].Value;
+
             return Ok(newsintopics);
         }
 
@@ -93,6 +106,8 @@ namespace FakeNewsFilter.API.Controllers
             }
 
             var result = await _newsService.Update(request);
+
+            result.Message = _localizer[result.Message].Value;
 
             if (result.ResultObj != false)
             {
@@ -110,6 +125,8 @@ namespace FakeNewsFilter.API.Controllers
                 return BadRequest(ModelState);
             }
             var result = await _newsService.UpdateLink(newsId, newLink);
+
+            result.Message = _localizer[result.Message].Value;
 
             if (result.ResultObj == false)
             {

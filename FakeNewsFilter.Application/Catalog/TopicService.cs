@@ -45,8 +45,14 @@ namespace FakeNewsFilter.Application.Catalog
         //Get 10 Topic News Hot
         public async Task<ApiResult<List<TopicInfoVM>>> GetTopicHotNews(string languageId)
         {
+            
             try
             {
+                var language = await _context.Languages.SingleOrDefaultAsync(x => x.Id == languageId);
+                if(language == null)
+                {
+                    return new ApiErrorResult<List<TopicInfoVM>>("LanguageNotFound");
+                }
                 var query = from t in _context.TopicNews where (string.IsNullOrEmpty(languageId) || t.LanguageId == languageId)
                             select new 
                             {
@@ -71,9 +77,9 @@ namespace FakeNewsFilter.Application.Catalog
 
                 if (topics == null)
                 {
-                    return new ApiErrorResult<List<TopicInfoVM>>("Get Topic Unsuccessful!");
+                    return new ApiErrorResult<List<TopicInfoVM>>("GetTopicUnsuccessful");
                 }
-                return new ApiSuccessResult<List<TopicInfoVM>>("Get 10 Topic News Hot Successful!", topics);
+                return new ApiSuccessResult<List<TopicInfoVM>>("GetTopicSuccessful", topics);
             }
             catch(Exception ex)
             {
@@ -90,7 +96,7 @@ namespace FakeNewsFilter.Application.Catalog
                 var language = await _context.Languages.FirstOrDefaultAsync(x => x.Id == request.LanguageId);
                 if (language == null)
                 {
-                    return new ApiErrorResult<bool>("Language not exist.");
+                    return new ApiErrorResult<bool>("LanguageNotFound");
                 }
                 var topic = new Data.Entities.TopicNews()
                 {
@@ -121,10 +127,10 @@ namespace FakeNewsFilter.Application.Catalog
 
                 if (result > 0)
                 {
-                    return new ApiSuccessResult<bool>("Create Topic Successful!", false);
+                    return new ApiSuccessResult<bool>("CreateTopicSuccessful", false);
                 }
 
-                return new ApiErrorResult<bool>("Create Unsuccessful.");
+                return new ApiErrorResult<bool>("CreateUnsuccessful");
 
             }
             catch(Exception ex)
@@ -142,13 +148,13 @@ namespace FakeNewsFilter.Application.Catalog
                 var topic = await _context.TopicNews.FindAsync(request.TopicId);
                 if (topic == null)
                 {
-                    return new ApiErrorResult<bool>("topic not exist.");
+                    return new ApiErrorResult<bool>("TopicNotFound");
                 }
 
                 var language = await _context.Languages.FirstOrDefaultAsync(x => x.Id == request.LanguageId);
                 if(language == null)
                 {
-                    return new ApiErrorResult<bool>("Language not exist.");
+                    return new ApiErrorResult<bool>("LanguageNotFound");
                 }
                 
                 topic.Label = request.Label ?? topic.Label;
@@ -195,10 +201,10 @@ namespace FakeNewsFilter.Application.Catalog
 
                 if (result > 0)
                 {
-                    return new ApiSuccessResult<bool>("Update Topic Successful!", false);
+                    return new ApiSuccessResult<bool>("UpdateTopicSuccessful", false);
                 }
 
-                return new ApiErrorResult<bool>("Update Unsuccessful.");
+                return new ApiErrorResult<bool>("UpdateUnsuccessful");
             }
             catch(Exception ex)
             {
@@ -226,7 +232,7 @@ namespace FakeNewsFilter.Application.Catalog
 
                 if (topic == null)
                 {
-                    return new ApiErrorResult<TopicInfoVM>("Topic doesn't exist!");
+                    return new ApiErrorResult<TopicInfoVM>("TopicNotFound");
                 }
                 var topicvm = new TopicInfoVM
                 {
@@ -239,7 +245,7 @@ namespace FakeNewsFilter.Application.Catalog
                     LanguageId = topic.LanguageId
                 };
 
-                return new ApiSuccessResult<TopicInfoVM>("Get Info Topic successful!", topicvm);
+                return new ApiSuccessResult<TopicInfoVM>("GetInfoTopicSuccessful", topicvm);
             }
             catch(Exception ex)
             {
@@ -255,7 +261,7 @@ namespace FakeNewsFilter.Application.Catalog
             {
                 var topic = await _context.TopicNews.FindAsync(TopicId);
 
-                if (topic == null) throw new FakeNewsException($"Cannot find a Topic with Id: {TopicId}");
+                if (topic == null) throw new FakeNewsException($"CannotFindTopicWithId");
 
                 if(topic.ThumbTopic != null)
                 {
@@ -275,10 +281,10 @@ namespace FakeNewsFilter.Application.Catalog
 
                 if (result > 0)
                 {
-                    return new ApiSuccessResult<bool>("Delete Topic Successful!", false);
+                    return new ApiSuccessResult<bool>("DeleteTopicSuccessful", false);
                 }
 
-                return new ApiErrorResult<bool>("Delete Unsuccessful.");
+                return new ApiErrorResult<bool>("DeleteUnsuccessful");
             }
 
             catch(Exception ex)
