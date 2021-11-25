@@ -1,11 +1,8 @@
 ﻿using FakeNewsFilter.Application.Catalog;
 using FakeNewsFilter.ViewModel.Catalog.Follows;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Microsoft.Extensions.Localization;
 using System.Threading.Tasks;
 
 namespace FakeNewsFilter.API.Controllers
@@ -17,10 +14,12 @@ namespace FakeNewsFilter.API.Controllers
     public class FollowController : ControllerBase
     {
         private readonly IFollowService _IFollowService;
+        private readonly IStringLocalizer<FollowController> _localizer;
 
-        public FollowController(IFollowService IFollowService)
+        public FollowController(IFollowService IFollowService, IStringLocalizer<FollowController> localizer)
         {
             _IFollowService = IFollowService;
+            _localizer = localizer;
         }
 
         [HttpPost]
@@ -31,6 +30,8 @@ namespace FakeNewsFilter.API.Controllers
                 return BadRequest(ModelState);
             }
             var result = await _IFollowService.Create(request);
+
+            result.Message = _localizer[result.Message].Value;
 
             if (result.IsSuccessed == false)
             {
@@ -48,6 +49,8 @@ namespace FakeNewsFilter.API.Controllers
             }
 
             var result = await _IFollowService.Update(request);
+
+            result.Message = _localizer[result.Message].Value;
 
             if (result.ResultObj != false)
             {

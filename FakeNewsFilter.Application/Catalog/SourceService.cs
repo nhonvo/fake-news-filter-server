@@ -1,16 +1,11 @@
-﻿using AutoMapper;
-using FakeNewsFilter.Application.Common;
-using FakeNewsFilter.Data.EF;
+﻿using FakeNewsFilter.Data.EF;
 using FakeNewsFilter.Data.Entities;
-using FakeNewsFilter.ViewModel.Catalog.Follows;
 using FakeNewsFilter.ViewModel.Catalog.SourceStory;
 using FakeNewsFilter.ViewModel.Common;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace FakeNewsFilter.Application.Catalog
@@ -41,13 +36,13 @@ namespace FakeNewsFilter.Application.Catalog
                 var language = _context.Languages.FirstOrDefault(x => x.Id == request.LanguageId);
                 if(language == null)
                 {
-                    return new ApiErrorResult<bool>("Language not exist");
+                    return new ApiErrorResult<bool>("LanguageNotFound");
                 }
                 //check SourceName
                 var sourcename = _context.Source.FirstOrDefault(x => x.SourceName == request.SourceName);
                 if(sourcename != null)
                 {
-                    return new ApiErrorResult<bool>($"Source Name {request.SourceName} exist");
+                    return new ApiErrorResult<bool>("SourceNameFound");
                 }
                 //create new scourcename
                 var ScourceStory = new Source()
@@ -62,10 +57,10 @@ namespace FakeNewsFilter.Application.Catalog
 
                 if (result == 0)
                 {
-                    return new ApiErrorResult<bool>("Create Source Story Unsuccessful! Try again");
+                    return new ApiErrorResult<bool>("CreateSourceStoryUnsuccessful");
                 }
 
-                return new ApiSuccessResult<bool>("Create Source Story Successful!", false);
+                return new ApiSuccessResult<bool>("CreateSourceStorySuccessful", false);
             }
             catch (Exception)
             {
@@ -80,13 +75,13 @@ namespace FakeNewsFilter.Application.Catalog
             var sourcename = _context.Source.FirstOrDefault(x => x.SourceName == request.SourceName);
             if (sourcename == null)
             {
-                return new ApiErrorResult<bool>($"Can not find Source Name {request.SourceName} exist");
+                return new ApiErrorResult<bool>("CannotFindSourceNameExist");
             }
             //check Language
             var language = _context.Languages.FirstOrDefault(x => x.Id == request.LanguageId);
             if (language == null)
             {
-                return new ApiErrorResult<bool>("Language not exist");
+                return new ApiErrorResult<bool>("LanguageNotFound");
             }
             
             //remove source name
@@ -106,10 +101,10 @@ namespace FakeNewsFilter.Application.Catalog
 
             if (result > 0)
             {
-                return new ApiSuccessResult<bool>("SourceStory update Successful!", false);
+                return new ApiSuccessResult<bool>("SourceStoryUpdateSuccessful", false);
             }
 
-            return new ApiErrorResult<bool>("SourceStory update Unsuccessful.");
+            return new ApiErrorResult<bool>("SourceStoryUpdateUnsuccessful");
         }
         //get all source story
         public async Task<ApiResult<List<SourceViewModel>>> GetAll(string languageId)
@@ -124,10 +119,10 @@ namespace FakeNewsFilter.Application.Catalog
 
             if (list_source == null)
             {
-                return new ApiErrorResult<List<SourceViewModel>>("Get All Source Story Unsuccessful!");
+                return new ApiErrorResult<List<SourceViewModel>>("GetAllSourceStoryUnsuccessful");
             }
 
-            return new ApiSuccessResult<List<SourceViewModel>>("Get All Source Story Successful!", list_source);
+            return new ApiSuccessResult<List<SourceViewModel>>("GetAllSourceStorySuccessful", list_source);
         }
         //get one story in SourceId
         public async Task<ApiResult<SourceViewModel>> GetoneStory(int sourceid)
@@ -144,11 +139,11 @@ namespace FakeNewsFilter.Application.Catalog
                     LanguageId = sourcestory.LanguageId
                 };
 
-                return new ApiSuccessResult<SourceViewModel>("Get One Source Story Successful!", result);
+                return new ApiSuccessResult<SourceViewModel>("GetOneSourceStorySuccessful", result);
             }
             else
             {
-                return new ApiErrorResult<SourceViewModel>("Get One Source Story unsuccessful!");
+                return new ApiErrorResult<SourceViewModel>("GetOneSourceStoryUnsuccessful");
             }
         }
         //Delete source story
@@ -158,17 +153,17 @@ namespace FakeNewsFilter.Application.Catalog
             
             if (deletesourceId == null)
             {
-                return new ApiErrorResult<bool>("can not find sourceid");
+                return new ApiErrorResult<bool>("CanNotFindSourceid");
             }
             
             _context.Source.Remove(deletesourceId);
 
             if (await _context.SaveChangesAsync() == 0)
             {
-                return new ApiErrorResult<bool>("Delete Source Story Unsuccessful! Try again");
+                return new ApiErrorResult<bool>("DeleteSourceStoryUnsuccessful");
             }
 
-            return new ApiSuccessResult<bool>("Delete Source Story Successful!", false);
+            return new ApiSuccessResult<bool>("DeleteSourceStorySuccessful", false);
 
         }
 

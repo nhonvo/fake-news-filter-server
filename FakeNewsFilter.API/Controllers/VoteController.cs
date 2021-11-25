@@ -1,9 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using FakeNewsFilter.Application.Catalog;
 using FakeNewsFilter.ViewModel.Catalog.Vote;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 
 namespace FakeNewsFilter.API.Controllers
 {
@@ -12,10 +12,11 @@ namespace FakeNewsFilter.API.Controllers
     public class VoteController : ControllerBase
     {
         private readonly IVoteService _voteService;
-
-        public VoteController(IVoteService voteService)
+        private readonly IStringLocalizer<VoteController> _localizer;
+        public VoteController(IVoteService voteService, IStringLocalizer<VoteController> localizer)
         {
             _voteService = voteService;
+            _localizer = localizer;
         }
         
         [HttpPost]
@@ -25,7 +26,10 @@ namespace FakeNewsFilter.API.Controllers
             {
                 return BadRequest(ModelState);
             }
+
             var result = await _voteService.Create(request);
+
+            result.Message = _localizer[result.Message].Value;
 
             if (result.IsSuccessed == false)
             {
@@ -44,6 +48,8 @@ namespace FakeNewsFilter.API.Controllers
             }
 
             var result = await _voteService.Update(request);
+
+            result.Message = _localizer[result.Message].Value;
 
             if (result.ResultObj != false)
             {

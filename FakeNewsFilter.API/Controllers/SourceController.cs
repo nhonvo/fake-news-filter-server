@@ -1,11 +1,8 @@
 ﻿using FakeNewsFilter.Application.Catalog;
 using FakeNewsFilter.ViewModel.Catalog.SourceStory;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Microsoft.Extensions.Localization;
 using System.Threading.Tasks;
 
 namespace FakeNewsFilter.API.Controllers
@@ -16,10 +13,12 @@ namespace FakeNewsFilter.API.Controllers
     public class SourceController : ControllerBase
     {
         private readonly IScourceService _IScourceStoryService;
+        private readonly IStringLocalizer<SourceController> _localizer;
 
-        public SourceController(IScourceService IScourceStoryService)
+        public SourceController(IScourceService IScourceStoryService, IStringLocalizer<SourceController> localizer)
         {
             _IScourceStoryService = IScourceStoryService;
+            _localizer = localizer;
         }
 
         [HttpPost]
@@ -31,6 +30,8 @@ namespace FakeNewsFilter.API.Controllers
                 return BadRequest(ModelState);
             }
             var result = await _IScourceStoryService.Create(request);
+
+            result.Message = _localizer[result.Message].Value;
 
             if (result.IsSuccessed == false)
             {
@@ -50,6 +51,8 @@ namespace FakeNewsFilter.API.Controllers
 
             var result = await _IScourceStoryService.Update(request);
 
+            result.Message = _localizer[result.Message].Value;
+
             if (result.ResultObj != false)
             {
                 return BadRequest(result);
@@ -63,6 +66,8 @@ namespace FakeNewsFilter.API.Controllers
         {
             var topics = await _IScourceStoryService.GetAll(languageId);
 
+            topics.Message = _localizer[topics.Message].Value;
+
             return Ok(topics);
         }
 
@@ -71,6 +76,8 @@ namespace FakeNewsFilter.API.Controllers
         public async Task<IActionResult> Delete(int sourceid)
         {
             var result = await _IScourceStoryService.Delete(sourceid);
+
+            result.Message = _localizer[result.Message].Value;
 
             if (result.ResultObj != false)
             {
@@ -84,6 +91,8 @@ namespace FakeNewsFilter.API.Controllers
         public async Task<IActionResult> GetById(int sourceid)
         {
             var news = await _IScourceStoryService.GetoneStory(sourceid);
+
+            news.Message = _localizer[news.Message].Value;
 
             if (news == null)
             {

@@ -28,18 +28,21 @@ namespace FakeNewsFilter.API.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var newsId = await _newsService.Create(request);
 
-            if (newsId.ResultObj != 0)
+            var createNews = await _newsService.Create(request);
+
+            createNews.Message = _localizer[createNews.Message].Value;
+
+            if (createNews.IsSuccessed == false)
             {
-                return BadRequest("Cannot create news");
+                return BadRequest(createNews);
             }
+            
+            var getNews = await _newsService.GetById(createNews.ResultObj);
 
-            var news = await _newsService.GetById(newsId.ResultObj);
-
-            news.Message = _localizer[news.Message].Value;
-
-            return CreatedAtAction(nameof(GetById), new { newsId = newsId }, news);
+            getNews.Message = _localizer[getNews.Message].Value;
+            
+            return CreatedAtAction(nameof(GetById), new { newsId = createNews }, getNews);
         }
 
         [HttpDelete("{newsId}")]
