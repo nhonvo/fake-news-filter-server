@@ -4,19 +4,15 @@ using FakeNewsFilter.Data.EF;
 using FakeNewsFilter.Data.Entities;
 using FakeNewsFilter.Data.Enums;
 using FakeNewsFilter.Utilities.Exceptions;
-using FakeNewsFilter.ViewModel.Catalog.Follows;
-using FakeNewsFilter.ViewModel.Catalog.SourceStory;
 using FakeNewsFilter.ViewModel.Catalog.Story;
 using FakeNewsFilter.ViewModel.Common;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace FakeNewsFilter.Application.Catalog
@@ -49,13 +45,13 @@ namespace FakeNewsFilter.Application.Catalog
             var language = await _context.Languages.FirstOrDefaultAsync(x => x.Id == request.LanguageId);
             if (language == null)
             {
-                return new ApiErrorResult<int>("LanguageId not exist");
+                return new ApiErrorResult<int>("LanguageIdNotFound");
             }
             //check SourceId
             var source = await _context.Source.FindAsync(request.SourceId);
             if (source == null)
             {
-                return new ApiErrorResult<int>("SourceId not exist");
+                return new ApiErrorResult<int>("SourceIdNotFound");
             }
             //add item in story
             var story = new Story()
@@ -86,10 +82,10 @@ namespace FakeNewsFilter.Application.Catalog
             if (result == 0)
             {
                 await _storageService.DeleteFileAsync(story.Media.PathMedia);
-                return new ApiErrorResult<int>("Create Story Unsuccessful! Try again");
+                return new ApiErrorResult<int>("CreateStoryUnsuccessful");
             }
 
-            return new ApiSuccessResult<int>("Create Story Successful!", story.StoryId);
+            return new ApiSuccessResult<int>("CreateStorySuccessful", story.StoryId);
 
         }
         public async Task<ApiResult<bool>> Update(StoryUpdateRequest request)
@@ -98,19 +94,19 @@ namespace FakeNewsFilter.Application.Catalog
             var language_update = await _context.Languages.FirstOrDefaultAsync(x => x.Id == request.LanguageId);
             if (language_update == null)
             {
-                return new ApiErrorResult<bool>("LanguageId not exist");
+                return new ApiErrorResult<bool>("LanguageIdNotFound");
             }
             //Check StoryId
             var story_update = await _context.Story.FindAsync(request.StoryId);
 
             if (story_update == null)
-                return new ApiErrorResult<bool>($"Cannont find a story with Id is: {request.StoryId}");
+                return new ApiErrorResult<bool>($"CannontFindAStoryWithId");
 
             //checkSourceId
             var source_update = await _context.Source.FindAsync(request.SourceId);
 
             if (source_update == null)
-                return new ApiErrorResult<bool>($"Cannont find a source with Id is: {request.SourceId}");
+                return new ApiErrorResult<bool>($"CannontFindASourceWithId");
 
             //update link, sourceId
             story_update.Link = request.Link ?? story_update.Link;
@@ -156,10 +152,10 @@ namespace FakeNewsFilter.Application.Catalog
 
             if (await _context.SaveChangesAsync() == 0)
             {
-                return new ApiErrorResult<bool>("Update Story Unsuccessful! Try again");
+                return new ApiErrorResult<bool>("UpdateStoryUnsuccessful");
             }
 
-            return new ApiSuccessResult<bool>("Update Story Successful!", false);
+            return new ApiSuccessResult<bool>("UpdateStorySuccessful", false);
         }
         public async Task<ApiResult<bool>> Delete(int StoryId)
         {
@@ -167,7 +163,7 @@ namespace FakeNewsFilter.Application.Catalog
             {
                 var story = await _context.Story.FindAsync(StoryId);
 
-                if (story == null) throw new FakeNewsException($"Cannot find a Story with Id: {StoryId}");
+                if (story == null) throw new FakeNewsException("CannontFindAStoryWithId");
 
                 var media = _context.Media.Single(x => x.MediaId == story.Thumbstory);
 
@@ -184,10 +180,10 @@ namespace FakeNewsFilter.Application.Catalog
 
                 if (result > 0)
                 {
-                    return new ApiSuccessResult<bool>("Delete Story Successful!", false);
+                    return new ApiSuccessResult<bool>("DeleteStorySuccessful", false);
                 }
 
-                return new ApiErrorResult<bool>("Delete Story Unsuccessful.");
+                return new ApiErrorResult<bool>("DeleteStoryUnsuccessful");
             }
 
             catch (Exception ex)
@@ -203,7 +199,7 @@ namespace FakeNewsFilter.Application.Catalog
 
                 if (story == null)
                 {
-                    return new ApiErrorResult<StoryViewModel>("Story doesn't exist!");
+                    return new ApiErrorResult<StoryViewModel>("StoryNotFound");
                 }
                 var storyVM = new StoryViewModel
                 {
@@ -215,7 +211,7 @@ namespace FakeNewsFilter.Application.Catalog
                     LanguageId = story.LanguageId
                 };
 
-                return new ApiSuccessResult<StoryViewModel>("Get Story successful!", storyVM);
+                return new ApiSuccessResult<StoryViewModel>("GetStorySuccessful", storyVM);
             }
             catch (Exception ex)
             {
@@ -237,10 +233,10 @@ namespace FakeNewsFilter.Application.Catalog
 
             if (list_story == null)
             {
-                return new ApiErrorResult<List<StoryViewModel>>("Get All Story Unsuccessful!");
+                return new ApiErrorResult<List<StoryViewModel>>("GetAllStoryUnsuccessful");
             }
 
-            return new ApiSuccessResult<List<StoryViewModel>>("Get All Story Successful!", list_story);
+            return new ApiSuccessResult<List<StoryViewModel>>("GetAllStorySuccessful", list_story);
         }
         private async Task<string> SaveFile(IFormFile file)
         {
