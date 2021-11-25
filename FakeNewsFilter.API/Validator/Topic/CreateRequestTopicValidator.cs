@@ -1,7 +1,5 @@
-﻿using FakeNewsFilter.Data.Entities;
-using FakeNewsFilter.ViewModel.Catalog.TopicNews;
+﻿using FakeNewsFilter.ViewModel.Catalog.TopicNews;
 using FluentValidation;
-using Microsoft.Extensions.Localization;
 
 namespace FakeNewsFilter.ViewModel.Validator.Topic
 {

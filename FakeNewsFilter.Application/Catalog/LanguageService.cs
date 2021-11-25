@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using FakeNewsFilter.ViewModel.Common;
 using FakeNewsFilter.ViewModel.Catalog.Language;
@@ -35,10 +34,10 @@ namespace FakeNewsFilter.Application.Catalog
 
             if (languagesList == null)
             {
-                return new ApiErrorResult<List<GetLanguageRequest>>("Get All Languages Unsuccessful!");
+                return new ApiErrorResult<List<GetLanguageRequest>>("GetAllLanguagesUnsuccessful");
             }
 
-            return new ApiSuccessResult<List<GetLanguageRequest>>("Get All Languages Successful!", languagesList);
+            return new ApiSuccessResult<List<GetLanguageRequest>>("GetAllLanguageSsuccessful", languagesList);
         }
     }
 }

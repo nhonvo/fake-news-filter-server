@@ -38,20 +38,20 @@ namespace FakeNewsFilter.Application.Catalog
 
                 if (user == null)
                 {
-                    return new ApiErrorResult<bool>("User is not exist!");
+                    return new ApiErrorResult<bool>("UserIsNotExist");
                 }
 
                 var news = await _context.News.Include(t => t.NewsInTopics).FirstOrDefaultAsync(t => t.NewsId == request.NewsId);
 
                 if (news == null)
                 {
-                    return new ApiErrorResult<bool>("News is not exist!");
+                    return new ApiErrorResult<bool>("NewsIsNotExist");
                 }
 
                 var vote = new Data.Entities.Vote()
                 {
-                    NewsId = request.NewsId,
                     UserId = request.UserId,
+                    NewsId = request.NewsId,
                     isReal = request.isReal,
                     Timestamp = DateTime.Now,
                 };
@@ -60,12 +60,12 @@ namespace FakeNewsFilter.Application.Catalog
 
                 var result = await _context.SaveChangesAsync();
 
-                if (result > 0)
+                if (result != 0)
                 {
-                    return new ApiSuccessResult<bool>("Vote Successful!", false);
+                    return new ApiSuccessResult<bool>("VoteSuccessful", false);
                 }
 
-                return new ApiErrorResult<bool>("Vote Unsuccessful.");
+                return new ApiErrorResult<bool>("VoteUnsuccessful");
 
             }
             catch (Exception ex)
@@ -79,7 +79,7 @@ namespace FakeNewsFilter.Application.Catalog
             var vote_update = await _context.Vote.FirstOrDefaultAsync(u => u.UserId == request.UserId && u.NewsId == request.NewsId);
 
             if (vote_update == null)
-                return new ApiErrorResult<bool>($"Cannont find a news with Id is: {request.NewsId}");
+                return new ApiErrorResult<bool>($"CannontFindANewsWithId {request.NewsId}");
 
             vote_update.isReal = request.isReal;
            
@@ -89,10 +89,10 @@ namespace FakeNewsFilter.Application.Catalog
 
             if (await _context.SaveChangesAsync() == 0)
             {
-                return new ApiErrorResult<bool>("Update Vote Unsuccessful! Try again");
+                return new ApiErrorResult<bool>("UpdateVoteUnsuccessful");
             }
 
-            return new ApiSuccessResult<bool>("Update Vote Successful!", false);
+            return new ApiSuccessResult<bool>("UpdateVoteSuccessful", false);
         }
     }
 }

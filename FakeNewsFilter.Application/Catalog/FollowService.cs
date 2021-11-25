@@ -5,9 +5,7 @@ using FakeNewsFilter.ViewModel.Common;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace FakeNewsFilter.Application.Catalog
@@ -36,7 +34,7 @@ namespace FakeNewsFilter.Application.Catalog
                 var User = await _userManager.FindByIdAsync(request.UserId.ToString());
                     if (User == null)
                     {
-                            return new ApiErrorResult<bool>("User is not exist!");
+                            return new ApiErrorResult<bool>("UserIsNotExist");
                     }
 
                 foreach (var item in request.TopicId)
@@ -44,7 +42,7 @@ namespace FakeNewsFilter.Application.Catalog
                     var Topic = await _context.TopicNews.FirstOrDefaultAsync(t => t.TopicId == item);
                     if (Topic == null)
                     {
-                        return new ApiErrorResult<bool>($"Cannont find a topic with Id is: {item}");
+                        return new ApiErrorResult<bool>("CannontFindATopicWithId");
                     }
                 }
 
@@ -62,10 +60,10 @@ namespace FakeNewsFilter.Application.Catalog
 
                 if (result > 0)
                 {
-                    return new ApiSuccessResult<bool>("Follow Successful!", false);
+                    return new ApiSuccessResult<bool>("FollowSuccessful", false);
                 }
 
-                return new ApiErrorResult<bool>("Follow Unsuccessful.");
+                return new ApiErrorResult<bool>("FollowUnsuccessful");
 
             }
             catch (Exception)
@@ -81,7 +79,7 @@ namespace FakeNewsFilter.Application.Catalog
             var user = await _userManager.FindByIdAsync(request.UserId.ToString());
             if (user == null)
             {
-                return new ApiErrorResult<bool>("User is not exist!");
+                return new ApiErrorResult<bool>("UserIsNotExist");
             }
 
             //check topic id
@@ -90,7 +88,7 @@ namespace FakeNewsFilter.Application.Catalog
                 var topic = await _context.TopicNews.FirstOrDefaultAsync(t => t.TopicId == item);
                 if (topic == null)
                 {
-                    return new ApiErrorResult<bool>($"Cannont find a topic with Id is: {item}");
+                    return new ApiErrorResult<bool>("CannontFindATopicWithId");
                 }
             }
             // remove user
@@ -112,10 +110,10 @@ namespace FakeNewsFilter.Application.Catalog
 
             if (result > 0)
             {
-                return new ApiSuccessResult<bool>("Follow update Successful!", false);
+                return new ApiSuccessResult<bool>("FollowUpdateSuccessful", false);
             }
 
-            return new ApiErrorResult<bool>("Follow update Unsuccessful.");
+            return new ApiErrorResult<bool>("FollowUpdateUnsuccessful");
         }
 
     }
