@@ -142,7 +142,7 @@ namespace FakeNewsFilter.Application.Catalog
                     NewsId = x.n.NewsId,
                     Name = x.n.Name,
                     LanguageId = x.n.LanguageId,
-                    Description = x.c.Description,
+                    Description = x.n.Description,
                     Content = x.n.Content,
                     Status = x.n.Status,
                     ThumbNews = _mapper.Map<MediaViewModel>(x.n.Media),
