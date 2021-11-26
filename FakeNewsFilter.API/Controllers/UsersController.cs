@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using FakeNewsFilter.Application.System;
 using FakeNewsFilter.Utilities.Exceptions;
+using FakeNewsFilter.ViewModel.Common;
 using FakeNewsFilter.ViewModel.System.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -29,12 +32,22 @@ namespace FakeNewsFilter.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Authenticate([FromBody]LoginRequest request)
         {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
+            LoginRequestUserValidator validator = new LoginRequestUserValidator();
 
-                var resultToken = await _userService.Authencate(request);
+            List<string> ValidationMessages = new List<string>();
+
+            var validationResult = validator.Validate(request);
+
+            if (!validationResult.IsValid)
+            {
+                string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
+
+                var result = new ApiErrorResult<bool>(errors);
+
+                return BadRequest(result);
+            }
+
+            var resultToken = await _userService.Authencate(request);
 
                 resultToken.Message = _localizer[resultToken.Message].Value;
 
@@ -50,21 +63,31 @@ namespace FakeNewsFilter.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
-            if (!ModelState.IsValid)
+            RegisterRequestUserValidator validator = new RegisterRequestUserValidator();
+
+            List<string> ValidationMessages = new List<string>();
+
+            var validationResult = validator.Validate(request);
+
+            if (!validationResult.IsValid)
             {
-                return BadRequest(ModelState);
-            }
+                string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
 
-            var result = await _userService.Register(request);
+                var result = new ApiErrorResult<bool>(errors);
 
-            result.Message = _localizer[result.Message].Value;
-
-            if (!result.IsSuccessed)
-            {
                 return BadRequest(result);
+            }
+
+            var resultToken = await _userService.Register(request);
+
+            resultToken.Message = _localizer[resultToken.Message].Value;
+
+            if (!resultToken.IsSuccessed)
+            {
+                return BadRequest(resultToken);
 
             }
-            return Ok(result);
+            return Ok(resultToken);
         }
 
        
@@ -94,18 +117,30 @@ namespace FakeNewsFilter.API.Controllers
         [HttpPut()]
         public async Task<IActionResult> Update([FromForm] UserUpdateRequest request)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            UpdateRequestUserValidator validator = new UpdateRequestUserValidator();
 
-            var result = await _userService.Update(request);
+            List<string> ValidationMessages = new List<string>();
 
-            result.Message = _localizer[result.Message].Value;
+            var validationResult = validator.Validate(request);
 
-            if (!result.IsSuccessed)
+            if (!validationResult.IsValid)
             {
+                string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
+
+                var result = new ApiErrorResult<bool>(errors);
+
                 return BadRequest(result);
             }
-            return Ok(result);
+
+            var resultToken = await _userService.Update(request);
+
+            resultToken.Message = _localizer[resultToken.Message].Value;
+
+            if (!resultToken.IsSuccessed)
+            {
+                return BadRequest(resultToken);
+            }
+            return Ok(resultToken);
         }
 
         [HttpDelete("{id}")]

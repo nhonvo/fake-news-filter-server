@@ -1,6 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using FakeNewsFilter.Application.Catalog;
 using FakeNewsFilter.ViewModel.Catalog.TopicNews;
+using FakeNewsFilter.ViewModel.Common;
+using FakeNewsFilter.ViewModel.Validator.Topic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
@@ -27,19 +31,31 @@ namespace FakeNewsFilter.API.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromForm]TopicCreateRequest request)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            CreateRequestTopicValidator validator = new CreateRequestTopicValidator();
 
-            var result = await _topicService.Create(request);
+            List<string> ValidationMessages = new List<string>();
 
-            result.Message = _localizer[result.Message].Value;
+            var validationResult = validator.Validate(request);
 
-            if (result.IsSuccessed == false)
+            if (!validationResult.IsValid)
             {
+                string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
+
+                var result = new ApiErrorResult<bool>(errors);
+
                 return BadRequest(result);
             }
 
-            return Ok(result);
+            var resultToken = await _topicService.Create(request);
+
+            resultToken.Message = _localizer[resultToken.Message].Value;
+
+            if (resultToken.IsSuccessed == false)
+            {
+                return BadRequest(resultToken);
+            }
+
+            return Ok(resultToken);
         }
 
         
@@ -77,10 +93,21 @@ namespace FakeNewsFilter.API.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update([FromRoute]int topicId, [FromForm] TopicUpdateRequest request)
         {
-            if (!ModelState.IsValid)
+            UpdateRequestTopicValidator validator = new UpdateRequestTopicValidator();
+
+            List<string> ValidationMessages = new List<string>();
+
+            var validationResult = validator.Validate(request);
+
+            if (!validationResult.IsValid)
             {
-                return BadRequest(ModelState);
+                string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
+
+                var resultupdate = new ApiErrorResult<bool>(errors);
+
+                return BadRequest(resultupdate);
             }
+
             request.TopicId = topicId;
 
             var result = await _topicService.Update(request);
