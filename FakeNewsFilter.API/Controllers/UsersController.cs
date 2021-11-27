@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FakeNewsFilter.Application.System;
 using FakeNewsFilter.Utilities.Exceptions;
+using FakeNewsFilter.ViewModel.Common;
 using FakeNewsFilter.ViewModel.System.LoginSocial;
 using FakeNewsFilter.ViewModel.System.Users;
 using Microsoft.AspNetCore.Authorization;
@@ -176,6 +177,7 @@ namespace FakeNewsFilter.API.Controllers
         }
 
         [HttpPost("SignInFacebook")]
+        [AllowAnonymous]
         public async Task<IActionResult> SignInFacebook([FromBody]LoginFacebookRequest request)
         {
             var authReponse = await _userService.SignInFacebook(request.AccessToken);

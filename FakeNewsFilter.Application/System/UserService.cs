@@ -136,7 +136,9 @@ namespace FakeNewsFilter.Application.System
                     return new ApiErrorResult<bool>("UsernameIsvAvailable");
                 }
 
-                if (await _userManager.FindByEmailAsync(request.Email) != null)
+                user = await _userManager.FindByEmailAsync(request.Email);
+
+                if ( user != null)
                 {
                     return new ApiErrorResult<bool>("EmailIsAvailable");
                 }    
@@ -395,6 +397,7 @@ namespace FakeNewsFilter.Application.System
         {
             try
             {
+
                 var validatedTokenResult = await _facebookAuthService.ValidationAcessTokenAsync(accessToken);
 
                 if (!validatedTokenResult.Data.IsValid)
@@ -402,58 +405,143 @@ namespace FakeNewsFilter.Application.System
                     return new ApiErrorResult<TokenResult>("InvalidFacebookToken");
                 }
 
+                //Lấy thông tin User Facebook từ AccessToken
                 var userInfo = await _facebookAuthService.GetUsersInfoAsync(accessToken);
 
-                var user = await _userManager.FindByEmailAsync(userInfo.Email);
+                //Cắt Email thành UsernName
+                string userName = (userInfo.Email).Split('@')[0];
+                //Tạo FullName
+                string fullName = (userInfo.LastName + userInfo.FirstName).ToString();
 
-                if (user == null)
+                //Kiểm tra user đã liên kết với Facebook chưa
+                var checkLinked = await _signInManager.ExternalLoginSignInAsync("Facebook", userInfo.Id, false);
+
+                //Nếu đã có liên kết trước đó thì tiến hành đăng nhập luôn
+                if (checkLinked.Succeeded)
                 {
-                    var indentityuser = new User
+                    var exist_user = await _userManager.FindByNameAsync(userName);
+
+                    var roles = await _userManager.GetRolesAsync(exist_user);
+
+                    var avatar = _context.Media.Where(m => m.MediaId == exist_user.AvatarId).Select(m => m.PathMedia).FirstOrDefault();
+
+                    var claims = new[] {
+                        new Claim(ClaimTypes.Uri, avatar ?? "default.png"),
+                        new Claim(ClaimTypes.Email, exist_user.Email),
+                        new Claim(ClaimTypes.GivenName, exist_user.Name),
+                        new Claim(ClaimTypes.Role, string.Join(";", roles)),
+                        new Claim(ClaimTypes.Name, exist_user.UserName)
+                     };
+
+                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
+                    var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+                    var token = new JwtSecurityToken(_config["Tokens:Issuer"],
+                        _config["Tokens:Issuer"],
+                        claims,
+                        expires: DateTime.Now.AddHours(3),
+                        signingCredentials: creds);
+
+                    var returnResult = new TokenResult { Token = new JwtSecurityTokenHandler().WriteToken(token), UserId = exist_user.Id };
+
+                    return new ApiSuccessResult<TokenResult>("LoginFacebookSuccessful", returnResult);
+                }
+                else  //Chưa được liên kết với Facebook
+                {
+                    var info = new ExternalLoginInfo(ClaimsPrincipal.Current, "Facebook", userInfo.Id, null);
+
+                    //Kiểm tra tồn tại Email và Username
+                    var user = await _userManager.FindByNameAsync(userName);
+
+                    if (user != null)
                     {
-                        Id = Guid.NewGuid(),
-                        Email = userInfo.Email,
-                        UserName = userInfo.Email,
-
-                    };
-
-                    var result = await _userManager.CreateAsync(indentityuser);
-
-                    if (result.Succeeded)
-                    {
-                        var role = await _userManager.AddToRoleAsync(indentityuser, "Subscriber");
-
-                        var claims = new[]
+                        //Gán tài khoản Facebook vào tài khoản đã có sẵn
+                        var result = await _userManager.AddLoginAsync(user, info);
+                        if (result.Succeeded)
                         {
-                        new Claim(ClaimTypes.Email,indentityuser.Email),
-                        new Claim(ClaimTypes.Role, string.Join(";",role)),
-                        new Claim(ClaimTypes.Name, indentityuser.UserName)
-                    };
+                            var claims = new[]
+                            {
+                                new Claim(ClaimTypes.Uri, userInfo.Picture.Url ?? "default.png"),
+                                new Claim(ClaimTypes.Email,userInfo.Email),
+                                new Claim(ClaimTypes.GivenName,fullName),
+                                new Claim(ClaimTypes.Name, userName)
+                            };
 
-                        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
-                        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
+                            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-                        var token = new JwtSecurityToken(_config["Tokens:Issuer"],
-                            _config["Tokens:Issuer"],
-                            claims,
-                            expires: DateTime.Now.AddHours(3),
-                            signingCredentials: creds);
+                            var token = new JwtSecurityToken(_config["Tokens:Issuer"],
+                                _config["Tokens:Issuer"],
+                                claims,
+                                expires: DateTime.Now.AddHours(3),
+                                signingCredentials: creds);
 
-                        var returnResult = new TokenResult { Token = new JwtSecurityTokenHandler().WriteToken(token), UserId = indentityuser.Id };
+                            var returnResult = new TokenResult { Token = new JwtSecurityTokenHandler().WriteToken(token), UserId = user.Id };
 
-                        return new ApiSuccessResult<TokenResult>("LoginSuccessful", returnResult);
+                            return new ApiSuccessResult<TokenResult>("LinkedFacebookSuccessful", returnResult);
+                        }
+                        else
+                        {
+                            return new ApiErrorResult<TokenResult>("ErrorLinkedFacebook");
+                        }
                     }
-                    else
+                    else //Tài khoản đăng nhập lần đầu
                     {
-                        List<IdentityError> errorList = result.Errors.ToList();
-                        var errors = string.Join(", ", errorList.Select(e => e.Description));
-                        return new ApiErrorResult<TokenResult>("RegisterUnsuccessful " + errors);
+                        var indentityuser = new User
+                        {
+                            Id = Guid.NewGuid(),
+                            Email = userInfo.Email,
+                            UserName = userName,
+                            Name = fullName
+                        };
+
+                        var result = await _userManager.CreateAsync(indentityuser);
+
+                        if (result.Succeeded)
+                        {
+                            result = await _userManager.AddLoginAsync(indentityuser, info);
+
+                            if (!result.Succeeded)
+                            {
+                                return new ApiErrorResult<TokenResult>("ErrorLinkedFacebook");
+                            }
+
+                            var role = await _userManager.AddToRoleAsync(indentityuser, "Subscriber");
+
+                            var claims = new[]
+                             {
+                                new Claim(ClaimTypes.Uri, userInfo.Picture.Url ?? "default.png"),
+                                new Claim(ClaimTypes.Email,userInfo.Email),
+                                new Claim(ClaimTypes.GivenName,fullName),
+                                new Claim(ClaimTypes.Name, userName)
+                            };
+
+                            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
+                            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+                            var token = new JwtSecurityToken(_config["Tokens:Issuer"],
+                                _config["Tokens:Issuer"],
+                                claims,
+                                expires: DateTime.Now.AddHours(3),
+                                signingCredentials: creds);
+
+                            var returnResult = new TokenResult { Token = new JwtSecurityTokenHandler().WriteToken(token), UserId = indentityuser.Id };
+
+                            return new ApiSuccessResult<TokenResult>("LoginFacebookSuccessful", returnResult);
+                        }
+                        else
+                        {
+                            List<IdentityError> errorList = result.Errors.ToList();
+                            var errors = string.Join(", ", errorList.Select(e => e.Description));
+                            return new ApiErrorResult<TokenResult>("RegisterFacebookUnsuccessful " + errors);
+                        }
+
                     }
                 }
-                else return new ApiErrorResult<TokenResult>("UsernameIsvAvailable");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                return new ApiErrorResult<TokenResult>("RegisterUnsuccessful " + e.Message);
+                return new ApiErrorResult<TokenResult>("Login Unsuccessful" + e.Message);
             }
         }
     }
