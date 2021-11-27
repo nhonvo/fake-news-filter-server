@@ -38,6 +38,9 @@ namespace FakeNewsFilter.Application.System
         Task<ApiResult<bool>> Delete(String UserId);
 
         Task<ApiResult<bool>> RoleAssign(Guid id, RoleAssignRequest request);
+
+        Task<ApiResult<TokenResult>> SignInFacebook(string accessToken);
+
     }
 
     public class UserService : IUserService
@@ -48,6 +51,8 @@ namespace FakeNewsFilter.Application.System
 
         private readonly SignInManager<User> _signInManager;
 
+        private readonly FacebookAuthService _facebookAuthService;
+
         private readonly IConfiguration _config;
 
         private readonly IMapper _mapper;
@@ -57,12 +62,12 @@ namespace FakeNewsFilter.Application.System
         private FileStorageService _storageService;
         
         
-        public UserService(ApplicationDBContext context, UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration config, IMapper mapper, RoleManager<Role> roleManager, FileStorageService storageService)
+        public UserService(ApplicationDBContext context, UserManager<User> userManager, SignInManager<User> signInManager, FacebookAuthService facebookAuthService, IConfiguration config, IMapper mapper, RoleManager<Role> roleManager, FileStorageService storageService)
         {
-
             _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
+            _facebookAuthService = facebookAuthService;
             _config = config;
             _mapper = mapper;
             _roleManager = roleManager;
@@ -165,6 +170,7 @@ namespace FakeNewsFilter.Application.System
                 return new ApiErrorResult<bool>("ErrorSystem: " + e.Message);
             }
         }
+
 
         //Lấy danh sách người dùng
         public async Task<ApiResult<List<UserViewModel>>> GetUsers()
@@ -383,6 +389,72 @@ namespace FakeNewsFilter.Application.System
             var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
             await _storageService.SaveFileAsync(file.OpenReadStream(), fileName);
             return fileName;
+        }
+
+        public async Task<ApiResult<TokenResult>> SignInFacebook(string accessToken)
+        {
+            try
+            {
+                var validatedTokenResult = await _facebookAuthService.ValidationAcessTokenAsync(accessToken);
+
+                if (!validatedTokenResult.Data.IsValid)
+                {
+                    return new ApiErrorResult<TokenResult>("InvalidFacebookToken");
+                }
+
+                var userInfo = await _facebookAuthService.GetUsersInfoAsync(accessToken);
+
+                var user = await _userManager.FindByEmailAsync(userInfo.Email);
+
+                if (user == null)
+                {
+                    var indentityuser = new User
+                    {
+                        Id = Guid.NewGuid(),
+                        Email = userInfo.Email,
+                        UserName = userInfo.Email,
+
+                    };
+
+                    var result = await _userManager.CreateAsync(indentityuser);
+
+                    if (result.Succeeded)
+                    {
+                        var role = await _userManager.AddToRoleAsync(indentityuser, "Subscriber");
+
+                        var claims = new[]
+                        {
+                        new Claim(ClaimTypes.Email,indentityuser.Email),
+                        new Claim(ClaimTypes.Role, string.Join(";",role)),
+                        new Claim(ClaimTypes.Name, indentityuser.UserName)
+                    };
+
+                        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
+                        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+                        var token = new JwtSecurityToken(_config["Tokens:Issuer"],
+                            _config["Tokens:Issuer"],
+                            claims,
+                            expires: DateTime.Now.AddHours(3),
+                            signingCredentials: creds);
+
+                        var returnResult = new TokenResult { Token = new JwtSecurityTokenHandler().WriteToken(token), UserId = indentityuser.Id };
+
+                        return new ApiSuccessResult<TokenResult>("LoginSuccessful", returnResult);
+                    }
+                    else
+                    {
+                        List<IdentityError> errorList = result.Errors.ToList();
+                        var errors = string.Join(", ", errorList.Select(e => e.Description));
+                        return new ApiErrorResult<TokenResult>("RegisterUnsuccessful " + errors);
+                    }
+                }
+                else return new ApiErrorResult<TokenResult>("UsernameIsvAvailable");
+            }
+            catch(Exception e)
+            {
+                return new ApiErrorResult<TokenResult>("RegisterUnsuccessful " + e.Message);
+            }
         }
     }
 }
