@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using FakeNewsFilter.Application.System;
 using FakeNewsFilter.Utilities.Exceptions;
 using FakeNewsFilter.ViewModel.Common;
+using FakeNewsFilter.ViewModel.System.LoginSocial;
 using FakeNewsFilter.ViewModel.System.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -173,6 +174,23 @@ namespace FakeNewsFilter.API.Controllers
                 return BadRequest(result);
             }
             return Ok(result);
+        }
+
+        [HttpPost("SignInFacebook")]
+        [AllowAnonymous]
+        public async Task<IActionResult> SignInFacebook([FromBody]LoginFacebookRequest request)
+        {
+            var authReponse = await _userService.SignInFacebook(request.AccessToken);
+
+            authReponse.Message = _localizer[authReponse.Message].Value;
+
+            if (string.IsNullOrEmpty(authReponse.ResultObj?.Token))
+            {
+                return BadRequest(authReponse);
+            }
+
+            return Ok(authReponse);
+
         }
 
     }

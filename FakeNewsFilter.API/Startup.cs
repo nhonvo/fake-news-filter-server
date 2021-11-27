@@ -65,9 +65,12 @@ namespace FakeNewsFilter
                 .AddEntityFrameworkStores<ApplicationDBContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddHttpClient();
+
             //Declare DI
             services.AddTransient<FileStorageService>();
             services.AddTransient<TopicService>();
+            services.AddTransient<FacebookAuthService>();
             services.AddTransient<UserManager<User>, UserManager<User>>();
             services.AddTransient<SignInManager<User>, SignInManager<User>>();
             services.AddTransient<RoleManager<Role>, RoleManager<Role>>();
@@ -181,6 +184,8 @@ namespace FakeNewsFilter
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseHttpsRedirection();
 
             app.UseSwagger();
 

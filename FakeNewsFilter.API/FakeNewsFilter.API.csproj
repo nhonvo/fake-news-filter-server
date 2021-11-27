@@ -20,6 +20,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.2" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.18" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="3.1.21" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="3.1.21" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,6 +33,8 @@
     <None Remove="AutoMapper.Extensions.Microsoft.DependencyInjection" />
     <None Remove="Microsoft.AspNetCore.Authentication.JwtBearer" />
     <None Remove="FluentValidation.AspNetCore" />
+    <None Remove="Microsoft.AspNetCore.Authentication.Facebook" />
+    <None Remove="Microsoft.AspNetCore.Authentication.Google" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FakeNewsFilter.Data\FakeNewsFilter.Data.csproj">
