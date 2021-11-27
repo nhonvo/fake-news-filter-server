@@ -1,8 +1,12 @@
 ﻿using FakeNewsFilter.Application.Catalog;
 using FakeNewsFilter.ViewModel.Catalog.NewsManage;
+using FakeNewsFilter.ViewModel.Common;
+using FakeNewsFilter.ViewModel.Validator.News;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace FakeNewsFilter.API.Controllers
@@ -24,9 +28,19 @@ namespace FakeNewsFilter.API.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromForm] NewsCreateRequest request)
         {
-            if (!ModelState.IsValid)
+            CreateRequestNewsValidator validator = new CreateRequestNewsValidator();
+
+            List<string> ValidationMessages = new List<string>();
+
+            var validationResult = validator.Validate(request);
+
+            if (!validationResult.IsValid)
             {
-                return BadRequest(ModelState);
+                string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
+
+                var result = new ApiErrorResult<bool>(errors);
+
+                return BadRequest(result);
             }
 
             var createNews = await _newsService.Create(request);
@@ -103,20 +117,30 @@ namespace FakeNewsFilter.API.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update([FromForm] NewsUpdateRequest request)
         {
-            if (!ModelState.IsValid)
+            UpdateRequestNewsValidator validator = new UpdateRequestNewsValidator();
+
+            List<string> ValidationMessages = new List<string>();
+
+            var validationResult = validator.Validate(request);
+
+            if (!validationResult.IsValid)
             {
-                return BadRequest(ModelState);
-            }
+                string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
 
-            var result = await _newsService.Update(request);
+                var result = new ApiErrorResult<bool>(errors);
 
-            result.Message = _localizer[result.Message].Value;
-
-            if (result.ResultObj != false)
-            {
                 return BadRequest(result);
             }
-            return Ok(result);
+
+            var resultToken = await _newsService.Update(request);
+
+            resultToken.Message = _localizer[resultToken.Message].Value;
+
+            if (resultToken.ResultObj != false)
+            {
+                return BadRequest(resultToken);
+            }
+            return Ok(resultToken);
         }
 
         [HttpPatch("link/{newsId}/{newLink}")]

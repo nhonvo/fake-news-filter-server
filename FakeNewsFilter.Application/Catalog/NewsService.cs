@@ -57,10 +57,7 @@ namespace FakeNewsFilter.Application.Catalog
         public async Task<ApiResult<List<NewsViewModel>>> GetAll(string languageId)
         {
             var language = await _context.Languages.SingleOrDefaultAsync(x => x.Id == languageId);
-            if (language == null)
-            {
-                return new ApiErrorResult<List<NewsViewModel>>("LanguageNotFound");
-            }
+            
             var list_news = await _context.News.Where(n => !string.IsNullOrEmpty(languageId) ? n.LanguageId == languageId : true)
                 .Select(x => new NewsViewModel()
                {
@@ -77,9 +74,16 @@ namespace FakeNewsFilter.Application.Catalog
                    Timestamp = x.Timestamp,      
                }).ToListAsync();
 
-            if(list_news == null)
+            
+
+            if (list_news == null)
             {
                 return new ApiErrorResult<List<NewsViewModel>>("GetAllNewsUnsuccessful");
+            }
+
+            if (language == null)
+            {
+                return new ApiSuccessResult<List<NewsViewModel>>("GetAllNewsSuccessful", list_news);
             }
 
             return new ApiSuccessResult<List<NewsViewModel>>("GetAllNewsSuccessful", list_news);
@@ -138,7 +142,7 @@ namespace FakeNewsFilter.Application.Catalog
                     NewsId = x.n.NewsId,
                     Name = x.n.Name,
                     LanguageId = x.n.LanguageId,
-                    Description = x.c.Description,
+                    Description = x.n.Description,
                     Content = x.n.Content,
                     Status = x.n.Status,
                     ThumbNews = _mapper.Map<MediaViewModel>(x.n.Media),

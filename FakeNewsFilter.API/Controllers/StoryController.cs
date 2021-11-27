@@ -1,8 +1,12 @@
 ﻿using FakeNewsFilter.Application.Catalog;
 using FakeNewsFilter.ViewModel.Catalog.Story;
+using FakeNewsFilter.ViewModel.Common;
+using FakeNewsFilter.ViewModel.Validator.Story;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace FakeNewsFilter.API.Controllers
@@ -25,19 +29,30 @@ namespace FakeNewsFilter.API.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromForm] StoryCreateRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            var result = await _IStoryService.Create(request);
+            CreateRequestStoryValidator validator = new CreateRequestStoryValidator();
 
-            result.Message = _localizer[result.Message].Value;
+            List<string> ValidationMessages = new List<string>();
 
-            if (result.IsSuccessed == false)
+            var validationResult = validator.Validate(request);
+
+            if (!validationResult.IsValid)
             {
+                string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
+
+                var result = new ApiErrorResult<bool>(errors);
+
                 return BadRequest(result);
             }
-            return Ok(result);
+
+            var resultToken = await _IStoryService.Create(request);
+
+            resultToken.Message = _localizer[resultToken.Message].Value;
+
+            if (resultToken.IsSuccessed == false)
+            {
+                return BadRequest(resultToken);
+            }
+            return Ok(resultToken);
 
         }
 
