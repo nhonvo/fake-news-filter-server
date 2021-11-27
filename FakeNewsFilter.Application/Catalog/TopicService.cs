@@ -49,10 +49,7 @@ namespace FakeNewsFilter.Application.Catalog
             try
             {
                 var language = await _context.Languages.SingleOrDefaultAsync(x => x.Id == languageId);
-                if(language == null)
-                {
-                    return new ApiErrorResult<List<TopicInfoVM>>("LanguageNotFound");
-                }
+                
                 var query = from t in _context.TopicNews where (string.IsNullOrEmpty(languageId) || t.LanguageId == languageId)
                             select new 
                             {
@@ -78,6 +75,11 @@ namespace FakeNewsFilter.Application.Catalog
                 if (topics == null)
                 {
                     return new ApiErrorResult<List<TopicInfoVM>>("GetTopicUnsuccessful");
+                }
+
+                if (language == null)
+                {
+                    return new ApiSuccessResult<List<TopicInfoVM>>("GetTopicSuccessful", topics);
                 }
                 return new ApiSuccessResult<List<TopicInfoVM>>("GetTopicSuccessful", topics);
             }
