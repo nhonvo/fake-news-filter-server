@@ -4,7 +4,6 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(RunConfiguration)' == 'FakeNewsFilter.WebApp' " />
   <ItemGroup>
     <Content Remove="wwwroot\" />
     <Content Remove="wwwroot\src\js\admin\" />

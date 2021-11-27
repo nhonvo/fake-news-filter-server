@@ -41,12 +41,16 @@
     <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
     <!-- END: Custom CSS-->
     <!--Error-->
-    @if(ViewBag.Error!=null)
+
+    
+
+
+    @if (ViewBag.Error != null)
     {
         <script>
                     setTimeout(function () {
-                                                                    toastr['error'](                                                                       
-                                                                        '@ViewBag.Error',
+                                                                    toastr['error'](
+                                                                        '/************/',
                                                                         'Error',
                                                                         {
                                                                             closeButton: true,
@@ -56,17 +60,13 @@
                                                                         }
                                                                     );
                                                                 }, 1000);
-        </script>
-    }
-   
-        
-   
-    @foreach (var error in ViewData.ModelState.SelectMany(x => x.Value.Errors))
-    {
-        <script>
+
+/* END EXTERNAL SOURCE */
+/* BEGIN EXTERNAL SOURCE */
+
                                                         setTimeout(function () {
                                                             toastr['warning'](
-                                                                '@error.ErrorMessage',
+                                                                '/*****************/',
                                                                 'Warning',
                                                                 {
                                                                     closeButton: true,
@@ -76,7 +76,67 @@
                                                                 }
                                                             );
                                                         }, 1000);
-        </script>
+
+/* END EXTERNAL SOURCE */
+/* BEGIN EXTERNAL SOURCE */
+
+/* END EXTERNAL SOURCE */
+/* BEGIN EXTERNAL SOURCE */
+
+/* END EXTERNAL SOURCE */
+/* BEGIN EXTERNAL SOURCE */
+
+/* END EXTERNAL SOURCE */
+/* BEGIN EXTERNAL SOURCE */
+
+/* END EXTERNAL SOURCE */
+/* BEGIN EXTERNAL SOURCE */
+
+/* END EXTERNAL SOURCE */
+/* BEGIN EXTERNAL SOURCE */
+
+/* END EXTERNAL SOURCE */
+/* BEGIN EXTERNAL SOURCE */
+
+/* END EXTERNAL SOURCE */
+/* BEGIN EXTERNAL SOURCE */
+$(window).on('load', function () {
+            if (feather) {
+                feather.replace({
+                    width: 14,
+                    height: 14
+                });
+            }
+        })
+/* END EXTERNAL SOURCE */
+/* BEGIN EXTERNAL SOURCE */
+
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: '{your-app-id}',
+                cookie: true,
+                xfbml: true,
+                version: '{api-version}'
+            });
+
+            FB.AppEvents.logPageView();
+
+        };
+
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) { return; }
+            js = d.createElement(s); js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'@ViewBag.Error</script>
+    }
+
+
+
+    @foreach (var error in ViewData.ModelState.SelectMany(x => x.Value.Errors))
+    {
+        <script>@error.ErrorMessage</script>
     }
 
 </head>
@@ -94,6 +154,9 @@
             <div class="content-header row">
             </div>
             <div class="content-body">
+
+                <div id="resultfacebook"></div>
+
                 <div class="auth-wrapper auth-v1 px-2">
                     <div class="auth-inner py-2">
                         <!-- Login v1 -->
@@ -168,11 +231,15 @@
                                 <div class="divider my-2">
                                     <div class="divider-text">or</div>
                                 </div>
-
+                                <fb:login-button scope="public_profile,email"
+                                                 onlogin="checkLoginState();">
+                                </fb:login-button>
                                 <div class="auth-footer-btn d-flex justify-content-center">
-                                    <a href="#" class="btn btn-facebook">
+                                    <a href="#" onclick="checkLoginState()" class="btn btn-facebook">
                                         <i data-feather="facebook"></i>
                                     </a>
+
+
                                     <a href="#" class="btn btn-twitter white">
                                         <i data-feather="twitter"></i>
                                     </a>
@@ -192,6 +259,8 @@
             </div>
         </div>
     </div>
+
+
     <!-- END: Content-->
     <!-- BEGIN: Vendor JS-->
     <script src="/app-assets/vendors/js/vendors.min.js"></script>
@@ -209,13 +278,31 @@
     <script src="/app-assets/vendors/js/extensions/toastr.min.js"></script>
     <!-- END: Page JS-->
 
-    <script>$(window).on('load', function () {
-            if (feather) {
-                feather.replace({
-                    width: 14,
-                    height: 14
+    <script>window.fbAsyncInit = function () {
+                    FB.init({
+                        appId: '263493625606585',
+                        cookie: true,
+                        xfbml: true,
+                        version: 'v5.0'
+                    });
+
+                    FB.AppEvents.logPageView();
+
+                };
+
+            (function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) { return; }
+                js = d.createElement(s); js.id = id;
+                js.src = "https://connect.facebook.net/en_US/sdk.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+
+            function checkLoginState() {
+                FB.getLoginStatus(function (response) {
+                    $("#resultfacebook").html("<code>" + JSON.stringify(response, null, 2) + "</code>");
                 });
-            }
-        })</script>
+            }</script>
+
 </body>
 </html>

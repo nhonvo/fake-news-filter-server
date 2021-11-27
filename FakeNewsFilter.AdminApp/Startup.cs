@@ -60,9 +60,7 @@ namespace FakeNewsFilter.WebApp
                     options.AccessDeniedPath = "/User/Forbidden/";
                 });
 
-            //Fluent Validation 
-            services.AddControllersWithViews().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestUserValidator>()); ;
-
+            
             //Session
             services.AddSession(options =>
             {
@@ -108,6 +106,8 @@ namespace FakeNewsFilter.WebApp
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseHttpsRedirection();
 
             app.UseEndpoints(endpoints =>
             {
