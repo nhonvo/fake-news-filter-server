@@ -129,6 +129,10 @@ namespace FakeNewsFilter.Application.Catalog
         {
             //get sourceId
             var sourcestory = await _context.Source.FirstOrDefaultAsync(t => t.SourceId == sourceid);
+            if(sourcestory == null)
+            {
+                return new ApiErrorResult<SourceViewModel>("SourceNotFound");
+            }
             SourceViewModel result = null;
             if (sourcestory != null)
             {
