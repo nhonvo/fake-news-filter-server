@@ -178,7 +178,7 @@ namespace FakeNewsFilter.API.Controllers
 
         [HttpPost("SignInFacebook")]
         [AllowAnonymous]
-        public async Task<IActionResult> SignInFacebook([FromBody]LoginFacebookRequest request)
+        public async Task<IActionResult> SignInFacebook([FromBody] LoginSocialRequest request)
         {
             var authReponse = await _userService.SignInFacebook(request.AccessToken);
 
@@ -193,5 +193,21 @@ namespace FakeNewsFilter.API.Controllers
 
         }
 
+        [HttpPost("SignInGoogle")]
+        [AllowAnonymous]
+        public async Task<IActionResult> SignInGoogle([FromBody] LoginSocialRequest request)
+        {
+            var authReponse = await _userService.SignInGoogle(request.AccessToken);
+
+            authReponse.Message = _localizer[authReponse.Message].Value;
+
+            if (string.IsNullOrEmpty(authReponse.ResultObj?.Token))
+            {
+                return BadRequest(authReponse);
+            }
+
+            return Ok(authReponse);
+
+        }
     }
 }

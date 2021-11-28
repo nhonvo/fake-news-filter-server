@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Http;
 using System.Net.Http.Headers;
 using System.IO;
 using FakeNewsFilter.Data.Enums;
+using static Google.Apis.Auth.GoogleJsonWebSignature;
 
 namespace FakeNewsFilter.Application.System
 {
@@ -40,6 +41,8 @@ namespace FakeNewsFilter.Application.System
         Task<ApiResult<bool>> RoleAssign(Guid id, RoleAssignRequest request);
 
         Task<ApiResult<TokenResult>> SignInFacebook(string accessToken);
+
+        Task<ApiResult<TokenResult>> SignInGoogle(string accessToken);
 
     }
 
@@ -74,7 +77,43 @@ namespace FakeNewsFilter.Application.System
             FileStorageService.USER_CONTENT_FOLDER_NAME= "images/avatars";
             _storageService = storageService;
         }
-              
+
+        //Tạo Token
+        private async Task<TokenResult> GenerateUserTokenAsync(User user, string avatar)
+        {
+
+            var roles = await _userManager.GetRolesAsync(user);
+
+            var claims = new[] {
+                new Claim(ClaimTypes.Uri, avatar ?? "default.png"),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.GivenName, user.Name),
+                new Claim(ClaimTypes.Role, roles==null ? "Subscriber" :  string.Join(";", roles)),
+                new Claim(ClaimTypes.Name, user.UserName),
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var expires = DateTime.UtcNow.AddMonths(1);
+
+            var token = new JwtSecurityToken(
+                _config["Tokens:Issuer"],
+                _config["Tokens:Issuer"],
+                claims,
+                expires: expires,
+                signingCredentials: creds);
+
+            return new TokenResult
+            {
+                Token = new JwtSecurityTokenHandler().WriteToken(token),
+                UserId = user.Id,
+                Email = user.Email,
+                Expires = expires,
+            };
+
+        }
+
         //Đăng nhập
         public async Task<ApiResult<TokenResult>> Authencate(LoginRequest request)
         {
@@ -91,31 +130,12 @@ namespace FakeNewsFilter.Application.System
                     return new ApiErrorResult<TokenResult>("LoginUnsuccessful");
                 }
 
-                var roles = await _userManager.GetRolesAsync(user);
-
+                
                 var avatar = _context.Media.Where(m => m.MediaId == user.AvatarId).Select(m => m.PathMedia).FirstOrDefault();
 
-                var claims = new[]
-                {
-                    new Claim(ClaimTypes.Uri, avatar ?? "default.png"),
-                    new Claim(ClaimTypes.Email,user.Email),
-                    new Claim(ClaimTypes.GivenName,user.Name),
-                    new Claim(ClaimTypes.Role, string.Join(";",roles)),
-                    new Claim(ClaimTypes.Name, request.UserName)
-                };
+                var tokenResult = await GenerateUserTokenAsync(user, avatar);
 
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
-                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-                var token = new JwtSecurityToken(_config["Tokens:Issuer"],
-                    _config["Tokens:Issuer"],
-                    claims,
-                    expires: DateTime.Now.AddHours(3),
-                    signingCredentials: creds);
-
-                var returnResult = new TokenResult{Token = new JwtSecurityTokenHandler().WriteToken(token), UserId = user.Id};
-
-                return new ApiSuccessResult<TokenResult>("LoginSuccessful", returnResult);
+                return new ApiSuccessResult<TokenResult>("LoginSuccessful", tokenResult);
             }
 
             catch (FakeNewsException e)
@@ -410,6 +430,7 @@ namespace FakeNewsFilter.Application.System
 
                 //Cắt Email thành UsernName
                 string userName = (userInfo.Email).Split('@')[0];
+
                 //Tạo FullName
                 string fullName = (userInfo.LastName + userInfo.FirstName).ToString();
 
@@ -421,64 +442,31 @@ namespace FakeNewsFilter.Application.System
                 {
                     var exist_user = await _userManager.FindByNameAsync(userName);
 
-                    var roles = await _userManager.GetRolesAsync(exist_user);
-
                     var avatar = _context.Media.Where(m => m.MediaId == exist_user.AvatarId).Select(m => m.PathMedia).FirstOrDefault();
 
-                    var claims = new[] {
-                        new Claim(ClaimTypes.Uri, avatar ?? "default.png"),
-                        new Claim(ClaimTypes.Email, exist_user.Email),
-                        new Claim(ClaimTypes.GivenName, exist_user.Name),
-                        new Claim(ClaimTypes.Role, string.Join(";", roles)),
-                        new Claim(ClaimTypes.Name, exist_user.UserName)
-                     };
+                    var tokenResult = await GenerateUserTokenAsync(exist_user, avatar);
 
-                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
-                    var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-                    var token = new JwtSecurityToken(_config["Tokens:Issuer"],
-                        _config["Tokens:Issuer"],
-                        claims,
-                        expires: DateTime.Now.AddHours(3),
-                        signingCredentials: creds);
-
-                    var returnResult = new TokenResult { Token = new JwtSecurityTokenHandler().WriteToken(token), UserId = exist_user.Id };
-
-                    return new ApiSuccessResult<TokenResult>("LoginFacebookSuccessful", returnResult);
+                    return new ApiSuccessResult<TokenResult>("LoginFacebookSuccessful", tokenResult);
+                    
                 }
                 else  //Chưa được liên kết với Facebook
                 {
                     var info = new ExternalLoginInfo(ClaimsPrincipal.Current, "Facebook", userInfo.Id, null);
 
                     //Kiểm tra tồn tại Email và Username
-                    var user = await _userManager.FindByNameAsync(userName);
+                    var exist_user = await _userManager.FindByNameAsync(userName);
 
-                    if (user != null)
+                    if (exist_user != null)
                     {
                         //Gán tài khoản Facebook vào tài khoản đã có sẵn
-                        var result = await _userManager.AddLoginAsync(user, info);
+                        var result = await _userManager.AddLoginAsync(exist_user, info);
                         if (result.Succeeded)
                         {
-                            var claims = new[]
-                            {
-                                new Claim(ClaimTypes.Uri, userInfo.Picture.Url ?? "default.png"),
-                                new Claim(ClaimTypes.Email,userInfo.Email),
-                                new Claim(ClaimTypes.GivenName,fullName),
-                                new Claim(ClaimTypes.Name, userName)
-                            };
+                            var avatar = _context.Media.Where(m => m.MediaId == exist_user.AvatarId).Select(m => m.PathMedia).FirstOrDefault();
 
-                            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
-                            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                            var tokenResult = await GenerateUserTokenAsync(exist_user, avatar);
 
-                            var token = new JwtSecurityToken(_config["Tokens:Issuer"],
-                                _config["Tokens:Issuer"],
-                                claims,
-                                expires: DateTime.Now.AddHours(3),
-                                signingCredentials: creds);
-
-                            var returnResult = new TokenResult { Token = new JwtSecurityTokenHandler().WriteToken(token), UserId = user.Id };
-
-                            return new ApiSuccessResult<TokenResult>("LinkedFacebookSuccessful", returnResult);
+                            return new ApiSuccessResult<TokenResult>("LinkedFacebookSuccessful", tokenResult);
                         }
                         else
                         {
@@ -506,28 +494,13 @@ namespace FakeNewsFilter.Application.System
                                 return new ApiErrorResult<TokenResult>("ErrorLinkedFacebook");
                             }
 
-                            var role = await _userManager.AddToRoleAsync(indentityuser, "Subscriber");
+                            var roles = await _userManager.AddToRoleAsync(indentityuser, "Subscriber");
 
-                            var claims = new[]
-                             {
-                                new Claim(ClaimTypes.Uri, userInfo.Picture.Url ?? "default.png"),
-                                new Claim(ClaimTypes.Email,userInfo.Email),
-                                new Claim(ClaimTypes.GivenName,fullName),
-                                new Claim(ClaimTypes.Name, userName)
-                            };
 
-                            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
-                            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                            var tokenResult = await GenerateUserTokenAsync(exist_user, null);
 
-                            var token = new JwtSecurityToken(_config["Tokens:Issuer"],
-                                _config["Tokens:Issuer"],
-                                claims,
-                                expires: DateTime.Now.AddHours(3),
-                                signingCredentials: creds);
+                            return new ApiSuccessResult<TokenResult>("LoginFacebookSuccessful", tokenResult);
 
-                            var returnResult = new TokenResult { Token = new JwtSecurityTokenHandler().WriteToken(token), UserId = indentityuser.Id };
-
-                            return new ApiSuccessResult<TokenResult>("LoginFacebookSuccessful", returnResult);
                         }
                         else
                         {
@@ -543,6 +516,111 @@ namespace FakeNewsFilter.Application.System
             {
                 return new ApiErrorResult<TokenResult>("Login Unsuccessful" + e.Message);
             }
+        }
+
+        public async Task<ApiResult<TokenResult>> SignInGoogle(string accessToken)
+        {
+            try
+            {
+                Payload payload = await ValidateAsync(accessToken);
+
+
+                if (payload == null)
+                {
+                    return new ApiErrorResult<TokenResult>("InvalidGoogleToken");
+                }
+
+               
+                //Kiểm tra user đã liên kết với Google chưa
+                var checkLinked = await _signInManager.ExternalLoginSignInAsync("Google", payload.Subject, false);
+
+                //Cắt Email thành UsernName
+                string userName = (payload.Email).Split('@')[0];
+
+                //Tạo FullName
+                string fullName = (payload.FamilyName + payload.GivenName).ToString();
+
+                //Nếu đã có liên kết trước đó thì tiến hành đăng nhập luôn
+                if (checkLinked.Succeeded)
+                {
+                    var exist_user = await _userManager.FindByNameAsync(userName);
+
+                    var avatar = _context.Media.Where(m => m.MediaId == exist_user.AvatarId).Select(m => m.PathMedia).FirstOrDefault();
+
+                    var tokenResult = await GenerateUserTokenAsync(exist_user, avatar);
+
+                    return new ApiSuccessResult<TokenResult>("LoginGoogleSuccessful", tokenResult);
+
+                }
+                else  //Chưa được liên kết với Facebook
+                {
+                    var info = new ExternalLoginInfo(ClaimsPrincipal.Current, "Google", payload.Subject, null);
+
+                    //Kiểm tra tồn tại Email và Username
+                    var exist_user = await _userManager.FindByNameAsync(userName);
+
+                    if (exist_user != null)
+                    {
+                        //Gán tài khoản Facebook vào tài khoản đã có sẵn
+                        var result = await _userManager.AddLoginAsync(exist_user, info);
+
+                        if (result.Succeeded)
+                        {
+                            var avatar = _context.Media.Where(m => m.MediaId == exist_user.AvatarId).Select(m => m.PathMedia).FirstOrDefault();
+
+                            var tokenResult = await GenerateUserTokenAsync(exist_user, avatar);
+
+                            return new ApiSuccessResult<TokenResult>("LinkedGoogleSuccessful", tokenResult);
+                        }
+                        else
+                        {
+                            return new ApiErrorResult<TokenResult>("ErrorLinkedGoogle");
+                        }
+                    }
+                    else //Tài khoản đăng nhập lần đầu
+                    {
+                        var indentityuser = new User
+                        {
+                            Id = Guid.NewGuid(),
+                            Email = payload.Email,
+                            UserName = userName,
+                            Name = fullName
+                        };
+
+                        var result = await _userManager.CreateAsync(indentityuser);
+
+                        if (result.Succeeded)
+                        {
+                            result = await _userManager.AddLoginAsync(indentityuser, info);
+
+                            if (!result.Succeeded)
+                            {
+                                return new ApiErrorResult<TokenResult>("ErrorLinkedGoogle");
+                            }
+
+                            var roles = await _userManager.AddToRoleAsync(indentityuser, "Subscriber");
+
+
+                            var tokenResult = await GenerateUserTokenAsync(exist_user, null);
+
+                            return new ApiSuccessResult<TokenResult>("LoginGoogleSuccessful", tokenResult);
+
+                        }
+                        else
+                        {
+                            List<IdentityError> errorList = result.Errors.ToList();
+                            var errors = string.Join(", ", errorList.Select(e => e.Description));
+                            return new ApiErrorResult<TokenResult>("RegisterGoogleUnsuccessful " + errors);
+                        }
+
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                return new ApiErrorResult<TokenResult>("Login Unsuccessful" + e.Message);
+            }
+
         }
     }
 }

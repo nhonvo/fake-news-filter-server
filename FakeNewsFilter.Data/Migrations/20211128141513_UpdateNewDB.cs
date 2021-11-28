@@ -99,14 +99,14 @@ namespace FakeNewsFilter.Data.Migrations
                 name: "UserLogin",
                 columns: table => new
                 {
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ProviderKey = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserLogin", x => x.UserId);
+                    table.PrimaryKey("PK_UserLogin", x => new { x.LoginProvider, x.ProviderKey, x.UserId });
                 });
 
             migrationBuilder.CreateTable(
@@ -249,7 +249,7 @@ namespace FakeNewsFilter.Data.Migrations
                     StoryId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Thumbstory = table.Column<int>(type: "int", nullable: true),
-                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2021, 11, 18, 20, 40, 14, 997, DateTimeKind.Local).AddTicks(5300)),
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2021, 11, 28, 21, 15, 12, 766, DateTimeKind.Local).AddTicks(1150)),
                     Link = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SourceId = table.Column<int>(type: "int", nullable: false),
                     LanguageId = table.Column<string>(type: "varchar(5)", unicode: false, maxLength: 5, nullable: false)
@@ -283,7 +283,7 @@ namespace FakeNewsFilter.Data.Migrations
                 {
                     NewsId = table.Column<int>(type: "int", nullable: false),
                     TopicId = table.Column<int>(type: "int", nullable: false),
-                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2021, 11, 18, 20, 40, 14, 945, DateTimeKind.Local).AddTicks(1660))
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2021, 11, 28, 21, 15, 12, 714, DateTimeKind.Local).AddTicks(8420))
                 },
                 constraints: table =>
                 {
@@ -357,7 +357,7 @@ namespace FakeNewsFilter.Data.Migrations
                     NewsId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     isReal = table.Column<bool>(type: "bit", nullable: false),
-                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2021, 11, 18, 20, 40, 14, 991, DateTimeKind.Local).AddTicks(8570))
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2021, 11, 28, 21, 15, 12, 761, DateTimeKind.Local).AddTicks(2660))
                 },
                 constraints: table =>
                 {
@@ -395,8 +395,8 @@ namespace FakeNewsFilter.Data.Migrations
                 columns: new[] { "MediaId", "Caption", "DateCreated", "Duration", "FileSize", "PathMedia", "SortOrder", "Type" },
                 values: new object[,]
                 {
-                    { 1, null, new DateTime(2021, 11, 18, 20, 40, 15, 45, DateTimeKind.Local).AddTicks(8710), 0, 0L, "covid.jpeg", 0, 1 },
-                    { 2, null, new DateTime(2021, 11, 18, 20, 40, 15, 46, DateTimeKind.Local).AddTicks(430), 0, 0L, "taliban.jpeg", 0, 1 }
+                    { 1, null, new DateTime(2021, 11, 28, 21, 15, 12, 812, DateTimeKind.Local).AddTicks(5590), 0, 0L, "covid.jpeg", 0, 1 },
+                    { 2, null, new DateTime(2021, 11, 28, 21, 15, 12, 812, DateTimeKind.Local).AddTicks(7400), 0, 0L, "taliban.jpeg", 0, 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -404,23 +404,23 @@ namespace FakeNewsFilter.Data.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { new Guid("a3314be5-4c77-4fb6-82ad-302014682a73"), "559c9658-ed7d-4eec-8047-4a5980054e6c", "Admin", "Admin" },
-                    { new Guid("b4314be5-4c77-4fb6-82ad-302014682b13"), "a2e9cfd8-f9f6-495b-84e1-dc12ff153139", "Subscriber", "Subscriber" }
+                    { new Guid("a3314be5-4c77-4fb6-82ad-302014682a73"), "949aa743-3ed4-4a06-81b5-a8e0b1745d79", "Admin", "Admin" },
+                    { new Guid("b4314be5-4c77-4fb6-82ad-302014682b13"), "1700f892-945b-44bc-8d8d-9cf2f17d54cd", "Subscriber", "Subscriber" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AccessFailedCount", "AvatarId", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { new Guid("69db714f-9576-45ba-b5b7-f00649be00de"), 0, null, "31960a04-15c4-46d9-9881-766049ab60f9", "bp.khuyen@hutech.edu.vn", true, false, null, "Bui Phu Khuyen", "BP.KHUYEN@HUTECH.EDU.VN", "khuyenpb", "AQAAAAEAACcQAAAAEBADc0zIS16mBakRt/IFZnpm5/aGaHekfH52Z8nKJSOleAnHCMpEjdLKoUa+h25WgQ==", null, false, "", false, "khuyenpb" });
+                values: new object[] { new Guid("69db714f-9576-45ba-b5b7-f00649be00de"), 0, null, "75e006cd-4bed-40ba-963d-d17d22a16193", "bp.khuyen@hutech.edu.vn", true, false, null, "Bui Phu Khuyen", "BP.KHUYEN@HUTECH.EDU.VN", "khuyenpb", "AQAAAAEAACcQAAAAEJuygWllg9qQe1pwxWQMxFmhad57OtZtTSJ3WuoG0LSjvTOibZU/KdQO6ufjLEKTSA==", null, false, "", false, "khuyenpb" });
 
             migrationBuilder.InsertData(
                 table: "News",
                 columns: new[] { "NewsId", "Content", "DatePublished", "Description", "LanguageId", "Name", "OfficialRating", "Publisher", "ThumbNews", "Timestamp" },
                 values: new object[,]
                 {
-                    { 1, "Test", new DateTime(2021, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "Taliban fighters poured into the Afghan capital on Sunday amid scenes of panic and chaos, bringing a swift and shocking close to the Afghan government and the 20-year American era in the country.", "en", "Kabul’s Sudden Fall to Taliban Ends U.S. Era in Afghanistan", null, "New York Times", null, new DateTime(2021, 11, 18, 20, 40, 15, 46, DateTimeKind.Local).AddTicks(7080) },
-                    { 2, "Test", new DateTime(2021, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "The masking orders in Dallas and Bexar counties were issued after a lower court ruled last week in favor of local officials.", "en", "Texas high court blocks mask mandates in two of state's largest counties", null, "NBC News", null, new DateTime(2021, 11, 18, 20, 40, 15, 47, DateTimeKind.Local).AddTicks(20) },
-                    { 3, "Test", new DateTime(2021, 4, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "A lagging vaccination campaign and the spread of the highly contagious Delta variant are driving a surge in Covid-19 hospitalizations in the United States..", "en", "Hospitalizations of Americans under 50 have reached new pandemic highs", null, null, null, new DateTime(2021, 11, 18, 20, 40, 15, 47, DateTimeKind.Local).AddTicks(530) }
+                    { 1, "Test", new DateTime(2021, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "Taliban fighters poured into the Afghan capital on Sunday amid scenes of panic and chaos, bringing a swift and shocking close to the Afghan government and the 20-year American era in the country.", "en", "Kabul’s Sudden Fall to Taliban Ends U.S. Era in Afghanistan", null, "New York Times", null, new DateTime(2021, 11, 28, 21, 15, 12, 813, DateTimeKind.Local).AddTicks(2630) },
+                    { 2, "Test", new DateTime(2021, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "The masking orders in Dallas and Bexar counties were issued after a lower court ruled last week in favor of local officials.", "en", "Texas high court blocks mask mandates in two of state's largest counties", null, "NBC News", null, new DateTime(2021, 11, 28, 21, 15, 12, 813, DateTimeKind.Local).AddTicks(5490) },
+                    { 3, "Test", new DateTime(2021, 4, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "A lagging vaccination campaign and the spread of the highly contagious Delta variant are driving a surge in Covid-19 hospitalizations in the United States..", "en", "Hospitalizations of Americans under 50 have reached new pandemic highs", null, null, null, new DateTime(2021, 11, 28, 21, 15, 12, 813, DateTimeKind.Local).AddTicks(5970) }
                 });
 
             migrationBuilder.InsertData(
