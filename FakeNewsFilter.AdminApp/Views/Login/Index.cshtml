@@ -18,6 +18,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="/app-assets/images/ico/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
 
+
     <!-- BEGIN: Vendor CSS-->
     <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/vendors.min.css">
     <!-- END: Vendor CSS-->
@@ -41,8 +42,10 @@
     <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
     <!-- END: Custom CSS-->
     <!--Error-->
+    <meta name="google-signin-client_id" content="801182969519-0l8hskdqu11malnqdvtp3663h8ro6os7.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
 
-    
+
 
 
     @if (ViewBag.Error != null)
@@ -231,24 +234,12 @@ $(window).on('load', function () {
                                 <div class="divider my-2">
                                     <div class="divider-text">or</div>
                                 </div>
-                                <fb:login-button scope="public_profile,email"
-                                                 onlogin="checkLoginState();">
-                                </fb:login-button>
+
                                 <div class="auth-footer-btn d-flex justify-content-center">
-                                    <a href="#" onclick="checkLoginState()" class="btn btn-facebook">
-                                        <i data-feather="facebook"></i>
-                                    </a>
-
-
-                                    <a href="#" class="btn btn-twitter white">
-                                        <i data-feather="twitter"></i>
-                                    </a>
-                                    <a href="#" class="btn btn-google">
-                                        <i data-feather="mail"></i>
-                                    </a>
-                                    <a href="#" class="btn btn-github">
-                                        <i data-feather="github"></i>
-                                    </a>
+                                    <fb:login-button scope="public_profile,email"
+                                                     onlogin="checkLoginState();">
+                                    </fb:login-button>
+                                    <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
                                 </div>
                             </div>
                         </div>
@@ -277,6 +268,14 @@ $(window).on('load', function () {
     <script src="/app-assets/js/scripts/pages/page-auth-login.js"></script>
     <script src="/app-assets/vendors/js/extensions/toastr.min.js"></script>
     <!-- END: Page JS-->
+
+    <script>
+        function onSignIn(googleUser) {
+             var id_token = googleUser.getAuthResponse().id_token;
+            console.log("ID Token: " + id_token);
+           
+        }
+    </script>
 
     <script>window.fbAsyncInit = function () {
                     FB.init({

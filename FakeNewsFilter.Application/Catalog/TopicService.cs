@@ -244,7 +244,8 @@ namespace FakeNewsFilter.Application.Catalog
                     Description = topic.Description,
                     Label = topic.Label,
                     Status = topic.Status,
-                    LanguageId = topic.LanguageId
+                    LanguageId = topic.LanguageId,
+                    RealTime = DateTime.Now
                 };
 
                 return new ApiSuccessResult<TopicInfoVM>("GetInfoTopicSuccessful", topicvm);
