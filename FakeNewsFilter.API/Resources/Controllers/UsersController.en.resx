@@ -129,20 +129,38 @@
   <data name="EmailIsAvailable" xml:space="preserve">
     <value>Email is available!</value>
   </data>
+  <data name="ErrorLinkedFacebook" xml:space="preserve">
+    <value>Error linked facebook!</value>
+  </data>
   <data name="ErrorSystem" xml:space="preserve">
     <value>Error system!</value>
   </data>
   <data name="GetInfoUserSuccessful" xml:space="preserve">
     <value>Get info user successful!</value>
   </data>
+  <data name="InvalidFacebookToken" xml:space="preserve">
+    <value>Invalid facebook token!</value>
+  </data>
+  <data name="LinkedFacebookSuccessful" xml:space="preserve">
+    <value>Linked facebook successful!</value>
+  </data>
   <data name="LoadingListUsersSuccessful" xml:space="preserve">
     <value>Loading list users successful!</value>
+  </data>
+  <data name="Login Unsuccessful" xml:space="preserve">
+    <value>Login unsuccessful!</value>
+  </data>
+  <data name="LoginFacebookSuccessful" xml:space="preserve">
+    <value>Login facebook successful!</value>
   </data>
   <data name="LoginSuccessful" xml:space="preserve">
     <value>Login successful!</value>
   </data>
   <data name="LoginUnsuccessful" xml:space="preserve">
     <value>Login Unsuccessful. Please Check Username or Password!</value>
+  </data>
+  <data name="RegisterFacebookUnsuccessful" xml:space="preserve">
+    <value>Register facebook unsuccessful!</value>
   </data>
   <data name="RegisterSuccessful" xml:space="preserve">
     <value>Register successful!</value>

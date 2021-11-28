@@ -153,6 +153,9 @@
   <data name="SourceNameFound" xml:space="preserve">
     <value>Source name exist!</value>
   </data>
+  <data name="SourceNotFound" xml:space="preserve">
+    <value>Source not found!</value>
+  </data>
   <data name="SourceStoryUpdateSuccessful" xml:space="preserve">
     <value>Source story update successful!</value>
   </data>

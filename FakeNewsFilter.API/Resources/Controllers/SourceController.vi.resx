@@ -153,6 +153,9 @@
   <data name="SourceNameFound" xml:space="preserve">
     <value>Tên nguồn đã tồn tại!</value>
   </data>
+  <data name="SourceNotFound" xml:space="preserve">
+    <value>Nguồn không tồn tại!</value>
+  </data>
   <data name="SourceStoryUpdateSuccessful" xml:space="preserve">
     <value>Cập nhật nguồn tin thành công!</value>
   </data>

@@ -129,20 +129,38 @@
   <data name="EmailIsAvailable" xml:space="preserve">
     <value>Địa chỉ email đã tồn tại!</value>
   </data>
+  <data name="ErrorLinkedFacebook" xml:space="preserve">
+    <value>Có lỗi xảy ra khi liên kết tài khoản!</value>
+  </data>
   <data name="ErrorSystem" xml:space="preserve">
     <value>Lỗi hệ thống!</value>
   </data>
   <data name="GetInfoUserSuccessful" xml:space="preserve">
     <value>Lấy thông tin tài khoản thành công!</value>
   </data>
+  <data name="InvalidFacebookToken" xml:space="preserve">
+    <value>Tài khoản facebook không hợp lệ!</value>
+  </data>
+  <data name="LinkedFacebookSuccessful" xml:space="preserve">
+    <value>Liên kết tài khoản facebook thành công!</value>
+  </data>
   <data name="LoadingListUsersSuccessful" xml:space="preserve">
     <value>lấy danh sách tài khoản thành công!</value>
+  </data>
+  <data name="Login Unsuccessful" xml:space="preserve">
+    <value>Có lỗi xảy ra khi đăng nhập!</value>
+  </data>
+  <data name="LoginFacebookSuccessful" xml:space="preserve">
+    <value>Đăng nhập tài khoản bằng facebook thành công!</value>
   </data>
   <data name="LoginSuccessful" xml:space="preserve">
     <value>Đăng nhập thành công!</value>
   </data>
   <data name="LoginUnsuccessful" xml:space="preserve">
     <value>Đăng nhập không thành công, vui lòng kiểm tra thông tin tài khoản và mật khẩu!</value>
+  </data>
+  <data name="RegisterFacebookUnsuccessful" xml:space="preserve">
+    <value>Có lỗi xả ra khi đăng ký bằng tài khoản facebook!</value>
   </data>
   <data name="RegisterSuccessful" xml:space="preserve">
     <value>Tạo tài khoản thành công!</value>
