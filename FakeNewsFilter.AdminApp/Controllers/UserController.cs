@@ -105,7 +105,7 @@ namespace FakeNewsFilter.WebApp.Controllers
                 return View(model);
             }
 
-            return View("Error", "Index");
+            return View("Index");
             
         }
 
@@ -123,14 +123,17 @@ namespace FakeNewsFilter.WebApp.Controllers
             }
 
             ModelState.AddModelError("", result.Message);
-            return View(request);
+            return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Delete(String UserId)
         {
             if (!ModelState.IsValid)
-                return View();
+            {
+                ViewBag.ModelState = ModelState;
+                return RedirectToAction("Index");
+            }
 
             var result = await _userApi.Delete(UserId);
             if (result.IsSuccessed)
@@ -147,7 +150,7 @@ namespace FakeNewsFilter.WebApp.Controllers
         public async Task<IActionResult> RoleAssign(Guid id)
         {
             var roleAssignRequest = await GetRoleAssignRequest(id);
-            return View(roleAssignRequest);
+            return View("EditRole", roleAssignRequest);
         }
 
 
@@ -156,7 +159,10 @@ namespace FakeNewsFilter.WebApp.Controllers
         public async Task<IActionResult> RoleAssign(RoleAssignRequest request)
         {
             if (!ModelState.IsValid)
-                return View();
+            {
+                ViewBag.ModelState = ModelState;
+                return RedirectToAction("Index");
+            }
 
             var result = await _userApi.RoleAssign(request.Id, request);
 
@@ -170,7 +176,7 @@ namespace FakeNewsFilter.WebApp.Controllers
 
             var roleAssignRequest = await GetRoleAssignRequest(request.Id);
 
-            return View(roleAssignRequest);
+            return View("EditRole", roleAssignRequest);
         }
 
         private async Task<RoleAssignRequest> GetRoleAssignRequest(Guid id)

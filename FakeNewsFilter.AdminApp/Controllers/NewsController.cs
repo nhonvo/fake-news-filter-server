@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using FakeNewsFilter.AdminApp.Services;
 using FakeNewsFilter.ViewModel.Catalog.NewsManage;
@@ -117,7 +118,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
                 return View(result.ResultObj);
             }
 
-            return View("Error", "Index");
+            return View("Index");
         }
 
         [HttpPost]
@@ -136,14 +137,17 @@ namespace FakeNewsFilter.AdminApp.Controllers
 
             ModelState.AddModelError("", result.Message);
 
-            return View(request);
+            return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Delete(int newsId)
         {
             if (!ModelState.IsValid)
-                return View();
+            {
+                ViewBag.ModelState = ModelState;
+                return RedirectToAction("Index");
+            }
 
             var result = await _newsApi.Delete(newsId);
 

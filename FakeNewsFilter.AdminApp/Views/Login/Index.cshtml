@@ -139,7 +139,12 @@ $(window).on('load', function () {
 
     @foreach (var error in ViewData.ModelState.SelectMany(x => x.Value.Errors))
     {
-        <script>@error.ErrorMessage</script>
+        <script>
+        @if (error != null)
+        {
+            @error.ErrorMessage
+        }
+        </script>
     }
 
 </head>
