@@ -109,7 +109,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
                 return View(result.ResultObj);
             }
 
-            return View("Error", "Index");
+            return View("Index");
         }
 
         [HttpPost]
@@ -128,14 +128,17 @@ namespace FakeNewsFilter.AdminApp.Controllers
 
             ModelState.AddModelError("", result.Message);
 
-            return View(request);
+            return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Delete(int topicId)
         {
             if (!ModelState.IsValid)
-                return View();
+            {
+                ViewBag.ModelState = ModelState;
+                return RedirectToAction("Index");
+            }
 
             var result = await _topicApi.Delete(topicId);
             if (result.IsSuccessed)
