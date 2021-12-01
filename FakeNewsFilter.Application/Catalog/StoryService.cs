@@ -36,7 +36,7 @@ namespace FakeNewsFilter.Application.Catalog
             _context = context;
             _mapper = mapper;
             _storageService = storageService;
-            FileStorageService.USER_CONTENT_FOLDER_NAME = "images/storys";
+            FileStorageService.USER_CONTENT_FOLDER_NAME = "images/stories";
         }
 
         public async Task<ApiResult<int>> Create(StoryCreateRequest request)

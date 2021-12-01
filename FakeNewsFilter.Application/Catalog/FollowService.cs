@@ -5,6 +5,7 @@ using FakeNewsFilter.ViewModel.Common;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,6 +13,7 @@ namespace FakeNewsFilter.Application.Catalog
 {
     public interface IFollowService
     {
+        Task<ApiResult<List<int>>> GetFollowTopicByUser (Guid userId);
         Task<ApiResult<bool>> Create(FollowCreateRequest request);
         Task<ApiResult<bool>> Update(FollowUpdateRequest request);
     }
@@ -31,8 +33,8 @@ namespace FakeNewsFilter.Application.Catalog
         {
             try
             {
-                var User = await _userManager.FindByIdAsync(request.UserId.ToString());
-                    if (User == null)
+                var user = await _userManager.FindByIdAsync(request.UserId.ToString());
+                    if (user == null)
                     {
                             return new ApiErrorResult<bool>("UserIsNotExist");
                     }
@@ -114,6 +116,25 @@ namespace FakeNewsFilter.Application.Catalog
             }
 
             return new ApiErrorResult<bool>("FollowUpdateUnsuccessful");
+        }
+        //Get Follow Topic By User
+        public async Task<ApiResult<List<int>>> GetFollowTopicByUser(Guid userId)
+        {
+            //Check user exist
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user == null)
+            {
+                return new ApiErrorResult<List<int>>("AccountDoesNotExist");
+            }
+
+            //get topicid form table follow
+            var listFollowTopic =  _context.Follow.Where(x => x.UserId == userId).Select(x => x.TopicId).ToList();
+
+            if (listFollowTopic == null)
+            {
+                return new ApiErrorResult<List<int>>("GetListFollowUnsuccessful");
+            }
+            return new ApiSuccessResult<List<int>>("GetListFollowSuccessful", listFollowTopic);
         }
 
     }

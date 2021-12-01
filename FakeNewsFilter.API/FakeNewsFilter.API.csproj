@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'FakeNewsFilter' " />
+
+  <ItemGroup>
+    <Compile Remove="wwwroot\images\storys\**" />
+    <Content Remove="wwwroot\images\storys\**" />
+    <EmbeddedResource Remove="wwwroot\images\storys\**" />
+    <None Remove="wwwroot\images\storys\**" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.AzureAD.UI" Version="3.1.15" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.10" />
@@ -56,7 +63,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\images\avatars\" />
+    <Folder Include="wwwroot\images\languages\" />
+    <Folder Include="wwwroot\images\stories\" />
     <Folder Include="wwwroot\images\news\" />
-    <Folder Include="wwwroot\images\storys\" />
   </ItemGroup>
 </Project>

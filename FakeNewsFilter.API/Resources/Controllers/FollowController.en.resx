@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AccountDoesNotExist" xml:space="preserve">
+    <value>Account does not exist!</value>
+  </data>
   <data name="CannontFindATopicWithId" xml:space="preserve">
     <value>Cannont find a topic with this id!</value>
   </data>
@@ -131,6 +134,12 @@
   </data>
   <data name="FollowUpdateUnsuccessful" xml:space="preserve">
     <value>Follow update unsuccessful!</value>
+  </data>
+  <data name="GetListFollowSuccessful" xml:space="preserve">
+    <value>Get list follow topic successful!</value>
+  </data>
+  <data name="GetListFollowUnsuccessful" xml:space="preserve">
+    <value>Get list follow topic unsuccessful!</value>
   </data>
   <data name="UserIsNotExist" xml:space="preserve">
     <value>User is not exist!</value>

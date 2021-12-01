@@ -119,7 +119,7 @@ namespace FakeNewsFilter.Application.System
         {
             try
             {
-                var user = await _userManager.FindByNameAsync(request.UserName);
+                var user = await _userManager.FindByNameAsync(request.UserName) ?? await _userManager.FindByEmailAsync(request.UserName);
 
                 if (user == null) return new ApiErrorResult<TokenResult>("AccountDoesNotExist");
 

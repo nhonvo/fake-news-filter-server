@@ -3,6 +3,7 @@ using FakeNewsFilter.ViewModel.Catalog.Follows;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using System;
 using System.Threading.Tasks;
 
 namespace FakeNewsFilter.API.Controllers
@@ -57,6 +58,16 @@ namespace FakeNewsFilter.API.Controllers
                 return BadRequest(result);
             }
             return Ok(result);
+        }
+
+        [HttpGet("{userId}")]
+        public async Task<IActionResult> GetFollowTopicByUser(Guid userId)
+        {
+            var user = await _IFollowService.GetFollowTopicByUser(userId);
+
+            user.Message = _localizer[user.Message].Value;
+
+            return Ok(user);
         }
     }
 }

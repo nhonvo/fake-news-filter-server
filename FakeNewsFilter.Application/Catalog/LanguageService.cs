@@ -29,6 +29,7 @@ namespace FakeNewsFilter.Application.Catalog
                 {
                     Id = x.Id,
                     Name = x.Name,
+                    Flag = x.Flag,
                     IsDefault = x.IsDefault
                 }).ToListAsync();
 
