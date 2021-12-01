@@ -1,4 +1,5 @@
-﻿using FakeNewsFilter.Application.Catalog;
+﻿using System;
+using FakeNewsFilter.Application.Catalog;
 using FakeNewsFilter.ViewModel.Catalog.NewsManage;
 using FakeNewsFilter.ViewModel.Common;
 using FakeNewsFilter.ViewModel.Validator.News;
@@ -17,10 +18,12 @@ namespace FakeNewsFilter.API.Controllers
     {
         private readonly INewsService _newsService;
         private readonly IStringLocalizer<NewsController> _localizer;
+        private  readonly IFollowService _followService;
 
-        public NewsController(INewsService newsService, IStringLocalizer<NewsController> localizer)
+        public NewsController(INewsService newsService, IFollowService followService, IStringLocalizer<NewsController> localizer)
         {
             _newsService = newsService;
+            _followService = followService;
             _localizer = localizer;
         }
 
@@ -111,6 +114,24 @@ namespace FakeNewsFilter.API.Controllers
             newsintopics.Message = _localizer[newsintopics.Message].Value;
 
             return Ok(newsintopics);
+        }
+        
+        [HttpGet("FollowedTopic")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetNewsByFollowedTopic(Guid userId)
+        {
+            var topics = await _followService.GetFollowTopicByUser(userId);
+            
+            if (!topics.IsSuccessed)
+            {
+                return NotFound(topics);
+            }
+            
+            var newsList = await _newsService.GetNewsByFollowedTopic(topics.ResultObj);
+
+            newsList.Message = _localizer[newsList.Message].Value;
+
+            return Ok(newsList);
         }
 
         [HttpPut]

@@ -23,6 +23,8 @@ namespace FakeNewsFilter.Application.Catalog
         Task<ApiResult<List<NewsViewModel>>> GetAll(string languageId);
 
         Task<ApiResult<List<NewsViewModel>>> GetNewsInTopic(int topicId);
+        
+        Task<ApiResult<List<NewsViewModel>>> GetNewsByFollowedTopic(List<int> topicList);
 
         Task<ApiResult<int>> Create(NewsCreateRequest request);
 
@@ -123,6 +125,31 @@ namespace FakeNewsFilter.Application.Catalog
             {
                 return new ApiErrorResult<NewsViewModel>("NewsIsNotFound");
             }
+        }
+        public async Task<ApiResult<List<NewsViewModel>>> GetNewsByFollowedTopic(List<int> topicList)
+        {
+            var newsList = await _context.News.Where(n => topicList.Contains(n.NewsInTopics.FirstOrDefault().TopicId))
+                .Select(x => new NewsViewModel()
+                {
+                    NewsId = x.NewsId,
+                    Name = x.Name,
+                    TopicInfo = x.NewsInTopics.Select(o => new TopicInfo { TopicId = o.TopicId, TopicName = o.TopicNews.Tag}).ToList(),
+                    Description = x.Description,
+                    Content = x.Content,
+                    OfficialRating = x.OfficialRating,
+                    Publisher = x.Publisher,
+                    Status = x.Status,
+                    ThumbNews = _mapper.Map<MediaViewModel>(x.Media),
+                    LanguageId = x.LanguageId,
+                    Timestamp = x.Timestamp,
+                }).ToListAsync();
+
+            if (newsList == null)
+            {
+                return new ApiErrorResult<List<NewsViewModel>>("GetNewsByFollowedTopicUnsuccessful");
+            }
+
+            return new ApiSuccessResult<List<NewsViewModel>>("GetNewsByFollowedTopicSuccessful", newsList);
         }
 
 
