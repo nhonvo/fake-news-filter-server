@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AccountDoesNotExist" xml:space="preserve">
+    <value>Tài khoản không tồn tại!</value>
+  </data>
   <data name="CannontFindATopicWithId" xml:space="preserve">
     <value>Có lỗi khi tìm chủ dề theo mã!</value>
   </data>
@@ -131,6 +134,12 @@
   </data>
   <data name="FollowUpdateUnsuccessful" xml:space="preserve">
     <value>Có lỗi khi cập nhật theo dõi!</value>
+  </data>
+  <data name="GetListFollowSuccessful" xml:space="preserve">
+    <value>Lấy danh sách theo dõi chủ đề thành công!</value>
+  </data>
+  <data name="GetListFollowUnsuccessful" xml:space="preserve">
+    <value>Có lỗi khi lấy danh sách theo dõi chủ đề!</value>
   </data>
   <data name="UserIsNotExist" xml:space="preserve">
     <value>Tài khoản không tồn tại!</value>

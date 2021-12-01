@@ -17,7 +17,7 @@ namespace FakeNewsFilter.Data.Configurations
 
             builder.Property(x => x.Name).IsRequired().HasMaxLength(150);
 
-            builder.Property(x => x.Description).IsRequired().HasMaxLength(250);
+            builder.Property(x => x.Description).IsRequired();
 
             builder.Property(x => x.Content).IsRequired();
 
