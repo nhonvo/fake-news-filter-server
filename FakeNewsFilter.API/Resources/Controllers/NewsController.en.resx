@@ -174,4 +174,10 @@
   <data name="UpdateNewsUnsuccessful" xml:space="preserve">
     <value>Update news unsuccessful! Try again!</value>
   </data>
+  <data name="GetNewsByFollowedTopicSuccessful" xml:space="preserve">
+    <value>Get all news by followed topic successful!</value>
+  </data>
+  <data name="GetNewsByFollowedTopicUnsuccessful" xml:space="preserve">
+    <value>Get all news by followed topic unsuccessful!</value>
+  </data>
 </root>

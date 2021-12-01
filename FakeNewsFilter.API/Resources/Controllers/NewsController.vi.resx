@@ -174,4 +174,10 @@
   <data name="UpdateNewsUnsuccessful" xml:space="preserve">
     <value>Có lỗi khi cập nhật tin tức! Vui lòng thử lại!</value>
   </data>
+  <data name="GetNewsByFollowedTopicSuccessful" xml:space="preserve">
+    <value>Lấy tất cả các tin tức theo chử đề đã theo dõi thành công!</value>
+  </data>
+  <data name="GetNewsByFollowedTopicUnsuccessful" xml:space="preserve">
+    <value>Có lỗi khi lấy tất cả các tin tức theo chử đề đã theo dõi thành công!</value>
+  </data>
 </root>
