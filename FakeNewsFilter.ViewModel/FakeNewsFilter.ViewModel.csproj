@@ -30,8 +30,6 @@
   <ItemGroup>
     <Folder Include="Catalog\TopicNews\" />
     <Folder Include="Catalog\Media\" />
-    <Folder Include="System\" />
-    <Folder Include="System\Users\" />
     <Folder Include="System\Roles\" />
     <Folder Include="Catalog\Vote\" />
     <Folder Include="System\LoginSocial\" />

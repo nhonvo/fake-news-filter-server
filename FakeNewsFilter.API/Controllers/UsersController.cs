@@ -209,5 +209,39 @@ namespace FakeNewsFilter.API.Controllers
             return Ok(authReponse);
 
         }
+
+        [HttpPost("SendPasswordResetCode")]
+        [AllowAnonymous]
+        public async Task<IActionResult> SendPasswordResetCode(string email)
+        {
+            var result = await _userService.SendPasswordResetCode(email);
+
+            result.Message = _localizer[result.Message].Value;
+
+            if (string.IsNullOrEmpty(result.ResultObj?.Token))
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+
+        }
+
+        [HttpPost("ResetPassword")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ResetPassword(string email, string otp, string newPassword)
+        {
+            var result = await _userService.ResetPassword(email, otp, newPassword);
+
+            result.Message = _localizer[result.Message].Value;
+
+            if (string.IsNullOrEmpty(result.ResultObj?.Token))
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+
+        }
     }
 }
