@@ -120,11 +120,17 @@
   <data name="AccountDoesNotExist" xml:space="preserve">
     <value>Tài khoản không tồn tại!</value>
   </data>
+  <data name="ChangePasswordSuccessful" xml:space="preserve">
+    <value>Đổi mật khẩu thành công!</value>
+  </data>
   <data name="DeleteSuccessfull" xml:space="preserve">
     <value>Xóa tài khoản thành công!</value>
   </data>
   <data name="DeleteUnsuccessfull" xml:space="preserve">
     <value>Có lỗi khi xóa tài khoản!</value>
+  </data>
+  <data name="EmailAndPasswordNotNull" xml:space="preserve">
+    <value>Vui lòng nhập đủ thông tin tài khoản email và mật khẩu mới của bạn!</value>
   </data>
   <data name="EmailIsAvailable" xml:space="preserve">
     <value>Địa chỉ email đã tồn tại!</value>
@@ -132,8 +138,14 @@
   <data name="ErrorLinkedFacebook" xml:space="preserve">
     <value>Có lỗi xảy ra khi liên kết tài khoản!</value>
   </data>
+  <data name="ErrorLinkedGoogle" xml:space="preserve">
+    <value>Có lỗi xảy ra khi liên kết tài khoản google!</value>
+  </data>
   <data name="ErrorSystem" xml:space="preserve">
     <value>Lỗi hệ thống!</value>
+  </data>
+  <data name="GenerateTheNewOTP" xml:space="preserve">
+    <value>OTP đã hết hạn, vui lòng tạo OTP mới</value>
   </data>
   <data name="GetInfoUserSuccessful" xml:space="preserve">
     <value>Lấy thông tin tài khoản thành công!</value>
@@ -141,8 +153,14 @@
   <data name="InvalidFacebookToken" xml:space="preserve">
     <value>Tài khoản facebook không hợp lệ!</value>
   </data>
+  <data name="InvalidGoogleToken" xml:space="preserve">
+    <value>Mã thông báo google không hợp lệ!</value>
+  </data>
   <data name="LinkedFacebookSuccessful" xml:space="preserve">
     <value>Liên kết tài khoản facebook thành công!</value>
+  </data>
+  <data name="LinkedGoogleSuccessful" xml:space="preserve">
+    <value>Liên kết tài khoản google thành công!</value>
   </data>
   <data name="LoadingListUsersSuccessful" xml:space="preserve">
     <value>lấy danh sách tài khoản thành công!</value>
@@ -153,14 +171,23 @@
   <data name="LoginFacebookSuccessful" xml:space="preserve">
     <value>Đăng nhập tài khoản bằng facebook thành công!</value>
   </data>
+  <data name="LoginGoogleSuccessful" xml:space="preserve">
+    <value>Đăng nhập tài khoản bằng google thành công!</value>
+  </data>
   <data name="LoginSuccessful" xml:space="preserve">
     <value>Đăng nhập thành công!</value>
   </data>
   <data name="LoginUnsuccessful" xml:space="preserve">
     <value>Đăng nhập không thành công, vui lòng kiểm tra thông tin tài khoản và mật khẩu!</value>
   </data>
+  <data name="OTPWrong" xml:space="preserve">
+    <value>OTP sai, vui lòng nhập lại!</value>
+  </data>
   <data name="RegisterFacebookUnsuccessful" xml:space="preserve">
     <value>Có lỗi xả ra khi đăng ký bằng tài khoản facebook!</value>
+  </data>
+  <data name="RegisterGoogleUnsuccessful" xml:space="preserve">
+    <value>Có lỗi xảy ra khi đăng ký tài khoản google!</value>
   </data>
   <data name="RegisterSuccessful" xml:space="preserve">
     <value>Tạo tài khoản thành công!</value>
@@ -171,6 +198,9 @@
   <data name="RoleAssignSuccessful" xml:space="preserve">
     <value>Chỉ định vai trò cho tài khoản thành công!</value>
   </data>
+  <data name="TokenSendSuccess" xml:space="preserve">
+    <value>Mã thông báo gửi thành công! Vui lòng kiểm tra email của bạn!</value>
+  </data>
   <data name="UpdateUnsuccessful" xml:space="preserve">
     <value>Có lỗi khi cập nhật tài khoản!</value>
   </data>
@@ -179,5 +209,8 @@
   </data>
   <data name="UsernameIsvAvailable" xml:space="preserve">
     <value>Tên tài khoản đã tồn tại!</value>
+  </data>
+  <data name="UserNotFound" xml:space="preserve">
+    <value>Tài khoản không tồn tại!</value>
   </data>
 </root>

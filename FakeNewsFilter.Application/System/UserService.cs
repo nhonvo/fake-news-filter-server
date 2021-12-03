@@ -523,7 +523,7 @@ namespace FakeNewsFilter.Application.System
             }
             catch (Exception e)
             {
-                return new ApiErrorResult<TokenResult>("Login Unsuccessful" + e.Message);
+                return new ApiErrorResult<TokenResult>("LoginUnsuccessful" + e.Message);
             }
         }
 
@@ -627,7 +627,7 @@ namespace FakeNewsFilter.Application.System
             }
             catch (Exception e)
             {
-                return new ApiErrorResult<TokenResult>("Login Unsuccessful" + e.Message);
+                return new ApiErrorResult<TokenResult>("LoginUnsuccessful" + e.Message);
             }
 
         }
@@ -677,7 +677,7 @@ namespace FakeNewsFilter.Application.System
 
             if (user == null || string.IsNullOrEmpty(newPassword))
             {
-                return new ApiErrorResult<ForgotPassword>("EmailPasswordNotNull");
+                return new ApiErrorResult<ForgotPassword>("EmailAndPasswordNotNull");
             }
             //Getting token from otp
             var resetPasswordDetails = await _context.ForgotPassword
@@ -685,21 +685,21 @@ namespace FakeNewsFilter.Application.System
                 .OrderByDescending(x => x.DateTime).FirstOrDefaultAsync();
 
             //Verify if token is older than 15 minutes
-            var expirationDateTime = resetPasswordDetails.DateTime.AddMinutes(50);
+            var expirationDateTime = resetPasswordDetails.DateTime.AddMinutes(3);
 
             if(expirationDateTime < DateTime.Now)
             {
-                return new ApiErrorResult<ForgotPassword>("OTP is expired, please generate the new OTP");
+                return new ApiErrorResult<ForgotPassword>("GenerateTheNewOTP");
             }
 
             var res = await _userManager.ResetPasswordAsync(user, resetPasswordDetails.Token, newPassword);
 
             if(!res.Succeeded)
             {
-                return new ApiErrorResult<ForgotPassword>("Oh no, OTP wrong");
+                return new ApiErrorResult<ForgotPassword>("OTPWrong");
             }
 
-            return new ApiSuccessResult<ForgotPassword>("Change password successful");
+            return new ApiSuccessResult<ForgotPassword>("ChangePasswordSuccessful");
         }
         public static class RandomNumberGeneartor
         {

@@ -120,11 +120,17 @@
   <data name="AccountDoesNotExist" xml:space="preserve">
     <value>Account does not exist!</value>
   </data>
+  <data name="ChangePasswordSuccessful" xml:space="preserve">
+    <value>Change password successful!</value>
+  </data>
   <data name="DeleteSuccessfull" xml:space="preserve">
     <value>Delete successfull!</value>
   </data>
   <data name="DeleteUnsuccessfull" xml:space="preserve">
     <value>Delete unsuccessfull!</value>
+  </data>
+  <data name="EmailAndPasswordNotNull" xml:space="preserve">
+    <value>Email and password not null!</value>
   </data>
   <data name="EmailIsAvailable" xml:space="preserve">
     <value>Email is available!</value>
@@ -132,8 +138,14 @@
   <data name="ErrorLinkedFacebook" xml:space="preserve">
     <value>Error linked facebook!</value>
   </data>
+  <data name="ErrorLinkedGoogle" xml:space="preserve">
+    <value>Error linked google!</value>
+  </data>
   <data name="ErrorSystem" xml:space="preserve">
     <value>Error system!</value>
+  </data>
+  <data name="GenerateTheNewOTP" xml:space="preserve">
+    <value>OTP is expired, please generate the new OTP</value>
   </data>
   <data name="GetInfoUserSuccessful" xml:space="preserve">
     <value>Get info user successful!</value>
@@ -141,8 +153,14 @@
   <data name="InvalidFacebookToken" xml:space="preserve">
     <value>Invalid facebook token!</value>
   </data>
+  <data name="InvalidGoogleToken" xml:space="preserve">
+    <value>Invalid google token!</value>
+  </data>
   <data name="LinkedFacebookSuccessful" xml:space="preserve">
     <value>Linked facebook successful!</value>
+  </data>
+  <data name="LinkedGoogleSuccessful" xml:space="preserve">
+    <value>Linked google successful!</value>
   </data>
   <data name="LoadingListUsersSuccessful" xml:space="preserve">
     <value>Loading list users successful!</value>
@@ -153,14 +171,23 @@
   <data name="LoginFacebookSuccessful" xml:space="preserve">
     <value>Login facebook successful!</value>
   </data>
+  <data name="LoginGoogleSuccessful" xml:space="preserve">
+    <value>Login google successful!</value>
+  </data>
   <data name="LoginSuccessful" xml:space="preserve">
     <value>Login successful!</value>
   </data>
   <data name="LoginUnsuccessful" xml:space="preserve">
     <value>Login Unsuccessful. Please Check Username or Password!</value>
   </data>
+  <data name="OTPWrong" xml:space="preserve">
+    <value>OTP wrong!</value>
+  </data>
   <data name="RegisterFacebookUnsuccessful" xml:space="preserve">
     <value>Register facebook unsuccessful!</value>
+  </data>
+  <data name="RegisterGoogleUnsuccessful" xml:space="preserve">
+    <value>Register google unsuccessful!</value>
   </data>
   <data name="RegisterSuccessful" xml:space="preserve">
     <value>Register successful!</value>
@@ -171,6 +198,9 @@
   <data name="RoleAssignSuccessful" xml:space="preserve">
     <value>Role assign successful!</value>
   </data>
+  <data name="TokenSendSuccess" xml:space="preserve">
+    <value>Token send success!</value>
+  </data>
   <data name="UpdateUnsuccessful" xml:space="preserve">
     <value>Update unsuccessful!</value>
   </data>
@@ -179,5 +209,8 @@
   </data>
   <data name="UsernameIsvAvailable" xml:space="preserve">
     <value>User name is available</value>
+  </data>
+  <data name="UserNotFound" xml:space="preserve">
+    <value>User not found!</value>
   </data>
 </root>
