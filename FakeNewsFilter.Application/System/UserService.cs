@@ -21,6 +21,13 @@ using System.Net.Http.Headers;
 using System.IO;
 using FakeNewsFilter.Data.Enums;
 using static Google.Apis.Auth.GoogleJsonWebSignature;
+using Microsoft.Extensions.Options;
+using MimeKit;
+using MailKit.Net.Smtp;
+using MailKit.Security;
+using System.Net.Mail;
+using SmtpClient = System.Net.Mail.SmtpClient;
+using System.Net;
 
 namespace FakeNewsFilter.Application.System
 {
@@ -43,6 +50,8 @@ namespace FakeNewsFilter.Application.System
         Task<ApiResult<TokenResult>> SignInFacebook(string accessToken);
 
         Task<ApiResult<TokenResult>> SignInGoogle(string accessToken);
+        Task<ApiResult<ForgotPassword>> SendPasswordResetCode(string Email);
+        Task<ApiResult<ForgotPassword>> ResetPassword(string email, string opt, string newPassword);
 
     }
 
@@ -621,6 +630,110 @@ namespace FakeNewsFilter.Application.System
                 return new ApiErrorResult<TokenResult>("Login Unsuccessful" + e.Message);
             }
 
+        }
+
+        public async Task<ApiResult<ForgotPassword>> SendPasswordResetCode(string email)
+        {
+
+            //Get identity user details user manager
+            var user = await _userManager.FindByEmailAsync(email);
+            
+            if (user == null)
+            {
+                return new ApiErrorResult<ForgotPassword>("UserNotFound");
+            }
+            //Generate password reset token
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            //Generate OTP
+            int otp = RandomNumberGeneartor.Generate(100000, 999999);
+
+            var resetPassword = new ForgotPassword()
+            {
+                Email = email,
+                OTP = otp.ToString(),
+                Token = token,
+                UserId = user.Id,
+                DateTime = DateTime.Now
+            };
+
+            //save data into db with OTP
+            _context.ForgotPassword.Add(resetPassword);
+            await _context.SaveChangesAsync();
+
+            //To do: Send token in email
+
+            await EmailSender.SendEmailAsync(email, "Reset Password OTP", "Hello"
+                + email + "<br><br>Please find the reset password token below<br><br><b>" 
+                + otp + "<b><br><br>Thanks<br>FakenewsFilter.com");
+
+            return new ApiSuccessResult<ForgotPassword>("TokenSendSuccess", resetPassword);
+        }
+
+        public async Task<ApiResult<ForgotPassword>> ResetPassword(string email, string otp, string newPassword)
+        {
+            //Get identity user details user manager
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user == null || string.IsNullOrEmpty(newPassword))
+            {
+                return new ApiErrorResult<ForgotPassword>("EmailPasswordNotNull");
+            }
+            //Getting token from otp
+            var resetPasswordDetails = await _context.ForgotPassword
+                .Where(x => x.OTP == otp && x.UserId == user.Id)
+                .OrderByDescending(x => x.DateTime).FirstOrDefaultAsync();
+
+            //Verify if token is older than 15 minutes
+            var expirationDateTime = resetPasswordDetails.DateTime.AddMinutes(50);
+
+            if(expirationDateTime < DateTime.Now)
+            {
+                return new ApiErrorResult<ForgotPassword>("OTP is expired, please generate the new OTP");
+            }
+
+            var res = await _userManager.ResetPasswordAsync(user, resetPasswordDetails.Token, newPassword);
+
+            if(!res.Succeeded)
+            {
+                return new ApiErrorResult<ForgotPassword>("Oh no, OTP wrong");
+            }
+
+            return new ApiSuccessResult<ForgotPassword>("Change password successful");
+        }
+        public static class RandomNumberGeneartor
+        {
+            private static readonly Random _random = new Random();
+
+            public static int Generate(int min, int max)
+            {
+                return _random.Next(min, max);
+            }
+        }
+        
+        public static class EmailSender
+        {
+            public static async Task SendEmailAsync(string email, string subject, string htmlMessage)
+            {
+                string fromMail = "thanh26092000@gmail.com";
+                string fromPassword = "ldhopwrtqzfypdkq";
+
+                MailMessage message = new MailMessage();
+                message.From = new MailAddress(fromMail);
+                message.Subject = subject;
+                message.To.Add(new MailAddress(email));
+                message.Body = "<html><body>" + htmlMessage + "</body></html>";
+                message.IsBodyHtml = true;
+
+                var smtpClient = new SmtpClient("smtp.gmail.com")
+                {
+                    Port = 587,
+                    Credentials = new NetworkCredential(fromMail, fromPassword),
+                    EnableSsl = true,
+                };
+
+                smtpClient.Send(message);
+            }
         }
     }
 }

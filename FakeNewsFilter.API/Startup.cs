@@ -82,6 +82,7 @@ namespace FakeNewsFilter
             services.AddTransient<IScourceService, SourceService>();
             services.AddTransient<IStoryService, StoryService>();
             services.AddTransient<IVoteService, VoteService>();
+            services.AddTransient<IExtraFeaturesService, ExtraFeaturesService>();
 
 
 

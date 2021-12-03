@@ -117,7 +117,6 @@ namespace FakeNewsFilter.API.Controllers
         }
         
         [HttpGet("FollowedTopic")]
-        [AllowAnonymous]
         public async Task<IActionResult> GetNewsByFollowedTopic(Guid userId)
         {
             var topics = await _followService.GetFollowTopicByUser(userId);
