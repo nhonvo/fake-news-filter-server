@@ -41,8 +41,8 @@ namespace FakeNewsFilter.Application.Catalog
 
                 foreach (var item in request.TopicId)
                 {
-                    var Topic = await _context.TopicNews.FirstOrDefaultAsync(t => t.TopicId == item);
-                    if (Topic == null)
+                    var topic = await _context.TopicNews.FirstOrDefaultAsync(t => t.TopicId == item);
+                    if (topic == null)
                     {
                         return new ApiErrorResult<bool>("CannontFindATopicWithId");
                     }
@@ -50,12 +50,19 @@ namespace FakeNewsFilter.Application.Catalog
 
                 foreach (var item in request.TopicId)
                 {
-                    var follow = new Data.Entities.Follow()
+                    var follow = _context.Follow.Where(t => t.TopicId == item);
+                    _context.Follow.RemoveRange(follow);
+                    await _context.SaveChangesAsync();
+                }
+
+                foreach (var item in request.TopicId)
+                {
+                    var followCreate = new Data.Entities.Follow()
                     {
                         UserId = request.UserId,
                         TopicId = item
                     };
-                    _context.Follow.Add(follow);
+                    _context.Follow.Add(followCreate);
                 }
                 
                 var result = await _context.SaveChangesAsync();
