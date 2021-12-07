@@ -14,7 +14,10 @@ namespace FakeNewsFilter.Data.Extensions
 
             var RoleId = new Guid("A3314BE5-4C77-4FB6-82AD-302014682A73");
 
-            var AdminId = new Guid("69DB714F-9576-45BA-B5B7-F00649BE00DE");
+            var AdminId1 = new Guid("69DB714F-9576-45BA-B5B7-F00649BE01DE");
+            var AdminId2= new Guid("69DB714F-9576-45BA-B5B7-F00649BE02DE");
+            var AdminId3 = new Guid("69DB714F-9576-45BA-B5B7-F00649BE03DE");
+            var AdminId4 = new Guid("69DB714F-9576-45BA-B5B7-F00649BE04DE");
             modelBuilder.Entity<Role>().HasData(new Role
             {
                 Id = RoleId,
@@ -31,15 +34,51 @@ namespace FakeNewsFilter.Data.Extensions
             var hasher = new PasswordHasher<User>();
             modelBuilder.Entity<User>().HasData(new User
             {
-                Id = AdminId,
+                Id = AdminId1,
                 UserName = "khuyenpb",
                 NormalizedUserName = "khuyenpb",
                 Email = "bp.khuyen@hutech.edu.vn",
                 NormalizedEmail = "BP.KHUYEN@HUTECH.EDU.VN",
                 EmailConfirmed = true,
-                PasswordHash = hasher.HashPassword(null, "khuyenpb@123"),
+                PasswordHash = hasher.HashPassword(null, "Khuyenpb@123"),
                 SecurityStamp = string.Empty,
                 Name = "Bui Phu Khuyen",
+            });
+            modelBuilder.Entity<User>().HasData(new User
+            {
+                Id = AdminId2,
+                UserName = "LXThanh",
+                NormalizedUserName = "LXThanh",
+                Email = "thanh26092000@gmail.com",
+                NormalizedEmail = "THANH26092000@GMAIL.COM",
+                EmailConfirmed = true,
+                PasswordHash = hasher.HashPassword(null, "Thanh@123"),
+                SecurityStamp = string.Empty,
+                Name = "Le Xuan Thanh",
+            });
+            modelBuilder.Entity<User>().HasData(new User
+            {
+                Id = AdminId3,
+                UserName = "hkhansh27",
+                NormalizedUserName = "hkhansh27",
+                Email = "khanh200111@gmail.com",
+                NormalizedEmail = "KHANH200111@GMAIL.COM",
+                EmailConfirmed = true,
+                PasswordHash = hasher.HashPassword(null, "Khanh@123"),
+                SecurityStamp = string.Empty,
+                Name = "Huynh Huu Khanh",
+            });
+            modelBuilder.Entity<User>().HasData(new User
+            {
+                Id = AdminId4,
+                UserName = "HoangPhuc",
+                NormalizedUserName = "HoangPhuc",
+                Email = "hi@phucs.me",
+                NormalizedEmail = "HI@PHUCS.ME",
+                EmailConfirmed = true,
+                PasswordHash = hasher.HashPassword(null, "Phuc@123"),
+                SecurityStamp = string.Empty,
+                Name = "To Hoang Phuc",
             });
 
             modelBuilder.Entity<Language>().HasData(
@@ -50,7 +89,22 @@ namespace FakeNewsFilter.Data.Extensions
             modelBuilder.Entity<UserRoles>().HasData(new UserRoles
             {
                 RoleId = RoleId,
-                UserId = AdminId
+                UserId = AdminId1
+            });
+            modelBuilder.Entity<UserRoles>().HasData(new UserRoles
+            {
+                RoleId = RoleId,
+                UserId = AdminId2
+            });
+            modelBuilder.Entity<UserRoles>().HasData(new UserRoles
+            {
+                RoleId = RoleId,
+                UserId = AdminId3
+            });
+            modelBuilder.Entity<UserRoles>().HasData(new UserRoles
+            {
+                RoleId = RoleId,
+                UserId = AdminId4
             });
 
             modelBuilder.Entity<TopicNews>().HasData(
