@@ -39,10 +39,10 @@ namespace FakeNewsFilter.Application.Catalog
                 return new ApiErrorResult<bool>("UserIsNotExist");
             }
 
-            var news = await _context.Comment.FirstOrDefaultAsync(t => t.NewsId == request.NewsId);
+            var news = await _context.News.Include(x => x.NewsInTopics).FirstOrDefaultAsync(t => t.NewsId == request.NewsId);
             if (news == null)
             {
-                return new ApiErrorResult<bool>("CommentIsNotExist");
+                return new ApiErrorResult<bool>("NewsIsNotExist");
             }
 
             var comments = new Comment()
@@ -59,10 +59,10 @@ namespace FakeNewsFilter.Application.Catalog
 
             if (result != 0)
             {
-                return new ApiSuccessResult<bool>("CommentSuccessful", false);
+                return new ApiSuccessResult<bool>("CreateCommentSuccessful", false);
             }
 
-            return new ApiErrorResult<bool>("CommentUnsuccessful");
+            return new ApiErrorResult<bool>("CreateCommentUnsuccessful");
         }
 
         public async Task<ApiResult<List<CommentViewModel>>> GetCommentByNewsId(int newsId)
