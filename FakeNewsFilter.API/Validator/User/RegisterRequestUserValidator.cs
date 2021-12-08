@@ -1,23 +1,25 @@
 ﻿using System;
+using FakeNewsFilter.API.Controllers;
 using FluentValidation;
+using Microsoft.Extensions.Localization;
 
 namespace FakeNewsFilter.ViewModel.System.Users
 {
     public class RegisterRequestUserValidator : AbstractValidator<RegisterRequest>
     {
-        public RegisterRequestUserValidator()
+        public RegisterRequestUserValidator(IStringLocalizer<UsersController> localizer)
         {
-            RuleFor(x => x.Name).NotEmpty().WithMessage("Name is required.").MaximumLength(100).WithMessage("Name cannot over 100 characters.");
-            RuleFor(x => x.Email).NotEmpty().WithMessage("Email is required.").Matches(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$").WithMessage("Email format not match.");
-            RuleFor(x => x.PhoneNumber).NotEmpty().WithMessage("Phone number is required.");//.Matches(@"/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/").WithMessage("Format not match.");
-            RuleFor(x => x.UserName).NotEmpty().WithMessage("Username is required.");
-            RuleFor(x => x.Password).NotEmpty().WithMessage("Password is required.").MinimumLength(6).WithMessage("Password is at least 6 characters.");
+            RuleFor(x => x.Name).NotEmpty().WithMessage(x => localizer["NameIsRequired"]).MaximumLength(100).WithMessage(x => localizer["NameMaximum100Characters"]);
+            RuleFor(x => x.Email).NotEmpty().WithMessage(x => localizer["EmailIsRequired"]).Matches(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$").WithMessage(x => localizer["EmailWrongFormat"]);
+            RuleFor(x => x.PhoneNumber).NotEmpty().WithMessage(x => localizer["PhoneIsRequired"]);//.Matches(@"/^\+?(\d.*){10,}$/").WithMessage(x => localizer["PhoneWrongFormat"]);
+            RuleFor(x => x.UserName).NotEmpty().WithMessage(x => localizer["UsernameIsRequired"]);
+            RuleFor(x => x.Password).NotEmpty().WithMessage(x => localizer["PasswordIsRequired"]).MinimumLength(6).WithMessage(x => localizer["PasswordAtLeast6Characters"]);
 
             RuleFor(x => x).Custom((request, context) =>
             {
                 if(request.Password != request.ConfirmPassword)
                 {
-                    context.AddFailure("Confirm password not match.");
+                    context.AddFailure("Password", localizer["ConformPasswordNotMatch"]);
                 }
             });
 

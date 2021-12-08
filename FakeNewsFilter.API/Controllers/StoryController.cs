@@ -29,7 +29,7 @@ namespace FakeNewsFilter.API.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromForm] StoryCreateRequest request)
         {
-            CreateRequestStoryValidator validator = new CreateRequestStoryValidator();
+            CreateRequestStoryValidator validator = new CreateRequestStoryValidator(_localizer);
 
             List<string> ValidationMessages = new List<string>();
 

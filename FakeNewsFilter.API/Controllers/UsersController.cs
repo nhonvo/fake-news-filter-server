@@ -33,10 +33,8 @@ namespace FakeNewsFilter.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Authenticate([FromBody]LoginRequest request)
         {
-            LoginRequestUserValidator validator = new LoginRequestUserValidator();
-
-            List<string> ValidationMessages = new List<string>();
-
+            LoginRequestUserValidator validator = new LoginRequestUserValidator(_localizer);
+            
             var validationResult = validator.Validate(request);
 
             if (!validationResult.IsValid)
@@ -53,9 +51,9 @@ namespace FakeNewsFilter.API.Controllers
                 resultToken.Message = _localizer[resultToken.Message].Value;
 
                 if (string.IsNullOrEmpty(resultToken.ResultObj?.Token))
-                    {
-                        return BadRequest(resultToken);
-                    }
+                {
+                    return BadRequest(resultToken);
+                }
 
                 return Ok(resultToken);
         }
@@ -64,9 +62,7 @@ namespace FakeNewsFilter.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
-            RegisterRequestUserValidator validator = new RegisterRequestUserValidator();
-
-            List<string> ValidationMessages = new List<string>();
+            RegisterRequestUserValidator validator = new RegisterRequestUserValidator(_localizer);
 
             var validationResult = validator.Validate(request);
 
@@ -118,9 +114,7 @@ namespace FakeNewsFilter.API.Controllers
         [HttpPut()]
         public async Task<IActionResult> Update([FromForm] UserUpdateRequest request)
         {
-            UpdateRequestUserValidator validator = new UpdateRequestUserValidator();
-
-            List<string> ValidationMessages = new List<string>();
+            UpdateRequestUserValidator validator = new UpdateRequestUserValidator(_localizer);
 
             var validationResult = validator.Validate(request);
 

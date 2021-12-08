@@ -159,4 +159,7 @@
   <data name="UpdateStoryUnsuccessful" xml:space="preserve">
     <value>Update story unsuccessful! Try again!</value>
   </data>
+  <data name="LinkIsRequired" xml:space="preserve">
+    <value>Link is required</value>
+  </data>
 </root>

@@ -180,4 +180,13 @@
   <data name="GetNewsByFollowedTopicUnsuccessful" xml:space="preserve">
     <value>Get all news by followed topic unsuccessful!</value>
   </data>
+  <data name="NameIsRequired" xml:space="preserve">
+    <value>Name is required </value>
+  </data>
+  <data name="DescriptionIsRequired" xml:space="preserve">
+    <value>Description is required </value>
+  </data>
+  <data name="ContentIsRequired" xml:space="preserve">
+    <value>Content is required</value>
+  </data>
 </root>
