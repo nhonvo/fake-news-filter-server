@@ -31,7 +31,7 @@ namespace FakeNewsFilter.API.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromForm] NewsCreateRequest request)
         {
-            CreateRequestNewsValidator validator = new CreateRequestNewsValidator();
+            CreateRequestNewsValidator validator = new CreateRequestNewsValidator(_localizer);
 
             List<string> ValidationMessages = new List<string>();
 
@@ -137,7 +137,7 @@ namespace FakeNewsFilter.API.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update([FromForm] NewsUpdateRequest request)
         {
-            UpdateRequestNewsValidator validator = new UpdateRequestNewsValidator();
+            UpdateRequestNewsValidator validator = new UpdateRequestNewsValidator(_localizer);
 
             List<string> ValidationMessages = new List<string>();
 

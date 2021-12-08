@@ -132,7 +132,7 @@
   <data name="DeleteUnsuccessful" xml:space="preserve">
     <value>Delete unsuccessful!</value>
   </data>
-  <data name="Descriptionisrequired" xml:space="preserve">
+  <data name="DescriptionIsRequired" xml:space="preserve">
     <value>Description is required!</value>
   </data>
   <data name="GetInfoTopicSuccessful" xml:space="preserve">
@@ -155,5 +155,11 @@
   </data>
   <data name="UpdateUnsuccessful" xml:space="preserve">
     <value>Update unsuccessful!</value>
+  </data>
+  <data name="PhotoIsRequired" xml:space="preserve">
+    <value>Photo is required</value>
+  </data>
+  <data name="TagIsRequired" xml:space="preserve">
+    <value>Tag is required</value>
   </data>
 </root>

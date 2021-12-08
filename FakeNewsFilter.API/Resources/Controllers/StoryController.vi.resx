@@ -159,4 +159,7 @@
   <data name="UpdateStoryUnsuccessful" xml:space="preserve">
     <value>Có lỗi khi cập nhân tin!</value>
   </data>
+  <data name="LinkIsRequired" xml:space="preserve">
+    <value>Đường dẫn là bắt buộc </value>
+  </data>
 </root>

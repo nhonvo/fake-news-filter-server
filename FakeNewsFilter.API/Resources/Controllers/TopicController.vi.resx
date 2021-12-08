@@ -153,4 +153,13 @@
   <data name="UpdateUnsuccessful" xml:space="preserve">
     <value>Có lỗi khi cập nhật chủ đề!</value>
   </data>
+  <data name="DescriptionIsRequired" xml:space="preserve">
+    <value>Mô tả là bắt buộc</value>
+  </data>
+  <data name="TagIsRequired" xml:space="preserve">
+    <value>Thẻ là bắt buộc </value>
+  </data>
+  <data name="PhotoIsRequired" xml:space="preserve">
+    <value>Ảnh là bắt buộc</value>
+  </data>
 </root>
