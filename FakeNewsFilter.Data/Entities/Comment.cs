@@ -12,6 +12,7 @@ namespace FakeNewsFilter.Data.Entities
         public string Content { get; set; }
         public int NewsId { get; set; }
         public News News { get; set; }
+        public int ParentId { get; set; }
         public Guid UserId { get; set; }
         public User User { get; set; }
         public DateTime Timestamp { get; set; }
