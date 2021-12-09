@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Globalization;
+using System.Text.Json.Serialization;
 using FakeNewsFilter.Application.Catalog;
 using FakeNewsFilter.Application.Common;
 using FakeNewsFilter.Application.Mapping;
@@ -53,7 +54,7 @@ namespace FakeNewsFilter
                 options.SupportedCultures = cultures;
                 options.SupportedUICultures = cultures; 
             });
-
+            
             //Config Database Connection
             services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString(SystemConstants.MainConnectionString)));
 
