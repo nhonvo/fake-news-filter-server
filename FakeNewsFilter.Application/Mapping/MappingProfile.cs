@@ -1,6 +1,7 @@
 ﻿using System;
 using AutoMapper;
 using FakeNewsFilter.Data.Entities;
+using FakeNewsFilter.ViewModel.Catalog.Comment;
 using FakeNewsFilter.ViewModel.Catalog.Media;
 using FakeNewsFilter.ViewModel.Catalog.TopicNews;
 using FakeNewsFilter.ViewModel.System.Users;
@@ -35,6 +36,13 @@ namespace FakeNewsFilter.Application.Mapping
                     .ForMember(d => d.PhoneNumber, o => o.MapFrom(s => s.PhoneNumber))
                     
                 ;
+            CreateMap<Comment, CommentViewModel>()
+                .ForMember(x => x.CommentId, o => o.MapFrom(s => s.CommentId))
+                .ForMember(x => x.Content, o => o.MapFrom(s => s.Content))
+                .ForMember(x => x.UserId, o => o.MapFrom(s => s.UserId))
+                .ForMember(x => x.ParentId, o => o.MapFrom(s => s.ParentId))
+                .ForMember(x => x.NewsId, o => o.MapFrom(s => s.NewsId))
+                .ForMember(x => x.Timestamp, o => o.MapFrom(s => s.Timestamp));
         }
     }
 }

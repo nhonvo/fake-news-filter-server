@@ -1,138 +1,129 @@
-﻿using FakeNewsFilter.Data.EF;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
+using FakeNewsFilter.Data.EF;
 using FakeNewsFilter.Data.Entities;
 using FakeNewsFilter.ViewModel.Catalog.Comment;
 using FakeNewsFilter.ViewModel.Common;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace FakeNewsFilter.Application.Catalog
+namespace FakeNewsFilter.Application.Catalog;
+
+public interface ICommentService
 {
-    public interface ICommentService
+    Task<ApiResult<bool>> Create(CommentCreateRequest request);
+    Task<ApiResult<bool>> Delete(int commentId, Guid userId);
+    Task<ApiResult<List<CommentViewModel>>> GetCommentByNewsId(int NewsId);
+    Task<ApiResult<bool>> Update(CommentUpdateRequest request);
+}
+
+public class CommentService : ICommentService
+{
+    private readonly ApplicationDBContext _context;
+    private readonly IMapper _mapper;
+    private readonly UserManager<User> _userManager;
+
+    public CommentService(ApplicationDBContext context, UserManager<User> userManager, IMapper mapper)
     {
-        Task<ApiResult<bool>> Create(CommentCreateRequest request);
-        Task<ApiResult<bool>> Delete(int commentId, Guid userId);
-        Task<ApiResult<List<CommentViewModel>>> GetCommentByNewsId(int NewsId);
-        Task<ApiResult<bool>> Update(CommentUpdateRequest request);
+        _context = context;
+        _userManager = userManager;
+        _mapper = mapper;
     }
-    public class CommentService : ICommentService
+
+    public async Task<ApiResult<bool>> Create(CommentCreateRequest request)
     {
-        private readonly ApplicationDBContext _context;
+        var user = await _userManager.FindByIdAsync(request.UserId.ToString());
+        if (user == null) return new ApiErrorResult<bool>("UserIsNotExist");
 
-        private readonly UserManager<User> _userManager;
+        var news = await _context.News.Include(x => x.NewsInTopics)
+            .FirstOrDefaultAsync(t => t.NewsId == request.NewsId);
+        if (news == null) return new ApiErrorResult<bool>("NewsIsNotExist");
 
-        public CommentService(ApplicationDBContext context, UserManager<User> userManager)
+        var comments = new Comment
         {
-            _context = context;
-            _userManager = userManager;
-        }
+            NewsId = request.NewsId,
+            UserId = request.UserId,
+            Content = request.Content,
+            ParentId = request.ParentId,
+            Timestamp = DateTime.Now
+        };
 
-        public async Task<ApiResult<bool>> Create(CommentCreateRequest request)
+        _context.Comment.Add(comments);
+
+        var result = await _context.SaveChangesAsync();
+
+        if (result != 0) return new ApiSuccessResult<bool>("CreateCommentSuccessful", false);
+
+        return new ApiErrorResult<bool>("CreateCommentUnsuccessful");
+    }
+
+    public async Task<ApiResult<List<CommentViewModel>>> GetCommentByNewsId(int newsId)
+    {
+        //check whether news is exist
+        var news = await _context.News.FirstOrDefaultAsync(x => x.NewsId == newsId);
+        if (news == null) return new ApiErrorResult<List<CommentViewModel>>("NewsNotFound");
+
+        var commentsList = await _context.Comment.Where(x => x.NewsId == newsId).ToListAsync();
+        var map = new Dictionary<int, CommentViewModel>();
+        var result = new List<CommentViewModel>();
+
+        foreach (var comment in commentsList)
         {
-            var user = await _userManager.FindByIdAsync(request.UserId.ToString());
-            if (user == null)
+            var commentViewModel = _mapper.Map<CommentViewModel>(comment);
+
+            map.Add(comment.CommentId, commentViewModel);
+            
+            if (comment.ParentId == null)
             {
-                return new ApiErrorResult<bool>("UserIsNotExist");
+                result.Add(commentViewModel);
             }
-
-            var news = await _context.News.Include(x => x.NewsInTopics).FirstOrDefaultAsync(t => t.NewsId == request.NewsId);
-            if (news == null)
+            else
             {
-                return new ApiErrorResult<bool>("NewsIsNotExist");
+                var parentComment = map[(int) comment.ParentId];
+
+                if (parentComment.Child == null) parentComment.Child = new List<CommentViewModel>();
+
+                parentComment.Child.Add(commentViewModel);
             }
-
-            var comments = new Comment()
-            {
-                NewsId = request.NewsId,
-                UserId = request.UserId,
-                Content = request.Content,
-                Timestamp = DateTime.Now
-            };
-
-            _context.Comment.Add(comments);
-
-            var result = await _context.SaveChangesAsync();
-
-            if (result != 0)
-            {
-                return new ApiSuccessResult<bool>("CreateCommentSuccessful", false);
-            }
-
-            return new ApiErrorResult<bool>("CreateCommentUnsuccessful");
         }
+        
+        if (result.Count == 0) return new ApiSuccessResult<List<CommentViewModel>>("DoNotHaveGetCommentByNewsId");
+        return new ApiSuccessResult<List<CommentViewModel>>("GetCommentByNewsIdSuccessful", result);
+    }
 
-        public async Task<ApiResult<List<CommentViewModel>>> GetCommentByNewsId(int newsId)
-        {
-            var query = from n in _context.Comment
-                        select new { n };
+    public async Task<ApiResult<bool>> Delete(int commentId, Guid userId)
+    {
+        var comment = await _context.Comment.FirstOrDefaultAsync(x => x.CommentId == commentId);
+        if (comment == null)
+            return new ApiErrorResult<bool>("CommentNotFound");
 
-            query = query.Where(t => newsId == t.n.NewsId);
+        var userComment = _userManager.Users.FirstOrDefault(x => x.Id == comment.UserId);
+        var userLogin = _userManager.Users.FirstOrDefault(x => x.Id == userId);
 
-            var data = await query
-                .Select(x => new CommentViewModel()
-                {
-                    NewsId = x.n.NewsId,
-                    CommentId = x.n.CommentId,
-                    Timestamp = x.n.Timestamp,
-                    UserId = x.n.UserId,
-                    Content = x.n.Content,
-                }).ToListAsync();
+        if (userComment != userLogin)
+            return new ApiErrorResult<bool>("YouCanOnlyDeleteYourComment");
 
-            if (data == null)
-            {
-                return new ApiErrorResult<List<CommentViewModel>>("GetCommentByNewsIdUnsuccessful");
-            }
-            if (data.Count == 0)
-            {
-                return new ApiSuccessResult<List<CommentViewModel>>("DoNotHaveGetCommentByNewsId");
-            }
-            return new ApiSuccessResult<List<CommentViewModel>>("GetCommentByNewsIdSuccessful", data);
-        }
+        _context.Comment.Remove(comment);
 
-        public async Task<ApiResult<bool>> Delete(int commentId, Guid userId)
-        {
-            var comment = await _context.Comment.FirstOrDefaultAsync(x => x.CommentId == commentId);
-            if (comment == null)
-                return new ApiErrorResult<bool>("CommentNotFound");
+        if (await _context.SaveChangesAsync() == 0) return new ApiErrorResult<bool>("DeleteCommentUnsuccessful");
 
-            var userComment = _userManager.Users.FirstOrDefault(x => x.Id == comment.UserId);
-            var userLogin = _userManager.Users.FirstOrDefault(x => x.Id == userId);
+        return new ApiSuccessResult<bool>("DeleteCommentSuccessful", false);
+    }
 
-            if (userComment != userLogin)
-                return new ApiErrorResult<bool>("YouCanOnlyDeleteYourComment");
+    public async Task<ApiResult<bool>> Update(CommentUpdateRequest request)
+    {
+        var comment = await _context.Comment.FirstOrDefaultAsync(x => x.CommentId == request.CommentId);
+        if (comment == null) return new ApiErrorResult<bool>("CommentNotFound");
 
-            _context.Comment.Remove(comment);
+        comment.Content = request.Content;
+        comment.Timestamp = DateTime.Now;
 
-            if (await _context.SaveChangesAsync() == 0)
-            {
-                return new ApiErrorResult<bool>("DeleteCommentUnsuccessful");
-            }
+        _context.Comment.Update(comment);
+        if (await _context.SaveChangesAsync() == 0) return new ApiErrorResult<bool>("UpdateCommentUnsuccessful");
 
-            return new ApiSuccessResult<bool>("DeleteCommentSuccessful", false);
-        }
-
-        public async Task<ApiResult<bool>> Update(CommentUpdateRequest request)
-        {
-            var comment = await _context.Comment.FirstOrDefaultAsync(x => x.CommentId == request.CommentId);
-            if(comment == null)
-            {
-                return new ApiErrorResult<bool>("ComentNotFound");
-            }
-
-            comment.Content = request.Content;
-            comment.Timestamp = DateTime.Now;
-
-            _context.Comment.Update(comment);
-            if (await _context.SaveChangesAsync() == 0)
-            {
-                return new ApiErrorResult<bool>("UpdateCommentUnsuccessful");
-            }
-
-            return new ApiSuccessResult<bool>("UpdateCommentSuccessful", false);
-        }
+        return new ApiSuccessResult<bool>("UpdateCommentSuccessful", false);
     }
 }

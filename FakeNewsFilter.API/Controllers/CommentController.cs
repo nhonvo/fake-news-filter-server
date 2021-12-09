@@ -48,15 +48,11 @@ namespace FakeNewsFilter.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetCommentByNewsId(int newsId)
         {
-            var news = await _ICommentService.GetCommentByNewsId(newsId);
+            var comments = await _ICommentService.GetCommentByNewsId(newsId);
 
-            news.Message = _localizer[news.Message].Value;
-
-            if (news == null)
-            {
-                return NotFound(news);
-            }
-            return Ok(news);
+            comments.Message = _localizer[comments.Message].Value;
+            
+            return Ok(comments);
         }
 
         [HttpDelete]
