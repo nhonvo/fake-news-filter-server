@@ -1,4 +1,5 @@
-﻿using FakeNewsFilter.Application.Catalog;
+using FakeNewsFilter.API.Contract;
+using FakeNewsFilter.Application.Catalog;
 using FakeNewsFilter.ViewModel.Catalog.Comment;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,17 +17,22 @@ namespace FakeNewsFilter.API.Controllers
     {
         private readonly ICommentService _ICommentService;
         private readonly IStringLocalizer<CommentController> _localizer;
-        public CommentController(ICommentService ICommentService, IStringLocalizer<CommentController> localizer)
+        private readonly ILoggerService _loggerService;
+        public CommentController(ICommentService ICommentService, IStringLocalizer<CommentController> localizer, ILoggerService loggerService)
         {
             _ICommentService = ICommentService;
             _localizer = localizer;
+            _loggerService = loggerService;
         }
+
+        
 
         [HttpPost]
         [AllowAnonymous]
 
         public async Task<IActionResult> Create([FromBody] CommentCreateRequest request)
         {
+            _loggerService.LogInfo("Test logging");
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -48,6 +54,8 @@ namespace FakeNewsFilter.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetCommentByNewsId(int newsId)
         {
+            _loggerService.LogDebug("Test logging");
+
             var comments = await _ICommentService.GetCommentByNewsId(newsId);
 
             comments.Message = _localizer[comments.Message].Value;

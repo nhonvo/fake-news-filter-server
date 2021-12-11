@@ -15,7 +15,7 @@ namespace FakeNewsFilter.Data.Extensions
             var RoleId = new Guid("A3314BE5-4C77-4FB6-82AD-302014682A73");
 
             var AdminId1 = new Guid("69DB714F-9576-45BA-B5B7-F00649BE01DE");
-            var AdminId2= new Guid("69DB714F-9576-45BA-B5B7-F00649BE02DE");
+            var AdminId2 = new Guid("69DB714F-9576-45BA-B5B7-F00649BE02DE");
             var AdminId3 = new Guid("69DB714F-9576-45BA-B5B7-F00649BE03DE");
             var AdminId4 = new Guid("69DB714F-9576-45BA-B5B7-F00649BE04DE");
             modelBuilder.Entity<Role>().HasData(new Role
@@ -183,10 +183,10 @@ namespace FakeNewsFilter.Data.Extensions
                {
                    TopicId = 8,
                    Label = "Thế giới",
-                   Tag = "tin tức",
+                   Tag = "dịch bệnh",
                    ThumbTopic = 3,
                    LanguageId = "vi",
-                   Description = "Kinh tế Việt Nam trong năm.",
+                   Description = "Các thông tin về virut corona.",
                    Timestamp = DateTime.Now
                },
                new TopicNews()
@@ -342,6 +342,69 @@ namespace FakeNewsFilter.Data.Extensions
                     Type = Enums.MediaType.Image,
                     PathMedia = "the-thao1.jpeg",
                     DateCreated = DateTime.Now,
+                },
+                new Media
+                {
+                    MediaId = 14,
+                    Type = Enums.MediaType.Image,
+                    PathMedia = "newsid1.jpg",
+                    DateCreated = DateTime.Now,
+                },
+                new Media
+                {
+                    MediaId = 15,
+                    Type = Enums.MediaType.Image,
+                    PathMedia = "newid2.jpg",
+                    DateCreated = DateTime.Now,
+                },
+                new Media
+                {
+                    MediaId = 16,
+                    Type = Enums.MediaType.Image,
+                    PathMedia = "newid3.jpg",
+                    DateCreated = DateTime.Now,
+                },
+                new Media
+                {
+                    MediaId = 17,
+                    Type = Enums.MediaType.Image,
+                    PathMedia = "newid4.jpg",
+                    DateCreated = DateTime.Now,
+                },
+                new Media
+                {
+                    MediaId = 18,
+                    Type = Enums.MediaType.Image,
+                    PathMedia = "newid5.jpg",
+                    DateCreated = DateTime.Now,
+                },
+                new Media
+                {
+                    MediaId = 19,
+                    Type = Enums.MediaType.Image,
+                    PathMedia = "newid6.png",
+                    DateCreated = DateTime.Now,
+                },
+                new Media
+                {
+                    MediaId = 20,
+                    Type = Enums.MediaType.Image,
+                    PathMedia = "newid7.jpg",
+                    DateCreated = DateTime.Now,
+                },
+                new Media
+                {
+                    MediaId = 21,
+                    Type = Enums.MediaType.Image,
+                    PathMedia = "newid8.jpg",
+                    DateCreated = DateTime.Now,
+                },
+                new Media
+                {
+                    MediaId = 22,
+                    Type = Enums.MediaType.Image,
+                    PathMedia = "newid9.jpg",
+                    DateCreated = DateTime.Now,
                 }
            );
 
@@ -357,7 +420,7 @@ namespace FakeNewsFilter.Data.Extensions
                     Publisher = "New York Times",
                     DatePublished = new DateTime(2021,02,10),
                     Timestamp = DateTime.Now,
-                    ThumbNews = 1
+                    ThumbNews = 14
                 },
                 new News
                 {
@@ -370,6 +433,7 @@ namespace FakeNewsFilter.Data.Extensions
                     Publisher = "NBC News",
                     DatePublished = new DateTime(2021, 02, 20),
                     Timestamp = DateTime.Now,
+                    ThumbNews = 15
                 },
                 new News
                 {
@@ -381,6 +445,7 @@ namespace FakeNewsFilter.Data.Extensions
                     LanguageId = "en",
                     DatePublished = new DateTime(2021, 04, 12),
                     Timestamp = DateTime.Now,
+                    ThumbNews = 16
                 },
                 new News
                 {
@@ -392,61 +457,67 @@ namespace FakeNewsFilter.Data.Extensions
                     LanguageId = "en",
                     DatePublished = new DateTime(2021, 04, 12),
                     Timestamp = DateTime.Now,
+                    ThumbNews = 17
                 },
                 new News
                 {
                     NewsId = 5,
-                    Name = "Myanmar-Trung Quốc mở lại 2 cửa khẩu biên giới sau 7 tháng đóng cửa chống Covid-19",
-                    Description = "Hai cửa khẩu biên giới giữa Myanmar với Trung Quốc mở cửa lại từ ngày 26.11 với hy vọng hướng đến việc phục hồi thương mại bình thường giữa 2 nước..",
-                    Content = "Ngoại giao",
-                    Source = "https://thanhnien.vn/myanmar-trung-quoc-mo-lai-2-cua-khau-bien-gioi-sau-7-thang-dong-cua-chong-covid-19-post1405895.html",
+                    Name = "Thông tin TP.HCM dùng 5 trực thăng phun khử khuẩn là sai sự thật",
+                    Description = "Lãnh đạo Sở TT&TT TP.HCM cho biết, thông tin dùng 5 trực thăng phun khử trùng diệt Covid-19 là sai...",
+                    Content = "Theo Sở TT&TT, hiện nay, trên mạng xã hội đang lan truyền thông tin “tối nay từ 11h40 không nên ra đường. Cửa ra vào và cửa sổ nên được đóng lại khi 5 máy bay trực thăng phun chất khử trùng vào không khí để diệt trừ Coronavirus”. Trao đổi với VietNamNet, ông Lâm Đình Thắng, Giám đốc Sở TT&TT cho hay, Bộ Tư lệnh TP.HCM khẳng định, thông tin trên hoàn toàn sai sự thật. Lực lượng quân đội phun khử khuẩn trên địa bàn TP.HCM Trước đó, sáng 23/7, Bộ Tư lệnh TP.HCM phối hợp với Lữ đoàn 87 Binh Chủng hóa học, Tiểu đoàn Phòng hóa 38 Quân khu 7 cùng với lực lượng vũ trang TP và 21 quận, huyện và TP Thủ Đức đồng loạt mở đợt cao điểm phun thuốc khử khuẩn phòng, chống dịch Covid-19 quy mô lớn nhất từ trước tới nay trên địa bàn TP, trong thời gian 7 ngày. Mỗi ngày sẽ có 20 lượt xe tham gia phun thuốc khử khuẩn phòng, chống Covid-19. Theo Hồ Văn/Báo điện tử VietnamNet https://vietnamnet.vn/vn/thoi-su/thong-tin-tp-hcm-dung-5-truc-thang-phun-khu-khuan-la-sai-su-that-759937.html",
+                    Source = "https://tingia.gov.vn/tin-tuc/thong-tin-tp-hcm-dung-5-truc-thang-phun-khu-khuan-la-sai-su-that/2695/",
                     LanguageId = "vi",
                     DatePublished = new DateTime(2021, 04, 12),
                     Timestamp = DateTime.Now,
+                    ThumbNews = 18
                 },
                 new News
                 {
                     NewsId = 6,
-                    Name = "Vì sao nhiều tàu thuyền ‘biến mất’ ở vùng biển Trung Quốc?",
-                    Description = "Giới phân tích cảnh báo rằng việc mất tín hiệu của nhiều tàu thuyền ở Trung Quốc gây xáo trộn chuỗi cung ứng.",
-                    Content = "Ngoại giao",
-                    Source = "https://thanhnien.vn/vi-sao-nhieu-tau-thuyen-bien-mat-o-vung-bien-trung-quoc-post1405317.html",
+                    Name = "Mạnh tay xử lý hành vi đưa tin giả liên quan đến dịch Covid – 19",
+                    Description = "Đại dịch Covid-19 bùng phát trở lại, gây chồng chất thêm khó khăn cho doanh nghiệp, người dân, cũng vì…",
+                    Content = "Đại dịch Covid-19 bùng phát trở lại, gây chồng chất thêm khó khăn cho doanh nghiệp, người dân, cũng vì thế mà thông tin về diễn biến đại dịch trở thành mối quan tâm hàng đầu của toàn xã hội. Bên cạnh những thông tin chính xác, tích cực, giúp mọi người nâng cao tinh thần cảnh giác, chung tay phòng chống dịch bệnh, cũng có không ít thông tin sai lệch, thiếu kiểm chứng trên mạng xã hội, gây hoang mang dư luận, tác động xấu đến tình hình an ninh trật tự trên địa bàn. http://brt.vn/thoi-su/dich-viem-phoi-virus-corona/202008/manh-tay-xu-ly-hanh-vi-dua-tin-gia-lien-quan-den-dich-covid-19-8179089/",
+                    Source = "https://tingia.gov.vn/tin-video/manh-tay-xu-ly-hanh-vi-dua-tin-gia-lien-quan-den-dich-covid-19/1561/",
                     LanguageId = "vi",
                     DatePublished = new DateTime(2021, 04, 12),
                     Timestamp = DateTime.Now,
+                    ThumbNews = 19
                 },
                 new News
                 {
                     NewsId = 7,
-                    Name = "Bước ngoặt liên minh kinh tế Mỹ - Đài Loan",
-                    Description = "Quan hệ kinh tế Mỹ và Đài Loan vừa có thêm bước tiến mới, hàm chứa các hợp tác có vai trò quan trọng trong việc đối phó với sự trỗi dậy của Trung Quốc.",
-                    Content = "Ngoại giao",
-                    Source = "https://thanhnien.vn/buoc-ngoat-lien-minh-kinh-te-my-dai-loan-post1404652.html",
+                    Name = "Thông tin nguồn nước Thánh Thiên chữa được Covid-19 là sai sự thật",
+                    Description = "Đăng tải thông tin sai sự thật trên trang Facebook cá nhân: “nguồn nước Thánh Thiên sẽ cứu chữa rất…",
+                    Content = "Đăng tải thông tin sai sự thật trên trang Facebook cá nhân: “nguồn nước Thánh Thiên sẽ cứu chữa rất nhiều bệnh… đặc biệt là Covid-19” gây hoang mang dư luận, bà N.T.T (sinh năm 1969, ngụ huyện Bảo Lâm, Lâm Đồng) đã bị cơ quan chức năng xử phạt 5 triệu đồng. Làm việc với Cơ quan công an, bà N.T.T thừa nhận đã đăng tải thông tin sai sự thật. Thông tin lan truyền Qua công tác bảo đảm an ninh mạng, Phòng An ninh mạng và phòng, chống tội phạm sử dụng công nghệ cao (PA05), Công an tỉnh Lâm Đồng phát hiện bà N.T.T đăng tải trên Facebook cá nhân “T.A.P” bài viết có nội dung: “Nguồn nước Thánh Thiên này sẽ cứu chữa rất nhiều bệnh, đặc biệt là Covid-19…”, kèm theo hình ảnh hai chai nước ghi dòng chữ “nguồn Thánh Thiên”. Kiểm chứng Làm việc với cơ quan công an, bà T trình bày, “nguồn nước thánh thiên” có nguồn gốc từ nhóm tự xưng có tên “trừ quỷ Bảo Lộc” (địa chỉ ở 53/5 Hồ Tùng Mậu, TP Bảo Lộc, Lâm Đồng). Trong quá trình tham gia nhóm, bà T và các thành viên cho rằng, “qua việc cầu nguyện, chữa lành, uống nước thánh thiên thì có thể chữa khỏi Covid-19”, nên bà T đã đăng tải lên Facebook cá nhân. Bà T thừa nhận, “nước thánh thiên” không phải thuốc chữa bệnh Covid-19, không được các cơ quan chức năng cấp giấy phép; thông tin do bà T đăng tải là sai sự thật, không kiểm chứng trước khi đăng tải. Hành vi của bà N.T.T vi phạm pháp luật, quy định tại Nghị định số 15/2020/NĐ-CP, ngày 3/2/2020 của Chính phủ, quy định xử phạt vi phạm hành chính trong lĩnh vực bưu chính, viễn thông, tần số vô tuyến điện, công nghệ thông tin và giao dịch điện tử. Theo PA05 Công an tỉnh Lâm Đồng, nhóm tự xưng “trừ quỷ Bảo Lộc” có hoạt động chữa bệnh nhưng không có giấy phép. Ngày 17/9/2021, ông T.V.L.T.Q, một trong những người đứng đầu nhóm này, sử dụng nhà riêng tại địa chỉ nêu trên làm nơi chữa bệnh trái phép, đã bị UBND TP Bảo Lộc xử phạt vi phạm hành chính 45 triệu đồng, về hành vi “chữa bệnh mà không có giấy phép hoạt động chữa bệnh”. Theo Bảo Văn/Báo Nhân dân điện tử https://nhandan.vn/factcheck/thong-tin-nguon-nuoc-thanh-thien-chua-duoc-covid-19-la-sai-su-that-669233/",
+                    Source = "https://tingia.gov.vn/tin-tuc/thong-tin-nguon-nuoc-thanh-thien-chua-duoc-covid-19-la-sai-su-that/3203/",
                     LanguageId = "vi",
                     DatePublished = new DateTime(2021, 04, 12),
                     Timestamp = DateTime.Now,
+                    ThumbNews = 20
                 },
                 new News
                 {
                     NewsId = 8,
-                    Name = "Lượng khách quốc tế đến Thái Lan tăng mạnh sau mở cửa",
-                    Description = "Lượng khách quốc tế đến Thái Lan đã tăng mạnh sau khi nước này nới lỏng quy định cách ly cho người đã tiêm vắc xin Covid-19.",
-                    Content = "Du lịch",
-                    Source = "https://thanhnien.vn/luong-khach-quoc-te-den-thai-lan-tang-manh-sau-mo-cua-post1405440.html",
+                    Name = "Bạc Liêu: Mắc Covid-19 được “ưu ái điều trị tại nhà” là sai sự thật",
+                    Description = "Thông tin về trường hợp bà Nguyễn Huỳnh Như (Giám đốc Công ty mỹ phẩm Đông Anh ở TP Bạc…",
+                    Content = "Thông tin về trường hợp bà Nguyễn Huỳnh Như (Giám đốc Công ty mỹ phẩm Đông Anh ở TP Bạc Liêu) cùng 2 người nhà được ra viện sau nhiều ngày điều trị Covid-19 dù còn dương tính là sai sự thật. Bà Nguyễn Huỳnh Như (Giám đốc Công ty mỹ phẩm Đông Anh ở TP Bạc Liêu) cùng 2 người nhà được ra viện sau nhiều ngày điều trị Covid-19 dù còn dương tính là sai sự thật. Mấy ngày qua, trên mạng xã hội và một vài tờ báo điện tử lan truyền thông tin về trường hợp bà Nguyễn Huỳnh Như (Giám đốc Công ty mỹ phẩm Đông Anh ở TP Bạc Liêu) cùng 2 người nhà được ra viện sau nhiều ngày điều trị Covid-19 dù còn dương tính, gây xôn xao, hoang mang trong nhân dân. Theo giải thích của Ban Chỉ đạo Phòng, chống dịch Covid-19 tỉnh Bạc Liêu, trường hợp bà N.H.N (Nguyễn Huỳnh Như) và bà H.T.K.C (trong gia đình bà Nguyễn Huỳnh Như) xuất viện sau khi được lấy 2 mẫu bệnh phẩm liên tiếp cách nhau 24 giờ, có kết quả xét nghiệm bằng phương pháp Real-time RT-PCR nồng độ vius thấp (Ct > 30); thời gian từ khi lấy mẫu bệnh phẩm cuối cùng tới khi ra viện không quá 24 giờ là đúng quy định của ngành y tế. “Người bệnh được xuất viện với kết quả xét nghiệm bằng phương pháp Real-time RT-PCR nồng độ virus thấp (Ct ≥ 30) thì không có khả năng lây bệnh cho cộng đồng. Người bệnh được xuất viện với kết quả dương tính với SARS-CoV-2 nồng độ virus thấp (Ct ≥ 30) hoàn toàn khác với người tái dương tính với SARS-CoV-2. Chiều 29/9, đại diện Ban Chỉ đạo phòng, chống dịch Covid-19 tỉnh Bạc Liêu nêu rõ: Mấy ngày qua, dư luận và một vài tờ báo điện tử nêu bệnh nhân Nguyễn Huỳnh Như và gia đình bị Covid-19, nhưng được “ưu ái điều trị tại nhà theo phác đồ” là sai sự thật. Đáng lưu ý, hiện nay tỉnh Bạc Liêu không tổ chức điều trị tại nhà cho người mắc Covid-19./. Theo TL/Báo điện tử Đảng Cộng sản https://dangcongsan.vn/canh-bao-thong-tin-gia/bac-lieu-mac-covid-19-duoc-uu-ai-dieu-tri-tai-nha-la-sai-su-that-592693.html",
+                    Source = "https://tingia.gov.vn/tin-tuc/bac-lieu-mac-covid-19-duoc-uu-ai-dieu-tri-tai-nha-la-sai-su-that/3182/",
                     LanguageId = "vi",
                     DatePublished = new DateTime(2021, 04, 12),
                     Timestamp = DateTime.Now,
+                    ThumbNews = 21
                 },
                 new News
                 {
                     NewsId = 9,
-                    Name = "Hướng đi phục hồi bền vững cho APEC",
-                    Description = "Các bộ trưởng APEC khẳng định sẽ tăng cường phối hợp và đẩy mạnh nghị trình hoạt động nhằm đảm bảo khôi phục tự do và an toàn đi lại tại khu vực.",
-                    Content = "Kinh tế",
-                    Source = "https://thanhnien.vn/huong-di-phuc-hoi-ben-vung-cho-apec-post1400053.html",
+                    Name = "“Chiến dịch tiêm vaccine ngừa Covid-19 cho trẻ em 12-15 tuổi ở xứ Anh bị tạm dừng” là không chính xác",
+                    Description = "Hàng nghìn người đã xem 1 video trực tuyến, trong đó xuất hiện 1 người đàn ông nói rằng chiến…",
+                    Content = "Hàng nghìn người đã xem 1 video trực tuyến, trong đó xuất hiện 1 người đàn ông nói rằng chiến dịch tiêm vaccine Covid-19 cho trẻ em từ 12 đến 15 tuổi ở xứ Anh (England) đã bị tạm hoãn do sai sót ở khâu giấy tờ. Tuy nhiên, thông tin này là sai sự thật. Đoạn video đăng tải thông tin sai sự thật về chiến dịch tiêm vaccine Covid-19 cho trẻ em 12-15 tuổi ở xứ Anh. (Ảnh chụp màn hình) Đoạn video được đăng tải trên mạng xã hội Facebook và Twitter ngày 20/9 – thời điểm mà chiến dịch tiêm chủng cho trẻ em 12-15 tuổi ở xứ Anh bắt đầu được triển khai. Trong video là hình ảnh 1 người đàn ông ngồi nói trước máy quay trong ô-tô. Người đàn ông này cho biết điện thoại của của mình “đang reo liên tục”, đồng thời nói thêm rằng: “Về cơ bản, việc triển khai tiêm chủng ở các trường học trên khắp xứ Anh đang bị tạm hoãn do Cơ quan Y tế công xứ Anh (PHE) đã không gửi giấy tờ chính xác liên quan đến chỉ dẫn nhóm bệnh nhân (PGD).” Chia sẻ với Reuters qua email, đại diện của PHE cho biết không hề có sự chậm trễ hay tạm dừng như những lời cáo buộc của người đàn ông trong đoạn video, bởi giấy tờ chỉ dẫn nhóm bệnh nhân (PGD) đã được bố trí kịp thời để phục vụ công tác triển khai tiêm chủng. Chiến dịch tiêm vaccine ngừa Covid-19 cho trẻ em từ 12 đến 15 tuổi ở xứ Anh chính thức khởi động ngày 20/9 sau khi đạt đươc khuyến nghị đồng thuận từ Giám đốc Y tế bốn quốc gia của Vương quốc Anh. Các quan chức này khuyến cáo trẻ em trong độ tuổi trên cần tiêm mũi đầu tiên với vaccine Covid-19 của Pfizer/BioNTech. Trước đó hồi đầu tháng 9, Ủy ban Hỗn hợp về Tiêm chủng (JCVI), cơ quan tư vấn về vaccine của chính phủ Anh, đã khuyến nghị không tiêm vaccine ngừa Covid-19 cho trẻ em khỏe mạnh từ 12-15 tuổi. Cùng với việc triển khai ở xứ Anh, các xứ Scotland, Wales và Bắc Ireland cũng sẽ đưa ra lịch trình thực hiện chiến dịch tiêm chủng của riêng mình trong thời gian tới. Do đó, thông tin người đàn ông đưa ra trong đoạn video là sai sự thật. Chiến dịch tiêm vaccine ngừa Covid-19 cho trẻ em từ 12 đến 15 tuổi ở xứ Anh đã bắt đầu ngày 20/9. PHE khẳng định giấy tờ chỉ dẫn nhóm bệnh nhân (PGD) đã được bố trí kịp thời để phục vụ quá trình triển khai./. Theo PV/Báo điện tử Đảng cộng sản https://dangcongsan.vn/canh-bao-thong-tin-gia/chien-dich-tiem-vaccine-ngua-covid-19-cho-tre-em-12-15-tuoi-o-xu-anh-bi-tam-dung-la-khong-chinh-xac-591591.html",
+                    Source = "https://tingia.gov.vn/tin-tuc/chien-dich-tiem-vaccine-ngua-covid-19-cho-tre-em-12-15-tuoi-o-xu-anh-bi-tam-dung-la-khong-chinh-xac/3144/",
                     LanguageId = "vi",
                     DatePublished = new DateTime(2021, 04, 12),
                     Timestamp = DateTime.Now,
+                    ThumbNews = 22
                 },
                 new News
                 {
@@ -735,13 +806,13 @@ namespace FakeNewsFilter.Data.Extensions
                 },
                 new NewsInTopics()
                 {
-                    NewsId = 8,
-                    TopicId = 5,
+                    NewsId = 5,
+                    TopicId = 8,
                 },
                 new NewsInTopics()
                 {
-                    NewsId = 8,
-                    TopicId = 6,
+                    NewsId = 6,
+                    TopicId = 8,
                 },
                 new NewsInTopics()
                 {
