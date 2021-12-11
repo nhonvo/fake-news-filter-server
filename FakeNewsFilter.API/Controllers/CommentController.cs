@@ -1,4 +1,4 @@
-﻿using FakeNewsFilter.API.Contract;
+using FakeNewsFilter.API.Contract;
 using FakeNewsFilter.Application.Catalog;
 using FakeNewsFilter.ViewModel.Catalog.Comment;
 using Microsoft.AspNetCore.Authorization;
@@ -55,15 +55,12 @@ namespace FakeNewsFilter.API.Controllers
         public async Task<IActionResult> GetCommentByNewsId(int newsId)
         {
             _loggerService.LogDebug("Test logging");
-            var news = await _ICommentService.GetCommentByNewsId(newsId);
 
-            news.Message = _localizer[news.Message].Value;
+            var comments = await _ICommentService.GetCommentByNewsId(newsId);
 
-            if (news == null)
-            {
-                return NotFound(news);
-            }
-            return Ok(news);
+            comments.Message = _localizer[comments.Message].Value;
+            
+            return Ok(comments);
         }
 
         [HttpDelete]
