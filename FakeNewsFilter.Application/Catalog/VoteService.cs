@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Linq;
+using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 using FakeNewsFilter.Data.EF;
 using FakeNewsFilter.Data.Entities;
@@ -23,22 +24,23 @@ namespace FakeNewsFilter.Application.Catalog
 
         private readonly UserManager<User> _userManager;
 
-
+        
         public VoteService(ApplicationDBContext context, UserManager<User> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
-
         public async Task<ApiResult<bool>> Create(VoteCreateRequest request)
         {
             try
             {
+
                 var user = await _userManager.FindByIdAsync(request.UserId.ToString());
 
                 if (user == null)
                 {
                     return new ApiErrorResult<bool>("UserIsNotExist");
+                    
                 }
 
                 var news = await _context.News.Include(t => t.NewsInTopics).FirstOrDefaultAsync(t => t.NewsId == request.NewsId);
