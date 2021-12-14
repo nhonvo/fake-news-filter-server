@@ -24,7 +24,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.Options;
-using FakeNewsFilter.API.Service;
 using FakeNewsFilter.API.Contract;
 
 namespace FakeNewsFilter
@@ -88,7 +87,6 @@ namespace FakeNewsFilter
             services.AddTransient<IVoteService, VoteService>();
             services.AddTransient<IExtraFeaturesService, ExtraFeaturesService>();
             services.AddScoped<ICommentService , CommentService>();
-            services.AddSingleton<ILoggerService, LoggerService>();
 
             //Fluent Validation
             //user

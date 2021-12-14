@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -22,11 +23,14 @@ namespace FakeNewsFilter.API.Controllers
     {
         private readonly IStringLocalizer<UsersController> _localizer;
         private readonly IUserService _userService;
+        private readonly ILogger<UsersController> _logger;
 
-        public UsersController(IUserService userService, IStringLocalizer<UsersController> localizer)
+
+        public UsersController(IUserService userService, IStringLocalizer<UsersController> localizer, ILogger<UsersController> logger)
         {
             _userService = userService;
             _localizer = localizer;
+            _logger = logger;
         }
 
         [HttpPost("Authenticate")]
