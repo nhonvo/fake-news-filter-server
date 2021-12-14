@@ -80,9 +80,9 @@ namespace FakeNewsFilter.API.Controllers
         // GET: api/news
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetNews(string languageId)
+        public async Task<IActionResult> GetNews(string languageId, string filter)
         {
-            var topics = await _newsService.GetAll(languageId);
+            var topics = await _newsService.GetAll(languageId, filter);
 
             topics.Message = _localizer[topics.Message].Value;
 
@@ -126,7 +126,7 @@ namespace FakeNewsFilter.API.Controllers
                 return NotFound(topics);
             }
             
-            var newsList = await _newsService.GetNewsByFollowedTopic(topics.ResultObj);
+            var newsList = await _newsService.GetNewsByFollowedTopic(topics.ResultObj, userId);
 
             newsList.Message = _localizer[newsList.Message].Value;
 

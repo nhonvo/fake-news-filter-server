@@ -26,7 +26,7 @@
                     <form class="row g-3" asp-action="Edit" asp-controller="News" method="post" enctype="multipart/form-data">
                         <input type="hidden" asp-for="NewsId" />
                         <div class="d-flex mb-2">
-                            <img src="http://localhost:5001/images/news/@Model.thumbNews.PathMedia" alt="Thumb News" class="thumb-image users-avatar-shadow rounded me-2 my-25 cursor-pointer" height="90" width="90">
+                            @* <img src="http://localhost:5001/images/news/@Model.thumbNews" alt="Thumb News" class="thumb-image users-avatar-shadow rounded me-2 my-25 cursor-pointer" height="90" width="90"> *@
                             <div class="mt-50">
                                 <h4>Thumbnail</h4>
                                 <div class="col-12 d-flex mt-1 px-0">

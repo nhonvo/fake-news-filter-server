@@ -20,7 +20,7 @@ namespace FakeNewsFilter.ViewModel.Catalog.NewsManage
 
         public string Content { get; set; }
 
-        public MediaViewModel ThumbNews { get; set; }
+        public String? ThumbNews { get; set; }
 
         public Status Status { get; set; }
 

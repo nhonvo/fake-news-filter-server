@@ -22,7 +22,7 @@ namespace FakeNewsFilter.ViewModel.Catalog.NewsManage
 
         public MediaType? Type { get; set; }
 
-        public MediaViewModel? thumbNews { get; set; }
+        public String? thumbNews { get; set; }
 
         public string LanguageId { get; set; }
 
