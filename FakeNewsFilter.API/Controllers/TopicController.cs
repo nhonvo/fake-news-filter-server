@@ -2,12 +2,14 @@
 using System.Linq;
 using System.Threading.Tasks;
 using FakeNewsFilter.Application.Catalog;
+using FakeNewsFilter.Utilities.Exceptions;
 using FakeNewsFilter.ViewModel.Catalog.TopicNews;
 using FakeNewsFilter.ViewModel.Common;
 using FakeNewsFilter.ViewModel.Validator.Topic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,11 +21,13 @@ namespace FakeNewsFilter.API.Controllers
     {
         private readonly IStringLocalizer<TopicController> _localizer;
         private readonly TopicService _topicService;
+        private readonly ILogger<TopicController> _logger;
 
-        public TopicController(TopicService topicService, IStringLocalizer<TopicController> localizer)
+        public TopicController(TopicService topicService, IStringLocalizer<TopicController> localizer, ILogger<TopicController> logger)
         {
             _topicService = topicService;
             _localizer = localizer;
+            _logger = logger;
         }
 
         // POST api/values
@@ -31,31 +35,41 @@ namespace FakeNewsFilter.API.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromForm]TopicCreateRequest request)
         {
-            CreateRequestTopicValidator validator = new CreateRequestTopicValidator(_localizer);
-
-            List<string> ValidationMessages = new List<string>();
-
-            var validationResult = validator.Validate(request);
-
-            if (!validationResult.IsValid)
+            try
             {
-                string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
+                CreateRequestTopicValidator validator = new CreateRequestTopicValidator(_localizer);
 
-                var result = new ApiErrorResult<bool>(errors);
+                List<string> ValidationMessages = new List<string>();
 
-                return BadRequest(result);
+                var validationResult = validator.Validate(request);
+
+                if (!validationResult.IsValid)
+                {
+                    string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
+
+                    var result = new ApiErrorResult<bool>(errors);
+
+                    return BadRequest(result);
+                }
+
+                var resultToken = await _topicService.Create(request);
+
+                resultToken.Message = _localizer[resultToken.Message].Value;
+
+                if (resultToken.IsSuccessed == false)
+                {
+                    _logger.LogError(resultToken.Message);
+                    return BadRequest(resultToken);
+                }
+                _logger.LogInformation(resultToken.Message);
+                return Ok(resultToken);
             }
-
-            var resultToken = await _topicService.Create(request);
-
-            resultToken.Message = _localizer[resultToken.Message].Value;
-
-            if (resultToken.IsSuccessed == false)
+            catch (FakeNewsException e)
             {
-                return BadRequest(resultToken);
+                _logger.LogError(e.Message);
+                return BadRequest(e.Message);
             }
-
-            return Ok(resultToken);
+            
         }
 
         
