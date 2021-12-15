@@ -253,11 +253,10 @@ namespace FakeNewsFilter.Application.System
         {
             try
             {
-                var user = await _userManager.FindByIdAsync(request.UserId.ToString());
-
+                var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == request.UserId);
                 //Kiểm tra trùng Email
-                var email = await _userManager.Users.AnyAsync(x => x.Email == request.Email && x.Id != request.UserId);
-                if (email == false)
+                var email = await _userManager.Users.AnyAsync(x => x.Email == request.Email && x.Id == request.UserId);
+                if (email == true)
                 {
                     return new ApiErrorResult<bool>("EmailIsAvailable");
                 }
