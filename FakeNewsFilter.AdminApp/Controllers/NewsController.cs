@@ -118,7 +118,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
                 return View(result.ResultObj);
             }
 
-            return View("Index");
+            return View("Edit");
         }
 
         [HttpPost]
