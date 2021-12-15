@@ -78,16 +78,25 @@ namespace FakeNewsFilter.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Get(string languageId)
         {
-            var topics = await _topicService.GetTopicHotNews(languageId);
-
-            topics.Message = _localizer[topics.Message].Value;
-
-            if (topics.IsSuccessed == false)
+            try
             {
-                return BadRequest(topics);
+                var topics = await _topicService.GetTopicHotNews(languageId);
+
+                topics.Message = _localizer[topics.Message].Value;
+
+                if (topics.IsSuccessed == false)
+                {
+                    _logger.LogError(topics.Message);
+                    return BadRequest(topics);
+                }
+                _logger.LogInformation(topics.Message);
+                return Ok(topics);
             }
-            
-            return Ok(topics);
+            catch (FakeNewsException e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest(e.Message);
+            }
 
         }
 
@@ -96,11 +105,21 @@ namespace FakeNewsFilter.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetById(int Id)
         {
-            var topic = await _topicService.GetTopicById(Id);
+            try
+            {
+                var topic = await _topicService.GetTopicById(Id);
 
-            topic.Message = _localizer[topic.Message].Value;
+                topic.Message = _localizer[topic.Message].Value;
 
-            return Ok(topic);
+                _logger.LogInformation(topic.Message);
+                return Ok(topic);
+            }
+            catch (FakeNewsException e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest(e.Message);
+            }
+
         }
 
         [HttpPut("{topicId}")]
