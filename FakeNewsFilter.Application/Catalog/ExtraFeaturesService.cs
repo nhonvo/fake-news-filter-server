@@ -69,7 +69,7 @@ namespace FakeNewsFilter.Application.Catalog
                     OfficialRating = x.OfficialRating,
                     Publisher = x.Publisher,
                     Status = x.Status,
-                    ThumbNews = _mapper.Map<MediaViewModel>(x.Media),
+                    ThumbNews = x.Media.PathMedia,
                     LanguageId = x.LanguageId,
                     Timestamp = x.Timestamp,
                 }).ToListAsync();
