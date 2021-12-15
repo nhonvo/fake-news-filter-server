@@ -38,24 +38,5 @@ namespace FakeNewsFilter.API.Controllers
 
             return Ok(result);
         }
-
-         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] VoteUpdateRequest request)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var result = await _voteService.Update(request);
-
-            result.Message = _localizer[result.Message].Value;
-
-            if (result.ResultObj != false)
-            {
-                return BadRequest(result);
-            }
-            return Ok(result);
-        }
     }
 }
