@@ -43,10 +43,13 @@ public class VoteService : IVoteService
 
             //Clear existing vote
             var existingVote = _context.Vote.Where(x => x.NewsId == request.NewsId && x.UserId == request.UserId);
-            _context.Vote.RemoveRange(existingVote);
-            await _context.SaveChangesAsync();
-            
-            var vote = new Vote
+            if (existingVote.Any())
+            {
+                _context.Vote.RemoveRange(existingVote);
+                await _context.SaveChangesAsync();
+            }
+
+                var vote = new Vote
             {
                 UserId = request.UserId,
                 NewsId = request.NewsId,
@@ -68,22 +71,4 @@ public class VoteService : IVoteService
         }
     }
 
-    public async Task<ApiResult<bool>> Update(VoteUpdateRequest request)
-    {
-        var vote_update =
-            await _context.Vote.FirstOrDefaultAsync(u => u.UserId == request.UserId && u.NewsId == request.NewsId);
-
-        if (vote_update == null)
-            return new ApiErrorResult<bool>($"CannontFindANewsWithId {request.NewsId}");
-
-        vote_update.isReal = request.isReal;
-
-        vote_update.Timestamp = DateTime.Now;
-
-        _context.Vote.Update(vote_update);
-
-        if (await _context.SaveChangesAsync() == 0) return new ApiErrorResult<bool>("UpdateVoteUnsuccessful");
-
-        return new ApiSuccessResult<bool>("UpdateVoteSuccessful", false);
-    }
 }
