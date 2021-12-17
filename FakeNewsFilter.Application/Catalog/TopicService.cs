@@ -46,98 +46,106 @@ namespace FakeNewsFilter.Application.Catalog
         public async Task<ApiResult<List<TopicInfoVM>>> GetTopicHotNews(string languageId)
         {
             
-            try
-            {
-                var language = await _context.Languages.SingleOrDefaultAsync(x => x.Id == languageId);
-                
-                var query = from t in _context.TopicNews where (string.IsNullOrEmpty(languageId) || t.LanguageId == languageId)
-                            select new 
-                            {
-                                topic = t,
-                                newscount = _context.NewsInTopics.Where(n => n.TopicId == t.TopicId).Count(),
-                                thumb = _context.Media.Where(m => m.MediaId == t.ThumbTopic).Select(m => m.PathMedia).FirstOrDefault(),
-                                synctime = _context.NewsInTopics.Where(n => n.TopicId == t.TopicId).Max(n => n.Timestamp)
-                            };
-
-                var topics = await query.Select(x => new TopicInfoVM()
+                try
                 {
-                    TopicId = x.topic.TopicId,
-                    Label = x.topic.Label,
-                    Tag = x.topic.Tag,
-                    Description = x.topic.Description,
-                    NONews = x.newscount,
-                    ThumbImage = x.thumb,
-                    Status = x.topic.Status,
-                    LanguageId = x.topic.LanguageId,
-                    RealTime = x.synctime,
-                }).ToListAsync();
+                    var language = await _context.Languages.SingleOrDefaultAsync(x => x.Id == languageId);
 
-                if (topics == null)
-                {
-                    return new ApiErrorResult<List<TopicInfoVM>>("GetTopicUnsuccessful");
-                }
+                    var query = from t in _context.TopicNews
+                                where (string.IsNullOrEmpty(languageId) || t.LanguageId == languageId)
+                                select new
+                                {
+                                    topic = t,
+                                    newscount = _context.NewsInTopics.Where(n => n.TopicId == t.TopicId).Count(),
+                                    thumb = _context.Media.Where(m => m.MediaId == t.ThumbTopic).Select(m => m.PathMedia).FirstOrDefault(),
+                                    synctime = _context.NewsInTopics.Where(n => n.TopicId == t.TopicId).Max(n => n.Timestamp)
+                                };
 
-                if (language == null)
-                {
+                    var topics = await query.Select(x => new TopicInfoVM()
+                    {
+                        TopicId = x.topic.TopicId,
+                        Label = x.topic.Label,
+                        Tag = x.topic.Tag,
+                        Description = x.topic.Description,
+                        NONews = x.newscount,
+                        ThumbImage = x.thumb,
+                        Status = x.topic.Status,
+                        LanguageId = x.topic.LanguageId,
+                        RealTime = x.synctime,
+                    }).ToListAsync();
+
+                    if (topics == null)
+                    {
+                        return new ApiErrorResult<List<TopicInfoVM>>("GetTopicUnsuccessful");
+                    }
+
+                    if (language == null)
+                    {
+                        return new ApiSuccessResult<List<TopicInfoVM>>("GetTopicSuccessful", topics);
+                    }
+
                     return new ApiSuccessResult<List<TopicInfoVM>>("GetTopicSuccessful", topics);
                 }
-                return new ApiSuccessResult<List<TopicInfoVM>>("GetTopicSuccessful", topics);
-            }
-            catch(Exception ex)
-            {
-                return new ApiErrorResult<List<TopicInfoVM>>(ex.Message);
-            }
+                catch (Exception ex)
+                {
+                    return new ApiErrorResult<List<TopicInfoVM>>(ex.Message);
+                }
+            
             
         }
 
         //Create Topic News
         public async Task<ApiResult<bool>> Create(TopicCreateRequest request)
         {
-            try
+            using (var transaction = _context.Database.BeginTransaction())
             {
-                var language = await _context.Languages.FirstOrDefaultAsync(x => x.Id == request.LanguageId);
-                if (language == null)
+                try
                 {
-                    return new ApiErrorResult<bool>("LanguageNotFound");
-                }
-                var topic = new Data.Entities.TopicNews()
-                {
-                    Label = request.Label,
-                    Description = request.Description,
-                    Tag = request.Tag,
-                    Timestamp = DateTime.Now,
-                    LanguageId = request.LanguageId
-                };
-
-                //Save Media
-                if (request.ThumbTopic != null)
-                {
-                    topic.Media = new Media()
+                    var language = await _context.Languages.FirstOrDefaultAsync(x => x.Id == request.LanguageId);
+                    if (language == null)
                     {
-                        Caption = "Thumbnail Topic",
-                        DateCreated = DateTime.Now,
-                        FileSize = request.ThumbTopic.Length,
-                        PathMedia = await this.SaveFile(request.ThumbTopic),
-                        Type = MediaType.Image,
-                        SortOrder = 1
+                        return new ApiErrorResult<bool>("LanguageNotFound");
+                    }
+                    var topic = new Data.Entities.TopicNews()
+                    {
+                        Label = request.Label,
+                        Description = request.Description,
+                        Tag = request.Tag,
+                        Timestamp = DateTime.Now,
+                        LanguageId = request.LanguageId
                     };
+
+                    //Save Media
+                    if (request.ThumbTopic != null)
+                    {
+                        topic.Media = new Media()
+                        {
+                            Caption = "Thumbnail Topic",
+                            DateCreated = DateTime.Now,
+                            FileSize = request.ThumbTopic.Length,
+                            PathMedia = await this.SaveFile(request.ThumbTopic),
+                            Type = MediaType.Image,
+                            SortOrder = 1
+                        };
+                    }
+
+                    _context.TopicNews.Add(topic);
+
+                    var result = await _context.SaveChangesAsync();
+
+                    if (result > 0)
+                    {
+                        transaction.Commit();
+                        return new ApiSuccessResult<bool>("CreateTopicSuccessful", false);
+                    }
+
+                    transaction.Rollback();
+                    return new ApiErrorResult<bool>("CreateUnsuccessful");
                 }
-
-                _context.TopicNews.Add(topic);
-
-                var result = await _context.SaveChangesAsync();
-
-                if (result > 0)
+                catch (Exception ex)
                 {
-                    return new ApiSuccessResult<bool>("CreateTopicSuccessful", false);
+                    transaction.Rollback();
+                    return new ApiErrorResult<bool>(ex.Message);
                 }
-
-                return new ApiErrorResult<bool>("CreateUnsuccessful");
-
-            }
-            catch(Exception ex)
-            {
-                return new ApiErrorResult<bool>(ex.Message);
             }
 
         }

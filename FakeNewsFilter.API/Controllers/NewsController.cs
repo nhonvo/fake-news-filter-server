@@ -9,6 +9,8 @@ using Microsoft.Extensions.Localization;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using FakeNewsFilter.Utilities.Exceptions;
 
 namespace FakeNewsFilter.API.Controllers
 {
@@ -19,62 +21,86 @@ namespace FakeNewsFilter.API.Controllers
         private readonly INewsService _newsService;
         private readonly IStringLocalizer<NewsController> _localizer;
         private  readonly IFollowService _followService;
-
-        public NewsController(INewsService newsService, IFollowService followService, IStringLocalizer<NewsController> localizer)
+        private readonly ILogger<NewsController> _logger;
+        public NewsController(INewsService newsService, IFollowService followService, IStringLocalizer<NewsController> localizer, ILogger<NewsController> logger)
         {
             _newsService = newsService;
             _followService = followService;
             _localizer = localizer;
+            _logger = logger;
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromForm] NewsCreateRequest request)
         {
-            CreateRequestNewsValidator validator = new CreateRequestNewsValidator(_localizer);
-
-            List<string> ValidationMessages = new List<string>();
-
-            var validationResult = validator.Validate(request);
-
-            if (!validationResult.IsValid)
+            try
             {
-                string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
+                CreateRequestNewsValidator validator = new CreateRequestNewsValidator(_localizer);
 
-                var result = new ApiErrorResult<bool>(errors);
+                List<string> ValidationMessages = new List<string>();
 
-                return BadRequest(result);
+                var validationResult = validator.Validate(request);
+
+                if (!validationResult.IsValid)
+                {
+                    string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
+
+                    var result = new ApiErrorResult<bool>(errors);
+
+                    return BadRequest(result);
+                }
+
+                var createNews = await _newsService.Create(request);
+
+                createNews.Message = _localizer[createNews.Message].Value;
+
+                if (createNews.IsSuccessed == false)
+                {
+                    _logger.LogError(createNews.Message);
+                    return BadRequest(createNews);
+                }
+
+                var getNews = await _newsService.GetById(createNews.ResultObj);
+
+                getNews.Message = _localizer[getNews.Message].Value;
+
+                _logger.LogInformation(createNews.Message);
+                return CreatedAtAction(nameof(GetById), new { newsId = createNews }, getNews);
+            }
+            catch (FakeNewsException e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest(e.Message);
             }
 
-            var createNews = await _newsService.Create(request);
-
-            createNews.Message = _localizer[createNews.Message].Value;
-
-            if (createNews.IsSuccessed == false)
-            {
-                return BadRequest(createNews);
-            }
-            
-            var getNews = await _newsService.GetById(createNews.ResultObj);
-
-            getNews.Message = _localizer[getNews.Message].Value;
-            
-            return CreatedAtAction(nameof(GetById), new { newsId = createNews }, getNews);
         }
 
         [HttpDelete("{newsId}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int newsId)
         {
-            var result = await _newsService.Delete(newsId);
-
-            result.Message = _localizer[result.Message].Value;
-
-            if (result.ResultObj != false)
+            try
             {
-                return BadRequest(result);
+                var result = await _newsService.Delete(newsId);
+
+                result.Message = _localizer[result.Message].Value;
+
+                if (result.ResultObj != false)
+                {
+                    _logger.LogError(result.Message);
+                    return BadRequest(result);
+                }
+
+                _logger.LogInformation(result.Message);
+                return Ok(result);
             }
-            return Ok(result);
+            catch (FakeNewsException e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest(e.Message);
+            }
+
         }
 
         // GET: api/news
@@ -137,49 +163,71 @@ namespace FakeNewsFilter.API.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update([FromForm] NewsUpdateRequest request)
         {
-            UpdateRequestNewsValidator validator = new UpdateRequestNewsValidator(_localizer);
-
-            List<string> ValidationMessages = new List<string>();
-
-            var validationResult = validator.Validate(request);
-
-            if (!validationResult.IsValid)
+            try
             {
-                string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
+                UpdateRequestNewsValidator validator = new UpdateRequestNewsValidator(_localizer);
 
-                var result = new ApiErrorResult<bool>(errors);
+                List<string> ValidationMessages = new List<string>();
 
-                return BadRequest(result);
+                var validationResult = validator.Validate(request);
+
+                if (!validationResult.IsValid)
+                {
+                    string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
+
+                    var result = new ApiErrorResult<bool>(errors);
+
+                    return BadRequest(result);
+                }
+
+                var resultToken = await _newsService.Update(request);
+
+                resultToken.Message = _localizer[resultToken.Message].Value;
+
+                if (resultToken.ResultObj != false)
+                {
+                    _logger.LogError(resultToken.Message);
+                    return BadRequest(resultToken);
+                }
+                _logger.LogInformation(resultToken.Message);
+                return Ok(resultToken);
+            }
+            catch (FakeNewsException e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest(e.Message);
             }
 
-            var resultToken = await _newsService.Update(request);
-
-            resultToken.Message = _localizer[resultToken.Message].Value;
-
-            if (resultToken.ResultObj != false)
-            {
-                return BadRequest(resultToken);
-            }
-            return Ok(resultToken);
         }
 
         [HttpPatch("link/{newsId}/{newLink}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateLink(int newsId, string newLink)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var result = await _newsService.UpdateLink(newsId, newLink);
+
+                result.Message = _localizer[result.Message].Value;
+
+                if (result.ResultObj == false)
+                {
+                    _logger.LogError(result.Message);
+                    return BadRequest(result);
+                }
+                _logger.LogInformation(result.Message);
+                return Ok(result);
             }
-            var result = await _newsService.UpdateLink(newsId, newLink);
-
-            result.Message = _localizer[result.Message].Value;
-
-            if (result.ResultObj == false)
+            catch (FakeNewsException e)
             {
-                return BadRequest(result);
+                _logger.LogError(e.Message);
+                return BadRequest(e.Message);
             }
-            return Ok(result);
+
         }
     }
 }

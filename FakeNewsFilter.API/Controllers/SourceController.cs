@@ -1,8 +1,10 @@
 ﻿using FakeNewsFilter.Application.Catalog;
+using FakeNewsFilter.Utilities.Exceptions;
 using FakeNewsFilter.ViewModel.Catalog.SourceStory;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
 namespace FakeNewsFilter.API.Controllers
@@ -14,50 +16,73 @@ namespace FakeNewsFilter.API.Controllers
     {
         private readonly IScourceService _IScourceStoryService;
         private readonly IStringLocalizer<SourceController> _localizer;
-
-        public SourceController(IScourceService IScourceStoryService, IStringLocalizer<SourceController> localizer)
+        private readonly ILogger<SourceController> _logger;
+        public SourceController(IScourceService IScourceStoryService, IStringLocalizer<SourceController> localizer, ILogger<SourceController> logger)
         {
             _IScourceStoryService = IScourceStoryService;
             _localizer = localizer;
+            _logger = logger;
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromBody] SourceCreateRequest request)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var result = await _IScourceStoryService.Create(request);
+
+                result.Message = _localizer[result.Message].Value;
+
+                if (result.IsSuccessed == false)
+                {
+                    _logger.LogError(result.Message);
+                    return BadRequest(result);
+                }
+                _logger.LogInformation(result.Message);
+                return Ok(result);
             }
-            var result = await _IScourceStoryService.Create(request);
-
-            result.Message = _localizer[result.Message].Value;
-
-            if (result.IsSuccessed == false)
+            catch (FakeNewsException e)
             {
-                return BadRequest(result);
+                _logger.LogError(e.Message);
+                return BadRequest(e.Message);
             }
-            return Ok(result);
+
         }
 
         [HttpPut]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update([FromBody] SourceUpdateRequest request)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var result = await _IScourceStoryService.Update(request);
+
+                result.Message = _localizer[result.Message].Value;
+
+                if (result.ResultObj != false)
+                {
+                    _logger.LogError(result.Message);
+                    return BadRequest(result);
+                }
+                _logger.LogInformation(result.Message);
+                return Ok(result);
+            }
+            catch (FakeNewsException e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest(e.Message);
             }
 
-            var result = await _IScourceStoryService.Update(request);
-
-            result.Message = _localizer[result.Message].Value;
-
-            if (result.ResultObj != false)
-            {
-                return BadRequest(result);
-            }
-            return Ok(result);
         }
 
         [HttpGet]
@@ -75,15 +100,27 @@ namespace FakeNewsFilter.API.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int sourceid)
         {
-            var result = await _IScourceStoryService.Delete(sourceid);
-
-            result.Message = _localizer[result.Message].Value;
-
-            if (result.ResultObj != false)
+            try
             {
-                return BadRequest(result);
+                var result = await _IScourceStoryService.Delete(sourceid);
+
+                result.Message = _localizer[result.Message].Value;
+
+                if (result.ResultObj != false)
+                {
+                    _logger.LogError(result.Message);
+                    return BadRequest(result);
+                }
+
+                _logger.LogInformation(result.Message);
+                return Ok(result);
             }
-            return Ok(result);
+            catch (FakeNewsException e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest(e.Message);
+            }
+
         }
 
         [HttpGet("{SourceId}")]

@@ -354,56 +354,56 @@ namespace FakeNewsFilter.Data.Extensions
                 {
                     MediaId = 15,
                     Type = Enums.MediaType.Image,
-                    PathMedia = "newid2.jpg",
+                    PathMedia = "newsid2.jpg",
                     DateCreated = DateTime.Now,
                 },
                 new Media
                 {
                     MediaId = 16,
                     Type = Enums.MediaType.Image,
-                    PathMedia = "newid3.jpg",
+                    PathMedia = "newsid3.jpg",
                     DateCreated = DateTime.Now,
                 },
                 new Media
                 {
                     MediaId = 17,
                     Type = Enums.MediaType.Image,
-                    PathMedia = "newid4.jpg",
+                    PathMedia = "newsid4.jpg",
                     DateCreated = DateTime.Now,
                 },
                 new Media
                 {
                     MediaId = 18,
                     Type = Enums.MediaType.Image,
-                    PathMedia = "newid5.jpg",
+                    PathMedia = "newsid5.jpg",
                     DateCreated = DateTime.Now,
                 },
                 new Media
                 {
                     MediaId = 19,
                     Type = Enums.MediaType.Image,
-                    PathMedia = "newid6.png",
+                    PathMedia = "newsid6.png",
                     DateCreated = DateTime.Now,
                 },
                 new Media
                 {
                     MediaId = 20,
                     Type = Enums.MediaType.Image,
-                    PathMedia = "newid7.jpg",
+                    PathMedia = "newsid7.jpg",
                     DateCreated = DateTime.Now,
                 },
                 new Media
                 {
                     MediaId = 21,
                     Type = Enums.MediaType.Image,
-                    PathMedia = "newid8.jpg",
+                    PathMedia = "newsid8.jpg",
                     DateCreated = DateTime.Now,
                 },
                 new Media
                 {
                     MediaId = 22,
                     Type = Enums.MediaType.Image,
-                    PathMedia = "newid9.jpg",
+                    PathMedia = "newsid9.jpg",
                     DateCreated = DateTime.Now,
                 }
            );
