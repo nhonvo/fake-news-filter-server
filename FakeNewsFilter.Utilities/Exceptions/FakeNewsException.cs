@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 namespace FakeNewsFilter.Utilities.Exceptions
 {
-    public class FakeNewsException : Exception
+    public class FakeNewsException : DbUpdateException
     {
 
-        public FakeNewsException()
+        public FakeNewsException() : base()
         {
         }
 

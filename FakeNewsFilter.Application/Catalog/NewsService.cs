@@ -9,11 +9,13 @@ using FakeNewsFilter.Application.Common;
 using FakeNewsFilter.Data.EF;
 using FakeNewsFilter.Data.Entities;
 using FakeNewsFilter.Data.Enums;
+using FakeNewsFilter.Utilities.Exceptions;
 using FakeNewsFilter.ViewModel.Catalog.NewsManage;
 using FakeNewsFilter.ViewModel.Catalog.TopicNews;
 using FakeNewsFilter.ViewModel.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace FakeNewsFilter.Application.Catalog;
 
@@ -222,61 +224,74 @@ public class NewsService : INewsService
     //Tạo mới 1 tin tức
     public async Task<ApiResult<int>> Create(NewsCreateRequest request)
     {
-        //check language
-        var language = await _context.Languages.FirstOrDefaultAsync(x => x.Id == request.LanguageId);
-        if (language == null) return new ApiErrorResult<int>("LanguageNotFound");
-        //check topic id
-        foreach (var item in request.TopicId)
-        {
-            var topic = await _context.TopicNews.FirstOrDefaultAsync(t => t.TopicId == item);
-            if (topic == null) return new ApiErrorResult<int>("TopicNotFound");
-        }
+            using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
+            
+                try
+                {
+                    //check language
+                    var language = await _context.Languages.FirstOrDefaultAsync(x => x.Id == request.LanguageId);
+                    if (language == null) return new ApiErrorResult<int>("LanguageNotFound");
+                    //check topic id
+                    //foreach (var item in request.TopicId)
+                    //{
+                    //    var topic = await _context.TopicNews.FirstOrDefaultAsync(t => t.TopicId == item);
+                    //    if (topic == null) return new ApiErrorResult<int>("TopicNotFound");
+                    //}
 
-        var news = new News
-        {
-            Name = request.Name,
-            Description = request.Description,
-            Content = request.Content,
-            OfficialRating = request.OfficialRating,
-            DatePublished = request.DatePublished ?? DateTime.Now,
-            Publisher = request.Publisher,
-            LanguageId = request.LanguageId,
-            Timestamp = DateTime.Now
-        };
+                    var news = new News
+                    {
+                        Name = request.Name,
+                        Description = request.Description,
+                        Content = request.Content,
+                        OfficialRating = request.OfficialRating,
+                        DatePublished = request.DatePublished ?? DateTime.Now,
+                        Publisher = request.Publisher,
+                        LanguageId = request.LanguageId,
+                        Timestamp = DateTime.Now
+                    };
 
-        //Save Image on Host
-        if (request.ThumbNews != null)
-        {
-            var checkExtension =
-                ImageExtensions.Contains(Path.GetExtension(request.ThumbNews.FileName).ToUpperInvariant());
-            news.Media = new Media
-            {
-                DateCreated = DateTime.Now,
-                FileSize = request.ThumbNews.Length,
-                PathMedia = await SaveFile(request.ThumbNews),
-                Type = checkExtension ? MediaType.Image : MediaType.Video,
-                Caption = "Thumb News " + (checkExtension ? "Image" : "Video")
-            };
-        }
+                    //Save Image on Host
+                    if (request.ThumbNews != null)
+                    {
+                        var checkExtension =
+                            ImageExtensions.Contains(Path.GetExtension(request.ThumbNews.FileName).ToUpperInvariant());
+                        news.Media = new Media
+                        {
+                            DateCreated = DateTime.Now,
+                            FileSize = request.ThumbNews.Length,
+                            PathMedia = await SaveFile(request.ThumbNews),
+                            Type = checkExtension ? MediaType.Image : MediaType.Video,
+                            Caption = "Thumb News " + (checkExtension ? "Image" : "Video")
+                        };
+                    }
 
-        _context.News.Add(news);
+                    _context.News.Add(news);
 
-        await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync();
 
-        foreach (var topicId in request.TopicId)
-            _context.NewsInTopics.Add(new NewsInTopics
-            {
-                NewsId = news.NewsId,
-                TopicId = topicId
-            });
+                    foreach (var topicId in request.TopicId)
+                        _context.NewsInTopics.Add(new NewsInTopics
+                        {
+                            NewsId = news.NewsId,
+                            TopicId = topicId
+                        });
 
-        if (await _context.SaveChangesAsync() == 0)
-        {
-            await _storageService.DeleteFileAsync(news.Media.PathMedia);
-            return new ApiErrorResult<int>("CreateNewsUnsuccessful");
-        }
+                    if (await _context.SaveChangesAsync() == 0)
+                    {
+                        transaction.Rollback();
+                        await _storageService.DeleteFileAsync(news.Media.PathMedia);
+                        return new ApiErrorResult<int>("CreateNewsUnsuccessful");
+                    }
 
-        return new ApiSuccessResult<int>("CreateNewsSuccessful", news.NewsId);
+                    transaction.Commit();
+                    return new ApiSuccessResult<int>("CreateNewsSuccessful", news.NewsId);
+                }
+                catch (DbUpdateException ex)
+                {
+                    transaction.Rollback();
+                    return new ApiErrorResult<int>(ex.Message);
+                }
+            
     }
 
     //Xoá tin tức
@@ -309,73 +324,93 @@ public class NewsService : INewsService
     //Cập nhật tin tức
     public async Task<ApiResult<bool>> Update(NewsUpdateRequest request)
     {
-        var news_update = await _context.News.FindAsync(request.Id);
-
-        if (news_update == null)
-            return new ApiErrorResult<bool>("CannontFindANewsWithId");
-
-        news_update.Name = request.Name ?? news_update.Name;
-        news_update.Description = request.Description ?? news_update.Description;
-        news_update.Content = request.Content ?? news_update.Content;
-        news_update.LanguageId = request.LanguageId ?? news_update.LanguageId;
-
-        if (request.ThumbNews != null)
+        using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
         {
-            //Kiểm tra hình đã có trên DB chưa
-            var thumb = _context.Media.FirstOrDefault(i => i.MediaId == news_update.ThumbNews);
-
-            //Nếu chưa có hình thì thêm hình mới
-            if (thumb == null)
+            try
             {
-                news_update.Media = new Media
+                var news_update = await _context.News.FindAsync(request.Id);
+
+                if (news_update == null)
+                    return new ApiErrorResult<bool>("CannontFindANewsWithId");
+
+                news_update.Name = request.Name ?? news_update.Name;
+                news_update.Description = request.Description ?? news_update.Description;
+                news_update.Content = request.Content ?? news_update.Content;
+                news_update.LanguageId = request.LanguageId ?? news_update.LanguageId;
+
+                if (request.ThumbNews != null)
                 {
-                    Caption = "Thumbnail Topic",
-                    DateCreated = DateTime.Now,
-                    FileSize = request.ThumbNews.Length,
-                    PathMedia = await SaveFile(request.ThumbNews),
-                    Type = MediaType.Image,
-                    SortOrder = 1
-                };
+                    //Kiểm tra hình đã có trên DB chưa
+                    var thumb = _context.Media.FirstOrDefault(i => i.MediaId == news_update.ThumbNews);
+
+                    //Nếu chưa có hình thì thêm hình mới
+                    if (thumb == null)
+                    {
+                        news_update.Media = new Media
+                        {
+                            Caption = "Thumbnail Topic",
+                            DateCreated = DateTime.Now,
+                            FileSize = request.ThumbNews.Length,
+                            PathMedia = await SaveFile(request.ThumbNews),
+                            Type = MediaType.Image,
+                            SortOrder = 1
+                        };
+                    }
+                    else
+                    {
+                        if (thumb.PathMedia != null) await _storageService.DeleteFileAsync(thumb.PathMedia);
+                        thumb.FileSize = request.ThumbNews.Length;
+                        thumb.PathMedia = await SaveFile(request.ThumbNews);
+
+                        thumb.Type = MediaType.Image;
+
+                        _context.Media.Update(thumb);
+                    }
+                }
+
+                //check topic id
+                foreach (var item in request.TopicId)
+                {
+                    var topic = await _context.TopicNews.FirstOrDefaultAsync(t => t.TopicId == item);
+                    if (topic == null) return new ApiErrorResult<bool>("CannontFindATopicWithId");
+                }
+
+                var newsListDelete = await _context.NewsInTopics.Where(n => n.NewsId == request.Id).ToListAsync();
+
+                //delete all news in newsInTopics has request.Id equals NewsId in this table
+                foreach (var item in newsListDelete) _context.NewsInTopics.Remove(item);
+
+                // update news in topic
+                foreach (var item in request.TopicId)
+                {
+                    var newsUpdate = new NewsInTopics
+                    {
+                        NewsId = request.Id,
+                        TopicId = item
+                    };
+
+                    
+                    _context.NewsInTopics.Add(newsUpdate);
+                }
+
+                if (await _context.SaveChangesAsync() == 0)
+                {
+                    transaction.Rollback();
+                    return new ApiErrorResult<bool>("UpdateNewsUnsuccessful");
+                } 
+
+                transaction.Commit();
+                return new ApiSuccessResult<bool>("UpdateNewsSuccessful", false);
             }
-            else
+            catch (DbUpdateException ex)
             {
-                if (thumb.PathMedia != null) await _storageService.DeleteFileAsync(thumb.PathMedia);
-                thumb.FileSize = request.ThumbNews.Length;
-                thumb.PathMedia = await SaveFile(request.ThumbNews);
-
-                thumb.Type = MediaType.Image;
-
-                _context.Media.Update(thumb);
+                transaction.Rollback();
+                return new ApiErrorResult<bool>(ex.Message);
             }
+
         }
 
-        //check topic id
-        foreach (var item in request.TopicId)
-        {
-            var topic = await _context.TopicNews.FirstOrDefaultAsync(t => t.TopicId == item);
-            if (topic == null) return new ApiErrorResult<bool>("CannontFindATopicWithId");
-        }
-
-        var newsListDelete = await _context.NewsInTopics.Where(n => n.NewsId == request.Id).ToListAsync();
-
-        //delete all news in newsInTopics has request.Id equals NewsId in this table
-        foreach (var item in newsListDelete) _context.NewsInTopics.Remove(item);
-
-        // update news in topic
-        foreach (var item in request.TopicId)
-        {
-            var newsUpdate = new NewsInTopics
-            {
-                NewsId = request.Id,
-                TopicId = item
-            };
-
-            _context.NewsInTopics.Add(newsUpdate);
-        }
-
-        if (await _context.SaveChangesAsync() == 0) return new ApiErrorResult<bool>("UpdateNewsUnsuccessful");
-
-        return new ApiSuccessResult<bool>("UpdateNewsSuccessful", false);
+        
     }
 
     //Update Link News

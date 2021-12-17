@@ -1,8 +1,10 @@
 ﻿using FakeNewsFilter.Application.Catalog;
+using FakeNewsFilter.Utilities.Exceptions;
 using FakeNewsFilter.ViewModel.Catalog.Follows;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
@@ -16,48 +18,73 @@ namespace FakeNewsFilter.API.Controllers
     {
         private readonly IFollowService _IFollowService;
         private readonly IStringLocalizer<FollowController> _localizer;
-
-        public FollowController(IFollowService IFollowService, IStringLocalizer<FollowController> localizer)
+        private readonly ILogger<FollowController> _logger;
+        public FollowController(IFollowService IFollowService, IStringLocalizer<FollowController> localizer, ILogger<FollowController> logger)
         {
             _IFollowService = IFollowService;
             _localizer = localizer;
+            _logger = logger;
         }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] FollowCreateRequest request)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var result = await _IFollowService.Create(request);
+
+                result.Message = _localizer[result.Message].Value;
+
+                if (result.IsSuccessed == false)
+                {
+                    _logger.LogError(result.Message);
+                    return BadRequest(result);
+                }
+
+                _logger.LogInformation(result.Message);
+                return Ok(result);
             }
-            var result = await _IFollowService.Create(request);
-
-            result.Message = _localizer[result.Message].Value;
-
-            if (result.IsSuccessed == false)
+            catch (FakeNewsException e)
             {
-                return BadRequest(result);
+                _logger.LogError(e.Message);
+                return BadRequest(e.Message);
             }
-            return Ok(result);
+
         }
 
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] FollowUpdateRequest request)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var result = await _IFollowService.Update(request);
+
+                result.Message = _localizer[result.Message].Value;
+
+                if (result.ResultObj != false)
+                {
+                    _logger.LogError(result.Message);
+                    return BadRequest(result);
+                }
+
+                _logger.LogInformation(result.Message);
+                return Ok(result);
+            }
+            catch (FakeNewsException e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest(e.Message);
             }
 
-            var result = await _IFollowService.Update(request);
-
-            result.Message = _localizer[result.Message].Value;
-
-            if (result.ResultObj != false)
-            {
-                return BadRequest(result);
-            }
-            return Ok(result);
         }
 
         [HttpGet("{userId}")]
