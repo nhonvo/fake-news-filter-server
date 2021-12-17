@@ -2,12 +2,14 @@
 using System.Linq;
 using System.Threading.Tasks;
 using FakeNewsFilter.Application.Catalog;
+using FakeNewsFilter.Data.EF;
 using FakeNewsFilter.Utilities.Exceptions;
 using FakeNewsFilter.ViewModel.Catalog.TopicNews;
 using FakeNewsFilter.ViewModel.Common;
 using FakeNewsFilter.ViewModel.Validator.Topic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 
@@ -22,9 +24,11 @@ namespace FakeNewsFilter.API.Controllers
         private readonly IStringLocalizer<TopicController> _localizer;
         private readonly TopicService _topicService;
         private readonly ILogger<TopicController> _logger;
+        private readonly ApplicationDBContext _context;
 
-        public TopicController(TopicService topicService, IStringLocalizer<TopicController> localizer, ILogger<TopicController> logger)
+        public TopicController(ApplicationDBContext context, TopicService topicService, IStringLocalizer<TopicController> localizer, ILogger<TopicController> logger)
         {
+            _context = context;
             _topicService = topicService;
             _localizer = localizer;
             _logger = logger;
@@ -35,40 +39,42 @@ namespace FakeNewsFilter.API.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromForm]TopicCreateRequest request)
         {
-            try
-            {
-                CreateRequestTopicValidator validator = new CreateRequestTopicValidator(_localizer);
-
-                List<string> ValidationMessages = new List<string>();
-
-                var validationResult = validator.Validate(request);
-
-                if (!validationResult.IsValid)
+            
+                try
                 {
-                    string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
+                    CreateRequestTopicValidator validator = new CreateRequestTopicValidator(_localizer);
 
-                    var result = new ApiErrorResult<bool>(errors);
+                    List<string> ValidationMessages = new List<string>();
 
-                    return BadRequest(result);
+                    var validationResult = validator.Validate(request);
+
+                    if (!validationResult.IsValid)
+                    {
+                        string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
+
+                        var result = new ApiErrorResult<bool>(errors);
+
+                        return BadRequest(result);
+                    }
+
+                    var resultToken = await _topicService.Create(request);
+
+                    resultToken.Message = _localizer[resultToken.Message].Value;
+
+                    if (resultToken.IsSuccessed == false)
+                    {
+                        _logger.LogError(resultToken.Message);
+                        return BadRequest(resultToken);
+                    }
+                    _logger.LogInformation(resultToken.Message);
+                    return Ok(resultToken);
+
                 }
-
-                var resultToken = await _topicService.Create(request);
-
-                resultToken.Message = _localizer[resultToken.Message].Value;
-
-                if (resultToken.IsSuccessed == false)
+                catch (FakeNewsException e)
                 {
-                    _logger.LogError(resultToken.Message);
-                    return BadRequest(resultToken);
+                    _logger.LogError(e.Message);
+                    return BadRequest(e.Message);
                 }
-                _logger.LogInformation(resultToken.Message);
-                return Ok(resultToken);
-            }
-            catch (FakeNewsException e)
-            {
-                _logger.LogError(e.Message);
-                return BadRequest(e.Message);
-            }
             
         }
 
@@ -126,47 +132,71 @@ namespace FakeNewsFilter.API.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update([FromRoute]int topicId, [FromForm] TopicUpdateRequest request)
         {
-            UpdateRequestTopicValidator validator = new UpdateRequestTopicValidator(_localizer);
-
-            List<string> ValidationMessages = new List<string>();
-
-            var validationResult = validator.Validate(request);
-
-            if (!validationResult.IsValid)
+            try
             {
-                string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
+                UpdateRequestTopicValidator validator = new UpdateRequestTopicValidator(_localizer);
 
-                var resultupdate = new ApiErrorResult<bool>(errors);
+                List<string> ValidationMessages = new List<string>();
 
-                return BadRequest(resultupdate);
+                var validationResult = validator.Validate(request);
+
+                if (!validationResult.IsValid)
+                {
+                    string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
+
+                    var resultupdate = new ApiErrorResult<bool>(errors);
+
+                    return BadRequest(resultupdate);
+                }
+
+                request.TopicId = topicId;
+
+                var result = await _topicService.Update(request);
+
+                result.Message = _localizer[result.Message].Value;
+
+                if (result.IsSuccessed == false)
+                {
+                    _logger.LogError(result.Message);
+                    return BadRequest(result);
+                }
+
+                _logger.LogInformation(result.Message);
+                return Ok(result);
+            }
+            catch (FakeNewsException e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest(e.Message);
             }
 
-            request.TopicId = topicId;
-
-            var result = await _topicService.Update(request);
-
-            result.Message = _localizer[result.Message].Value;
-
-            if (result.IsSuccessed == false)
-            {
-                return BadRequest(result);
-            }
-            return Ok(result);
         }
 
         [HttpDelete("{topicId}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int topicId)
         {
-            var result = await _topicService.Delete(topicId);
-
-            result.Message = _localizer[result.Message].Value;
-
-            if (result.IsSuccessed == false)
+            try
             {
-                return BadRequest(result);
+                var result = await _topicService.Delete(topicId);
+
+                result.Message = _localizer[result.Message].Value;
+
+                if (result.IsSuccessed == false)
+                {
+                    _logger.LogError(result.Message);
+                    return BadRequest(result);
+                }
+
+                _logger.LogInformation(result.Message);
+                return Ok(result);
             }
-            return Ok(result);
+            catch (FakeNewsException e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest(e.Message);
+            }
+
         }
 
     }

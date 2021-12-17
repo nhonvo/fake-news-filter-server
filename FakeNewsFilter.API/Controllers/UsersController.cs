@@ -37,58 +37,79 @@ namespace FakeNewsFilter.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Authenticate([FromBody]LoginRequest request)
         {
-            LoginRequestUserValidator validator = new LoginRequestUserValidator(_localizer);
-            
-            var validationResult = validator.Validate(request);
-
-            if (!validationResult.IsValid)
+            try
             {
-                string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
+                LoginRequestUserValidator validator = new LoginRequestUserValidator(_localizer);
 
-                var result = new ApiErrorResult<bool>(errors);
+                var validationResult = validator.Validate(request);
 
-                return BadRequest(result);
-            }
+                if (!validationResult.IsValid)
+                {
+                    string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
 
-            var resultToken = await _userService.Authencate(request);
+                    var result = new ApiErrorResult<bool>(errors);
+
+                    return BadRequest(result);
+                }
+
+                var resultToken = await _userService.Authencate(request);
 
                 resultToken.Message = _localizer[resultToken.Message].Value;
 
                 if (string.IsNullOrEmpty(resultToken.ResultObj?.Token))
                 {
+                    _logger.LogError(resultToken.Message);
                     return BadRequest(resultToken);
                 }
-
+                _logger.LogInformation(resultToken.Message);
                 return Ok(resultToken);
+            }
+            catch (FakeNewsException e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest(e.Message);
+            }
+
         }
 
         [HttpPost("Register")]
         [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
-            RegisterRequestUserValidator validator = new RegisterRequestUserValidator(_localizer);
-
-            var validationResult = validator.Validate(request);
-
-            if (!validationResult.IsValid)
+            try
             {
-                string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
+                RegisterRequestUserValidator validator = new RegisterRequestUserValidator(_localizer);
 
-                var result = new ApiErrorResult<bool>(errors);
+                var validationResult = validator.Validate(request);
 
-                return BadRequest(result);
+                if (!validationResult.IsValid)
+                {
+                    string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
+
+                    var result = new ApiErrorResult<bool>(errors);
+
+                    return BadRequest(result);
+                }
+
+                var resultToken = await _userService.Register(request);
+
+                resultToken.Message = _localizer[resultToken.Message].Value;
+
+                if (!resultToken.IsSuccessed)
+                {
+                    _logger.LogError(resultToken.Message);
+                    return BadRequest(resultToken);
+
+                }
+                _logger.LogInformation(resultToken.Message);
+                return Ok(resultToken);
+            }
+            catch (FakeNewsException e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest(e.Message);
             }
 
-            var resultToken = await _userService.Register(request);
-
-            resultToken.Message = _localizer[resultToken.Message].Value;
-
-            if (!resultToken.IsSuccessed)
-            {
-                return BadRequest(resultToken);
-
-            }
-            return Ok(resultToken);
         }
 
        
@@ -114,80 +135,125 @@ namespace FakeNewsFilter.API.Controllers
             return Ok(user);
         }
 
+        
+
         //PUT: http://localhost/api/users/id
         [HttpPut()]
         public async Task<IActionResult> Update([FromForm] UserUpdateRequest request)
         {
-            UpdateRequestUserValidator validator = new UpdateRequestUserValidator(_localizer);
-
-            var validationResult = validator.Validate(request);
-
-            if (!validationResult.IsValid)
+            try
             {
-                string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
+                UpdateRequestUserValidator validator = new UpdateRequestUserValidator(_localizer);
 
-                var result = new ApiErrorResult<bool>(errors);
+                var validationResult = validator.Validate(request);
 
-                return BadRequest(result);
+                if (!validationResult.IsValid)
+                {
+                    string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
+
+                    var result = new ApiErrorResult<bool>(errors);
+
+                    return BadRequest(result);
+                }
+
+                var resultToken = await _userService.Update(request);
+
+                resultToken.Message = _localizer[resultToken.Message].Value;
+
+                if (!resultToken.IsSuccessed)
+                {
+                    _logger.LogError(resultToken.Message);
+                    return BadRequest(resultToken);
+                }
+                _logger.LogInformation(resultToken.Message);
+                return Ok(resultToken);
+            }
+            catch (FakeNewsException e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest(e.Message);
             }
 
-            var resultToken = await _userService.Update(request);
-
-            resultToken.Message = _localizer[resultToken.Message].Value;
-
-            if (!resultToken.IsSuccessed)
-            {
-                return BadRequest(resultToken);
-            }
-            return Ok(resultToken);
         }
 
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")] 
         public async Task<IActionResult> Delete(String id)
         {
-            var result = await _userService.Delete(id);
-
-            result.Message = _localizer[result.Message].Value;
-
-            if (result.IsSuccessed == false)
+            try
             {
-                return BadRequest(result);
+                var result = await _userService.Delete(id);
+
+                result.Message = _localizer[result.Message].Value;
+
+                if (result.IsSuccessed == false)
+                {
+                    _logger.LogError(result.Message);
+                    return BadRequest(result);
+                }
+                _logger.LogInformation(result.Message);
+                return Ok(result);
             }
-            return Ok(result);
+            catch (FakeNewsException e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest(e.Message);
+            }
+
         }
 
         [HttpPut("{id}/roles")]
         public async Task<IActionResult> RoleAssign(Guid id, [FromBody] RoleAssignRequest request)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var result = await _userService.RoleAssign(id, request);
-
-            result.Message = _localizer[result.Message].Value;
-
-            if (!result.IsSuccessed)
+            try
             {
-                return BadRequest(result);
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+                var result = await _userService.RoleAssign(id, request);
+
+                result.Message = _localizer[result.Message].Value;
+
+                if (!result.IsSuccessed)
+                {
+                    _logger.LogError(result.Message);
+                    return BadRequest(result);
+                }
+                _logger.LogInformation(result.Message);
+                return Ok(result);
             }
-            return Ok(result);
+            catch (FakeNewsException e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest(e.Message);
+            }
+
         }
 
         [HttpPost("SignInFacebook")]
         [AllowAnonymous]
         public async Task<IActionResult> SignInFacebook([FromBody] LoginSocialRequest request)
         {
-            var authReponse = await _userService.SignInFacebook(request.AccessToken);
-
-            authReponse.Message = _localizer[authReponse.Message].Value;
-
-            if (string.IsNullOrEmpty(authReponse.ResultObj?.Token))
+            try
             {
-                return BadRequest(authReponse);
+                var authReponse = await _userService.SignInFacebook(request.AccessToken);
+
+                authReponse.Message = _localizer[authReponse.Message].Value;
+
+                if (string.IsNullOrEmpty(authReponse.ResultObj?.Token))
+                {
+                    _logger.LogError(authReponse.Message);
+                    return BadRequest(authReponse);
+                }
+                _logger.LogInformation(authReponse.Message);
+                return Ok(authReponse);
+            }
+            catch (FakeNewsException e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest(e.Message);
             }
 
-            return Ok(authReponse);
 
         }
 
@@ -195,16 +261,27 @@ namespace FakeNewsFilter.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> SignInGoogle([FromBody] LoginSocialRequest request)
         {
-            var authReponse = await _userService.SignInGoogle(request.AccessToken);
-
-            authReponse.Message = _localizer[authReponse.Message].Value;
-
-            if (string.IsNullOrEmpty(authReponse.ResultObj?.Token))
+            try
             {
-                return BadRequest(authReponse);
+                var authReponse = await _userService.SignInGoogle(request.AccessToken);
+
+                authReponse.Message = _localizer[authReponse.Message].Value;
+
+                if (string.IsNullOrEmpty(authReponse.ResultObj?.Token))
+                {
+                    _logger.LogError(authReponse.Message);
+                    return BadRequest(authReponse);
+                }
+
+                _logger.LogInformation(authReponse.Message);
+                return Ok(authReponse);
+            }
+            catch (FakeNewsException e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest(e.Message);
             }
 
-            return Ok(authReponse);
 
         }
 
@@ -229,16 +306,26 @@ namespace FakeNewsFilter.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> ResetPassword(string email, string otp, string newPassword)
         {
-            var result = await _userService.ResetPassword(email, otp, newPassword);
-
-            result.Message = _localizer[result.Message].Value;
-
-            if (string.IsNullOrEmpty(result.ResultObj?.Token))
+            try
             {
-                return BadRequest(result);
+                var result = await _userService.ResetPassword(email, otp, newPassword);
+
+                result.Message = _localizer[result.Message].Value;
+
+                if (string.IsNullOrEmpty(result.ResultObj?.Token))
+                {
+                    _logger.LogError(result.Message);
+                    return BadRequest(result);
+                }
+                _logger.LogInformation(result.Message);
+                return Ok(result);
+            }
+            catch (FakeNewsException e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest(e.Message);
             }
 
-            return Ok(result);
 
         }
     }

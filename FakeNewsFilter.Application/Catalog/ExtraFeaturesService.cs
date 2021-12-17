@@ -9,6 +9,7 @@ using FakeNewsFilter.ViewModel.Catalog.Media;
 using FakeNewsFilter.ViewModel.Catalog.NewsManage;
 using FakeNewsFilter.ViewModel.Catalog.TopicNews;
 using FakeNewsFilter.ViewModel.Common;
+using FakeNewsFilter.ViewModel.System.LoginSocial;
 using Microsoft.EntityFrameworkCore;
 
 namespace FakeNewsFilter.Application.Catalog
@@ -16,6 +17,7 @@ namespace FakeNewsFilter.Application.Catalog
     public interface IExtraFeaturesService
     {
         Task<ApiResult<SearchViewModel>> SearchContent(SeachContentRequest request);
+        Task<ApiResult<List<GetUserLoginSocialRequest>>> GetSocialMediaUser(Guid id);
     }
 
     public class ExtraFeaturesService : IExtraFeaturesService
@@ -36,7 +38,7 @@ namespace FakeNewsFilter.Application.Catalog
             var language = await _context.Languages.SingleOrDefaultAsync(x => x.Id == request.languageId);
 
             var query = from t in _context.TopicNews
-                        where ((string.IsNullOrEmpty(request.languageId) || t.LanguageId == request.languageId) && t.Description.Contains(request.keyword))
+                        where ((string.IsNullOrEmpty(request.languageId) || t.LanguageId == request.languageId) && t.Description.ToLower().Trim().Contains(request.keyword.ToLower().Trim()))
                         select new
                         {
                             topic = t,
@@ -58,7 +60,7 @@ namespace FakeNewsFilter.Application.Catalog
                 RealTime = x.synctime,
             }).ToListAsync();
 
-            var list_news = await _context.News.Where(n => string.IsNullOrEmpty(request.languageId) ? true : n.LanguageId == request.languageId && n.Description.Contains(request.keyword))
+            var list_news = await _context.News.Where(n => string.IsNullOrEmpty(request.languageId) ? true : n.LanguageId == request.languageId && n.Description.ToLower().Trim().Contains(request.keyword.ToLower().Trim()))
                 .Select(x => new NewsViewModel()
                 {
                     NewsId = x.NewsId,
@@ -89,6 +91,44 @@ namespace FakeNewsFilter.Application.Catalog
 
 
             return new ApiSuccessResult<SearchViewModel>("SearchSuccessful", finalresult);
+        }
+
+        //Lấy thông tin mạng xã hội của người dùng
+        public async Task<ApiResult<List<GetUserLoginSocialRequest>>> GetSocialMediaUser(Guid id)
+        {
+            try
+            {
+                //Check user
+                var user = await _context.UserLogins.FirstOrDefaultAsync(x => x.UserId == id);
+                if (user == null)
+                {
+                    return new ApiErrorResult<List<GetUserLoginSocialRequest>> ("UserNotFound");
+                }
+
+                var query = from t in _context.UserLogins
+                            where (string.IsNullOrEmpty(id.ToString()) || t.UserId == id)
+                            select new
+                            {
+                                topic = t,
+                            };
+                if (user != null)
+                {
+                    var userLogin = await query.Select(x => new GetUserLoginSocialRequest()
+                    {
+                        LoginProvider = user.LoginProvider,
+                        ProviderKey = user.ProviderKey,
+                        ProviderDisplayName = user.ProviderDisplayName,
+                        UserId = user.UserId
+                    }).ToListAsync();
+                    return new ApiSuccessResult<List<GetUserLoginSocialRequest>> ("GetSocialMediaSucessfull", userLogin);
+                }
+                return new ApiErrorResult<List<GetUserLoginSocialRequest>> ("GetSocialMediaUnsucessfull");
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

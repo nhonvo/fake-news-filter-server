@@ -21,37 +21,27 @@ using System.Net.Http.Headers;
 using System.IO;
 using FakeNewsFilter.Data.Enums;
 using static Google.Apis.Auth.GoogleJsonWebSignature;
-using Microsoft.Extensions.Options;
-using MimeKit;
-using MailKit.Net.Smtp;
-using MailKit.Security;
 using System.Net.Mail;
 using SmtpClient = System.Net.Mail.SmtpClient;
 using System.Net;
+using FakeNewsFilter.ViewModel.System.LoginSocial;
 
 namespace FakeNewsFilter.Application.System
 {
     public interface IUserService
     {
         Task<ApiResult<TokenResult>> Authencate(LoginRequest request);
-
         Task<ApiResult<bool>> Register(RegisterRequest request);
-
         Task<ApiResult<List<UserViewModel>>> GetUsers();
-
         Task<ApiResult<bool>> Update(UserUpdateRequest request);
-
         Task<ApiResult<UserViewModel>> GetById(Guid id);
-
-        Task<ApiResult<bool>> Delete(String UserId);
-
+        Task<ApiResult<bool>> Delete(string UserId);
         Task<ApiResult<bool>> RoleAssign(Guid id, RoleAssignRequest request);
-
         Task<ApiResult<TokenResult>> SignInFacebook(string accessToken);
-
         Task<ApiResult<TokenResult>> SignInGoogle(string accessToken);
         Task<ApiResult<ForgotPassword>> SendPasswordResetCode(string Email);
         Task<ApiResult<ForgotPassword>> ResetPassword(string email, string opt, string newPassword);
+        
 
     }
 
@@ -86,6 +76,8 @@ namespace FakeNewsFilter.Application.System
             FileStorageService.USER_CONTENT_FOLDER_NAME= "images/avatars";
             _storageService = storageService;
         }
+
+        
 
         //Tạo Token
         private async Task<TokenResult> GenerateUserTokenAsync(User user, string avatar)

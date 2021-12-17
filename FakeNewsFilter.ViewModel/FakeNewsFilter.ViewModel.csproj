@@ -33,6 +33,5 @@
     <Folder Include="Catalog\Media\" />
     <Folder Include="System\Roles\" />
     <Folder Include="Catalog\Vote\" />
-    <Folder Include="System\LoginSocial\" />
   </ItemGroup>
 </Project>

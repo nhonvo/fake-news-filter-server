@@ -1,4 +1,5 @@
 using FakeNewsFilter.Application.Catalog;
+using FakeNewsFilter.Utilities.Exceptions;
 using FakeNewsFilter.ViewModel.Catalog.Comment;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,20 +30,31 @@ namespace FakeNewsFilter.API.Controllers
 
         public async Task<IActionResult> Create([FromBody] CommentCreateRequest request)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var result = await _ICommentService.Create(request);
+
+                result.Message = _localizer[result.Message].Value;
+
+                if (result.IsSuccessed == false)
+                {
+                    _logger.LogError(result.Message);
+                    return BadRequest(result);
+                }
+
+                _logger.LogInformation(result.Message);
+                return Ok(result);
             }
-            var result = await _ICommentService.Create(request);
-
-            result.Message = _localizer[result.Message].Value;
-
-            if (result.IsSuccessed == false)
+            catch (FakeNewsException e)
             {
-                return BadRequest(result);
+                _logger.LogError(e.Message);
+                return BadRequest(e.Message);
             }
 
-            return Ok(result);
         }
 
         [HttpGet("{newsId}")]
@@ -60,34 +72,57 @@ namespace FakeNewsFilter.API.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete(int commentId, Guid userId)
         {
-            var result = await _ICommentService.Delete(commentId, userId);
-
-            result.Message = _localizer[result.Message].Value;
-
-            if (result.ResultObj != false)
+            try
             {
-                return BadRequest(result);
+                var result = await _ICommentService.Delete(commentId, userId);
+
+                result.Message = _localizer[result.Message].Value;
+
+                if (result.ResultObj != false)
+                {
+                    _logger.LogError(result.Message);
+                    return BadRequest(result);
+                }
+
+                _logger.LogInformation(result.Message);
+                return Ok(result);
             }
-            return Ok(result);
+            catch (FakeNewsException e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest(e.Message);
+            }
+
         }
 
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] CommentUpdateRequest request)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var result = await _ICommentService.Update(request);
+
+                result.Message = _localizer[result.Message].Value;
+
+                if (result.ResultObj != false)
+                {
+                    _logger.LogError(result.Message);
+                    return BadRequest(result);
+                }
+                _logger.LogInformation(result.Message);
+                return Ok(result);
+            }
+            catch (FakeNewsException e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest(e.Message);
             }
 
-            var result = await _ICommentService.Update(request);
-
-            result.Message = _localizer[result.Message].Value;
-
-            if (result.ResultObj != false)
-            {
-                return BadRequest(result);
-            }
-            return Ok(result);
         }
     }
 }
