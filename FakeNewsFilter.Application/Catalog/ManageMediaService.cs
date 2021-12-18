@@ -33,7 +33,7 @@ namespace FakeNewsFilter.Application.Catalog
         {
             var media = await _context.Media.FindAsync(mediaId);
             if (media == null)
-                throw new FakeNewsException($"Cannot find an media with id {mediaId}");
+                throw new FakeNewsException($"CannotFindMediaWithId {mediaId}");
 
             if (media.PathMedia != null)
                 await _storageService.DeleteFileAsync(media.PathMedia);
@@ -47,7 +47,7 @@ namespace FakeNewsFilter.Application.Catalog
         {
             var media = await _context.Media.FindAsync(mediaId);
             if (media == null)
-                throw new FakeNewsException($"Cannot find an media with id {mediaId}");
+                throw new FakeNewsException($"CannotFindMediaWithId {mediaId}");
 
             if (request.MediaFile != null)
             {

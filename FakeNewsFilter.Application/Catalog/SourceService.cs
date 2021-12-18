@@ -71,40 +71,48 @@ namespace FakeNewsFilter.Application.Catalog
         //update source story
         public async Task<ApiResult<bool>> Update(SourceUpdateRequest request)
         {
-            //check SourceName
-            var sourcename = _context.Source.FirstOrDefault(x => x.SourceName == request.SourceName);
-            if (sourcename == null)
+            try
             {
-                return new ApiErrorResult<bool>("CannotFindSourceNameExist");
+                //check SourceName
+                var sourcename = _context.Source.FirstOrDefault(x => x.SourceName == request.SourceName);
+                if (sourcename == null)
+                {
+                    return new ApiErrorResult<bool>("CannotFindSourceNameExist");
+                }
+                //check Language
+                var language = _context.Languages.FirstOrDefault(x => x.Id == request.LanguageId);
+                if (language == null)
+                {
+                    return new ApiErrorResult<bool>("LanguageNotFound");
+                }
+
+                //remove source name
+                var removelanguageid = _context.Source.Where(t => t.LanguageId == request.LanguageId);
+                _context.Source.RemoveRange(removelanguageid);
+                await _context.SaveChangesAsync();
+
+                //update source name
+                var sourceUpdate = new Data.Entities.Source()
+                {
+                    SourceName = request.SourceName,
+                    LanguageId = request.LanguageId
+                };
+                _context.Source.Add(sourceUpdate);
+
+                var result = await _context.SaveChangesAsync();
+
+                if (result > 0)
+                {
+                    return new ApiSuccessResult<bool>("SourceStoryUpdateSuccessful", false);
+                }
+
+                return new ApiErrorResult<bool>("SourceStoryUpdateUnsuccessful");
             }
-            //check Language
-            var language = _context.Languages.FirstOrDefault(x => x.Id == request.LanguageId);
-            if (language == null)
+            catch (DbUpdateException ex)
             {
-                return new ApiErrorResult<bool>("LanguageNotFound");
-            }
-            
-            //remove source name
-            var removelanguageid = _context.Source.Where(t => t.LanguageId == request.LanguageId);
-            _context.Source.RemoveRange(removelanguageid);
-            await _context.SaveChangesAsync();
-
-            //update source name
-            var sourceUpdate = new Data.Entities.Source()
-            {
-                SourceName = request.SourceName,
-                LanguageId = request.LanguageId
-            };
-            _context.Source.Add(sourceUpdate);
-
-            var result = await _context.SaveChangesAsync();
-
-            if (result > 0)
-            {
-                return new ApiSuccessResult<bool>("SourceStoryUpdateSuccessful", false);
+                return new ApiErrorResult<bool>(ex.Message);
             }
 
-            return new ApiErrorResult<bool>("SourceStoryUpdateUnsuccessful");
         }
         //get all source story
         public async Task<ApiResult<List<SourceViewModel>>> GetAll(string languageId)

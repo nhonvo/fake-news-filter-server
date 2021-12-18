@@ -4,6 +4,7 @@ using FakeNewsFilter.ViewModel.Catalog.Follows;
 using FakeNewsFilter.ViewModel.Common;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -33,98 +34,116 @@ namespace FakeNewsFilter.Application.Catalog
 
         public async Task<ApiResult<bool>> Create(FollowCreateRequest request)
         {
-            try
+            using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
             {
-                var user = await _userManager.FindByIdAsync(request.UserId.ToString());
+                try
+                {
+                    var user = await _userManager.FindByIdAsync(request.UserId.ToString());
                     if (user == null)
                     {
-                            return new ApiErrorResult<bool>("UserIsNotExist");
+                        return new ApiErrorResult<bool>("UserIsNotExist");
                     }
 
-                foreach (var item in request.TopicId)
-                {
-                    var topic = await _context.TopicNews.FirstOrDefaultAsync(t => t.TopicId == item);
-                    if (topic == null)
+                    foreach (var item in request.TopicId)
                     {
-                        return new ApiErrorResult<bool>("CannontFindATopicWithId");
+                        var topic = await _context.TopicNews.FirstOrDefaultAsync(t => t.TopicId == item);
+                        if (topic == null)
+                        {
+                            return new ApiErrorResult<bool>("CannontFindATopicWithId");
+                        }
                     }
-                }
 
-                foreach (var item in request.TopicId)
-                {
-                    var follow = _context.Follow.Where(t => t.TopicId == item);
-                    _context.Follow.RemoveRange(follow);
-                    await _context.SaveChangesAsync();
-                }
-
-                foreach (var item in request.TopicId)
-                {
-                    var followCreate = new Data.Entities.Follow()
+                    foreach (var item in request.TopicId)
                     {
-                        UserId = request.UserId,
-                        TopicId = item
-                    };
-                    _context.Follow.Add(followCreate);
+                        var follow = _context.Follow.Where(t => t.TopicId == item);
+                        _context.Follow.RemoveRange(follow);
+                        await _context.SaveChangesAsync();
+                    }
+
+                    foreach (var item in request.TopicId)
+                    {
+                        var followCreate = new Data.Entities.Follow()
+                        {
+                            UserId = request.UserId,
+                            TopicId = item
+                        };
+                        _context.Follow.Add(followCreate);
+                    }
+
+                    var result = await _context.SaveChangesAsync();
+                    
+                    if (result > 0)
+                    {
+                        transaction.Commit();
+                        return new ApiSuccessResult<bool>("FollowSuccessful", false);
+                    }
+                    transaction.Rollback();
+                    return new ApiErrorResult<bool>("FollowUnsuccessful");
+
                 }
+                catch (DbUpdateException ex)
+                {
+                    transaction.Rollback();
+                    return new ApiErrorResult<bool>(ex.Message);
+                }
+            }
                 
-                var result = await _context.SaveChangesAsync();
-
-                if (result > 0)
-                {
-                    return new ApiSuccessResult<bool>("FollowSuccessful", false);
-                }
-
-                return new ApiErrorResult<bool>("FollowUnsuccessful");
-
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
         }
 
         public async Task<ApiResult<bool>> Update(FollowUpdateRequest request)
         {
-            //check user
-            var user = await _userManager.FindByIdAsync(request.UserId.ToString());
-            if (user == null)
+            using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
             {
-                return new ApiErrorResult<bool>("UserIsNotExist");
-            }
-
-            //check topic id
-            foreach (var item in request.TopicId)
-            {
-                var topic = await _context.TopicNews.FirstOrDefaultAsync(t => t.TopicId == item);
-                if (topic == null)
+                try
                 {
-                    return new ApiErrorResult<bool>("CannontFindATopicWithId");
+                    //check user
+                    var user = await _userManager.FindByIdAsync(request.UserId.ToString());
+                    if (user == null)
+                    {
+                        return new ApiErrorResult<bool>("UserIsNotExist");
+                    }
+
+                    //check topic id
+                    foreach (var item in request.TopicId)
+                    {
+                        var topic = await _context.TopicNews.FirstOrDefaultAsync(t => t.TopicId == item);
+                        if (topic == null)
+                        {
+                            return new ApiErrorResult<bool>("CannontFindATopicWithId");
+                        }
+                    }
+                    // remove user
+                    var follow = _context.Follow.Where(t => t.UserId == request.UserId);
+                    _context.Follow.RemoveRange(follow);
+                    await _context.SaveChangesAsync();
+                    // update follow topic
+                    foreach (var item in request.TopicId)
+                    {
+                        var followUpdate = new Data.Entities.Follow()
+                        {
+                            UserId = request.UserId,
+                            TopicId = item
+                        };
+                        _context.Follow.Add(followUpdate);
+                    }
+
+                    var result = await _context.SaveChangesAsync();
+
+                    if (result > 0)
+                    {
+                        transaction.Commit();
+                        return new ApiSuccessResult<bool>("FollowUpdateSuccessful", false);
+                    }
+                    transaction.Rollback();
+                    return new ApiErrorResult<bool>("FollowUpdateUnsuccessful");
+                }
+                catch (DbUpdateException ex)
+                {
+                    transaction.Rollback();
+                    return new ApiErrorResult<bool>(ex.Message);
                 }
             }
-            // remove user
-            var follow = _context.Follow.Where(t => t.UserId == request.UserId);
-            _context.Follow.RemoveRange(follow);
-            await _context.SaveChangesAsync();
-            // update follow topic
-            foreach (var item in request.TopicId)
-            {
-                var followUpdate = new Data.Entities.Follow()
-                {
-                    UserId = request.UserId,
-                    TopicId = item
-                };
-                _context.Follow.Add(followUpdate);
-            }
-            
-            var result = await _context.SaveChangesAsync();
-
-            if (result > 0)
-            {
-                return new ApiSuccessResult<bool>("FollowUpdateSuccessful", false);
-            }
-
-            return new ApiErrorResult<bool>("FollowUpdateUnsuccessful");
+                
         }
         //Get Follow Topic By User
         public async Task<ApiResult<List<int>>> GetFollowTopicByUser(Guid userId)

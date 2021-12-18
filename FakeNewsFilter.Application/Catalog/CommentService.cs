@@ -64,7 +64,7 @@ public class CommentService : ICommentService
     {
         //check whether news is exist
         var news = await _context.News.FirstOrDefaultAsync(x => x.NewsId == newsId);
-        if (news == null) return new ApiErrorResult<List<CommentViewModel>>("NewsNotFound");
+        if (news == null) return new ApiErrorResult<List<CommentViewModel>>("NewsIsNotExist");
 
         var commentsList = await _context.Comment.Where(x => x.NewsId == newsId).ToListAsync();
         var map = new Dictionary<int, CommentViewModel>();
