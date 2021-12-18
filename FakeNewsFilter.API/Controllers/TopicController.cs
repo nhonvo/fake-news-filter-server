@@ -92,15 +92,12 @@ namespace FakeNewsFilter.API.Controllers
 
                 if (topics.IsSuccessed == false)
                 {
-                    _logger.LogError(topics.Message);
                     return BadRequest(topics);
                 }
-                _logger.LogInformation(topics.Message);
                 return Ok(topics);
             }
             catch (FakeNewsException e)
             {
-                _logger.LogError(e.Message);
                 return BadRequest(e.Message);
             }
 
@@ -117,12 +114,10 @@ namespace FakeNewsFilter.API.Controllers
 
                 topic.Message = _localizer[topic.Message].Value;
 
-                _logger.LogInformation(topic.Message);
                 return Ok(topic);
             }
             catch (FakeNewsException e)
             {
-                _logger.LogError(e.Message);
                 return BadRequest(e.Message);
             }
 
