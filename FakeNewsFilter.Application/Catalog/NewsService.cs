@@ -9,7 +9,6 @@ using FakeNewsFilter.Application.Common;
 using FakeNewsFilter.Data.EF;
 using FakeNewsFilter.Data.Entities;
 using FakeNewsFilter.Data.Enums;
-using FakeNewsFilter.Utilities.Exceptions;
 using FakeNewsFilter.ViewModel.Catalog.NewsManage;
 using FakeNewsFilter.ViewModel.Catalog.TopicNews;
 using FakeNewsFilter.ViewModel.Common;
@@ -231,14 +230,14 @@ public class NewsService : INewsService
                     //check language
                     var language = await _context.Languages.FirstOrDefaultAsync(x => x.Id == request.LanguageId);
                     if (language == null) return new ApiErrorResult<int>("LanguageNotFound");
-                    //check topic id
-                    //foreach (var item in request.TopicId)
-                    //{
-                    //    var topic = await _context.TopicNews.FirstOrDefaultAsync(t => t.TopicId == item);
-                    //    if (topic == null) return new ApiErrorResult<int>("TopicNotFound");
-                    //}
+                //check topic id
+                foreach (var item in request.TopicId)
+                {
+                    var topic = await _context.TopicNews.FirstOrDefaultAsync(t => t.TopicId == item);
+                    if (topic == null) return new ApiErrorResult<int>("TopicNotFound");
+                }
 
-                    var news = new News
+                var news = new News
                     {
                         Name = request.Name,
                         Description = request.Description,
