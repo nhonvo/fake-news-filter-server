@@ -1,0 +1,93 @@
+﻿using FakeNewsFilter.API.Validator.NewsCommunity;
+using FakeNewsFilter.Application.Catalog;
+using FakeNewsFilter.Utilities.Exceptions;
+using FakeNewsFilter.ViewModel.Catalog.NewsCommunity;
+using FakeNewsFilter.ViewModel.Common;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace FakeNewsFilter.API.Controllers
+{
+    [Route("api/[controller]")]
+    [Authorize]
+    public class NewsCommunityController : ControllerBase
+    {
+        private readonly INewsCommunityService _NewsCommunityService;
+        private readonly IStringLocalizer<NewsCommunityController> _localizer;
+        private readonly IFollowService _followService;
+        private readonly ILogger<NewsCommunityController> _logger;
+    public NewsCommunityController(INewsCommunityService NewsCommunityService, IFollowService followService, IStringLocalizer<NewsCommunityController> localizer, ILogger<NewsCommunityController> logger)
+    {
+        _NewsCommunityService = NewsCommunityService;
+        _followService = followService;
+        _localizer = localizer;
+        _logger = logger;
+    }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Create([FromForm] NewsCommunityCreateRequest request)
+        {
+            try
+            {
+                CreateRequestNewsCommunityValidator validator = new CreateRequestNewsCommunityValidator(_localizer);
+
+                List<string> ValidationMessages = new List<string>();
+
+                var validationResult = validator.Validate(request);
+
+                if (!validationResult.IsValid)
+                {
+                    string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
+
+                    var result = new ApiErrorResult<bool>(errors);
+
+                    return BadRequest(result);
+                }
+
+                var createNews = await _NewsCommunityService.Create(request);
+
+                createNews.Message = _localizer[createNews.Message].Value;
+
+                if (createNews.IsSuccessed == false)
+                {
+                    _logger.LogError(createNews.Message);
+                    return BadRequest(createNews);
+                }
+
+                var getNews = await _NewsCommunityService.GetById(createNews.ResultObj);
+
+                getNews.Message = _localizer[getNews.Message].Value;
+
+                _logger.LogInformation(createNews.Message);
+                return CreatedAtAction(nameof(GetById), new { NewsCommunityId = createNews }, getNews);
+            }
+            catch (FakeNewsException e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest(e.Message);
+            }
+
+        }
+
+        [HttpGet("{newsCommunityId}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetById(int newsCommunityId)
+        {
+            var news = await _NewsCommunityService.GetById(newsCommunityId);
+
+            news.Message = _localizer[news.Message].Value;
+
+            if (news == null)
+            {
+                return NotFound(news);
+            }
+            return Ok(news);
+        }
+    }
+}

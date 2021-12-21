@@ -20,7 +20,7 @@ namespace FakeNewsFilter.API.Controllers
     {
         private readonly INewsService _newsService;
         private readonly IStringLocalizer<NewsController> _localizer;
-        private  readonly IFollowService _followService;
+        private readonly IFollowService _followService;
         private readonly ILogger<NewsController> _logger;
         public NewsController(INewsService newsService, IFollowService followService, IStringLocalizer<NewsController> localizer, ILogger<NewsController> logger)
         {
@@ -141,17 +141,17 @@ namespace FakeNewsFilter.API.Controllers
 
             return Ok(newsintopics);
         }
-        
+
         [HttpGet("FollowedTopic")]
         public async Task<IActionResult> GetNewsByFollowedTopic(Guid userId)
         {
             var topics = await _followService.GetFollowTopicByUser(userId);
-            
+
             if (!topics.IsSuccessed)
             {
                 return NotFound(topics);
             }
-            
+
             var newsList = await _newsService.GetNewsByFollowedTopic(topics.ResultObj, userId);
 
             newsList.Message = _localizer[newsList.Message].Value;

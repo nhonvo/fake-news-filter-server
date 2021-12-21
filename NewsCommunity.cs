@@ -16,9 +16,9 @@ namespace FakeNewsFilter.Data.Entities
         public string Content { get; set; }
 
         public string Source { get; set; }
-
+        
         public Guid UserId { get; set; }
-
+        
         public User Publisher { get; set; }
 
         public DateTime DatePublished { get; set; }

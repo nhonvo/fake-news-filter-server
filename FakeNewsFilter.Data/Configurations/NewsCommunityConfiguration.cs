@@ -11,17 +11,15 @@ namespace FakeNewsFilter.Data.Configurations
         {
             builder.ToTable("NewsCommunity");
 
-            builder.HasKey(k => k.NewsId);
+            builder.HasKey(k => k.NewsCommunityId);
 
-            builder.Property(k => k.NewsId).UseIdentityColumn();
+            builder.Property(k => k.NewsCommunityId).UseIdentityColumn();
 
-            builder.Property(x => x.Name).IsRequired().HasMaxLength(150);
-
-            builder.Property(x => x.Description).IsRequired();
+            builder.Property(x => x.Title).IsRequired().HasMaxLength(150);
 
             builder.Property(x => x.Content).IsRequired();
 
-            builder.Property(x => x.Timestamp);
+            builder.Property(x => x.DatePublished);
 
             builder.Property(x => x.LanguageId).IsUnicode(false).IsRequired().HasMaxLength(5);
 
