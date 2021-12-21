@@ -87,6 +87,7 @@ namespace FakeNewsFilter
             services.AddTransient<IVoteService, VoteService>();
             services.AddTransient<IExtraFeaturesService, ExtraFeaturesService>();
             services.AddScoped<ICommentService , CommentService>();
+            services.AddScoped<INewsCommunityService , NewsCommunityService>();
 
             //Fluent Validation
             //user
