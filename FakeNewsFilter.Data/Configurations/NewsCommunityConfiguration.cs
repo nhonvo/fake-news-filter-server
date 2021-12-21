@@ -19,6 +19,8 @@ namespace FakeNewsFilter.Data.Configurations
 
             builder.Property(x => x.Content).IsRequired();
 
+            builder.Property(x => x.IsPopular).HasDefaultValue(false);
+
             builder.Property(x => x.DatePublished);
 
             builder.Property(x => x.LanguageId).IsUnicode(false).IsRequired().HasMaxLength(5);

@@ -61,6 +61,7 @@ namespace FakeNewsFilter.Application.Catalog
                     {
                         Title = request.Title,
                         Content = request.Content,
+                        IsPopular = request.IsPopular,
                         UserId = request.UserId,
                         DatePublished = DateTime.Now,
                         LanguageId = request.LanguageId
@@ -117,10 +118,11 @@ namespace FakeNewsFilter.Application.Catalog
                     NewsCommunityId = news.NewsCommunityId,
                     UserId = news.UserId,
                     Title = news.Title,
+                    IsPopular = news.IsPopular,
                     Content = news.Content,
                     DatePublished = news.DatePublished,
                     LanguageId = news.LanguageId,
-                    ThumbNews = news.Media.PathMedia,
+                    ThumbNews = string.IsNullOrEmpty(news.Media?.PathMedia) ? null : media.PathMedia,
                 };
 
                 return new ApiSuccessResult<NewsCommunityViewModel>("GetThisNewsSuccessful", result);
@@ -170,6 +172,7 @@ namespace FakeNewsFilter.Application.Catalog
                     news_update.Title = request.Title ?? news_update.Title;
                     news_update.Content = request.Content ?? news_update.Content;
                     news_update.LanguageId = request.LanguageId ?? news_update.LanguageId;
+                    news_update.IsPopular = request.IsPopular;
                     news_update.DatePublished = DateTime.Now;
 
                     if (request.ThumbNews != null)
@@ -239,6 +242,7 @@ namespace FakeNewsFilter.Application.Catalog
                         UserId = x.UserId,
                         ThumbNews = x.Media.PathMedia,
                         LanguageId = x.LanguageId,
+                        IsPopular = x.IsPopular,
                         DatePublished = x.DatePublished
                     }).ToListAsync();
 

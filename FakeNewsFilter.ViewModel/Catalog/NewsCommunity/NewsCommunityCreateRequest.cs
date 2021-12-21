@@ -12,6 +12,7 @@ namespace FakeNewsFilter.ViewModel.Catalog.NewsCommunity
     {
         public string Title { get; set; }
         public string Content { get; set; }
+        public bool IsPopular { get; set; }
         public Guid UserId { get; set; }
         public MediaType? Type { get; set; }
         public DateTime DatePublished { get; set; }

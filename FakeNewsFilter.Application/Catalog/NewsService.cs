@@ -150,7 +150,7 @@ public class NewsService : INewsService
                 Content = news.Content,
                 OfficialRating = news.OfficialRating,
                 Publisher = news.Publisher,
-                ThumbNews = news.Media.PathMedia,
+                ThumbNews = string.IsNullOrEmpty(news.Media?.PathMedia) ? null : media.PathMedia,
                 LanguageId = news.LanguageId,
                 Timestamp = news.Timestamp,
                 Status = news.Status,
