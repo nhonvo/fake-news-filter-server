@@ -89,5 +89,112 @@ namespace FakeNewsFilter.API.Controllers
             }
             return Ok(news);
         }
+
+        [HttpDelete("{newsCommunityId}")]
+        public async Task<IActionResult> Delete(int newsCommunityId)
+        {
+            try
+            {
+                var result = await _NewsCommunityService.Delete(newsCommunityId);
+
+                result.Message = _localizer[result.Message].Value;
+
+                if (result.ResultObj != false)
+                {
+                    _logger.LogError(result.Message);
+                    return BadRequest(result);
+                }
+
+                _logger.LogInformation(result.Message);
+                return Ok(result);
+            }
+            catch (FakeNewsException e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest(e.Message);
+            }
+
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromForm] NewsCommunityUpdateRequest request)
+        {
+            try
+            {
+                UpdateRequestNewsCommunityValidator validator = new UpdateRequestNewsCommunityValidator(_localizer);
+
+                List<string> ValidationMessages = new List<string>();
+
+                var validationResult = validator.Validate(request);
+
+                if (!validationResult.IsValid)
+                {
+                    string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
+
+                    var result = new ApiErrorResult<bool>(errors);
+
+                    return BadRequest(result);
+                }
+
+                var resultToken = await _NewsCommunityService.Update(request);
+
+                resultToken.Message = _localizer[resultToken.Message].Value;
+
+                if (resultToken.ResultObj != false)
+                {
+                    _logger.LogError(resultToken.Message);
+                    return BadRequest(resultToken);
+                }
+                _logger.LogInformation(resultToken.Message);
+                return Ok(resultToken);
+            }
+            catch (FakeNewsException e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest(e.Message);
+            }
+
+        }
+
+        [HttpPatch("link/{newsCommunityId}/{newLink}")]
+        public async Task<IActionResult> UpdateLink(int newsCommunityId, string newLink)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var result = await _NewsCommunityService.UpdateLink(newsCommunityId, newLink);
+
+                result.Message = _localizer[result.Message].Value;
+
+                if (result.ResultObj == false)
+                {
+                    _logger.LogError(result.Message);
+                    return BadRequest(result);
+                }
+                _logger.LogInformation(result.Message);
+                return Ok(result);
+            }
+            catch (FakeNewsException e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest(e.Message);
+            }
+
+        }
+
+        // GET: api/news
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetNews(string languageId)
+        {
+            var topics = await _NewsCommunityService.GetAll(languageId);
+
+            topics.Message = _localizer[topics.Message].Value;
+
+            return Ok(topics);
+        }
     }
 }

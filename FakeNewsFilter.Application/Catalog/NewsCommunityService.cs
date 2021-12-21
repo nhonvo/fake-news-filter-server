@@ -22,6 +22,10 @@ namespace FakeNewsFilter.Application.Catalog
     {
         Task<ApiResult<int>> Create(NewsCommunityCreateRequest request);
         Task<ApiResult<NewsCommunityViewModel>> GetById(int newsCommunityId);
+        Task<ApiResult<bool>> Delete(int NewsCommunityId);
+        Task<ApiResult<bool>> Update(NewsCommunityUpdateRequest request);
+        Task<ApiResult<bool>> UpdateLink(int newsCommunityId, string newLink);
+        Task<ApiResult<List<NewsCommunityViewModel>>> GetAll(string languageId);
     }
     public class NewsCommunityService : INewsCommunityService
     {
@@ -123,6 +127,139 @@ namespace FakeNewsFilter.Application.Catalog
             }
 
             return new ApiErrorResult<NewsCommunityViewModel>("NewsIsNotFound");
+        }
+
+        //Xoá tin tức
+        public async Task<ApiResult<bool>> Delete(int newsCommunityId)
+        {
+            var news = await _context.newsCommunities.FindAsync(newsCommunityId);
+
+            if (news == null)
+                return new ApiErrorResult<bool>("CannontFindANewsWithId");
+
+            if (news.ThumbNews != null)
+            {
+                var media = _context.Media.Single(x => x.MediaId == news.ThumbNews);
+
+                if (media != null && media.PathMedia != null)
+                {
+                    await _storageService.DeleteFileAsync(media.PathMedia);
+                    _context.Media.Remove(media);
+                }
+            }
+
+            _context.newsCommunities.Remove(news);
+
+            if (await _context.SaveChangesAsync() == 0) return new ApiErrorResult<bool>("DeleteNewsUnsuccessful");
+
+            return new ApiSuccessResult<bool>("DeleteNewsSuccessful", false);
+        }
+
+        //Cập nhật tin tức
+        public async Task<ApiResult<bool>> Update(NewsCommunityUpdateRequest request)
+        {
+            using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var news_update = await _context.newsCommunities.FirstOrDefaultAsync(x => x.NewsCommunityId == request.NewsCommunityId);
+
+                    if (news_update == null)
+                        return new ApiErrorResult<bool>("CannontFindANewsWithId");
+
+                    news_update.Title = request.Title ?? news_update.Title;
+                    news_update.Content = request.Content ?? news_update.Content;
+                    news_update.LanguageId = request.LanguageId ?? news_update.LanguageId;
+                    news_update.DatePublished = DateTime.Now;
+
+                    if (request.ThumbNews != null)
+                    {
+                        //Kiểm tra hình đã có trên DB chưa
+                        var thumb = _context.Media.FirstOrDefault(i => i.MediaId == news_update.ThumbNews);
+
+                        //Nếu chưa có hình thì thêm hình mới
+                        if (thumb == null)
+                        {
+                            news_update.Media = new Media
+                            {
+                                Caption = "Thumbnail Topic",
+                                DateCreated = DateTime.Now,
+                                FileSize = request.ThumbNews.Length,
+                                PathMedia = await SaveFile(request.ThumbNews),
+                                Type = MediaType.Image,
+                                SortOrder = 1
+                            };
+                        }
+                        else
+                        {
+                            if (thumb.PathMedia != null) await _storageService.DeleteFileAsync(thumb.PathMedia);
+                            thumb.FileSize = request.ThumbNews.Length;
+                            thumb.PathMedia = await SaveFile(request.ThumbNews);
+
+                            thumb.Type = MediaType.Image;
+
+                            _context.Media.Update(thumb);
+                        }
+                        _context.newsCommunities.Update(news_update);
+                    }
+                    
+
+                    if (await _context.SaveChangesAsync() == 0)
+                    {
+                        transaction.Rollback();
+                        return new ApiErrorResult<bool>("UpdateNewsUnsuccessful");
+                    }
+
+                    transaction.Commit();
+                    return new ApiSuccessResult<bool>("UpdateNewsSuccessful", false);
+                }
+                catch (DbUpdateException ex)
+                {
+                    transaction.Rollback();
+                    return new ApiErrorResult<bool>(ex.Message);
+                }
+
+            }
+
+
+        }
+
+        //Get All News
+        public async Task<ApiResult<List<NewsCommunityViewModel>>> GetAll(string languageId)
+        {
+            var language = await _context.Languages.SingleOrDefaultAsync(x => x.Id == languageId);
+
+            var newsList = new List<NewsCommunityViewModel>();
+                newsList = await _context.newsCommunities.Where(n => n.LanguageId == languageId)
+                    .Select(x => new NewsCommunityViewModel
+                    {
+                        NewsCommunityId = x.NewsCommunityId,
+                        Title = x.Title,
+                        Content = x.Content,
+                        UserId = x.UserId,
+                        ThumbNews = x.Media.PathMedia,
+                        LanguageId = x.LanguageId,
+                        DatePublished = x.DatePublished
+                    }).ToListAsync();
+
+            if (language == null) return new ApiSuccessResult<List<NewsCommunityViewModel>>("GetAllNewsSuccessful", newsList);
+
+            return new ApiSuccessResult<List<NewsCommunityViewModel>>("GetAllNewsSuccessful", newsList);
+        }
+
+        //Update Link News
+        public async Task<ApiResult<bool>> UpdateLink(int newsCommunityId, string newLink)
+        {
+            var news_update = await _context.newsCommunities.FindAsync(newsCommunityId);
+
+            if (news_update == null)
+                return new ApiErrorResult<bool>("CannontFindANewsWithId");
+
+            news_update.Content = newLink;
+
+            if (await _context.SaveChangesAsync() == 0) return new ApiErrorResult<bool>("UpdateLinkNewsUnsuccessful");
+
+            return new ApiSuccessResult<bool>("UpdateLinkNewsSuccessful", false);
         }
         private async Task<string> SaveFile(IFormFile file)
         {
