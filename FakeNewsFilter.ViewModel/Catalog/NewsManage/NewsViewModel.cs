@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using FakeNewsFilter.Data.Enums;
-using FakeNewsFilter.ViewModel.Catalog.Media;
 using FakeNewsFilter.ViewModel.Catalog.TopicNews;
 
 namespace FakeNewsFilter.ViewModel.Catalog.NewsManage

@@ -16,6 +16,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using FakeNewsFilter.ViewModel.System.Users;
+using Microsoft.AspNetCore.Identity;
 
 namespace FakeNewsFilter.Application.Catalog
 {
@@ -27,6 +28,7 @@ namespace FakeNewsFilter.Application.Catalog
         Task<ApiResult<bool>> Update(NewsCommunityUpdateRequest request);
         Task<ApiResult<bool>> UpdateLink(int newsCommunityId, string newLink);
         Task<ApiResult<List<NewsCommunityViewModel>>> GetAll(string languageId);
+        Task<ApiResult<List<NewsCommunityViewModel>>> GetNewsByUserId(Guid userId);
     }
 
     public class NewsCommunityService : INewsCommunityService
@@ -38,13 +40,18 @@ namespace FakeNewsFilter.Application.Catalog
 
         private readonly FileStorageService _storageService;
 
-        public NewsCommunityService(ApplicationDBContext context, FileStorageService storageService, IMapper mapper)
+        private readonly UserManager<User> _userManager;
+
+        public NewsCommunityService(UserManager<User> userManager, ApplicationDBContext context, FileStorageService storageService, IMapper mapper)
         {
             _context = context;
             FileStorageService.USER_CONTENT_FOLDER_NAME = "images/newscommunities";
             _storageService = storageService;
             _mapper = mapper;
+            _userManager = userManager;
         }
+
+
 
         //Tạo mới 1 tin tức
         public async Task<ApiResult<int>> Create(NewsCommunityCreateRequest request)
@@ -278,6 +285,41 @@ namespace FakeNewsFilter.Application.Catalog
             return new ApiSuccessResult<List<NewsCommunityViewModel>>("GetAllNewsSuccessful", newsList);
         }
 
+        //Get news community with userid
+        public async Task<ApiResult<List<NewsCommunityViewModel>>> GetNewsByUserId(Guid userId)
+        {
+            try
+            {
+                var query = from n in _context.NewsCommunity
+                            join c in _context.Users on n.UserId equals c.Id
+                            select new { n, c };
+
+                query = query.Where(t => userId == t.c.Id);
+
+
+                var newsList = await query
+                    .Select(x => new NewsCommunityViewModel
+                    {
+                        NewsCommunityId = x.n.NewsCommunityId,
+                        Title = x.n.Title,
+                        Content = x.n.Content,
+                        ThumbNews = x.n.Media.PathMedia,
+                        LanguageId = x.n.LanguageId,
+                        IsPopular = x.n.IsPopular,
+                        DatePublished = x.n.DatePublished,
+                    }).ToListAsync();
+
+                if (newsList == null) return new ApiErrorResult<List<NewsCommunityViewModel>>("GetNewsByIdUnsuccessful");
+                if (newsList.Count == 0) return new ApiErrorResult<List<NewsCommunityViewModel>>("DoNotHaveNewsOfUser");
+                return new ApiSuccessResult<List<NewsCommunityViewModel>>("GetNewsByIdSuccessful", newsList);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
         //Update Link News
         public async Task<ApiResult<bool>> UpdateLink(int newsCommunityId, string newLink)
         {
