@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,13 +22,13 @@ namespace FakeNewsFilter.API.Controllers
         private readonly IStringLocalizer<NewsCommunityController> _localizer;
         private readonly IFollowService _followService;
         private readonly ILogger<NewsCommunityController> _logger;
-    public NewsCommunityController(INewsCommunityService NewsCommunityService, IFollowService followService, IStringLocalizer<NewsCommunityController> localizer, ILogger<NewsCommunityController> logger)
-    {
-        _NewsCommunityService = NewsCommunityService;
-        _followService = followService;
-        _localizer = localizer;
-        _logger = logger;
-    }
+        public NewsCommunityController(INewsCommunityService NewsCommunityService, IFollowService followService, IStringLocalizer<NewsCommunityController> localizer, ILogger<NewsCommunityController> logger)
+        {
+            _NewsCommunityService = NewsCommunityService;
+            _followService = followService;
+            _localizer = localizer;
+            _logger = logger;
+        }
 
         [HttpPost]
         [AllowAnonymous]
@@ -195,6 +196,17 @@ namespace FakeNewsFilter.API.Controllers
             topics.Message = _localizer[topics.Message].Value;
 
             return Ok(topics);
+        }
+
+        [HttpGet("User")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetNewsInTopic([FromQuery] Guid userId)
+        {
+            var newsintopics = await _NewsCommunityService.GetNewsByUserId(userId);
+
+            newsintopics.Message = _localizer[newsintopics.Message].Value;
+
+            return Ok(newsintopics);
         }
     }
 }

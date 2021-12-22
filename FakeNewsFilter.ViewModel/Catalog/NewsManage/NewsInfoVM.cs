@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using FakeNewsFilter.Data.Enums;
 using FakeNewsFilter.ViewModel.Catalog.TopicNews;
-using FakeNewsFilter.Data.Entities;
-using Microsoft.AspNetCore.Http;
-using FakeNewsFilter.ViewModel.Catalog.Media;
 
 namespace FakeNewsFilter.ViewModel.Catalog.NewsManage
 {
