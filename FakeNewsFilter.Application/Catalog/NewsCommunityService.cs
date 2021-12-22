@@ -15,6 +15,7 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using FakeNewsFilter.ViewModel.System.Users;
 
 namespace FakeNewsFilter.Application.Catalog
 {
@@ -27,14 +28,16 @@ namespace FakeNewsFilter.Application.Catalog
         Task<ApiResult<bool>> UpdateLink(int newsCommunityId, string newLink);
         Task<ApiResult<List<NewsCommunityViewModel>>> GetAll(string languageId);
     }
+
     public class NewsCommunityService : INewsCommunityService
     {
-        public static readonly List<string> ImageExtensions = new() { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG" };
+        public static readonly List<string> ImageExtensions = new() {".JPG", ".JPE", ".BMP", ".GIF", ".PNG"};
         private readonly ApplicationDBContext _context;
 
         private readonly IMapper _mapper;
 
         private readonly FileStorageService _storageService;
+
         public NewsCommunityService(ApplicationDBContext context, FileStorageService storageService, IMapper mapper)
         {
             _context = context;
@@ -56,7 +59,7 @@ namespace FakeNewsFilter.Application.Catalog
 
                     var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == request.UserId);
                     if (user == null) return new ApiErrorResult<int>("UserNotFound");
-                    
+
                     var newsCommunity = new NewsCommunity
                     {
                         Title = request.Title,
@@ -82,7 +85,7 @@ namespace FakeNewsFilter.Application.Catalog
                         };
                     }
 
-                    _context.newsCommunities.Add(newsCommunity);
+                    _context.NewsCommunity.Add(newsCommunity);
 
                     if (await _context.SaveChangesAsync() == 0)
                     {
@@ -99,27 +102,37 @@ namespace FakeNewsFilter.Application.Catalog
                     transaction.Rollback();
                     return new ApiErrorResult<int>(ex.Message);
                 }
-
         }
 
         //Lấy thông tin News thông qua Id
         public async Task<ApiResult<NewsCommunityViewModel>> GetById(int newsCommunityId)
         {
-            var news = await _context.newsCommunities.FirstOrDefaultAsync(t => t.NewsCommunityId == newsCommunityId);
+            var news = await _context.NewsCommunity.FirstOrDefaultAsync(t => t.NewsCommunityId == newsCommunityId);
 
             NewsCommunityViewModel result = null;
 
             if (news != null)
             {
                 var media = _context.Media.Where(x => x.MediaId == news.ThumbNews).FirstOrDefault();
-
+                
+                var user = _context.Users.Where(x => x.Id == news.UserId).FirstOrDefault();
+                
                 result = new NewsCommunityViewModel
                 {
                     NewsCommunityId = news.NewsCommunityId,
-                    UserId = news.UserId,
                     Title = news.Title,
                     IsPopular = news.IsPopular,
                     Content = news.Content,
+                    Publisher = new UserViewModel()
+                    {
+                        UserId = user.Id,
+                        Email = user.Email,
+                        FullName = user.Name,
+                        Status = user.Status,
+                        UserName = user.UserName,
+                        PhoneNumber = user.PhoneNumber,
+                        noNewsContributed = _context.NewsCommunity.Count(i => i.UserId == user.Id),
+                    },
                     DatePublished = news.DatePublished,
                     LanguageId = news.LanguageId,
                     ThumbNews = string.IsNullOrEmpty(news.Media?.PathMedia) ? null : media.PathMedia,
@@ -134,7 +147,7 @@ namespace FakeNewsFilter.Application.Catalog
         //Xoá tin tức
         public async Task<ApiResult<bool>> Delete(int newsCommunityId)
         {
-            var news = await _context.newsCommunities.FindAsync(newsCommunityId);
+            var news = await _context.NewsCommunity.FindAsync(newsCommunityId);
 
             if (news == null)
                 return new ApiErrorResult<bool>("CannontFindANewsWithId");
@@ -150,7 +163,7 @@ namespace FakeNewsFilter.Application.Catalog
                 }
             }
 
-            _context.newsCommunities.Remove(news);
+            _context.NewsCommunity.Remove(news);
 
             if (await _context.SaveChangesAsync() == 0) return new ApiErrorResult<bool>("DeleteNewsUnsuccessful");
 
@@ -164,7 +177,9 @@ namespace FakeNewsFilter.Application.Catalog
             {
                 try
                 {
-                    var news_update = await _context.newsCommunities.FirstOrDefaultAsync(x => x.NewsCommunityId == request.NewsCommunityId);
+                    var news_update =
+                        await _context.NewsCommunity.FirstOrDefaultAsync(x =>
+                            x.NewsCommunityId == request.NewsCommunityId);
 
                     if (news_update == null)
                         return new ApiErrorResult<bool>("CannontFindANewsWithId");
@@ -203,9 +218,10 @@ namespace FakeNewsFilter.Application.Catalog
 
                             _context.Media.Update(thumb);
                         }
-                        _context.newsCommunities.Update(news_update);
+
+                        _context.NewsCommunity.Update(news_update);
                     }
-                    
+
 
                     if (await _context.SaveChangesAsync() == 0)
                     {
@@ -221,10 +237,7 @@ namespace FakeNewsFilter.Application.Catalog
                     transaction.Rollback();
                     return new ApiErrorResult<bool>(ex.Message);
                 }
-
             }
-
-
         }
 
         //Get All News
@@ -232,21 +245,35 @@ namespace FakeNewsFilter.Application.Catalog
         {
             var language = await _context.Languages.SingleOrDefaultAsync(x => x.Id == languageId);
 
-            var newsList = new List<NewsCommunityViewModel>();
-                newsList = await _context.newsCommunities.Where(n => n.LanguageId == languageId)
-                    .Select(x => new NewsCommunityViewModel
-                    {
-                        NewsCommunityId = x.NewsCommunityId,
-                        Title = x.Title,
-                        Content = x.Content,
-                        UserId = x.UserId,
-                        ThumbNews = x.Media.PathMedia,
-                        LanguageId = x.LanguageId,
-                        IsPopular = x.IsPopular,
-                        DatePublished = x.DatePublished
-                    }).ToListAsync();
+            var query = from n in _context.NewsCommunity
+                join user in _context.Users on n.UserId equals user.Id
+                select new {n, user};
 
-            if (language == null) return new ApiSuccessResult<List<NewsCommunityViewModel>>("GetAllNewsSuccessful", newsList);
+            query = query.Where(t => languageId == t.n.LanguageId);
+
+            var newsList = await query
+                .Select(x => new NewsCommunityViewModel()
+                {
+                    NewsCommunityId = x.n.NewsCommunityId,
+                    Title = x.n.Title,
+                    Content = x.n.Content,
+                    Publisher = new UserViewModel()
+                    {
+                        UserId = x.user.Id,
+                        Email = x.user.Email,
+                        FullName = x.user.Name,
+                        Status = x.user.Status,
+                        UserName = x.user.UserName,
+                        PhoneNumber = x.user.PhoneNumber,
+                        noNewsContributed = _context.NewsCommunity.Count(i => i.UserId == x.user.Id),
+                    },
+                    ThumbNews = x.n.Media.PathMedia,
+                    LanguageId = x.n.LanguageId,
+                    IsPopular = x.n.IsPopular,
+                    DatePublished = x.n.DatePublished,
+                }).ToListAsync();
+            if (language == null)
+                return new ApiSuccessResult<List<NewsCommunityViewModel>>("GetAllNewsSuccessful", newsList);
 
             return new ApiSuccessResult<List<NewsCommunityViewModel>>("GetAllNewsSuccessful", newsList);
         }
@@ -254,7 +281,7 @@ namespace FakeNewsFilter.Application.Catalog
         //Update Link News
         public async Task<ApiResult<bool>> UpdateLink(int newsCommunityId, string newLink)
         {
-            var news_update = await _context.newsCommunities.FindAsync(newsCommunityId);
+            var news_update = await _context.NewsCommunity.FindAsync(newsCommunityId);
 
             if (news_update == null)
                 return new ApiErrorResult<bool>("CannontFindANewsWithId");
@@ -265,6 +292,7 @@ namespace FakeNewsFilter.Application.Catalog
 
             return new ApiSuccessResult<bool>("UpdateLinkNewsSuccessful", false);
         }
+
         private async Task<string> SaveFile(IFormFile file)
         {
             var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');

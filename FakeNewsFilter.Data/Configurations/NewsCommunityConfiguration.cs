@@ -27,7 +27,7 @@ namespace FakeNewsFilter.Data.Configurations
 
             builder.HasOne(x => x.Language).WithMany(x => x.newsCommunities).HasForeignKey(x => x.LanguageId).OnDelete(DeleteBehavior.Restrict);
 
-            builder.Property(x => x.Status).HasDefaultValue(Status.Active);
+            builder.Property(x => x.Status).HasDefaultValue(Status.Pending);
 
             builder.HasOne(x => x.Media).WithOne(x => x.newsCommunity).HasForeignKey<NewsCommunity>(x => x.ThumbNews);
         }

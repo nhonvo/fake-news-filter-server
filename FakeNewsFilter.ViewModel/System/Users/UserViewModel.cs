@@ -21,6 +21,8 @@ namespace FakeNewsFilter.ViewModel.System.Users
         public Status Status { get; set; }
 
         public string Avatar { get; set; }
+        
+        public int? noNewsContributed { get; set; }
 
         public IList<string> Roles { get; set; }
     }

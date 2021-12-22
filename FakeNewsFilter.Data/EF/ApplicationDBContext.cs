@@ -32,7 +32,7 @@ namespace FakeNewsFilter.Data.EF
         public DbSet<Story> Story { get; set; }
         public DbSet<ForgotPassword> ForgotPassword { get; set; }
         public DbSet<Comment> Comment { get; set; }
-        public DbSet<NewsCommunity> newsCommunities { get; set; }
+        public DbSet<NewsCommunity> NewsCommunity { get; set; }
 
 
 
