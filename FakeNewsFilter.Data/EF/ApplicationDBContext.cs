@@ -32,6 +32,7 @@ namespace FakeNewsFilter.Data.EF
         public DbSet<Story> Story { get; set; }
         public DbSet<ForgotPassword> ForgotPassword { get; set; }
         public DbSet<Comment> Comment { get; set; }
+        public DbSet<NewsCommunity> NewsCommunity { get; set; }
 
 
 
@@ -53,6 +54,7 @@ namespace FakeNewsFilter.Data.EF
             modelBuilder.ApplyConfiguration(new SourceConfiguration());
             modelBuilder.ApplyConfiguration(new ForgotPasswordConfiguration());
             modelBuilder.ApplyConfiguration(new CommentConfiguration());
+            modelBuilder.ApplyConfiguration(new NewsCommunityConfiguration());
 
             modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("UserClaims");
             modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("UserLogin").HasKey(l => new { l.LoginProvider, l.ProviderKey, l.UserId });

@@ -23,6 +23,7 @@ namespace FakeNewsFilter.Data.Entities
         public DateTime DateCreated { get; set; }
 
         public News News { get; set; }
+        public NewsCommunity newsCommunity { get; set; }
         public Story Story { get; set; }
        
         public TopicNews TopicNews { get; set; }
