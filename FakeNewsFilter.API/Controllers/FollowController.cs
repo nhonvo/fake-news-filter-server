@@ -56,37 +56,6 @@ namespace FakeNewsFilter.API.Controllers
 
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Update([FromBody] FollowUpdateRequest request)
-        {
-            try
-            {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
-
-                var result = await _IFollowService.Update(request);
-
-                result.Message = _localizer[result.Message].Value;
-
-                if (result.ResultObj != false)
-                {
-                    _logger.LogError(result.Message);
-                    return BadRequest(result);
-                }
-
-                _logger.LogInformation(result.Message);
-                return Ok(result);
-            }
-            catch (FakeNewsException e)
-            {
-                _logger.LogError(e.Message);
-                return BadRequest(e.Message);
-            }
-
-        }
-
         [HttpGet("{userId}")]
         public async Task<IActionResult> GetFollowTopicByUser(Guid userId)
         {

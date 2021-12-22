@@ -18,7 +18,6 @@ namespace FakeNewsFilter.Application.Catalog
     {
         Task<ApiResult<List<int>>> GetFollowTopicByUser (Guid userId);
         Task<ApiResult<bool>> Create(FollowCreateRequest request);
-        Task<ApiResult<bool>> Update(FollowUpdateRequest request);
     }
     public class FollowService : IFollowService
     {
@@ -43,7 +42,14 @@ namespace FakeNewsFilter.Application.Catalog
                     {
                         return new ApiErrorResult<bool>("UserIsNotExist");
                     }
-
+                    
+                    var follow = _context.Follow.Where(t => t.UserId == request.UserId);
+                    if (follow.Any())
+                    {
+                        _context.Follow.RemoveRange(follow);
+                        await _context.SaveChangesAsync();
+                    }
+                    
                     foreach (var item in request.TopicId)
                     {
                         var topic = await _context.TopicNews.FirstOrDefaultAsync(t => t.TopicId == item);
@@ -51,17 +57,7 @@ namespace FakeNewsFilter.Application.Catalog
                         {
                             return new ApiErrorResult<bool>("CannontFindATopicWithId");
                         }
-                    }
-
-                    foreach (var item in request.TopicId)
-                    {
-                        var follow = _context.Follow.Where(t => t.TopicId == item);
-                        _context.Follow.RemoveRange(follow);
-                        await _context.SaveChangesAsync();
-                    }
-
-                    foreach (var item in request.TopicId)
-                    {
+                        
                         var followCreate = new Data.Entities.Follow()
                         {
                             UserId = request.UserId,
@@ -89,62 +85,7 @@ namespace FakeNewsFilter.Application.Catalog
             }
                 
         }
-
-        public async Task<ApiResult<bool>> Update(FollowUpdateRequest request)
-        {
-            using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
-            {
-                try
-                {
-                    //check user
-                    var user = await _userManager.FindByIdAsync(request.UserId.ToString());
-                    if (user == null)
-                    {
-                        return new ApiErrorResult<bool>("UserIsNotExist");
-                    }
-
-                    //check topic id
-                    foreach (var item in request.TopicId)
-                    {
-                        var topic = await _context.TopicNews.FirstOrDefaultAsync(t => t.TopicId == item);
-                        if (topic == null)
-                        {
-                            return new ApiErrorResult<bool>("CannontFindATopicWithId");
-                        }
-                    }
-                    // remove user
-                    var follow = _context.Follow.Where(t => t.UserId == request.UserId);
-                    _context.Follow.RemoveRange(follow);
-                    await _context.SaveChangesAsync();
-                    // update follow topic
-                    foreach (var item in request.TopicId)
-                    {
-                        var followUpdate = new Data.Entities.Follow()
-                        {
-                            UserId = request.UserId,
-                            TopicId = item
-                        };
-                        _context.Follow.Add(followUpdate);
-                    }
-
-                    var result = await _context.SaveChangesAsync();
-
-                    if (result > 0)
-                    {
-                        transaction.Commit();
-                        return new ApiSuccessResult<bool>("FollowUpdateSuccessful", false);
-                    }
-                    transaction.Rollback();
-                    return new ApiErrorResult<bool>("FollowUpdateUnsuccessful");
-                }
-                catch (DbUpdateException ex)
-                {
-                    transaction.Rollback();
-                    return new ApiErrorResult<bool>(ex.Message);
-                }
-            }
-                
-        }
+        
         //Get Follow Topic By User
         public async Task<ApiResult<List<int>>> GetFollowTopicByUser(Guid userId)
         {
