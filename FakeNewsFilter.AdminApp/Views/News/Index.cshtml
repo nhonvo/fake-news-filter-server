@@ -107,44 +107,57 @@
                 <img id="loading-image" src="/img/ajax-loader.gif" alt="Loading..." />
             </div>
             <!-- Modal to add new record -->
-            <div class="modal modal-slide-in fade" id="modals-slide-in">
-                <div class="modal-dialog sidebar-sm">
-                    <form class="add-new-record modal-content pt-0" asp-action="Create" asp-controller="News" method="post" enctype="multipart/form-data">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
-                        <div class="modal-header mb-1">
-                            <h5 class="modal-title" id="exampleModalLabel">Create News</h5>
-                        </div>
-                        <div class="modal-body flex-grow-1">
-                            <div class="mb-1">
-                                <label class="form-label" for="basic-icon-default-fullname">News Title</label>
-                                <input type="text" class="form-control dt-top-tag" asp-for="Name" />
+            <div aria-labelledby="myLargeModalLabel" class="modal fade bd-example-modal-lg show" role="dialog" tabindex="-1" style="padding-right: 15px; display: none;">
+                  <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">
+                          Modal title
+                        </h5>
+                        <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true"> ×</span></button>
+                      </div>
+                      <div class="modal-body">
+                        <form asp-action="Create" asp-controller="News" method="post">
+                         
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="form-label" for="basic-icon-default-fullname">Official Rating</label>
+                                    <input type="text" class="form-control dt-top-tag" asp-for="OfficialRating" />
+                                </div>
                             </div>
-                            <div class="mb-1">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="form-label" for="basic-icon-default-fullname">News Title</label>
+                                    <input type="text" class="form-control dt-top-tag" asp-for="Name" />
+                                </div>
+                            </div>
+                        </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="language">Content Language</label>
+                                        <select class="select2" asp-for="LanguageId" asp-items="@ViewBag.ListLanguage" aria-invalid="false"></select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="topic">Label</label>
+                                        <select class="select2 form-select" asp-for="TopicId" asp-items="@ViewBag.ListTopic" aria-invalid="false" multiple="multiple"></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="form-label" for="basic-icon-default-post">Description</label>
                                 <textarea data-length="200" type="text" asp-for="Description" class="form-control char-textarea active" rows="3"></textarea>
                                 <small class="textarea-counter-value float-end" style="background-color: rgb(115, 103, 240);"><span class="char-count">0</span> / 200 </small>
                             </div>
 
-                            <div class="mb-1">
-                                <label class="form-label" for="basic-icon-default-fullname">Official Rating</label>
-                                <input type="text" class="form-control dt-top-tag" asp-for="OfficialRating" />
-                            </div>
-
-                            <div class="mb-1">
+                            <div class="form-group">
                                 <label class="form-label" for="basic-icon-default-fullname">Content</label>
                                 <textarea id="txt_content" type="text" rows="5" class="form-control dt-top-tag" asp-for="Content"></textarea>
                             </div>
-
-                            <div class="mb-1">
-                                <label class="form-label" for="status">Content Language</label>
-                                <select class="form-select" asp-for="LanguageId" asp-items="@ViewBag.ListLanguage" aria-invalid="false"></select>
-                            </div>
-
-                            <div class="mb-1">
-                                <label class="form-label" for="status">Label</label>
-                                <select class="select2 form-select" asp-for="TopicId" asp-items="@ViewBag.ListTopic" aria-invalid="false" multiple="multiple"></select>
-                            </div>
-                            <div class="mb-4 border">
+                            <div class="form-group">
                                 <div style="text-align: center">
                                     <img class="topic-thumb rounded me-2 my-25 cursor-pointer" height="100">
                                     <div class="col-12 mt-1">
@@ -158,12 +171,15 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary data-submit me-1" onclick="CreateNews(this.parentElement.parentElement, event)">Submit</button>
-                            <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                        </div>
-                    </form>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button class="btn btn-secondary" data-dismiss="modal" type="button"> Close</button><button class="btn btn-primary" type="button"> Save changes</button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-            </div>
+            
         </section>
     </div>
 </div>
@@ -177,15 +193,9 @@
         <script src="/bower_components/datatables.net-buttons-bs/js/datatables.checkboxes.min.js"></script>
         <script src="/bower_components/datatables.net-buttons-bs/js/datatables.buttons.min.js"></script>
         <script src="/bower_components/datatables.net-buttons-bs/js/buttons.bootstrap5.min.js"></script>
+        <script src="/bower_components/bootstrap/js/dist/modal.js"></script>
         <script src="https://cdn.ckeditor.com/ckeditor5/31.0.0/classic/ckeditor.js"></script>
         <script src="https://momentjs.com/downloads/moment.js"></script>
         <script src="/js/admin/news.js"></script>
-    @* *@
-    @* *@
-    @* *@
-    @* <script src="https://cdn.ckeditor.com/ckeditor5/31.0.0/classic/ckeditor.js"></script> *@
-    @* <script src="https://momentjs.com/downloads/moment.js"></script> *@
-    @* <script src="/js/dataTables.bootstrap4.min.js"></script> *@
-    @* <script src="/js/admin/news.js"></script> *@
 }
 

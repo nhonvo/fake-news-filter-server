@@ -224,6 +224,7 @@ $(document).ready(function () {
         language: {
             sLengthMenu: 'Show _MENU_',
             search: 'Search',
+            sFilterInput: "form-control yourClass",
             searchPlaceholder: 'Search...'
         },
         responsive: {
@@ -261,8 +262,8 @@ $(document).ready(function () {
                 text: 'Add News',
                 className: 'add-new btn btn-primary mt-50',
                 attr: {
-                    'data-bs-toggle': 'modal',
-                    'data-bs-target': '#modals-slide-in'
+                    'data-toggle': 'modal',
+                    'data-target': '.bd-example-modal-lg'
                 },
                 init: function (api, node, config) {
                     $(node).removeClass('btn-secondary');
@@ -289,7 +290,7 @@ $(document).ready(function () {
                 .every(function () {
                     var column = this;
                     var select = $(
-                        '<select id="FilterNewsLanguage" class="form-select text-capitalize mb-md-0 mb-2xx"><option value=""> Select Language </option></select>'
+                        '<select id="FilterNewsLanguage" class="form-control form-control-sm rounded bright"><option value=""> Select Language </option></select>'
                     )
                         .appendTo('.news_language')
                         .on('change', function () {
@@ -319,7 +320,7 @@ $(document).ready(function () {
 
                     var column = this;
                     var select = $(
-                        '<select id="FilterNewsStatus" class="form-select text-capitalize mb-md-0 mb-2xx"><option value=""> Select Status </option></select>'
+                        '<select id="FilterNewsStatus" class="form-control form-control-sm rounded bright"><option value=""> Select Status </option></select>'
                     )
                         .appendTo('.news_status')
                         .on('change', function () {
