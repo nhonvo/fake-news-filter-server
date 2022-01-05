@@ -68,8 +68,8 @@
     <Folder Include="Logs\" />
     <Folder Include="wwwroot\images\avatars\" />
     <Folder Include="wwwroot\images\languages\" />
-    <Folder Include="wwwroot\images\stories\" />
     <Folder Include="wwwroot\images\newscommunities\" />
     <Folder Include="wwwroot\images\news\" />
+    <Folder Include="wwwroot\images\stories\" />
   </ItemGroup>
 </Project>

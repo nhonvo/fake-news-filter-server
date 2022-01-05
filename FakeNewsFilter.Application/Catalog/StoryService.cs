@@ -64,6 +64,15 @@ namespace FakeNewsFilter.Application.Catalog
             //Save Image on Host
             if (request.ThumbStory != null)
             {
+                //Kiểm tra định dạng file đưa vào
+                var checkExtension =
+                    ImageExtensions.Contains(Path.GetExtension(request.ThumbStory.FileName).ToUpperInvariant());
+
+                if (checkExtension == false)
+                {
+                    return new ApiErrorResult<int>("FileImageInvalid");
+                }
+
                 story.Media = new Media()
                 {
                     Caption = "Thumbnail Story",
@@ -124,9 +133,18 @@ namespace FakeNewsFilter.Application.Catalog
                 //If image null, create new image
                 if (thumb == null)
                 {
+                    //Kiểm tra định dạng file đưa vào
+                    var checkExtension =
+                        ImageExtensions.Contains(Path.GetExtension(request.ThumbStory.FileName).ToUpperInvariant());
+
+                    if (checkExtension == false)
+                    {
+                        return new ApiErrorResult<bool>("FileImageInvalid");
+                    }
+
                     story_update.Media = new Media()
                     {
-                        Caption = "Thumbnail story",
+                        Caption = "Thumbnail Story",
                         DateCreated = DateTime.Now,
                         FileSize = request.ThumbStory.Length,
                         PathMedia = await this.SaveFile(request.ThumbStory),
@@ -165,7 +183,7 @@ namespace FakeNewsFilter.Application.Catalog
 
                 if (story == null) throw new FakeNewsException("CannontFindAStoryWithId");
 
-                var media = _context.Media.Single(x => x.MediaId == story.Thumbstory);
+                var media = _context.Media.FirstOrDefault(i => i.MediaId == story.Thumbstory);
 
                 if (media != null)
                 {
@@ -240,8 +258,11 @@ namespace FakeNewsFilter.Application.Catalog
         }
         private async Task<string> SaveFile(IFormFile file)
         {
+            //lấy ra tên của file ảnh
             var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+            //đặt tên lại cho file ảnh đó
             var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
+            
             await _storageService.SaveFileAsync(file.OpenReadStream(), fileName);
             return fileName;
         }

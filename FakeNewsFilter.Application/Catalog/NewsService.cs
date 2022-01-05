@@ -254,7 +254,12 @@ public class NewsService : INewsService
                     {
                         var checkExtension =
                             ImageExtensions.Contains(Path.GetExtension(request.ThumbNews.FileName).ToUpperInvariant());
-                        news.Media = new Media
+
+                        if (checkExtension == false)
+                        {
+                            return new ApiErrorResult<int>("FileImageInvalid");
+                        }
+                    news.Media = new Media
                         {
                             DateCreated = DateTime.Now,
                             FileSize = request.ThumbNews.Length,
@@ -345,6 +350,15 @@ public class NewsService : INewsService
                     //Nếu chưa có hình thì thêm hình mới
                     if (thumb == null)
                     {
+                        //Kiểm tra định dạng file đưa vào
+                        var checkExtension =
+                            ImageExtensions.Contains(Path.GetExtension(request.ThumbNews.FileName).ToUpperInvariant());
+
+                        if (checkExtension == false)
+                        {
+                            return new ApiErrorResult<bool>("FileImageInvalid");
+                        }
+
                         news_update.Media = new Media
                         {
                             Caption = "Thumbnail Topic",

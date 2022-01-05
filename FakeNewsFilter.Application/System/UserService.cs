@@ -654,9 +654,9 @@ namespace FakeNewsFilter.Application.System
 
             //To do: Send token in email
 
-            await EmailSender.SendEmailAsync(email, "Reset Password OTP", "Hello"
+            await EmailSender.SendEmailAsync(email, "Reset Password OTP", "Hello "
                 + email + "<br><br>Please find the reset password token below<br><br><b>" 
-                + otp + "<b><br><br>Thanks<br>FakenewsFilter.com");
+                + otp + "<b><br><br>Thanks<br>FakenewsFilter.tk");
 
             return new ApiSuccessResult<ForgotPassword>("TokenSendSuccess", resetPassword);
         }
