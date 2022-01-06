@@ -190,17 +190,6 @@ $(document).ready(function () {
         },
 
     });
-
-    ClassicEditor.create(document.querySelector('#txt_content'))
-        .then(editor => {
-            editor.editing.view.change(writer => {
-                writer.setStyle('min-height', '300px', editor.editing.view.document.getRoot());
-            });
-            window.editor = editor;
-        })
-        .catch(error => {
-            console.error(error);
-        });
 });
 
 $(function () {
@@ -212,7 +201,7 @@ $(function () {
             dropdownAutoWidth: true,
             dropdownParent: selectArray.parent(),
             width: '100%',
-            data: data
+            // data: data
         });
 
     var changePicture = $('#ThumbNews'),
@@ -269,14 +258,12 @@ $(function () {
 
 function CreateNews(frm, caller) {
     $('#loading').show();
-
     caller.preventDefault();
     var fdata = new FormData();
-
     var name = $(frm).find('input#Name')[0].value;
     var description = $(frm).find('#Description')[0].value;
     var officialRating = $(frm).find('#OfficialRating')[0].value;
-    var content = editor.getData();
+    var content = CKEDITOR.instances.ckeditor1.getData();
     var languageId = $(frm).find('#LanguageId')[0].value;
     var topicIdList = $(frm).find('#TopicId').select2("val");
 

@@ -37,19 +37,6 @@ $(document).ready(function () {
 
         select.val(result).trigger('change');
     });
-
-    ClassicEditor
-        .create(document.querySelector('#Content'))
-        .then(editor => {
-            editor.editing.view.change(writer => {
-                writer.setStyle('min-with', '500px', editor.editing.view.document.getRoot());
-                writer.setStyle('min-height', '300px', editor.editing.view.document.getRoot());
-            });
-            window.editor = editor;
-        })
-        .catch(error => {
-            console.error(error);
-        });
 });
 
 
