@@ -9,28 +9,21 @@
 
 //Load Datatable List Topic
 $(document).ready(function () {
+
     $('#loading').hide();
+
     var select = $('.select2');
 
-    var
-        language = {
-            "en": 'flag-icon flag-icon-us',
-            "vi": 'flag-icon flag-icon-vn'
-        };
-
-    var
-        statusObj = {
-            0: { title: 'Pending', class: 'badge-light-warning' },
-            1: { title: 'Active', class: 'badge-light-success' },
-            2: { title: 'Inactive', class: 'badge-light-secondary' }
+    var statusObj = {
+            0: { title: 'Archive', class: 'status-pill red' },
+            1: { title: 'Active', class: 'status-pill green' },
+            2: { title: 'Inactive', class: 'status-pill yellow' }
         };
 
     select.each(function () {
         var $this = $(this);
         $this.wrap('<div class="position-relative"></div>');
         $this.select2({
-            // the following code is used to disable x-scrollbar when click in select input and
-            // take 100% width in responsive also
             dropdownAutoWidth: true,
             width: '100%',
             dropdownParent: $this.parent()
@@ -38,7 +31,6 @@ $(document).ready(function () {
     });
 
     $("#list_news").DataTable({
-        responsive: true,
         ajax: {
             url: "/News/GetNews",
             type: "get",
@@ -50,10 +42,7 @@ $(document).ready(function () {
         },
         columns: [
             { "data": 'newsId' },
-            { "data": 'newsId' },
-            { "data": 'newsId' },
-            { "data": 'topicInfo' },
-            { "data": 'officialRating' },
+            { "data": 'name' },
             { "data": 'languageId' },
             { "data": 'timestamp' },
             { "data": 'status' },
@@ -61,156 +50,48 @@ $(document).ready(function () {
         ],
         columnDefs: [
             {
-                // For Responsive
-                className: 'control',
-                orderable: false,
-                responsivePriority: 2,
-                targets: 0
-            },
-            {
-                // For Checkboxes
-                targets: 1,
-                orderable: false,
-                responsivePriority: 3,
-                render: function (data, type, full, meta) {
-                    return (
-                        '<div class="form-check"> <input class="form-check-input dt-checkboxes" type="checkbox" value="" id="checkbox' +
-                        data +
-                        '" /><label class="form-check-label" for="checkbox' +
-                        data +
-                        '"></label></div>'
-                    );
-                },
-                checkboxes: {
-                    selectAllRender:
-                        '<div class="form-check"> <input class="form-check-input" type="checkbox" value="" id="checkboxSelectAll" /><label class="form-check-label" for="checkboxSelectAll"></label></div>'
-                }
-            },
-            {
+                //Lấy ảnh cờ của ngôn ngữ
                 targets: 2,
-                visible: false
+                render: function (data, type, full, meta) {
+                    var $lang = full['languageId'];
+                    return (
+                        '<div><img alt="" src="/img/flags-icons/' + $lang + '.png" width="25px"><span hidden>' + $lang + '</span></div>'
+                    );
+                }
             },
             {
-                // User full name and username
+                //Đồng bộ thời gian thực (Sử dụng MommentJS)
                 targets: 3,
-                responsivePriority: 4,
-                render: function (data, type, full, meta) {
-                    var $name = full['name'],
-                        $image = full['thumbNews'],
-                        $assetPath = "https://fakenewsfilter.tk/",
-                        $uname = full['topicInfo'].map(function (item) {
-                            return ' ' + item['topicName'];
-                        }),
-                        $description = full['description'],
-                        $link = full['postURL'];
-
-                    if ($image) {
-                        // For Avatar image
-                        var $output =
-                            '<img src="' + $assetPath + 'images/news/' + $image.pathMedia + '" alt="Thumb News" height="32" width="32">';
-                    }
-                        else {
-                        // For Avatar badge
-                        var stateNum = Math.floor(Math.random() * 6) + 1;
-                        var states = ['success', 'danger', 'warning', 'info', 'dark', 'primary', 'secondary'];
-                        var $name = full['name'],
-                        $initials = $name.match(/\b\w/g) || [];
-                        $initials = (($initials.shift() || '') + ($initials.pop() || '')).toUpperCase();
-                        $output = '<span class="avatar-content">' + $initials + '</span>';
-                    }
-
-                    var colorClass = $image === '' ? ' bg-light-' + $state + ' ' : '';
-                    // Creates full output for row
-                    var $row_output =
-                    '<div class="d-flex justify-content-left align-items-center">' +
-                        '<div class="avatar-wrapper">' +
-                        '<div class="avatar ' +
-                        colorClass +
-                        ' me-1">' +
-                        $output +
-                        '</div>' +
-                        '</div>' +
-                        '<div class="d-flex flex-column">' +
-                        '<a href="' +
-                        '" class="user_name text-truncate"><span class="fw-bold">' +
-                        $name +
-                        '</span></a>' +
-                        '<small class="emp_post text-muted">#' +
-                        $uname +
-                        '</small>' +
-                        '<small class="emp_post text-muted">' +
-                        $description +
-                        '</small>' +
-                        '</div>' +
-                        '</div>';
-
-                    return $row_output;
-
-                }
-            },
-            {
-                targets: 4,
-                render: function (data, type, full, meta) {
-                    var $officialRating = full['officialRating'];
-                    return (
-                        '<div>' + $officialRating ? $officialRating : " " + '</div>'
-                    );
-                }
-            },
-            {
-                targets: 5,
-                render: function (data, type, full, meta) {
-                    var $status = full['languageId'];
-                    return (
-                        '<div><i class="' + language[$status] + '"></i><span hidden>'+ $status + '</span></div>'
-                    );
-                }
-            },
-            {
-                targets: 6,
                 render: function (data, type, full, meta) {
                     var $time = full['timestamp'];
                     return moment($time).fromNow();
                 }
             },
             {
-                // User Status
-                targets: 7,
+                //Trạng thái của tin tức (Active/InActive/Archive)
+                targets: 4,
                 orderable: false,
                 render: function (data, type, full, meta) {
                     var $status = full['status'];
                     return (
-                        '<span class="badge rounded-pill ' +
-                        statusObj[$status].class +
-                        '" text-capitalized>' +
-                        statusObj[$status].title +
-                        '</span>'
+                        '<div class="' + statusObj[$status].class + '" data-title="' + statusObj[$status].title + '" data-bs-toggle="tooltip" title="' + statusObj[$status].title + '"> <span hidden>' + statusObj[$status].title + '</span></div>'
                     );
                 }
             },
             {
-                // // Actions
-                // targets: -1,
-                // orderable: false,
-                // render: function (data, type, full, meta) {
-                //     var $newsId = full['newsId'];
-                //     return (
-                //         '<div class="d-flex align-items-center col-actions">' +
-                //         '<a class="me-1" href="/News/Edit/' + $newsId + ' "data-bs-toggle="tooltip" data-bs-placement="top" title = "Edit" > ' +
-                //         feather.icons['edit'].toSvg({ class: 'font-medium-1 text-warning' }) +
-                //         '</a>' +
-                //         '<a class="me-1" onclick=DeleteData("' + $newsId + '"); data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">' +
-                //         feather.icons['trash'].toSvg({ class: 'font-medium-1 text-danger' }) +
-                //         '</a>' +
-                //         '<a class="me-1" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="View">' +
-                //         feather.icons['eye'].toSvg({ class: 'font-medium-1' }) +
-                //         '</a>'
-                //         +
-                //         '</div>'
-                //     );
-                // }
+                 //Các nút Actions
+                 targets: 5,
+                 orderable: false,
+                 render: function (data, type, full, meta) {
+                     var $newsId = full['newsId'];
+                     return (
+                         '<div class="row-actions text-center">' +
+                         '<a href="/News/Edit/' + $newsId + '" data-bs-toggle="tooltip" data-bs-placement="top" title = "Edit"> <i class="os-icon os-icon-ui-49"></i> </a>' +
+                         '<a class="danger" onclick=DeleteData("' + $newsId + '"); data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"> <i class="os-icon os-icon-ui-15"></i> </a>' +
+                         '</div>'
+                     );
+                 }
             }
-
         ],
         dom:
             '<"d-flex justify-content-between align-items-center header-actions mx-1 row mt-75"' +
@@ -221,46 +102,10 @@ $(document).ready(function () {
             '<"col-sm-12 col-md-6"i>' +
             '<"col-sm-12 col-md-6"p>' +
             '>',
-        language: {
-            sLengthMenu: 'Show _MENU_',
-            search: 'Search',
-            sFilterInput: "form-control yourClass",
-            searchPlaceholder: 'Search...'
-        },
-        responsive: {
-            details: {
-                display: $.fn.dataTable.Responsive.display.modal({
-                    
-                }),
-                type: 'column',
-                renderer: function (api, rowIdx, columns) {
-                    var data = $.map(columns, function (col, i) {
-                        return col.title !== '' // ? Do not show row in modal popup if title is blank (for check box)
-                            ? '<tr data-dt-row="' +
-                            col.rowIdx +
-                            '" data-dt-column="' +
-                            col.columnIndex +
-                            '">' +
-                            '<td>' +
-                            col.title +
-                            ':' +
-                            '</td> ' +
-                            '<td>' +
-                            col.data +
-                            '</td>' +
-                            '</tr>'
-                            : '';
-                    }).join('');
-
-                    return data ? $('<table class="table"/>').append('<tbody>' + data + '</tbody>') : false;
-                }
-            }
-        },
-        // Buttons with Dropdown
         buttons: [
             {
                 text: 'Add News',
-                className: 'add-new btn btn-primary mt-50',
+                className: 'add-new btn btn-rounded btn-primary',
                 attr: {
                     'data-toggle': 'modal',
                     'data-target': '.bd-example-modal-lg'
@@ -272,21 +117,20 @@ $(document).ready(function () {
         ],
         language: {
             paginate: {
-                // remove previous & next text from pagination
-                previous: '&nbsp;',
-                next: '&nbsp;'
+                //Thay đổi nút Next/Previous
+                previous: '<',
+                next: '>'
             }
         },
-        //Tooltip
-
+        //Thiết lập Tooltip
         drawCallback: function () {
             $(document).find('[data-bs-toggle="tooltip"]').tooltip();
         },
 
         initComplete: function () {
-            // Adding role filter once table initialized
+            //API lọc ngôn ngữ tin tức
             this.api()
-                .columns(5)
+                .columns(2)
                 .every(function () {
                     var column = this;
                     var select = $(
@@ -313,9 +157,9 @@ $(document).ready(function () {
                         });
 
                 });
-            // Adding status filter once table initialized
+            //API lọc trạng thái tin tức
             this.api()
-                .columns(7)
+                .columns(4)
                 .every(function () {
 
                     var column = this;
@@ -361,13 +205,7 @@ $(document).ready(function () {
 
 $(function () {
     //Select
-    // Loading array data
-    var data = [
-        { id: 0, text: 'breaking' },
-        { id: 1, text: 'featured' },
-        { id: 2, text: 'normal' }
-    ];
-
+ 
     selectArray = $('.select2-data-array'),
 
         selectArray.wrap('<div class="position-relative"></div>').select2({
@@ -507,7 +345,3 @@ function Delete(newsId) {
         location.reload();
     });
 }
-
-
-
-
