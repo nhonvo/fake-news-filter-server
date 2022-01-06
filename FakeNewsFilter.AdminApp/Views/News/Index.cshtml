@@ -1,21 +1,16 @@
 ﻿@model FakeNewsFilter.ViewModel.Catalog.NewsManage.NewsCreateRequest
 
-@section headerscripts{
-
-    <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/forms/select/select2.min.css">
-    <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/vendors.min.css">
-    <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/tables/datatable/responsive.bootstrap4.min.css">
-    <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css">
-    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
-
-
-}
-
 @{
-    ViewData["Title"] = "LIST NEWS";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "List News - Fake News Filter";
 }
+
+@section headerscripts{
+    <link rel="stylesheet" type="text/css" href="/bower_components/datatables.net-buttons-bs/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" type="text/css" href="/bower_components/datatables.net-buttons-bs/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="/bower_components/datatables.net-buttons-bs/css/buttons.bootstrap5.min.css">
+    <link href="/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+}
+
 
 @if (ViewBag.SuccessMsg != null)
 {
@@ -68,120 +63,122 @@
             }, 2000);
     </script>
 }
+<div id="loading">
+    <img id="loading-image" src="/img/ajax-loader.gif" alt="Loading..." />
+</div>
 
-<div class="card">
-    <div id="DataTables_Table_0_wrapper" class=" card-body pb-50 dataTables_wrapper dt-bootstrap5 no-footer">
-        <!-- Basic table -->
-        <section id="basic-datatable">
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <h2 class="content-header-title float-start mb-0">List News</h2>
-                        <!-- users filter start -->
-                        <div class="card">
-                            <h5 class="card-header">Search Filter</h5>
-                            <div class="d-flex justify-content-between align-items-center mx-50 row">
-                                <div class="col-md-6 news_language"></div>
-                                <div class="col-md-6 news_status"></div>
-                            </div>
-                        </div>
-
-                        <table class="datatables-basic table" id="list_news">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th></th>
-                                    <th>ID</th>
-                                    <th>News</th>
-                                    <th>Official Rating</th>
-                                    <th>Lang</th>
-                                    <th>SyncTime</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </div>
+<div class="element-wrapper">
+    <h6 class="element-header">
+        List News
+    </h6>
+    <div class="element-box">
+        <div class="form-desc">
+            <div class="d-flex justify-content-between align-items-center mx-50 row">
+                <div class="col-sm-6 news_language"></div>
+                <div class="col-sm-6 news_status"></div>
             </div>
-            <div id="loading">
-                <img id="loading-image" src="/assets/images/ajax-loader.gif" alt="Loading..." />
-            </div>
-            <!-- Modal to add new record -->
-            <div class="modal modal-slide-in fade" id="modals-slide-in">
-                <div class="modal-dialog sidebar-sm">
-                    <form class="add-new-record modal-content pt-0" asp-action="Create" asp-controller="News" method="post" enctype="multipart/form-data">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
-                        <div class="modal-header mb-1">
-                            <h5 class="modal-title" id="exampleModalLabel">Create News</h5>
-                        </div>
-                        <div class="modal-body flex-grow-1">
-                            <div class="mb-1">
-                                <label class="form-label" for="basic-icon-default-fullname">News Title</label>
-                                <input type="text" class="form-control dt-top-tag" asp-for="Name" />
-                            </div>
-                            <div class="mb-1">
-                                <label class="form-label" for="basic-icon-default-post">Description</label>
-                                <textarea data-length="200" type="text" asp-for="Description" class="form-control char-textarea active" rows="3"></textarea>
-                                <small class="textarea-counter-value float-end" style="background-color: rgb(115, 103, 240);"><span class="char-count">0</span> / 200 </small>
-                            </div>
+        </div>
 
-                            <div class="mb-1">
-                                <label class="form-label" for="basic-icon-default-fullname">Official Rating</label>
-                                <input type="text" class="form-control dt-top-tag" asp-for="OfficialRating" />
-                            </div>
-
-                            <div class="mb-1">
-                                <label class="form-label" for="basic-icon-default-fullname">Content</label>
-                                <textarea id="txt_content" type="text" rows="5" class="form-control dt-top-tag" asp-for="Content"></textarea>
-                            </div>
-
-                            <div class="mb-1">
-                                <label class="form-label" for="status">Content Language</label>
-                                <select class="form-select" asp-for="LanguageId" asp-items="@ViewBag.ListLanguage" aria-invalid="false"></select>
-                            </div>
-
-                            <div class="mb-1">
-                                <label class="form-label" for="status">Label</label>
-                                <select class="select2 form-select" asp-for="TopicId" asp-items="@ViewBag.ListTopic" aria-invalid="false" multiple="multiple"></select>
-                            </div>
-                            <div class="mb-4 border">
-                                <div style="text-align: center">
-                                    <img class="topic-thumb rounded me-2 my-25 cursor-pointer" height="100">
-                                    <div class="col-12 mt-1">
-                                        <label class="btn btn-primary me-75 mb-0 waves-effect waves-float waves-light" for="ThumbNews">
-                                            <span class="d-none d-sm-block">Choose Image</span>
-                                            <input asp-for="ThumbNews" class="form-control" type="file" hidden="" accept="image/png, image/jpeg, image/jpg">
-                                            <span class="d-block d-sm-none">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit me-0"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-                                            </span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-primary data-submit me-1" onclick="CreateNews(this.parentElement.parentElement, event)">Submit</button>
-                            <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </section>
+        <div class="table-responsive">
+            <table id="list_news" width="100%" class="table table-striped table-lightfont text-center">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>News</th>
+                        <th>Lang</th>
+                        <th>SyncTime</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
     </div>
 </div>
 
+<!-- Modal to add new record -->
+<div aria-labelledby="myLargeModalLabel" class="modal fade bd-example-modal-lg show" role="dialog" tabindex="-1" style="padding-right: 15px; display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    Modal title
+                </h5>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true"> ×</span></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Create" asp-controller="News" method="post">
+                    <div class="form-group">
+                        <label class="form-label" for="basic-icon-default-fullname">News Title</label>
+                        <input type="text" class="form-control dt-top-tag" asp-for="Name" />
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="form-label" for="basic-icon-default-fullname">Official Rating</label>
+                                <input type="text" class="form-control dt-top-tag" asp-for="OfficialRating" />
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="form-label" for="language">Content Language</label>
+                                <select class="form-control" asp-for="LanguageId" asp-items="@ViewBag.ListLanguage" aria-invalid="false"></select>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="form-label" for="topic">Label</label>
+                                <select class="select2 form-select" asp-for="TopicId" asp-items="@ViewBag.ListTopic" aria-invalid="false" multiple="multiple"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="basic-icon-default-post">Description</label>
+                        <textarea data-length="200" type="text" asp-for="Description" class="form-control char-textarea active" rows="3"></textarea>
+                        <small class="textarea-counter-value float-end" style="background-color: rgb(115, 103, 240);"><span class="char-count">0</span> / 200 </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="basic-icon-default-fullname">Content</label>
+                        <textarea id="ckeditor1" type="text" rows="5" class="form-control dt-top-tag" asp-for="Content"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <div style="text-align: center">
+                            <img class="topic-thumb rounded me-2 my-25 cursor-pointer" height="100">
+                            <div class="col-12 mt-1">
+                                <label class="btn btn-primary me-75 mb-0 waves-effect waves-float waves-light" for="ThumbNews">
+                                    <span class="d-none d-sm-block">Choose Image</span>
+                                    <input asp-for="ThumbNews" class="form-control" type="file" hidden="" accept="image/png, image/jpeg, image/jpg">
+                                    <span class="d-block d-sm-none">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit me-0"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal" type="button"> Close</button>
+                <button class="btn btn-primary" type="button" onclick="CreateNews(document.querySelector('.modal-body > form'), event)"> Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @section footerscripts{
-    <script src="/app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js"></script>
-    <script src="/app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js"></script>
-    <script src="/app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js"></script>
-    <script src="/app-assets/vendors/js/tables/datatable/responsive.bootstrap4.js"></script>
-    <script src="/app-assets/vendors/js/tables/datatable/responsive.bootstrap4.js"></script>
-    <script src="/app-assets/vendors/js/tables/datatable/datatables.checkboxes.min.js"></script>
-    <script src="/app-assets/vendors/js/tables/datatable/datatables.buttons.min.js"></script>
-    <script src="/app-assets/vendors/js/tables/datatable/buttons.bootstrap5.min.js"></script>
-    <script src="/app-assets/vendors/js/forms/validation/jquery.validate.min.js"></script>
-    <script src="/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
+    <script src="/bower_components/datatables.net-buttons-bs/js/jquery.dataTables.min.js"></script>
+    <script src="/bower_components/datatables.net-buttons-bs/js/dataTables.bootstrap5.min.js"></script>
+    <script src="/bower_components/datatables.net-buttons-bs/js/dataTables.responsive.min.js"></script>
+    <script src="/bower_components/datatables.net-buttons-bs/js/responsive.bootstrap4.js"></script>
+    <script src="/bower_components/datatables.net-buttons-bs/js/responsive.bootstrap4.js"></script>
+    <script src="/bower_components/datatables.net-buttons-bs/js/datatables.checkboxes.min.js"></script>
+    <script src="/bower_components/datatables.net-buttons-bs/js/datatables.buttons.min.js"></script>
+    <script src="/bower_components/datatables.net-buttons-bs/js/buttons.bootstrap5.min.js"></script>
+    <script src="/bower_components/bootstrap/js/dist/modal.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/31.0.0/classic/ckeditor.js"></script>
     <script src="https://momentjs.com/downloads/moment.js"></script>
-    <script src="/src/js/admin/news.js"></script>
+    <script src="/js/admin/news.js"></script>
 }
 

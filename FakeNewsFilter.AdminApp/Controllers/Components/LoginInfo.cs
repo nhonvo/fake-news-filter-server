@@ -37,7 +37,7 @@ namespace FakeNewsFilter.AdminApp.Controllers.Components
             {
                 FullName = name.Value,
                 Avatar = avatar.Value,
-                Email = role.Value,
+                Role = role.Value,
             };
             return Task.FromResult((IViewComponentResult)View("Default", userinfo));
         }
