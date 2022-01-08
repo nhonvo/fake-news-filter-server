@@ -15,7 +15,6 @@
     <Folder Include="Views\Login\" />
     <Folder Include="Controllers\Components\" />
     <Folder Include="Views\Shared\Components\" />
-    <Folder Include="wwwroot\src\js\admin\" />
     <Folder Include="Views\Topic\" />
     <Folder Include="Views\News\" />
   </ItemGroup>
