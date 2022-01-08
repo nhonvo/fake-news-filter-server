@@ -38,7 +38,7 @@ namespace FakeNewsFilter.API.Controllers
                 }
                 var result = await _ICommentService.Create(request);
 
-                result.Message = _localizer[result.Message].Value;
+                result.Message = _localizer[result.Message].Value + result.ResultObj;
 
                 if (result.IsSuccessed == false)
                 {
@@ -76,9 +76,9 @@ namespace FakeNewsFilter.API.Controllers
             {
                 var result = await _ICommentService.Delete(commentId, userId);
 
-                result.Message = _localizer[result.Message].Value;
+                result.Message = _localizer[result.Message].Value + result.ResultObj;
 
-                if (result.ResultObj != false)
+                if (result.ResultObj != null)
                 {
                     _logger.LogError(result.Message);
                     return BadRequest(result);
@@ -107,9 +107,9 @@ namespace FakeNewsFilter.API.Controllers
 
                 var result = await _ICommentService.Update(request);
 
-                result.Message = _localizer[result.Message].Value;
+                result.Message = _localizer[result.Message].Value + result.ResultObj;
 
-                if (result.ResultObj != false)
+                if (result.ResultObj != null)
                 {
                     _logger.LogError(result.Message);
                     return BadRequest(result);

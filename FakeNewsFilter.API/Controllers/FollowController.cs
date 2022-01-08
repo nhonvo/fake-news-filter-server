@@ -37,7 +37,7 @@ namespace FakeNewsFilter.API.Controllers
                 }
                 var result = await _IFollowService.Create(request);
 
-                result.Message = _localizer[result.Message].Value;
+                result.Message = _localizer[result.Message].Value + result.ResultObj;
 
                 if (result.IsSuccessed == false)
                 {

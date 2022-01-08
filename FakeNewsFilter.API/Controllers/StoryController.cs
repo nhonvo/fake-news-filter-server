@@ -51,7 +51,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 var resultToken = await _IStoryService.Create(request);
 
-                resultToken.Message = _localizer[resultToken.Message].Value;
+                resultToken.Message = _localizer[resultToken.Message].Value + resultToken.ResultObj;
 
                 if (resultToken.IsSuccessed == false)
                 {
@@ -84,9 +84,9 @@ namespace FakeNewsFilter.API.Controllers
 
                 var result = await _IStoryService.Update(request);
 
-                result.Message = _localizer[result.Message].Value;
+                result.Message = _localizer[result.Message].Value + result.ResultObj; 
 
-                if (result.ResultObj != false)
+                if (result.ResultObj != null)
                 {
                     _logger.LogError(result.Message);
                     return BadRequest(result);
@@ -110,7 +110,7 @@ namespace FakeNewsFilter.API.Controllers
             {
                 var result = await _IStoryService.Delete(storyId);
 
-                result.Message = _localizer[result.Message].Value;
+                result.Message = _localizer[result.Message].Value + result.ResultObj;
 
                 if (result.IsSuccessed == false)
                 {
@@ -132,22 +132,22 @@ namespace FakeNewsFilter.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetById(int storyId)
         {
-            var topic = await _IStoryService.GetOneStory(storyId);
+            var story = await _IStoryService.GetOneStory(storyId);
 
-            topic.Message = _localizer[topic.Message].Value;
+            story.Message = _localizer[story.Message].Value;
 
-            return Ok(topic);
+            return Ok(story);
         }
 
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> Get(string languageId)
         {
-            var topics = await _IStoryService.GetAllStory(languageId);
+            var story = await _IStoryService.GetAllStory(languageId);
 
-            topics.Message = _localizer[topics.Message].Value;
+            story.Message = _localizer[story.Message].Value;
 
-            return Ok(topics);
+            return Ok(story);
         }
     }
 }

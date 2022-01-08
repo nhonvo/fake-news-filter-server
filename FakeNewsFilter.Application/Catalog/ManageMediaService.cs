@@ -28,7 +28,7 @@ namespace FakeNewsFilter.Application.Catalog
             _context = context;
             _storageService = storageService;
         }
-
+        //Xóa media
         public async Task<int> RemoveMedia(int mediaId)
         {
             var media = await _context.Media.FindAsync(mediaId);
@@ -42,7 +42,7 @@ namespace FakeNewsFilter.Application.Catalog
 
             return await _context.SaveChangesAsync();
         }
-
+        //Cập nhật media
         public async Task<int> UpdateMedia(int mediaId, NewsMediaCreateRequest request)
         {
             var media = await _context.Media.FindAsync(mediaId);

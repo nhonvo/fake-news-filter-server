@@ -19,9 +19,9 @@ namespace FakeNewsFilter.Application.Catalog
 {
     public interface IStoryService
     {
-        Task<ApiResult<int>> Create(StoryCreateRequest request);
-        Task<ApiResult<bool>> Update(StoryUpdateRequest request);
-        Task<ApiResult<bool>> Delete(int StoryId);
+        Task<ApiResult<string>> Create(StoryCreateRequest request);
+        Task<ApiResult<string>> Update(StoryUpdateRequest request);
+        Task<ApiResult<string>> Delete(int StoryId);
         Task<ApiResult<StoryViewModel>> GetOneStory(int StoryId);
         Task<ApiResult<List<StoryViewModel>>> GetAllStory(string languageId);
     }
@@ -39,21 +39,22 @@ namespace FakeNewsFilter.Application.Catalog
             FileStorageService.USER_CONTENT_FOLDER_NAME = "images/stories";
         }
 
-        public async Task<ApiResult<int>> Create(StoryCreateRequest request)
+        //tạo một story mới
+        public async Task<ApiResult<string>> Create(StoryCreateRequest request)
         {
-            //check LanguageId
+            //Kiểm tra ngôn ngữ có tồn tại hay không
             var language = await _context.Languages.FirstOrDefaultAsync(x => x.Id == request.LanguageId);
             if (language == null)
             {
-                return new ApiErrorResult<int>("LanguageIdNotFound");
+                return new ApiErrorResult<string>("LanguageIdNotFound"," " + request.LanguageId);
             }
-            //check SourceId
+            //kiểm tra nguồn có tồn tại hay không
             var source = await _context.Source.FindAsync(request.SourceId);
             if (source == null)
             {
-                return new ApiErrorResult<int>("SourceIdNotFound");
+                return new ApiErrorResult<string>("SourceIdNotFound", " " + request.SourceId.ToString());
             }
-            //add item in story
+            
             var story = new Story()
             {
                 Timestamp = DateTime.Now,
@@ -61,7 +62,7 @@ namespace FakeNewsFilter.Application.Catalog
                 SourceId = request.SourceId,
                 LanguageId = request.LanguageId
             };
-            //Save Image on Host
+            // Lưu hình ảnh trên máy chủ lưu trữ
             if (request.ThumbStory != null)
             {
                 //Kiểm tra định dạng file đưa vào
@@ -70,7 +71,7 @@ namespace FakeNewsFilter.Application.Catalog
 
                 if (checkExtension == false)
                 {
-                    return new ApiErrorResult<int>("FileImageInvalid");
+                    return new ApiErrorResult<string>("FileImageInvalid", " " + checkExtension.ToString());
                 }
 
                 story.Media = new Media()
@@ -91,46 +92,47 @@ namespace FakeNewsFilter.Application.Catalog
             if (result == 0)
             {
                 await _storageService.DeleteFileAsync(story.Media.PathMedia);
-                return new ApiErrorResult<int>("CreateStoryUnsuccessful");
+                return new ApiErrorResult<string>("CreateStoryUnsuccessful", " " + result.ToString());
             }
 
-            return new ApiSuccessResult<int>("CreateStorySuccessful", story.StoryId);
+            return new ApiSuccessResult<string>("CreateStorySuccessful", " " + story.StoryId.ToString());
 
         }
-        public async Task<ApiResult<bool>> Update(StoryUpdateRequest request)
+        //Cập nhật story
+        public async Task<ApiResult<string>> Update(StoryUpdateRequest request)
         {
-            //check LanguageId
+            //Kiểm tra ngôn ngữ có tồn tại hay không
             var language_update = await _context.Languages.FirstOrDefaultAsync(x => x.Id == request.LanguageId);
             if (language_update == null)
             {
-                return new ApiErrorResult<bool>("LanguageIdNotFound");
+                return new ApiErrorResult<string>("LanguageIdNotFound"," " + request.LanguageId);
             }
-            //Check StoryId
+            //Kiểm tra story có tồn tại hay không
             var story_update = await _context.Story.FindAsync(request.StoryId);
 
             if (story_update == null)
-                return new ApiErrorResult<bool>($"CannontFindAStoryWithId");
+                return new ApiErrorResult<string>($"CannontFindAStoryWithId", " " + request.StoryId);
 
-            //checkSourceId
+            //Kiểm tra nguồn có tồn tại hay không
             var source_update = await _context.Source.FindAsync(request.SourceId);
 
             if (source_update == null)
-                return new ApiErrorResult<bool>($"CannontFindASourceWithId");
+                return new ApiErrorResult<string>($"CannontFindASourceWithId", " " + request.SourceId);
 
-            //update link, sourceId
+            //Cập nhật đường dẫn và nguồn mới
             story_update.Link = request.Link ?? story_update.Link;
 
             story_update.SourceId = request?.SourceId ?? story_update.SourceId;
 
             story_update.LanguageId = request.LanguageId ?? story_update.LanguageId;
 
-            //Update image
+            //Cập nhật ảnh
             if (request.ThumbStory != null)
             {
-                //Check image
+                //Kiểm tra ảnh
                 var thumb = _context.Media.FirstOrDefault(i => i.MediaId == story_update.Thumbstory);
 
-                //If image null, create new image
+                //Nếu ảnh null thì tạo ảnh mới
                 if (thumb == null)
                 {
                     //Kiểm tra định dạng file đưa vào
@@ -139,7 +141,7 @@ namespace FakeNewsFilter.Application.Catalog
 
                     if (checkExtension == false)
                     {
-                        return new ApiErrorResult<bool>("FileImageInvalid");
+                        return new ApiErrorResult<string>("FileImageInvalid", " " + checkExtension.ToString());
                     }
 
                     story_update.Media = new Media()
@@ -167,21 +169,24 @@ namespace FakeNewsFilter.Application.Catalog
                     _context.Media.Update(thumb);
                 }
             }
+            var result = await _context.SaveChangesAsync();
 
-            if (await _context.SaveChangesAsync() == 0)
+            if (result == 0)
             {
-                return new ApiErrorResult<bool>("UpdateStoryUnsuccessful");
+                return new ApiErrorResult<string>("UpdateStoryUnsuccessful", " " + result.ToString());
             }
 
-            return new ApiSuccessResult<bool>("UpdateStorySuccessful", false);
+            return new ApiSuccessResult<string>("UpdateStorySuccessful", " " + story_update.ToString());
         }
-        public async Task<ApiResult<bool>> Delete(int StoryId)
+
+        //Xóa story
+        public async Task<ApiResult<string>> Delete(int StoryId)
         {
             try
             {
                 var story = await _context.Story.FindAsync(StoryId);
 
-                if (story == null) throw new FakeNewsException("CannontFindAStoryWithId");
+                if (story == null) return new ApiSuccessResult<string>("CannontFindAStoryWithId"," " + StoryId.ToString());
 
                 var media = _context.Media.FirstOrDefault(i => i.MediaId == story.Thumbstory);
 
@@ -198,17 +203,19 @@ namespace FakeNewsFilter.Application.Catalog
 
                 if (result > 0)
                 {
-                    return new ApiSuccessResult<bool>("DeleteStorySuccessful", false);
+                    return new ApiSuccessResult<string>("DeleteStorySuccessful", " " + story.StoryId.ToString());
                 }
 
-                return new ApiErrorResult<bool>("DeleteStoryUnsuccessful");
+                return new ApiErrorResult<string>("DeleteStoryUnsuccessful", " " + result.ToString());
             }
 
             catch (Exception ex)
             {
-                return new ApiErrorResult<bool>(ex.Message);
+                return new ApiErrorResult<string>(ex.Message);
             }
         }
+
+        //Lấy một story
         public async Task<ApiResult<StoryViewModel>> GetOneStory(int storyId)
         {
             try
@@ -217,7 +224,7 @@ namespace FakeNewsFilter.Application.Catalog
 
                 if (story == null)
                 {
-                    return new ApiErrorResult<StoryViewModel>("StoryNotFound");
+                    return new ApiErrorResult<StoryViewModel>("StoryNotFound", storyId);
                 }
                 var storyVM = new StoryViewModel
                 {
@@ -236,6 +243,8 @@ namespace FakeNewsFilter.Application.Catalog
                 return new ApiErrorResult<StoryViewModel>(ex.Message);
             }
         }
+
+        //Lấy tất cả story trong hệ thống
         public async Task<ApiResult<List<StoryViewModel>>> GetAllStory(string languageId)
         {
             var list_story = await _context.Story.Where(n => !string.IsNullOrEmpty(languageId) ? n.LanguageId == languageId : true && n.Timestamp >= DateTime.Now.AddHours(-24))
@@ -251,7 +260,7 @@ namespace FakeNewsFilter.Application.Catalog
 
             if (list_story == null)
             {
-                return new ApiErrorResult<List<StoryViewModel>>("GetAllStoryUnsuccessful");
+                return new ApiErrorResult<List<StoryViewModel>>("GetAllStoryUnsuccessful", list_story);
             }
 
             return new ApiSuccessResult<List<StoryViewModel>>("GetAllStorySuccessful", list_story);

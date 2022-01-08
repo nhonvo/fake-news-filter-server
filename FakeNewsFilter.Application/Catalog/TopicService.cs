@@ -20,13 +20,13 @@ namespace FakeNewsFilter.Application.Catalog
     {
         Task<ApiResult<List<TopicInfoVM>>> GetTopicHotNews(string languageId);
 
-        Task<ApiResult<bool>> Create(TopicCreateRequest request);
+        Task<ApiResult<string>> Create(TopicCreateRequest request);
 
         Task<ApiResult<TopicInfoVM>> GetTopicById(int Id);
 
-        Task<ApiResult<bool>> Delete(int TopicId);
+        Task<ApiResult<string>> Delete(int TopicId);
 
-        Task<ApiResult<bool>> Update(TopicUpdateRequest request);
+        Task<ApiResult<string>> Update(TopicUpdateRequest request);
     }
 
     public class TopicService : ITopicService
@@ -42,7 +42,7 @@ namespace FakeNewsFilter.Application.Catalog
             _storageService = storageService;
         }
 
-        //Get 10 Topic News Hot
+        //Lấy 10 chủ đề tin tức nóng nhất
         public async Task<ApiResult<List<TopicInfoVM>>> GetTopicHotNews(string languageId)
         {
             
@@ -75,7 +75,7 @@ namespace FakeNewsFilter.Application.Catalog
 
                     if (topics == null)
                     {
-                        return new ApiErrorResult<List<TopicInfoVM>>("GetTopicUnsuccessful");
+                        return new ApiErrorResult<List<TopicInfoVM>>("GetTopicUnsuccessful", topics);
                     }
 
                     if (language == null)
@@ -93,8 +93,8 @@ namespace FakeNewsFilter.Application.Catalog
             
         }
 
-        //Create Topic News
-        public async Task<ApiResult<bool>> Create(TopicCreateRequest request)
+        //Tạo chủ đề mới
+        public async Task<ApiResult<string>> Create(TopicCreateRequest request)
         {
             using (var transaction = _context.Database.BeginTransaction())
             {
@@ -103,7 +103,7 @@ namespace FakeNewsFilter.Application.Catalog
                     var language = await _context.Languages.FirstOrDefaultAsync(x => x.Id == request.LanguageId);
                     if (language == null)
                     {
-                        return new ApiErrorResult<bool>("LanguageNotFound");
+                        return new ApiErrorResult<string>("LanguageNotFound", " " + request.LanguageId);
                     }
                     var topic = new Data.Entities.TopicNews()
                     {
@@ -114,7 +114,7 @@ namespace FakeNewsFilter.Application.Catalog
                         LanguageId = request.LanguageId
                     };
 
-                    //Save Media
+                    //Lưu ảnh, video,...
                     if (request.ThumbTopic != null)
                     {
                         topic.Media = new Media()
@@ -135,36 +135,36 @@ namespace FakeNewsFilter.Application.Catalog
                     if (result > 0)
                     {
                         transaction.Commit();
-                        return new ApiSuccessResult<bool>("CreateTopicSuccessful", false);
+                        return new ApiSuccessResult<string>("CreateTopicSuccessful", " " + topic.TopicId.ToString());
                     }
 
                     transaction.Rollback();
-                    return new ApiErrorResult<bool>("CreateUnsuccessful");
+                    return new ApiErrorResult<string>("CreateUnsuccessful", " " + result.ToString());
                 }
                 catch (Exception ex)
                 {
                     transaction.Rollback();
-                    return new ApiErrorResult<bool>(ex.Message);
+                    return new ApiErrorResult<string>(ex.Message);
                 }
             }
 
         }
 
         //Cập nhật Topic
-        public async Task<ApiResult<bool>> Update(TopicUpdateRequest request)
+        public async Task<ApiResult<string>> Update(TopicUpdateRequest request)
         {
             try
             {
                 var topic = await _context.TopicNews.FindAsync(request.TopicId);
                 if (topic == null)
                 {
-                    return new ApiErrorResult<bool>("TopicNotFound");
+                    return new ApiErrorResult<string>("TopicNotFound", " " + request.TopicId.ToString());
                 }
 
                 var language = await _context.Languages.FirstOrDefaultAsync(x => x.Id == request.LanguageId);
                 if(language == null)
                 {
-                    return new ApiErrorResult<bool>("LanguageNotFound");
+                    return new ApiErrorResult<string>("LanguageNotFound", " " + request.LanguageId);
                 }
                 
                 topic.Label = request.Label ?? topic.Label;
@@ -211,14 +211,14 @@ namespace FakeNewsFilter.Application.Catalog
 
                 if (result > 0)
                 {
-                    return new ApiSuccessResult<bool>("UpdateTopicSuccessful", false);
+                    return new ApiSuccessResult<string>("UpdateTopicSuccessful", " " + topic.TopicId.ToString());
                 }
 
-                return new ApiErrorResult<bool>("UpdateUnsuccessful");
+                return new ApiErrorResult<string>("UpdateUnsuccessful", " " + result.ToString());
             }
             catch(Exception ex)
             {
-                return new ApiErrorResult<bool>(ex.Message);
+                return new ApiErrorResult<string>(ex.Message);
             }
             
         }
@@ -232,17 +232,17 @@ namespace FakeNewsFilter.Application.Catalog
         }
 
         //Lấy thông tin chi tiết 1 Topic
-        public async Task<ApiResult<TopicInfoVM>> GetTopicById(int Id)
+        public async Task<ApiResult<TopicInfoVM>> GetTopicById(int id)
         {
             try
             {
-                var topic = await _context.TopicNews.FindAsync(Id);
+                var topic = await _context.TopicNews.FindAsync(id);
 
                 var thumb = _context.Media.Where(m => m.MediaId == topic.ThumbTopic).Select(m => m.PathMedia).FirstOrDefault();
 
                 if (topic == null)
                 {
-                    return new ApiErrorResult<TopicInfoVM>("TopicNotFound");
+                    return new ApiErrorResult<TopicInfoVM>("TopicNotFound", id);
                 }
                 var topicvm = new TopicInfoVM
                 {
@@ -266,13 +266,13 @@ namespace FakeNewsFilter.Application.Catalog
         }
 
         //Xoá Topic
-        public async Task<ApiResult<bool>> Delete(int TopicId)
+        public async Task<ApiResult<string>> Delete(int TopicId)
         {
             try
             {
                 var topic = await _context.TopicNews.FindAsync(TopicId);
 
-                if (topic == null) throw new FakeNewsException($"CannotFindTopicWithId");
+                if (topic == null) return new ApiSuccessResult<string>($"CannotFindTopicWithId"," " + TopicId.ToString());
 
                 if(topic.ThumbTopic != null)
                 {
@@ -292,15 +292,15 @@ namespace FakeNewsFilter.Application.Catalog
 
                 if (result > 0)
                 {
-                    return new ApiSuccessResult<bool>("DeleteTopicSuccessful", false);
+                    return new ApiSuccessResult<string>("DeleteTopicSuccessful", " " + topic.TopicId.ToString());
                 }
 
-                return new ApiErrorResult<bool>("DeleteUnsuccessful");
+                return new ApiErrorResult<string>("DeleteUnsuccessful", " " + result);
             }
 
             catch(Exception ex)
             {
-                return new ApiErrorResult<bool>(ex.Message);
+                return new ApiErrorResult<string>(ex.Message);
             }
         }
 

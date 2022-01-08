@@ -36,7 +36,7 @@ namespace FakeNewsFilter.API.Controllers
                 }
                 var result = await _IScourceStoryService.Create(request);
 
-                result.Message = _localizer[result.Message].Value;
+                result.Message = _localizer[result.Message].Value + result.ResultObj;
 
                 if (result.IsSuccessed == false)
                 {
@@ -67,9 +67,9 @@ namespace FakeNewsFilter.API.Controllers
 
                 var result = await _IScourceStoryService.Update(request);
 
-                result.Message = _localizer[result.Message].Value;
+                result.Message = _localizer[result.Message].Value + result.ResultObj;
 
-                if (result.ResultObj != false)
+                if (result.ResultObj != null)
                 {
                     _logger.LogError(result.Message);
                     return BadRequest(result);
@@ -104,9 +104,9 @@ namespace FakeNewsFilter.API.Controllers
             {
                 var result = await _IScourceStoryService.Delete(sourceid);
 
-                result.Message = _localizer[result.Message].Value;
+                result.Message = _localizer[result.Message].Value + result.ResultObj;
 
-                if (result.ResultObj != false)
+                if (result.ResultObj != null)
                 {
                     _logger.LogError(result.Message);
                     return BadRequest(result);
