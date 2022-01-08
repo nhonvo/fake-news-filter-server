@@ -63,10 +63,6 @@
             }, 2000);
     </script>
 }
-<div id="loading">
-    <img id="loading-image" src="/img/ajax-loader.gif" alt="Loading..." />
-</div>
-
 <div class="element-wrapper">
     <h6 class="element-header">
         News List 
@@ -95,7 +91,6 @@
         </div>
     </div>
 </div>
-
 <!-- Modal to add new record -->
 <div aria-labelledby="myLargeModalLabel" class="modal fade bd-example-modal-lg show" role="dialog" tabindex="-1" style="padding-right: 15px; display: none;">
     <div class="modal-dialog modal-lg">
@@ -161,6 +156,9 @@
             <div class="modal-footer">
                 <button class="btn btn-secondary" data-dismiss="modal" type="button"> Close</button>
                 <button class="btn btn-primary" type="button" onclick="CreateNews(document.querySelector('.modal-body > form'), event)"> Save changes</button>
+            </div>
+            <div id="loading">
+                <img id="loading-image" src="/img/ajax-loader.gif" alt="Loading..." />
             </div>
         </div>
     </div>
