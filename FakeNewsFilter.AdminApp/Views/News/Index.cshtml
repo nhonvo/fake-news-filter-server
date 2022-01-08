@@ -1,7 +1,7 @@
 ﻿@model FakeNewsFilter.ViewModel.Catalog.NewsManage.NewsCreateRequest
 
 @{
-    ViewData["Title"] = "List News - Fake News Filter";
+    ViewData["Title"] = "News List - Fake News Filter";
 }
 
 @section headerscripts{
@@ -63,13 +63,9 @@
             }, 2000);
     </script>
 }
-<div id="loading">
-    <img id="loading-image" src="/img/ajax-loader.gif" alt="Loading..." />
-</div>
-
 <div class="element-wrapper">
     <h6 class="element-header">
-        List News
+        News List 
     </h6>
     <div class="element-box">
         <div class="form-desc">
@@ -95,14 +91,13 @@
         </div>
     </div>
 </div>
-
 <!-- Modal to add new record -->
 <div aria-labelledby="myLargeModalLabel" class="modal fade bd-example-modal-lg show" role="dialog" tabindex="-1" style="padding-right: 15px; display: none;">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">
-                    Modal title
+                    Create News
                 </h5>
                 <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true"> ×</span></button>
             </div>
@@ -161,6 +156,9 @@
             <div class="modal-footer">
                 <button class="btn btn-secondary" data-dismiss="modal" type="button"> Close</button>
                 <button class="btn btn-primary" type="button" onclick="CreateNews(document.querySelector('.modal-body > form'), event)"> Save changes</button>
+            </div>
+            <div id="loading">
+                <img id="loading-image" src="/img/ajax-loader.gif" alt="Loading..." />
             </div>
         </div>
     </div>

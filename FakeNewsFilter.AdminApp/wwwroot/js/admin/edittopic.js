@@ -14,7 +14,7 @@ $(window).on('load', function () {
 
 function EditTopic(frm, caller) {
     $('#loading').show();
-
+    console.log(frm);
     caller.preventDefault();
     var fdata = new FormData();
 

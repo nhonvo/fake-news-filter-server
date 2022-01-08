@@ -11,11 +11,11 @@
 $(document).ready(function () {
     $('#loading').hide();
 
-    var 
+    var
         statusObj = {
-            0: { title: 'Pending', class: 'badge-light-warning' },
-            1: { title: 'Active', class: 'badge-light-success' },
-            2: { title: 'Inactive', class: 'badge-light-secondary' }
+            0: { title: 'Archive', class: 'status-pill red' },
+            1: { title: 'Active', class: 'status-pill green' },
+            2: { title: 'Inactive', class: 'status-pill yellow' }
         };
 
     $("#list_topic").DataTable({
@@ -30,32 +30,27 @@ $(document).ready(function () {
         },
 
         columns: [
-            { "data": 'topicId' },
-            { "data": 'label' },
-            { "data": 'description' },
-            { "data": 'noNews' },
-            { "data": 'realTime' },
-            { "data": 'status' },
-            { "data": ''}
+            {"data": 'topicId'},
+            {"data": 'label'},
+            {"data": 'thumbImage'},
+            {"data": 'description'},
+            { "data": 'languageId' },
+            {"data": 'noNews'},
+            {"data": 'realTime'},
+            {"data": 'status'},
+            {"data": ''}
         ],
         columnDefs: [
             {
-                // For Responsive
-                className: 'control',
-                orderable: false,
-                visible: false,
-                responsivePriority: 2,
-                targets: 0
-            },
-            {
                 // User full name and username
-                targets: 1,
-                responsivePriority: 4,
+                targets: 2,
+                // responsivePriority: 4,
                 render: function (data, type, full, meta) {
                     var $name = full['tag'],
                         $uname = full['label'],
                         $image = full['thumbImage'],
-                        $assetPath = "http://localhost:5001/";
+                        $assetPath = "http://fakenewsfilter.tk/";
+                    
                     if ($image) {
                         // For Avatar image
                         var $output =
@@ -81,15 +76,7 @@ $(document).ready(function () {
                         $output +
                         '</div>' +
                         '</div>' +
-                        '<div class="d-flex flex-column">' +
-                        '<a href="' +
-                        '" class="user_name text-truncate"><span class="fw-bold">' +
-                        $name +
-                        '</span></a>' +
-                        '<small class="emp_post text-muted">#' +
-                        $uname +
-                        '</small>' +
-                        '</div>' +
+                        
                         '</div>';
                     return $row_output;
                 }
@@ -99,7 +86,17 @@ $(document).ready(function () {
                 orderable: false
             },
             {
+                //Lấy ảnh cờ của ngôn ngữ
                 targets: 4,
+                render: function (data, type, full, meta) {
+                    var $lang = full['languageId'];
+                    return (
+                        '<div><img alt="" src="/img/flags-icons/' + $lang + '.png" width="25px"><span hidden>' + $lang + '</span></div>'
+                    );
+                }
+            },
+            {
+                targets: 6,
                 render: function (data, type, full, meta) {
                     var $time = full['realTime'];
                     return moment($time).fromNow();
@@ -107,16 +104,13 @@ $(document).ready(function () {
             },
             {
                 // User Status
-                targets: 5,
+                targets: 7,
                 orderable: false,
                 render: function (data, type, full, meta) {
                     var $status = full['status'];
+                    var $status = full['status'];
                     return (
-                        '<span class="badge rounded-pill ' +
-                        statusObj[$status].class +
-                        '" text-capitalized>' +
-                        statusObj[$status].title +
-                        '</span>'
+                        '<div class="' + statusObj[$status].class + '" data-title="' + statusObj[$status].title + '" data-bs-toggle="tooltip" title="' + statusObj[$status].title + '"> <span hidden>' + statusObj[$status].title + '</span></div>'
                     );
                 }
             },
@@ -127,17 +121,9 @@ $(document).ready(function () {
                 render: function (data, type, full, meta) {
                     var $topicId = full['topicId'];
                     return (
-                        '<div class="d-flex align-items-center col-actions">' +
-                        '<a class="me-1" href="/Topic/Edit/' + $topicId + ' "data-bs-toggle="tooltip" data-bs-placement="top" title = "Edit" > ' +
-                        feather.icons['edit'].toSvg({ class: 'font-medium-1 text-warning' }) +
-                        '</a>' +
-                        '<a class="me-1" onclick=DeleteData("' + $topicId + '"); data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">' +
-                        feather.icons['trash'].toSvg({ class: 'font-medium-1 text-danger' }) +
-                        '</a>' +
-                        '<a class="me-1" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="View">' +
-                        feather.icons['eye'].toSvg({ class: 'font-medium-1' }) +
-                        '</a>'
-                        +
+                        '<div class="row-actions text-center">' +
+                        '<a href="/Topic/Edit/' + $topicId + '" data-bs-toggle="tooltip" data-bs-placement="top" title = "Edit"> <i class="os-icon os-icon-ui-49"></i> </a>' +
+                        '<a class="danger" onclick=DeleteData("' + $topicId + '"); data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"> <i class="os-icon os-icon-ui-15"></i> </a>' +
                         '</div>'
                     );
                 }
@@ -153,20 +139,15 @@ $(document).ready(function () {
             '<"col-sm-12 col-md-6"i>' +
             '<"col-sm-12 col-md-6"p>' +
             '>',
-        language: {
-            sLengthMenu: 'Show _MENU_',
-            search: 'Search',
-            searchPlaceholder: 'Search...'
-        },
 
         // Buttons with Dropdown
         buttons: [
             {
                 text: 'Add New Topic',
-                className: 'add-new btn btn-primary mt-50',
+                className: 'add-new btn btn-rounded btn-primary',
                 attr: {
-                    'data-bs-toggle': 'modal',
-                    'data-bs-target': '#modals-slide-in'
+                    'data-toggle': 'modal',
+                    'data-target': '.bd-example-modal-lg'
                 },
                 init: function (api, node, config) {
                     $(node).removeClass('btn-secondary');
@@ -194,7 +175,7 @@ $(document).ready(function () {
                     var that = this;
 
                     // Create the `select` element
-                    var select = $('<select id="FilterLabelTopic" class="form-select text-capitalize mb-md-0 mb-2"><option value=""> Select Label </option></select>')
+                    var select = $('<select id="FilterLabelTopic" class="form-control form-control-sm rounded bright"><option value=""> Select Language </option></select>')
                         .appendTo('.topic_label')
                         .on('change', function () {
                             that
@@ -208,7 +189,9 @@ $(document).ready(function () {
                             .data()
                             .sort()
                             .map(function (d) {
-                                return d.toString().toLowerCase().replace(/\b\w/g, function (l) { return l.toUpperCase() })
+                                return d.toString().toLowerCase().replace(/\b\w/g, function (l) {
+                                    return l.toUpperCase()
+                                })
                             })
                             .unique()
                             .each(function (d) {
@@ -244,16 +227,16 @@ $(document).ready(function () {
                         .each(function (d, j) {
                             select.append(
                                 '<option value="' +
-                                statusObj[d].title +
+                                d +
                                 '" class="text-capitalize">' +
-                                statusObj[d].title +
+                                d +
                                 '</option>'
                             );
                         });
 
                 });
         }
-      
+
     });
 
 });
@@ -262,9 +245,9 @@ $(function () {
     //Select
     // Loading array data
     var data = [
-        { id: 0, text: 'breaking' },
-        { id: 1, text: 'featured' },
-        { id: 2, text: 'normal' }
+        {id: 0, text: 'breaking'},
+        {id: 1, text: 'featured'},
+        {id: 2, text: 'normal'}
     ];
 
     selectArray = $('.select2-data-array'),
@@ -330,19 +313,17 @@ $(function () {
 function DeleteData(topicId) {
     if (confirm("Are you sure want to delele this topic?")) {
         Delete(topicId);
-    }
-    else {
+    } else {
         return false;
     }
 }
 
 function Delete(topicId) {
     var url = "/Topic/Delete";
-    $.post(url, { topicId: topicId }, function (data) {
+    $.post(url, {topicId: topicId}, function (data) {
         location.reload();
     });
 }
-
 
 
 function CreateTopic(frm, caller) {
@@ -377,11 +358,11 @@ function CreateTopic(frm, caller) {
                 setTimeout(function () {
                     toastr['success'](
                         'Create Topic Successfully', 'Success', {
-                        closeButton: true,
-                        tapToDismiss: false,
-                        positionClass: "toast-bottom-left",
-                        rtl: $('html').attr('data-textdirection') === 'rtl'
-                    }
+                            closeButton: true,
+                            tapToDismiss: false,
+                            positionClass: "toast-bottom-left",
+                            rtl: $('html').attr('data-textdirection') === 'rtl'
+                        }
                     );
                 }, 2000);
             },
