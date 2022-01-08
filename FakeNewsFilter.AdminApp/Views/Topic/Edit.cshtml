@@ -1,99 +1,72 @@
 ﻿@model FakeNewsFilter.ViewModel.Catalog.TopicNews.TopicInfoVM
 
 @section headerscripts{
-    <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/forms/select/select2.min.css">
-    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
-
-    <script src="https://cdn.ckeditor.com/ckeditor5/31.0.0/classic/ckeditor.js"></script>
+   
 }
 
 @{
     ViewData["Title"] = "Update Topic";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<section class="app-topic-edit">
-    <div class="card">
-        <div class="card-body">
-            <ul class="nav nav-pills" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center active" id="information-tab" data-bs-toggle="tab" href="#information" aria-controls="account" role="tab" aria-selected="true">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><span class="d-none d-sm-block">Information</span>
-                    </a>
-                </li>
-            </ul>
-            <div class="tab-content">
-                <div class="tab-pane active" id="information" aria-labelledby="information-tab" role="tabpanel">
-                    <!-- topic edit start -->
-                    <form class="row g-3" asp-action="Edit" asp-controller="Topic" method="post" enctype="multipart/form-data">
-                        <input type="hidden" asp-for="TopicId" />
-                        <div class="d-flex mb-2">
-                            <img src="http://localhost:5001/images/topics/@Model.ThumbImage" alt="thumb topic" class="thumb-image users-avatar-shadow rounded me-2 my-25 cursor-pointer" height="90" width="90">
-                            <div class="mt-50">
-                                <h4>@Model.Tag</h4>
-                                <div class="col-12 d-flex mt-1 px-0">
-                                    <label class="btn btn-primary me-75 mb-0 waves-effect waves-float waves-light" for="ThumbImage">
-                                        <span class="d-none d-sm-block">Change</span>
-                                        <input asp-for="ThumbImage" class="form-control" type="file" hidden="" accept="image/png, image/jpeg, image/jpg">
-                                        <span class="d-block d-sm-none">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit me-0"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-                                        </span>
-                                    </label>
-                                    <button class="btn btn-outline-secondary d-block d-sm-none">
-                                        <i class="me-0" data-feather="trash-2"></i>
-                                    </button>
-                                    <button class="btn btn-outline-secondary d-block d-sm-none waves-effect">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 me-0"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- topic edit ends -->
-                        <!-- topic edit form start -->
-                        <div class="col-md-4">
-                            <label for="inputLastName1" class="form-label">Label</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-transparent"><i data-feather="tag"></i></span>
-                                <input type="text" asp-for="Label" class="form-control border-start-0">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="inputLastName1" class="form-label">Tag</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-transparent"><i data-feather="hash"></i></span>
-                                <input type="text" asp-for="Tag" class="form-control border-start-0" placeholder="Tag Topic" />
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label" for="status">Language</label>
-                            <select class="form-select" asp-for="LanguageId" asp-items="@ViewBag.ListLanguage" aria-invalid="false"></select>
-                        </div>
-
-                        <div class="col-md-12">
-                            <label for="inputPhoneNo" class="form-label">Description</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-transparent"><i data-feather="file-text"></i></span>
-                                <textarea type="text" rows="5" class="form-control border-start-0" asp-for="Description"> </textarea>
-                            </div>
-                        </div>
-
-                        <div class="mb-1 col-12 d-flex flex-sm-row flex-column mt-2">
-                            <button type="submit" class="btn btn-primary mb-1 mb-sm-0 me-0 me-sm-1 waves-effect waves-float waves-light" onclick="EditTopic(this.parentElement.parentElement, event)">Save Changes</button>
-                            <button type="reset" class="btn btn-outline-secondary waves-effect">Reset</button>
-                        </div>
-
-                    </form>
-                    <!-- topic edit form ends -->
-                </div>
-            </div>
-            <div id="loading">
-                <img id="loading-image" src="/assets/images/ajax-loader.gif" alt="Loading..." />
+<div class="element-box">
+  <form asp-action="Edit" asp-controller="Topic" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="TopicId" />
+    <h5 class="form-header">
+      Edit Topic
+    </h5>
+    <div class="form-desc">
+        Update Topic
+    </div>
+    <div class="d-flex mb-2">
+        <img src="https://fakenewsfilter.tk/images/topics/@Model.ThumbImage" alt="thumb topic" class="thumb-image users-avatar-shadow rounded me-2 my-25 cursor-pointer" height="90" width="90">
+        <div class="mt-50">
+            <div class="form-group">
+                <label class="btn btn-primary me-75 mb-0 waves-effect waves-float waves-light" for="ThumbImage">
+                    <span class="d-none d-sm-block">Change</span>
+                    <input asp-for="ThumbImage" class="form-control" type="file" hidden="" accept="image/png, image/jpeg, image/jpg">
+                    <span class="d-block d-sm-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit me-0"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                    </span>
+                </label>
+                <button class="btn btn-outline-secondary d-block d-sm-none">
+                    <i class="me-0" data-feather="trash-2"></i>
+                </button>
+                <button class="btn btn-outline-secondary d-block d-sm-none waves-effect">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 me-0"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                </button>
             </div>
         </div>
     </div>
-</section>
-
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label for="name" class="form-label">Label</label>
+                <input type="text" asp-for="Label" class="form-control border-start-0">
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label for="publisher" class="form-label">Tag</label>
+                <input type="text" asp-for="Tag" class="form-control border-start-0" placeholder="Tag"/>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label for="language" class="form-label">Language</label>
+                <select class="form-control" asp-for="LanguageId" asp-items="@ViewBag.ListLanguage" aria-invalid="false" placeholder="Language"></select>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+      <label for="description" class="form-label">Description</label>
+      <textarea type="text" rows="5" class="form-control border-start-0" asp-for="Description"> </textarea>
+    </div>
+    <input id="newsId" type="hidden" asp-for="TopicId"/>
+    <div class="form-buttons-w">
+            <button class="btn btn-primary" type="submit" onclick="EditTopic(this.parentElement.parentElement, event)"> Submit</button>
+        </div>
+  </form>
+</div>
 @section footerscripts{
-    <script src="/src/js/admin/edittopic.js"></script>
+    <script src="/js/admin/edittopic.js"></script>
 }
