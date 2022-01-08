@@ -22,11 +22,11 @@ namespace FakeNewsFilter.Application.Catalog
 {
     public interface INewsCommunityService
     {
-        Task<ApiResult<int>> Create(NewsCommunityCreateRequest request);
+        Task<ApiResult<string>> Create(NewsCommunityCreateRequest request);
         Task<ApiResult<NewsCommunityViewModel>> GetById(int newsCommunityId);
-        Task<ApiResult<bool>> Delete(int NewsCommunityId);
-        Task<ApiResult<bool>> Update(NewsCommunityUpdateRequest request);
-        Task<ApiResult<bool>> UpdateLink(int newsCommunityId, string newLink);
+        Task<ApiResult<string>> Delete(int NewsCommunityId);
+        Task<ApiResult<string>> Update(NewsCommunityUpdateRequest request);
+        Task<ApiResult<string>> UpdateLink(int newsCommunityId, string newLink);
         Task<ApiResult<List<NewsCommunityViewModel>>> GetAll(string languageId);
         Task<ApiResult<List<NewsCommunityViewModel>>> GetNewsByUserId(Guid userId);
     }
@@ -54,18 +54,17 @@ namespace FakeNewsFilter.Application.Catalog
 
 
         //Tạo mới 1 tin tức
-        public async Task<ApiResult<int>> Create(NewsCommunityCreateRequest request)
+        public async Task<ApiResult<string>> Create(NewsCommunityCreateRequest request)
         {
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
 
                 try
                 {
-                    //check language
                     var language = await _context.Languages.FirstOrDefaultAsync(x => x.Id == request.LanguageId);
-                    if (language == null) return new ApiErrorResult<int>("LanguageNotFound");
+                    if (language == null) return new ApiErrorResult<string>("LanguageNotFound", " " + request.LanguageId);
 
                     var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == request.UserId);
-                    if (user == null) return new ApiErrorResult<int>("UserNotFound");
+                    if (user == null) return new ApiErrorResult<string>("UserNotFound", " " + request.UserId);
 
                     var newsCommunity = new NewsCommunity
                     {
@@ -77,7 +76,7 @@ namespace FakeNewsFilter.Application.Catalog
                         LanguageId = request.LanguageId
                     };
 
-                    //Save Image on Host
+                    //Lưu ảnh vào  máy chủ
                     if (request.ThumbNews != null)
                     {
                         var checkExtension =
@@ -93,21 +92,21 @@ namespace FakeNewsFilter.Application.Catalog
                     }
 
                     _context.NewsCommunity.Add(newsCommunity);
-
-                    if (await _context.SaveChangesAsync() == 0)
+                    var result = await _context.SaveChangesAsync();
+                    if (result == 0)
                     {
                         transaction.Rollback();
                         await _storageService.DeleteFileAsync(newsCommunity.Media.PathMedia);
-                        return new ApiErrorResult<int>("CreateNewsUnsuccessful");
+                        return new ApiErrorResult<string>("CreateNewsUnsuccessful", result);
                     }
 
                     transaction.Commit();
-                    return new ApiSuccessResult<int>("CreateNewsSuccessful", newsCommunity.NewsCommunityId);
+                    return new ApiSuccessResult<string>("CreateNewsSuccessful", newsCommunity.NewsCommunityId.ToString());
                 }
                 catch (DbUpdateException ex)
                 {
                     transaction.Rollback();
-                    return new ApiErrorResult<int>(ex.Message);
+                    return new ApiErrorResult<string>(ex.Message);
                 }
         }
 
@@ -148,16 +147,16 @@ namespace FakeNewsFilter.Application.Catalog
                 return new ApiSuccessResult<NewsCommunityViewModel>("GetThisNewsSuccessful", result);
             }
 
-            return new ApiErrorResult<NewsCommunityViewModel>("NewsIsNotFound");
+            return new ApiErrorResult<NewsCommunityViewModel>("NewsIsNotFound", news.NewsCommunityId);
         }
 
         //Xoá tin tức
-        public async Task<ApiResult<bool>> Delete(int newsCommunityId)
+        public async Task<ApiResult<string>> Delete(int newsCommunityId)
         {
             var news = await _context.NewsCommunity.FindAsync(newsCommunityId);
 
             if (news == null)
-                return new ApiErrorResult<bool>("CannontFindANewsWithId");
+                return new ApiErrorResult<string>("CannontFindANewsWithId", newsCommunityId);
 
             if (news.ThumbNews != null)
             {
@@ -171,14 +170,14 @@ namespace FakeNewsFilter.Application.Catalog
             }
 
             _context.NewsCommunity.Remove(news);
+            var result = await _context.SaveChangesAsync();
+            if (result == 0) return new ApiErrorResult<string>("DeleteNewsUnsuccessful", " " + result);
 
-            if (await _context.SaveChangesAsync() == 0) return new ApiErrorResult<bool>("DeleteNewsUnsuccessful");
-
-            return new ApiSuccessResult<bool>("DeleteNewsSuccessful", false);
+            return new ApiSuccessResult<string>("DeleteNewsSuccessful"," " + news.NewsCommunityId.ToString());
         }
 
         //Cập nhật tin tức
-        public async Task<ApiResult<bool>> Update(NewsCommunityUpdateRequest request)
+        public async Task<ApiResult<string>> Update(NewsCommunityUpdateRequest request)
         {
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
             {
@@ -189,7 +188,7 @@ namespace FakeNewsFilter.Application.Catalog
                             x.NewsCommunityId == request.NewsCommunityId);
 
                     if (news_update == null)
-                        return new ApiErrorResult<bool>("CannontFindANewsWithId");
+                        return new ApiErrorResult<string>("CannontFindANewsWithId", " " + request.NewsCommunityId);
 
                     news_update.Title = request.Title ?? news_update.Title;
                     news_update.Content = request.Content ?? news_update.Content;
@@ -229,25 +228,25 @@ namespace FakeNewsFilter.Application.Catalog
                         _context.NewsCommunity.Update(news_update);
                     }
 
-
-                    if (await _context.SaveChangesAsync() == 0)
+                    var result = await _context.SaveChangesAsync();
+                    if (result == 0)
                     {
                         transaction.Rollback();
-                        return new ApiErrorResult<bool>("UpdateNewsUnsuccessful");
+                        return new ApiErrorResult<string>("UpdateNewsUnsuccessful"," " + result);
                     }
 
                     transaction.Commit();
-                    return new ApiSuccessResult<bool>("UpdateNewsSuccessful", false);
+                    return new ApiSuccessResult<string>("UpdateNewsSuccessful", " " + news_update.NewsCommunityId.ToString());
                 }
                 catch (DbUpdateException ex)
                 {
                     transaction.Rollback();
-                    return new ApiErrorResult<bool>(ex.Message);
+                    return new ApiErrorResult<string>(ex.Message);
                 }
             }
         }
 
-        //Get All News
+        //Lấy tất cả các tin tức
         public async Task<ApiResult<List<NewsCommunityViewModel>>> GetAll(string languageId)
         {
             var language = await _context.Languages.SingleOrDefaultAsync(x => x.Id == languageId);
@@ -285,7 +284,7 @@ namespace FakeNewsFilter.Application.Catalog
             return new ApiSuccessResult<List<NewsCommunityViewModel>>("GetAllNewsSuccessful", newsList);
         }
 
-        //Get news community with userid
+        //Lấy tin tức được đăng bời người dùng
         public async Task<ApiResult<List<NewsCommunityViewModel>>> GetNewsByUserId(Guid userId)
         {
             try
@@ -320,19 +319,20 @@ namespace FakeNewsFilter.Application.Catalog
                 throw;
             }
         }
-        //Update Link News
-        public async Task<ApiResult<bool>> UpdateLink(int newsCommunityId, string newLink)
+        //Cập nhật đường dẫn tin tức
+        public async Task<ApiResult<string>> UpdateLink(int newsCommunityId, string newLink)
         {
             var news_update = await _context.NewsCommunity.FindAsync(newsCommunityId);
 
             if (news_update == null)
-                return new ApiErrorResult<bool>("CannontFindANewsWithId");
+                return new ApiErrorResult<string>("CannontFindANewsWithId", newsCommunityId);
 
             news_update.Content = newLink;
 
-            if (await _context.SaveChangesAsync() == 0) return new ApiErrorResult<bool>("UpdateLinkNewsUnsuccessful");
+            var result = await _context.SaveChangesAsync();
+            if (result == 0) return new ApiErrorResult<string>("UpdateLinkNewsUnsuccessful", result);
 
-            return new ApiSuccessResult<bool>("UpdateLinkNewsSuccessful", false);
+            return new ApiSuccessResult<string>("UpdateLinkNewsSuccessful", newLink);
         }
 
         private async Task<string> SaveFile(IFormFile file)

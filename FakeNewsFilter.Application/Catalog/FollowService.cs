@@ -17,7 +17,7 @@ namespace FakeNewsFilter.Application.Catalog
     public interface IFollowService
     {
         Task<ApiResult<List<int>>> GetFollowTopicByUser (Guid userId);
-        Task<ApiResult<bool>> Create(FollowCreateRequest request);
+        Task<ApiResult<string>> Create(FollowCreateRequest request);
     }
     public class FollowService : IFollowService
     {
@@ -31,7 +31,8 @@ namespace FakeNewsFilter.Application.Catalog
             _userManager = userManager;
         }
 
-        public async Task<ApiResult<bool>> Create(FollowCreateRequest request)
+        //Tạo follow mới
+        public async Task<ApiResult<string>> Create(FollowCreateRequest request)
         {
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
             {
@@ -40,7 +41,7 @@ namespace FakeNewsFilter.Application.Catalog
                     var user = await _userManager.FindByIdAsync(request.UserId.ToString());
                     if (user == null)
                     {
-                        return new ApiErrorResult<bool>("UserIsNotExist");
+                        return new ApiErrorResult<string>("UserIsNotExist", " " + request.UserId.ToString());
                     }
                     
                     var follow = _context.Follow.Where(t => t.UserId == request.UserId);
@@ -55,7 +56,7 @@ namespace FakeNewsFilter.Application.Catalog
                         var topic = await _context.TopicNews.FirstOrDefaultAsync(t => t.TopicId == item);
                         if (topic == null)
                         {
-                            return new ApiErrorResult<bool>("CannontFindATopicWithId");
+                            return new ApiErrorResult<string>("CannontFindATopicWithId", " " + request.TopicId.ToString());
                         }
                         
                         var followCreate = new Data.Entities.Follow()
@@ -71,32 +72,32 @@ namespace FakeNewsFilter.Application.Catalog
                     if (result > 0)
                     {
                         transaction.Commit();
-                        return new ApiSuccessResult<bool>("FollowSuccessful", false);
+                        return new ApiSuccessResult<string>("FollowSuccessful", " " + result.ToString());
                     }
                     transaction.Rollback();
-                    return new ApiErrorResult<bool>("FollowUnsuccessful");
+                    return new ApiErrorResult<string>("FollowUnsuccessful"," " + result.ToString());
 
                 }
                 catch (DbUpdateException ex)
                 {
                     transaction.Rollback();
-                    return new ApiErrorResult<bool>(ex.Message);
+                    return new ApiErrorResult<string>(ex.Message);
                 }
             }
                 
         }
         
-        //Get Follow Topic By User
+        //Lấy follow chủ đề theo người dùng
         public async Task<ApiResult<List<int>>> GetFollowTopicByUser(Guid userId)
         {
-            //Check user exist
+            //Kiểm tra người dùng có tồn tại hay không
             var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user == null)
             {
                 return new ApiErrorResult<List<int>>("AccountDoesNotExist");
             }
 
-            //get topicid form table follow
+            //Lấy topicid từ bảng follow
             var listFollowTopic =  _context.Follow.Where(x => x.UserId == userId).Select(x => x.TopicId).ToList();
 
             if (listFollowTopic == null)

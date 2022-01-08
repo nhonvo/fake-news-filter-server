@@ -22,7 +22,7 @@ namespace FakeNewsFilter.Application.Catalog
         {
             _context = context;
         }
-
+        //Lấy tất cả các ngôn ngữ trong hệ thống
         public async Task<ApiResult<List<GetLanguageRequest>>> GetAllLanguage()
         {
             var languagesList = await _context.Languages.Select(x => new GetLanguageRequest()
@@ -35,7 +35,7 @@ namespace FakeNewsFilter.Application.Catalog
 
             if (languagesList == null)
             {
-                return new ApiErrorResult<List<GetLanguageRequest>>("GetAllLanguagesUnsuccessful");
+                return new ApiErrorResult<List<GetLanguageRequest>>("GetAllLanguagesUnsuccessful", languagesList);
             }
 
             return new ApiSuccessResult<List<GetLanguageRequest>>("GetAllLanguageSsuccessful", languagesList);

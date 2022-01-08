@@ -17,6 +17,8 @@ namespace FakeNewsFilter.Data.Configurations
 
             builder.HasKey(k => k.CommentId);
 
+            builder.Property(k => k.CommentId).UseIdentityColumn();
+
             builder.Property(x => x.Content);
 
             builder.HasOne(x => x.Parent).WithMany().HasForeignKey(x => x.ParentId);

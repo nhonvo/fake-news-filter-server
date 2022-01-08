@@ -14,10 +14,10 @@ namespace FakeNewsFilter.Application.Catalog;
 
 public interface ICommentService
 {
-    Task<ApiResult<bool>> Create(CommentCreateRequest request);
-    Task<ApiResult<bool>> Delete(int commentId, Guid userId);
+    Task<ApiResult<string>> Create(CommentCreateRequest request);
+    Task<ApiResult<string>> Delete(int commentId, Guid userId);
     Task<ApiResult<List<CommentViewModel>>> GetCommentByNewsId(int NewsId);
-    Task<ApiResult<bool>> Update(CommentUpdateRequest request);
+    Task<ApiResult<string>> Update(CommentUpdateRequest request);
 }
 
 public class CommentService : ICommentService
@@ -33,36 +33,58 @@ public class CommentService : ICommentService
         _mapper = mapper;
     }
 
-    public async Task<ApiResult<bool>> Create(CommentCreateRequest request)
+    //Tạo bình luận
+    public async Task<ApiResult<string>> Create(CommentCreateRequest request)
     {
         var user = await _userManager.FindByIdAsync(request.UserId.ToString());
-        if (user == null) return new ApiErrorResult<bool>("UserIsNotExist");
+        if (user == null) return new ApiErrorResult<string>("UserIsNotExist"," " + request.UserId.ToString());
 
         var news = await _context.News.Include(x => x.NewsInTopics)
             .FirstOrDefaultAsync(t => t.NewsId == request.NewsId);
-        if (news == null) return new ApiErrorResult<bool>("NewsIsNotExist");
+        if (news == null) return new ApiErrorResult<string>("NewsIsNotExist", " " + request.NewsId);
 
-        var comments = new Comment
+        Comment comment = null;
+
+        if(request.ParentId != 0)
         {
-            NewsId = request.NewsId,
-            UserId = request.UserId,
-            Content = request.Content,
-            ParentId = request.ParentId,
-            Timestamp = DateTime.Now
-        };
+            var checkParentId = await _context.Comment.FirstOrDefaultAsync(x => x.CommentId == request.ParentId);
+            if(checkParentId != null)
+            {
+                comment = new Comment
+                {
+                    NewsId = request.NewsId,
+                    UserId = request.UserId,
+                    Content = request.Content,
+                    ParentId = request.ParentId,
+                    Timestamp = DateTime.Now
+                };
+            }
 
-        _context.Comment.Add(comments);
+        }
+        else
+        {
+            comment = new Comment
+            {
+                NewsId = request.NewsId,
+                UserId = request.UserId,
+                Content = request.Content,
+                Timestamp = DateTime.Now
+            };
+        }
+
+        _context.Comment.Add(comment);
 
         var result = await _context.SaveChangesAsync();
 
-        if (result != 0) return new ApiSuccessResult<bool>("CreateCommentSuccessful", false);
+        if (result != 0) return new ApiSuccessResult<string>("CreateCommentSuccessful", " " + comment.CommentId.ToString());
 
-        return new ApiErrorResult<bool>("CreateCommentUnsuccessful");
+        return new ApiErrorResult<string>("CreateCommentUnsuccessful"," " + result);
     }
 
+    //Lấy tất cả các bình luận của tin tức đó
     public async Task<ApiResult<List<CommentViewModel>>> GetCommentByNewsId(int newsId)
     {
-        //check whether news is exist
+        //Kiểm tra tin tức có tồn tại hay không
         var news = await _context.News.FirstOrDefaultAsync(x => x.NewsId == newsId);
         if (news == null) return new ApiErrorResult<List<CommentViewModel>>("NewsIsNotExist");
 
@@ -94,36 +116,39 @@ public class CommentService : ICommentService
         return new ApiSuccessResult<List<CommentViewModel>>("GetCommentByNewsIdSuccessful", result);
     }
 
-    public async Task<ApiResult<bool>> Delete(int commentId, Guid userId)
+    //xóa bình luận
+    public async Task<ApiResult<string>> Delete(int commentId, Guid userId)
     {
         var comment = await _context.Comment.FirstOrDefaultAsync(x => x.CommentId == commentId);
         if (comment == null)
-            return new ApiErrorResult<bool>("CommentNotFound");
+            return new ApiErrorResult<string>("CommentNotFound"," " + commentId.ToString());
 
         var userComment = _userManager.Users.FirstOrDefault(x => x.Id == comment.UserId);
         var userLogin = _userManager.Users.FirstOrDefault(x => x.Id == userId);
 
         if (userComment != userLogin)
-            return new ApiErrorResult<bool>("YouCanOnlyDeleteYourComment");
+            return new ApiErrorResult<string>("YouCanOnlyDeleteYourComment", " " + userId.ToString());
 
         _context.Comment.Remove(comment);
+        var result = await _context.SaveChangesAsync();
+        if (result == 0) return new ApiErrorResult<string>("DeleteCommentUnsuccessful", " " + result);
 
-        if (await _context.SaveChangesAsync() == 0) return new ApiErrorResult<bool>("DeleteCommentUnsuccessful");
-
-        return new ApiSuccessResult<bool>("DeleteCommentSuccessful", false);
+        return new ApiSuccessResult<string>("DeleteCommentSuccessful", " " + comment.CommentId.ToString());
     }
 
-    public async Task<ApiResult<bool>> Update(CommentUpdateRequest request)
+    //Cập nhật bình luận
+    public async Task<ApiResult<string>> Update(CommentUpdateRequest request)
     {
         var comment = await _context.Comment.FirstOrDefaultAsync(x => x.CommentId == request.CommentId);
-        if (comment == null) return new ApiErrorResult<bool>("CommentNotFound");
+        if (comment == null) return new ApiErrorResult<string>("CommentNotFound", " " + request.CommentId);
 
         comment.Content = request.Content;
         comment.Timestamp = DateTime.Now;
 
         _context.Comment.Update(comment);
-        if (await _context.SaveChangesAsync() == 0) return new ApiErrorResult<bool>("UpdateCommentUnsuccessful");
+        var result = await _context.SaveChangesAsync();
+        if (result == 0) return new ApiErrorResult<string>("UpdateCommentUnsuccessful", " " + result);
 
-        return new ApiSuccessResult<bool>("UpdateCommentSuccessful", false);
+        return new ApiSuccessResult<string>("UpdateCommentSuccessful", " " + comment.CommentId.ToString());
     }
 }
