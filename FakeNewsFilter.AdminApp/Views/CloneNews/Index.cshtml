@@ -2,15 +2,10 @@
 
 
 @section headerscripts{
-    <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/forms/select/select2.min.css">
-    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
 
-    <script src="https://cdn.ckeditor.com/ckeditor5/31.0.0/classic/ckeditor.js"></script>
 }
 @{
-    ViewData["Title"] = "LIST TOPIC";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Clone News";
 }
 
 @if (ViewBag.SuccessMsg != null)
@@ -58,6 +53,8 @@
     }, 2000);</script>
 }
 
+
+@**@
 
 <div class="content-wrapper container-xxl p-0">
     <div class="content-body">
@@ -115,26 +112,16 @@
                 </div>
             </div>
             <div id="loading">
-                <img id="loading-image" src="/assets/images/ajax-loader.gif" alt="Loading..." />
+                <img id="loading-image" src="/img/ajax-loader.gif" alt="Loading..." />
             </div>
             <partial name="CreateNews" model="@Model.NewsCreateRequest" />
         </section>
     </div>
+    
 </div>
 
 @section footerscripts{
-
-    <script src="/app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js"></script>
-    <script src="/app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js"></script>
-    <script src="/app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js"></script>
-    <script src="/app-assets/vendors/js/tables/datatable/responsive.bootstrap4.js"></script>
-    <script src="/app-assets/vendors/js/tables/datatable/responsive.bootstrap4.js"></script>
-    <script src="/app-assets/vendors/js/tables/datatable/datatables.buttons.min.js"></script>
-    <script src="/app-assets/vendors/js/tables/datatable/buttons.bootstrap5.min.js"></script>
-    <script src="/app-assets/vendors/js/forms/validation/jquery.validate.min.js"></script>
-    <script src="/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
-
-    <script src="/src/js/admin/clonenews.js"></script>
-    <script src="https://momentjs.com/downloads/moment.js"></script>
+    <script src="/js/admin/clonenews.js"></script>
+    
 }
 

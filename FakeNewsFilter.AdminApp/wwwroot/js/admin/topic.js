@@ -8,6 +8,8 @@
 ==========================================================================================*/
 
 //Load Datatable List Topic
+var select = $('.select2');
+
 $(document).ready(function () {
     $('#loading').hide();
 
@@ -17,7 +19,15 @@ $(document).ready(function () {
             1: { title: 'Active', class: 'status-pill green' },
             2: { title: 'Inactive', class: 'status-pill yellow' }
         };
-
+    select.each(function () {
+        var $this = $(this);
+        $this.wrap('<div class="position-relative"></div>');
+        $this.select2({
+            dropdownAutoWidth: true,
+            width: '100%',
+            dropdownParent: $this.parent()
+        });
+    });
     $("#list_topic").DataTable({
         ajax: {
             url: "/Topic/GetTopics",
