@@ -1,4 +1,5 @@
-﻿using FakeNewsFilter.Data.EF;
+﻿using FakeNewsFilter.Application.Common;
+using FakeNewsFilter.Data.EF;
 using FakeNewsFilter.Data.Entities;
 using FakeNewsFilter.ViewModel.Catalog.Follows;
 using FakeNewsFilter.ViewModel.Common;
@@ -38,7 +39,7 @@ namespace FakeNewsFilter.Application.Catalog
             {
                 try
                 {
-                    var user = await _userManager.FindByIdAsync(request.UserId.ToString());
+                    var user = await UserCommon.CheckExistUser(_context, request.UserId);
                     if (user == null)
                     {
                         return new ApiErrorResult<string>("UserIsNotExist", " " + request.UserId.ToString());
@@ -91,7 +92,7 @@ namespace FakeNewsFilter.Application.Catalog
         public async Task<ApiResult<List<int>>> GetFollowTopicByUser(Guid userId)
         {
             //Kiểm tra người dùng có tồn tại hay không
-            var user = await _userManager.FindByIdAsync(userId.ToString());
+            var user = await UserCommon.CheckExistUser(_context, userId);
             if (user == null)
             {
                 return new ApiErrorResult<List<int>>("AccountDoesNotExist");

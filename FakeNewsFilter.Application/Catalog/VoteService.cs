@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using FakeNewsFilter.Application.Common;
 using FakeNewsFilter.Data.EF;
 using FakeNewsFilter.Data.Entities;
 using FakeNewsFilter.ViewModel.Catalog.Vote;
@@ -33,12 +34,11 @@ public class VoteService : IVoteService
     {
         try
         {
-            var user = await _userManager.FindByIdAsync(request.UserId.ToString());
+            var user = await UserCommon.CheckExistUser(_context, request.UserId);
 
             if (user == null) return new ApiErrorResult<string>("UserIsNotExist"," " + request.UserId.ToString());
 
-            var news = await _context.News.Include(t => t.NewsInTopics)
-                .FirstOrDefaultAsync(t => t.NewsId == request.NewsId);
+            var news = await NewsCommon.CheckExistNews(_context, request.NewsId);
 
             if (news == null) return new ApiErrorResult<string>("NewsIsNotExist"," " + request.NewsId);
 

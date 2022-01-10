@@ -118,39 +118,39 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CommentNotFound" xml:space="preserve">
-    <value>Bình luận không tồn tại!</value>
+    <value>Bình luận không tồn tại :</value>
   </data>
   <data name="CreateCommentSuccessful" xml:space="preserve">
-    <value>bình luận thành công!</value>
+    <value>bình luận thành công :</value>
   </data>
   <data name="CreateCommentUnsuccessful" xml:space="preserve">
-    <value>Có lỗi xảy ra khi bình luận!</value>
+    <value>Có lỗi xảy ra khi bình luận :</value>
   </data>
   <data name="DeleteCommentSuccessful" xml:space="preserve">
-    <value>Xóa bình luận thành công!</value>
+    <value>Xóa bình luận thành công :</value>
   </data>
   <data name="DeleteCommentUnsuccessful" xml:space="preserve">
-    <value>Có lỗi xảy ra khi xóa bình luận!</value>
+    <value>Có lỗi xảy ra khi xóa bình luận :</value>
   </data>
   <data name="DoNotHaveGetCommentByNewsId" xml:space="preserve">
-    <value>Có lỗi xảy ra khi xem bình luận của tin tức này!</value>
+    <value>Có lỗi xảy ra khi xem bình luận của tin tức này :</value>
   </data>
   <data name="GetCommentByNewsIdSuccessful" xml:space="preserve">
-    <value>Xem bình luận thành công!</value>
+    <value>Xem bình luận thành công :</value>
   </data>
   <data name="NewsIsNotExist" xml:space="preserve">
-    <value>Tin tức không tồn tại!</value>
+    <value>Tin tức không tồn tại :</value>
   </data>
   <data name="UpdateCommentSuccessful" xml:space="preserve">
-    <value>Cập nhật bình luận thành công!</value>
+    <value>Cập nhật bình luận thành công :</value>
   </data>
   <data name="UpdateCommentUnsuccessful" xml:space="preserve">
-    <value>Có lỗi xảy ra khi cập nhật bình luận! vui lòng thử lại sau!</value>
+    <value>Có lỗi xảy ra khi cập nhật bình luận! vui lòng thử lại sau :</value>
   </data>
   <data name="UserIsNotExist" xml:space="preserve">
-    <value>Tài khoảng không tồn tại!</value>
+    <value>Tài khoảng không tồn tại :</value>
   </data>
   <data name="YouCanOnlyDeleteYourComment" xml:space="preserve">
-    <value>Bạn chỉ được xóa bình luận của bạn!</value>
+    <value>Bạn chỉ được xóa bình luận của bạn :</value>
   </data>
 </root>

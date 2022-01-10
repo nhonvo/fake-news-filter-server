@@ -48,9 +48,9 @@ namespace FakeNewsFilter.Application.Catalog
             
                 try
                 {
-                    var language = await _context.Languages.SingleOrDefaultAsync(x => x.Id == languageId);
+                    var language = await LanguageCommon.CheckExistLanguage(_context, languageId);
 
-                    var query = from t in _context.TopicNews
+                var query = from t in _context.TopicNews
                                 where (string.IsNullOrEmpty(languageId) || t.LanguageId == languageId)
                                 select new
                                 {
@@ -100,7 +100,7 @@ namespace FakeNewsFilter.Application.Catalog
             {
                 try
                 {
-                    var language = await _context.Languages.FirstOrDefaultAsync(x => x.Id == request.LanguageId);
+                    var language = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
                     if (language == null)
                     {
                         return new ApiErrorResult<string>("LanguageNotFound", " " + request.LanguageId);
@@ -155,14 +155,14 @@ namespace FakeNewsFilter.Application.Catalog
         {
             try
             {
-                var topic = await _context.TopicNews.FindAsync(request.TopicId);
+                var topic = await TopicCommon.CheckExistTopic(_context, request.TopicId);
                 if (topic == null)
                 {
                     return new ApiErrorResult<string>("TopicNotFound", " " + request.TopicId.ToString());
                 }
 
-                var language = await _context.Languages.FirstOrDefaultAsync(x => x.Id == request.LanguageId);
-                if(language == null)
+                var language = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
+                if (language == null)
                 {
                     return new ApiErrorResult<string>("LanguageNotFound", " " + request.LanguageId);
                 }
@@ -236,7 +236,7 @@ namespace FakeNewsFilter.Application.Catalog
         {
             try
             {
-                var topic = await _context.TopicNews.FindAsync(id);
+                var topic = await TopicCommon.CheckExistTopic(_context, id);
 
                 var thumb = _context.Media.Where(m => m.MediaId == topic.ThumbTopic).Select(m => m.PathMedia).FirstOrDefault();
 
@@ -266,13 +266,13 @@ namespace FakeNewsFilter.Application.Catalog
         }
 
         //Xoá Topic
-        public async Task<ApiResult<string>> Delete(int TopicId)
+        public async Task<ApiResult<string>> Delete(int topicId)
         {
             try
             {
-                var topic = await _context.TopicNews.FindAsync(TopicId);
+                var topic = await TopicCommon.CheckExistTopic(_context, topicId);
 
-                if (topic == null) return new ApiSuccessResult<string>($"CannotFindTopicWithId"," " + TopicId.ToString());
+                if (topic == null) return new ApiSuccessResult<string>($"CannotFindTopicWithId"," " + topicId.ToString());
 
                 if(topic.ThumbTopic != null)
                 {
