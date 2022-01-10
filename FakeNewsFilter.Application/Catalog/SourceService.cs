@@ -1,4 +1,5 @@
-﻿using FakeNewsFilter.Data.EF;
+﻿using FakeNewsFilter.Application.Common;
+using FakeNewsFilter.Data.EF;
 using FakeNewsFilter.Data.Entities;
 using FakeNewsFilter.ViewModel.Catalog.SourceStory;
 using FakeNewsFilter.ViewModel.Common;
@@ -33,13 +34,13 @@ namespace FakeNewsFilter.Application.Catalog
             try
             {
                 //Kiểm tra ngôn ngữ có trong hệ thống hay không
-                var language = _context.Languages.FirstOrDefault(x => x.Id == request.LanguageId);
-                if(language == null)
+                var language = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
+                if (language == null)
                 {
                     return new ApiErrorResult<string>("LanguageNotFound", " " + request.LanguageId);
                 }
                 //Kiểm tra đã tồn tại trong hệ thống hay chưa
-                var sourcename = _context.Source.FirstOrDefault(x => x.SourceName == request.SourceName);
+                var sourcename = SourceCommon.CheckExistSourceName(_context, request.SourceName);
                 if(sourcename != null)
                 {
                     return new ApiErrorResult<string>("SourceNameFound", " " + request.SourceName);
@@ -60,7 +61,7 @@ namespace FakeNewsFilter.Application.Catalog
                     return new ApiErrorResult<string>("CreateSourceStoryUnsuccessful", result.ToString());
                 }
 
-                return new ApiSuccessResult<string>("CreateSourceStorySuccessful", sourcename.SourceId.ToString());
+                return new ApiSuccessResult<string>("CreateSourceStorySuccessful", sourcename.ToString());
             }
             catch (Exception)
             {
@@ -74,13 +75,13 @@ namespace FakeNewsFilter.Application.Catalog
             try
             {
                 //Kiểm tra nguồn có tồn tại trong hệ thống hay không
-                var sourcename = _context.Source.FirstOrDefault(x => x.SourceName == request.SourceName);
+                var sourcename = SourceCommon.CheckExistSourceName(_context, request.SourceName);
                 if (sourcename == null)
                 {
                     return new ApiErrorResult<string>("CannotFindSourceNameExist", " " + request.SourceName);
                 }
                 //Kiểm tra ngôn ngữ có tồn tại trong hệ thống hay không
-                var language = _context.Languages.FirstOrDefault(x => x.Id == request.LanguageId);
+                var language = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
                 if (language == null)
                 {
                     return new ApiErrorResult<string>("LanguageNotFound", " " + request.LanguageId);
@@ -103,7 +104,7 @@ namespace FakeNewsFilter.Application.Catalog
 
                 if (result > 0)
                 {
-                    return new ApiSuccessResult<string>("SourceStoryUpdateSuccessful", " " + sourcename.SourceId.ToString());
+                    return new ApiSuccessResult<string>("SourceStoryUpdateSuccessful", " " + sourcename.ToString());
                 }
 
                 return new ApiErrorResult<string>("SourceStoryUpdateUnsuccessful"," " + result.ToString());
@@ -135,8 +136,8 @@ namespace FakeNewsFilter.Application.Catalog
         //Lấy 1 nguồn
         public async Task<ApiResult<SourceViewModel>> GetoneStory(int sourceid)
         {
-            var sourcestory = await _context.Source.FirstOrDefaultAsync(t => t.SourceId == sourceid);
-            if(sourcestory == null)
+            var sourcestory = await SourceCommon.CheckExistSource(_context, sourceid);
+            if (sourcestory == null)
             {
                 return new ApiErrorResult<SourceViewModel>("SourceNotFound");
             }
@@ -160,8 +161,8 @@ namespace FakeNewsFilter.Application.Catalog
         //Xóa nguồn
         public async Task<ApiResult<string>> Delete(int sourceid)
         {
-            var deletesourceId = _context.Source.FirstOrDefault(x => x.SourceId == sourceid);
-            
+            var deletesourceId = await SourceCommon.CheckExistSource(_context, sourceid);
+
             if (deletesourceId == null)
             {
                 return new ApiErrorResult<string>("CanNotFindSourceid", sourceid);

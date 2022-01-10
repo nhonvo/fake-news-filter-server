@@ -43,13 +43,13 @@ namespace FakeNewsFilter.Application.Catalog
         public async Task<ApiResult<string>> Create(StoryCreateRequest request)
         {
             //Kiểm tra ngôn ngữ có tồn tại hay không
-            var language = await _context.Languages.FirstOrDefaultAsync(x => x.Id == request.LanguageId);
+            var language = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
             if (language == null)
             {
                 return new ApiErrorResult<string>("LanguageIdNotFound"," " + request.LanguageId);
             }
             //kiểm tra nguồn có tồn tại hay không
-            var source = await _context.Source.FindAsync(request.SourceId);
+            var source = await SourceCommon.CheckExistSource(_context, request.SourceId);
             if (source == null)
             {
                 return new ApiErrorResult<string>("SourceIdNotFound", " " + request.SourceId.ToString());
@@ -102,19 +102,19 @@ namespace FakeNewsFilter.Application.Catalog
         public async Task<ApiResult<string>> Update(StoryUpdateRequest request)
         {
             //Kiểm tra ngôn ngữ có tồn tại hay không
-            var language_update = await _context.Languages.FirstOrDefaultAsync(x => x.Id == request.LanguageId);
+            var language_update = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
             if (language_update == null)
             {
                 return new ApiErrorResult<string>("LanguageIdNotFound"," " + request.LanguageId);
             }
             //Kiểm tra story có tồn tại hay không
-            var story_update = await _context.Story.FindAsync(request.StoryId);
+            var story_update = await StoryCommon.CheckExistStory(_context, request.StoryId);
 
             if (story_update == null)
                 return new ApiErrorResult<string>($"CannontFindAStoryWithId", " " + request.StoryId);
 
             //Kiểm tra nguồn có tồn tại hay không
-            var source_update = await _context.Source.FindAsync(request.SourceId);
+            var source_update = await SourceCommon.CheckExistSource(_context, request.SourceId);
 
             if (source_update == null)
                 return new ApiErrorResult<string>($"CannontFindASourceWithId", " " + request.SourceId);
@@ -184,7 +184,7 @@ namespace FakeNewsFilter.Application.Catalog
         {
             try
             {
-                var story = await _context.Story.FindAsync(StoryId);
+                var story = await StoryCommon.CheckExistStory(_context, StoryId);
 
                 if (story == null) return new ApiSuccessResult<string>("CannontFindAStoryWithId"," " + StoryId.ToString());
 

@@ -60,10 +60,10 @@ namespace FakeNewsFilter.Application.Catalog
 
                 try
                 {
-                    var language = await _context.Languages.FirstOrDefaultAsync(x => x.Id == request.LanguageId);
+                    var language = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
                     if (language == null) return new ApiErrorResult<string>("LanguageNotFound", " " + request.LanguageId);
 
-                    var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == request.UserId);
+                    var user = await UserCommon.CheckExistUser(_context, request.UserId);
                     if (user == null) return new ApiErrorResult<string>("UserNotFound", " " + request.UserId);
 
                     var newsCommunity = new NewsCommunity
@@ -113,7 +113,7 @@ namespace FakeNewsFilter.Application.Catalog
         //Lấy thông tin News thông qua Id
         public async Task<ApiResult<NewsCommunityViewModel>> GetById(int newsCommunityId)
         {
-            var news = await _context.NewsCommunity.FirstOrDefaultAsync(t => t.NewsCommunityId == newsCommunityId);
+            var news = await NewscommunityCommon.CheckExistNews(_context, newsCommunityId);
 
             NewsCommunityViewModel result = null;
 
@@ -153,7 +153,7 @@ namespace FakeNewsFilter.Application.Catalog
         //Xoá tin tức
         public async Task<ApiResult<string>> Delete(int newsCommunityId)
         {
-            var news = await _context.NewsCommunity.FindAsync(newsCommunityId);
+            var news = await NewscommunityCommon.CheckExistNews(_context, newsCommunityId);
 
             if (news == null)
                 return new ApiErrorResult<string>("CannontFindANewsWithId", newsCommunityId);
@@ -183,9 +183,7 @@ namespace FakeNewsFilter.Application.Catalog
             {
                 try
                 {
-                    var news_update =
-                        await _context.NewsCommunity.FirstOrDefaultAsync(x =>
-                            x.NewsCommunityId == request.NewsCommunityId);
+                    var news_update = await NewscommunityCommon.CheckExistNews(_context, request.NewsCommunityId);
 
                     if (news_update == null)
                         return new ApiErrorResult<string>("CannontFindANewsWithId", " " + request.NewsCommunityId);
@@ -249,7 +247,7 @@ namespace FakeNewsFilter.Application.Catalog
         //Lấy tất cả các tin tức
         public async Task<ApiResult<List<NewsCommunityViewModel>>> GetAll(string languageId)
         {
-            var language = await _context.Languages.SingleOrDefaultAsync(x => x.Id == languageId);
+            var language = await LanguageCommon.CheckExistLanguage(_context, languageId);
 
             var query = from n in _context.NewsCommunity
                 join user in _context.Users on n.UserId equals user.Id
@@ -322,7 +320,7 @@ namespace FakeNewsFilter.Application.Catalog
         //Cập nhật đường dẫn tin tức
         public async Task<ApiResult<string>> UpdateLink(int newsCommunityId, string newLink)
         {
-            var news_update = await _context.NewsCommunity.FindAsync(newsCommunityId);
+            var news_update = await NewscommunityCommon.CheckExistNews(_context, newsCommunityId);
 
             if (news_update == null)
                 return new ApiErrorResult<string>("CannontFindANewsWithId", newsCommunityId);

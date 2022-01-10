@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using FakeNewsFilter.Application.Common;
 using FakeNewsFilter.Data.EF;
 using FakeNewsFilter.Data.Entities;
 using FakeNewsFilter.ViewModel.Catalog.Comment;
@@ -36,11 +37,10 @@ public class CommentService : ICommentService
     //Tạo bình luận
     public async Task<ApiResult<string>> Create(CommentCreateRequest request)
     {
-        var user = await _userManager.FindByIdAsync(request.UserId.ToString());
+        var user = await UserCommon.CheckExistUser(_context, request.UserId);
         if (user == null) return new ApiErrorResult<string>("UserIsNotExist"," " + request.UserId.ToString());
 
-        var news = await _context.News.Include(x => x.NewsInTopics)
-            .FirstOrDefaultAsync(t => t.NewsId == request.NewsId);
+        var news = await NewsCommon.CheckExistNews(_context, request.NewsId);
         if (news == null) return new ApiErrorResult<string>("NewsIsNotExist", " " + request.NewsId);
 
         Comment comment = null;
@@ -85,7 +85,7 @@ public class CommentService : ICommentService
     public async Task<ApiResult<List<CommentViewModel>>> GetCommentByNewsId(int newsId)
     {
         //Kiểm tra tin tức có tồn tại hay không
-        var news = await _context.News.FirstOrDefaultAsync(x => x.NewsId == newsId);
+        var news = await NewsCommon.CheckExistNews(_context, newsId);
         if (news == null) return new ApiErrorResult<List<CommentViewModel>>("NewsIsNotExist");
 
         var commentsList = await _context.Comment.Where(x => x.NewsId == newsId).ToListAsync();
@@ -119,12 +119,12 @@ public class CommentService : ICommentService
     //xóa bình luận
     public async Task<ApiResult<string>> Delete(int commentId, Guid userId)
     {
-        var comment = await _context.Comment.FirstOrDefaultAsync(x => x.CommentId == commentId);
+        var comment = await CommentCommon.CheckExistComment(_context, commentId);
         if (comment == null)
             return new ApiErrorResult<string>("CommentNotFound"," " + commentId.ToString());
 
-        var userComment = _userManager.Users.FirstOrDefault(x => x.Id == comment.UserId);
-        var userLogin = _userManager.Users.FirstOrDefault(x => x.Id == userId);
+        var userComment = await UserCommon.CheckExistUser(_context, comment.UserId);
+        var userLogin = await UserCommon.CheckExistUser(_context, userId);
 
         if (userComment != userLogin)
             return new ApiErrorResult<string>("YouCanOnlyDeleteYourComment", " " + userId.ToString());
@@ -139,7 +139,7 @@ public class CommentService : ICommentService
     //Cập nhật bình luận
     public async Task<ApiResult<string>> Update(CommentUpdateRequest request)
     {
-        var comment = await _context.Comment.FirstOrDefaultAsync(x => x.CommentId == request.CommentId);
+        var comment = await CommentCommon.CheckExistComment(_context, request.CommentId);
         if (comment == null) return new ApiErrorResult<string>("CommentNotFound", " " + request.CommentId);
 
         comment.Content = request.Content;

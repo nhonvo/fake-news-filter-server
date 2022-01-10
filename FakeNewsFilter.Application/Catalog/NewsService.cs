@@ -35,6 +35,8 @@ public interface INewsService
     Task<ApiResult<string>> Update(NewsUpdateRequest request);
 
     Task<ApiResult<string>> UpdateLink(int newsId, string newLink);
+
+
 }
 
 public class NewsService : INewsService
@@ -57,7 +59,7 @@ public class NewsService : INewsService
     //Lấy tất cả các tin tức
     public async Task<ApiResult<List<NewsViewModel>>> GetAll(string languageId, string filter)
     {
-        var language = await _context.Languages.SingleOrDefaultAsync(x => x.Id == languageId);
+        var language = await LanguageCommon.CheckExistLanguage(_context, languageId);
 
         var newsList = new List<NewsViewModel>();
 
@@ -232,8 +234,8 @@ public class NewsService : INewsService
                 try
                 {
                     //kiểm tra ngôn ngữ
-                    var language = await _context.Languages.FirstOrDefaultAsync(x => x.Id == request.LanguageId);
-                    if (language == null) return new ApiErrorResult<string>("LanguageNotFound", " " + request.LanguageId);
+                    var language = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
+                if (language == null) return new ApiErrorResult<string>("LanguageNotFound", " " + request.LanguageId);
 
                     //Kiểm tra id chủ đề
                     foreach (var item in request.TopicId)
@@ -307,7 +309,7 @@ public class NewsService : INewsService
     //Xoá tin tức
     public async Task<ApiResult<string>> Delete(int newsId)
     {
-        var news = await _context.News.FindAsync(newsId);
+        var news = await NewsCommon.CheckExistNews(_context, newsId);
 
         if (news == null)
             return new ApiErrorResult<string>("CannontFindANewsWithId", newsId);
@@ -338,7 +340,7 @@ public class NewsService : INewsService
         {
             try
             {
-                var news_update = await _context.News.FindAsync(request.Id);
+                var news_update = await NewsCommon.CheckExistNews(_context, request.Id);
 
                 if (news_update == null)
                     return new ApiErrorResult<string>("CannontFindANewsWithId", request.Id);
@@ -436,7 +438,7 @@ public class NewsService : INewsService
     //Cập nhật đường dẫn tin tức
     public async Task<ApiResult<string>> UpdateLink(int newsId, string newLink)
     {
-        var news_update = await _context.News.FindAsync(newsId);
+        var news_update = await NewsCommon.CheckExistNews(_context, newsId);
 
         if (news_update == null)
             return new ApiErrorResult<string>("CannontFindANewsWithId", newsId);
