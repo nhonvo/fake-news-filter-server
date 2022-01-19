@@ -49,7 +49,7 @@ namespace FakeNewsFilter.WebApp
             services.AddTransient<TopicApi>();
             services.AddTransient<LanguageApi>();
             services.AddTransient<NewsApi>();
-
+            services.AddTransient<NotificationApi>();
             services.AddTransient<FactCheckApi>();
 
             //Authen

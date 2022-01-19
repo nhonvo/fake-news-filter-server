@@ -913,7 +913,7 @@ START - Main Menu
     <span>Layouts</span>
 </li>
 <li class="selected has-sub-menu">
-    <a href="index.html">
+    <a href="#">
         <div class="icon-w">
             <div class="os-icon os-icon-layout"></div>
         </div>
@@ -939,7 +939,7 @@ START - Main Menu
     </div>
 </li>
 <li class=" has-sub-menu">
-    <a href="layouts_menu_top_image.html">
+    <a href="#">
         <div class="icon-w">
             <div class="os-icon os-icon-layers"></div>
         </div>
@@ -947,7 +947,7 @@ START - Main Menu
     </a>
     <div class="sub-menu-w">
         <div class="sub-menu-header">
-           Dashboard
+            Dashboard
         </div>
         <div class="sub-menu-icon">
             <i class="os-icon os-icon-layers"></i>
@@ -960,6 +960,38 @@ START - Main Menu
             </ul>
         </div>
     </div>
+</li>
+<li class=" has-sub-menu">
+    @* <a asp-action="Index" asp-controller="Notification"> *@
+    <a href="http://localhost:5002/#">  
+        <div class="icon-w">
+            <div class="os-icon os-icon-layers"></div>
+        </div>
+        <span>Push Notification</span>
+    </a>
+    <div class="sub-menu-w">
+        <div class="sub-menu-header">
+            Dashboard
+        </div>
+        <div class="sub-menu-icon">
+            <i class="os-icon os-icon-layers"></i>
+        </div>
+        <div class="sub-menu-i">
+            <ul class="sub-menu">
+                <li>
+                    <a asp-action="Index" asp-controller="Topic">Topic List</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</li>
+<li class=" has-sub-menu">
+    <a asp-action="Index" asp-controller="FileManager">
+        <div class="icon-w">
+            <div class="os-icon os-icon-layers"></div>
+        </div>
+        <span>File Manager</span>
+    </a>
 </li>
 <li class="sub-header">
     <span>Options</span>
@@ -1356,9 +1388,7 @@ START - Breadcrumbs
 <!--------------------
 END - Breadcrumbs
 -------------------->
-<div class="content-panel-toggler">
-    <i class="os-icon os-icon-grid-squares-22"></i><span>Sidebar</span>
-</div>
+
  <div class="content-i">
             <div class="content-box">
             @RenderBody()
