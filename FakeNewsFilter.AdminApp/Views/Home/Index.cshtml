@@ -1,6 +1,4 @@
-﻿
-
-@{
+﻿@{
     ViewData["Title"] = "Fake News Filter - Admin Manage";
 }
 
@@ -103,61 +101,98 @@
                         <div class="col-sm-6">
                             <a class="btn btn-sm btn-secondary" href="#">Download CSV</a><a class="btn btn-sm btn-secondary" href="#">Archive</a><a class="btn btn-sm btn-danger" href="#">Delete</a>
                         </div>
-                        <div class="col-sm-6">
-                            <form class="form-inline justify-content-sm-end">
-                                <input class="form-control form-control-sm rounded bright" placeholder="Search" type="text">
-                                <select class="form-control form-control-sm rounded bright">
-                                    <option selected="selected" value="">
-                                        Select Status
-                                    </option>
-                                    <option value="Pending">
-                                        Pending
-                                    </option>
-                                    <option value="Active">
-                                        Active
-                                    </option>
-                                    <option value="Cancelled">
-                                        Cancelled
-                                    </option>
-                                </select>
-                            </form>
-                        </div>
                     </div>
                 </div>
                 <div class="table-responsive">
-                    <table id="notifications_list" class="table table-bordered table-lg table-v2 table-striped">
+                    <table id="notifications_list" width="100%" class="table table-bordered table-lg table-v2 table-striped">
                         <thead>
                         <tr>
-                            <th >
-                               
-                            </th>
-                            <th>
-                                Name
-                            </th>
-                            <th>
-                                Completed At
-                            </th>
-                            <th>
-                                Successful
-                            </th>
-                            <th>
-                                Filters
-                            </th>
-                            <th>
-                                Status
-                            </th>
-                            <th>
-                                Actions
-                            </th>
+                            <th>Name</th>
+                            <th>Completed At</th>
+                            <th>Successful</th>
+                            <th>Failed</th>
+                            <th>Errored</th>
+                            <th>Filters</th>
+                            <th>Actions</th>
                         </tr>
                         </thead>
                     </table>
+                    <div id="loading">
+                        <img id="loading-image" src="/img/ajax-loader.gif" alt="Loading..." />
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<div aria-labelledby="myLargeModalLabel" class="modal fade bd-example-modal-lg show" role="dialog" tabindex="-1" style="padding-right: 15px; display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    Create News
+                </h5>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true"> ×</span></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Create" asp-controller="News" method="post">
+                    <div class="form-group">
+                        <label class="form-label" for="basic-icon-default-fullname">News Title</label>
+                        @* <input type="text" class="form-control dt-top-tag" asp-for="Name" /> *@
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="form-label" for="basic-icon-default-fullname">Official Rating</label>
+                                @* <input type="text" class="form-control dt-top-tag" asp-for="OfficialRating" /> *@
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="form-label" for="language">Content Language</label>
+                                @* <select class="form-control" asp-for="LanguageId" asp-items="@ViewBag.ListLanguage" aria-invalid="false"></select> *@
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="form-label" for="topic">Label</label>
+                                @* <select class="select2 form-select" asp-for="TopicId" asp-items="@ViewBag.ListTopic" aria-invalid="false" multiple="multiple"></select> *@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="basic-icon-default-post">Description</label>
+                        @* <textarea data-length="200" type="text" asp-for="Description" class="form-control char-textarea active" rows="3"></textarea> *@
+                        <small class="textarea-counter-value float-end" style="background-color: rgb(115, 103, 240);"><span class="char-count">0</span> / 200 </small>
+                    </div>
 
+                    <div class="form-group">
+                        <label class="form-label" for="basic-icon-default-fullname">Content</label>
+                        @* <textarea id="ckeditor1" type="text" rows="5" class="form-control dt-top-tag" asp-for="Content"></textarea> *@
+                    </div>
+                    <div class="form-group">
+                        <div style="text-align: center">
+                            <img class="news-thumb rounded me-2 my-25 cursor-pointer" height="100">
+                            <div class="col-12 mt-1">
+                                <label class="btn btn-primary me-75 mb-0 waves-effect waves-float waves-light" for="ThumbNews">
+                                    <span class="d-none d-sm-block">Choose Image</span>
+                                    @* <input asp-for="ThumbNews" class="form-control" type="file" hidden="" accept="image/png, image/jpeg, image/jpg"> *@
+                                    <span class="d-block d-sm-none">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit me-0"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal" type="button"> Close</button>
+                <button class="btn btn-primary" type="button" onclick="CreateNews(document.querySelector('.modal-body > form'), event)"> Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 @section footerscripts{
     <script src="/bower_components/datatables.net-buttons-bs/js/jquery.dataTables.min.js"></script>
     <script src="/bower_components/datatables.net-buttons-bs/js/dataTables.bootstrap5.min.js"></script>

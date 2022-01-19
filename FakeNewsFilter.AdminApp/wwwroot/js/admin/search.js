@@ -41,24 +41,25 @@ $(document).ready(function () {
             }
         },
         columns: [
-            { "data": '' },
             { "data": 'name' },
-            { "data": '' },
+            { "data": 'completed_at' },
             { "data": 'successful' },
+            { "data": 'failed' },
+            { "data": 'errored' },
             { "data": 'filters' },
             { "data": '' }
         ],
         columnDefs: [
             {
                 //Đồng bộ thời gian thực (Sử dụng MommentJS)
-                targets: 2,
+                targets: 1,
                 render: function (data, type, full, meta) {
                     var $time = full['completed_at'];
-                    return moment($time).format('LLLL');
+                    return moment.unix($time).format('dddd, MMMM Do, YYYY h:mm:ss A');
                 }
             },
             {
-                targets: 4,
+                targets: 5,
                 orderable: false,
                 render: function (data, type, full, meta) {
                     var $filters = full['filters'];
