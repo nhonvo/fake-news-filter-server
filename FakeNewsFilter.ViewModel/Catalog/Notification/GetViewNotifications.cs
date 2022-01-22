@@ -2,27 +2,6 @@ using System.Collections.Generic;
 
 namespace FakeNewsFilter.ViewModel.Catalog.Notification
 {
-// Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
-    public class Contents
-    {
-        public string en { get; set; }
-        public string vi { get; set; }
-    }
-
-    public class Headings
-    {
-        public string en { get; set; }
-        public string vi { get; set; }
-    }
-
-    public class Filter
-    {
-        public string key { get; set; }
-        public string field { get; set; }
-        public string value { get; set; }
-        public string relation { get; set; }
-    }
-
     public class Android
     {
         public int successful { get; set; }

@@ -14,12 +14,6 @@ $(document).ready(function () {
 
     var select = $('.select2');
 
-    var statusObj = {
-        0: { title: 'Archive', class: 'status-pill red' },
-        1: { title: 'Active', class: 'status-pill green' },
-        2: { title: 'Inactive', class: 'status-pill yellow' }
-    };
-
     select.each(function () {
         var $this = $(this);
         $this.wrap('<div class="position-relative"></div>');
@@ -31,17 +25,22 @@ $(document).ready(function () {
     });
 
     $("#notifications_list").DataTable({
+        order: [
+            [2, "desc"]
+        ],
         ajax: {
             url: "/Notification/GetViewNotifications",
             type: "get",
             contentType: "application/json",
             dataType: "json",
             data: function (data) {
+                console.log(data);
                 return JSON.stringify(data);
             }
         },
         columns: [
             { "data": 'name' },
+            { "data": 'completed_at' },
             { "data": 'completed_at' },
             { "data": 'successful' },
             { "data": 'failed' },
@@ -54,12 +53,15 @@ $(document).ready(function () {
                 //Đồng bộ thời gian thực (Sử dụng MommentJS)
                 targets: 1,
                 render: function (data, type, full, meta) {
-                    var $time = full['completed_at'];
-                    return moment.unix($time).format('dddd, MMMM Do, YYYY h:mm:ss A');
+                    return moment.unix(data).format('dddd, MMMM Do, YYYY h:mm:ss A');
                 }
             },
             {
-                targets: 5,
+                targets: 2,
+                visible: false,
+            },
+            {
+                targets: 6,
                 orderable: false,
                 render: function (data, type, full, meta) {
                     var $filters = full['filters'];
@@ -73,7 +75,7 @@ $(document).ready(function () {
             },
             {
                 //Các nút Actions
-                targets: 6,
+                targets: 7,
                 orderable: false,
                 render: function (data, type, full, meta) {
                     var $newsId = full['newsId'];

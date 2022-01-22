@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using FakeNewsFilter.AdminApp.Services;
+using FakeNewsFilter.ViewModel.Catalog.Notification;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FakeNewsFilter.AdminApp.Controllers
@@ -28,7 +29,6 @@ namespace FakeNewsFilter.AdminApp.Controllers
 
             return View();
         }
-
         [HttpGet]
         public async Task<IActionResult> GetViewNotifications()
         {
@@ -38,6 +38,30 @@ namespace FakeNewsFilter.AdminApp.Controllers
             {
                 data = data.notifications,
             });
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateNotificationRequest createNotificationRequest)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.ModelState = ModelState;
+                return RedirectToAction("Index");
+            }
+            
+            
+            var result = await _notificationApi.CreateNotification(createNotificationRequest);
+            
+            if (result.IsSuccessed)
+            {
+                TempData["Result"] = $"Create Notification Successful!";
+            
+                return RedirectToAction("Index");
+            }
+            
+            TempData["Error"] = result.Message;
+
+            return RedirectToAction("Index");
         }
     }
 }
