@@ -26,52 +26,57 @@ namespace FakeNewsFilter.AdminApp.Services
 
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public NotificationApi(IHttpClientFactory httpClientFactory, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+        public NotificationApi(IHttpClientFactory httpClientFactory, IConfiguration configuration,
+            IHttpContextAccessor httpContextAccessor)
         {
             _httpClientFactory = httpClientFactory;
             _configuration = configuration;
             _httpContextAccessor = httpContextAccessor;
         }
+
         public async Task<GetViewNotifications> GetNotifications()
         {
             var client = _httpClientFactory.CreateClient("Notification");
             client.BaseAddress = new Uri(_configuration["OneSignalBaseAddress"]);
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{_configuration["OneSignalRestApiKey"]}");
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", $"{_configuration["OneSignalRestApiKey"]}");
             var response = await client.GetAsync($"/api/v1/notifications?app_id={_configuration["OneSignalAppId"]}");
             if (response.IsSuccessStatusCode)
             {
                 var body = await response.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<GetViewNotifications>(body);
             }
+
             return new GetViewNotifications("Error System: " + response.StatusCode);
         }
-         public async Task<ApiResult<CreateNotification>> CreateNotification(CreateNotificationRequest request)
+
+        public async Task<ApiResult<CreateNotification>> CreateNotification(CreateNotificationRequest request)
         {
             var client = _httpClientFactory.CreateClient("Notification");
             client.BaseAddress = new Uri(_configuration["OneSignalBaseAddress"]);
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{_configuration["OneSignalRestApiKey"]}");
-            
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", $"{_configuration["OneSignalRestApiKey"]}");
+
             var notification = new CreateNotification
             {
                 app_id = _configuration["OneSignalAppId"],
                 headings = request.headings,
                 contents = request.contents,
                 name = request.name,
-                filters = new List<Filter>
-                {
-                    new Filter
-                    {
-                        field = "tag",
-                        key = "language_content",
-                        relation = "=",
-                        value = request.filter,
-                    },
-                },
+                //if has request.filter is true, it will send to all user
+
+                filters = !String.IsNullOrEmpty(request.filter)
+                    ? new List<Filter>
+                        {new Filter {field = "tag", key = "language_content", relation = "=", value = request.filter}}
+                    : null,
+                url = !String.IsNullOrEmpty(request.url) ? request.url : null,
+                included_segments = "Khanh test",
             };
-            
+
             var jsonToString = JsonConvert.SerializeObject(notification);
-            
-            var response = await client.PostAsync($"/api/v1/notifications", new StringContent(jsonToString, Encoding.UTF8, "application/json"));
+
+            var response = await client.PostAsync($"/api/v1/notifications",
+                new StringContent(jsonToString, Encoding.UTF8, "application/json"));
 
             var result = await response.Content.ReadAsStringAsync();
 
@@ -83,4 +88,3 @@ namespace FakeNewsFilter.AdminApp.Services
         }
     }
 }
-

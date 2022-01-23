@@ -62,31 +62,31 @@
             <div class="modal-body">
                 <form asp-action="Create" asp-controller="Notification" method="post">
                     <div class="form-group">
-                        <label class="form-label" for="basic-icon-default-fullname">Headings</label>
+                        <label class="form-label" for="language">Name</label>
+                        <input type="text" class="form-control dt-top-tag" asp-for="name"/>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="headings_en">Headings (En)</label>
                         <input type="text" class="form-control dt-top-tag" asp-for="@Model.headings.en"/>
+                        <label class="form-label" for="headings_vi">Headings (Vi)</label>
                         <input type="text" class="form-control dt-top-tag" asp-for="@Model.headings.vi"/>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label class="form-label" for="basic-icon-default-fullname">Content</label>
-                                @* <input type="text" class="form-control dt-top-tag" asp-for="filters" /> *@
-                                <input type="text" class="form-control dt-top-tag" asp-for="@Model.contents.en"/>
-                                <input type="text" class="form-control dt-top-tag" asp-for="@Model.contents.vi"/>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label class="form-label" for="language">Filter</label>
-                                <input type="text" class="form-control dt-top-tag" asp-for="filter"/>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label class="form-label" for="language">Name</label>
-                                <input type="text" class="form-control dt-top-tag" asp-for="name"/>
-                            </div>
-                        </div>
+                    <div class="form-group">
+                        <label class="form-label" for="contents_en">Contents (En)</label>
+                        <input type="text" class="form-control dt-top-tag" asp-for="@Model.contents.en"/>
+                        <label class="form-label" for="contents_vi">Contents (Vi)</label>
+                        <input type="text" class="form-control dt-top-tag" asp-for="@Model.contents.vi"/>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="url">Url</label>
+                        <input type="text" class="form-control dt-top-tag" asp-for="url"/>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="filter">Filter</label>
+                        <select class="form-control" asp-for="filter" aria-invalid="false">
+                            <option value="en">English</option>
+                            <option value="vi">Tiếng Việt</option>
+                        </select>
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" data-dismiss="modal" type="button"> Close</button>
@@ -110,5 +110,5 @@
     <script src="/bower_components/bootstrap/js/dist/modal.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/31.0.0/classic/ckeditor.js"></script>
     <script src="https://momentjs.com/downloads/moment.js"></script>
-    <script src="/js/admin/search.js"></script>
+    <script src="/js/admin/notification.js"></script>
 }

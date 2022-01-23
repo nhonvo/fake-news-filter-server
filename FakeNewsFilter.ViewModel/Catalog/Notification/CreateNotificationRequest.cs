@@ -8,5 +8,6 @@ public class CreateNotificationRequest
     public Headings headings { get; set; }
     public Contents contents { get; set; }
     public string filter { get; set; }
+    public string url { get; set; }
 }
 

@@ -13,7 +13,13 @@ $(document).ready(function () {
     $('#loading').hide();
 
     var select = $('.select2');
-
+    
+    var statusObj = {
+        0: { title: 'Archive', class: 'status-pill red' },
+        1: { title: 'Active', class: 'status-pill green' },
+        2: { title: 'Inactive', class: 'status-pill yellow' }
+    };
+    
     select.each(function () {
         var $this = $(this);
         $this.wrap('<div class="position-relative"></div>');
@@ -34,7 +40,6 @@ $(document).ready(function () {
             contentType: "application/json",
             dataType: "json",
             data: function (data) {
-                console.log(data);
                 return JSON.stringify(data);
             }
         },
@@ -66,10 +71,13 @@ $(document).ready(function () {
                 render: function (data, type, full, meta) {
                     var $filters = full['filters'];
                     var $html = '';
-                    $.each($filters, function (index, item) {
-                        $html += `<span class="badge badge-pill badge-primary">${item["key"]} ${item["relation"]} ${item["value"]} </span>`;
-                    });
-                    
+                    if(data){
+                        $.each($filters, function (index, item) {
+                            $html += `<span class="badge badge-pill badge-primary">${item["key"]} ${item["relation"]} ${item["value"]} </span>`;
+                        });
+                    } else {
+                        $html += '<span class="badge badge-pill badge-primary">All users</span>';
+                    }
                     return $html;
                 }
             },
