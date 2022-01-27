@@ -16,6 +16,7 @@ namespace FakeNewsFilter.AdminApp.Services
     {
         Task<GetViewNotifications> GetNotifications();
         Task<ApiResult<CreateNotification>> CreateNotification(CreateNotificationRequest createNotificationRequest);
+        Task<Notification> GetNotification(string id);
     }
 
     public class NotificationApi : INotificationApi
@@ -85,6 +86,24 @@ namespace FakeNewsFilter.AdminApp.Services
                 return JsonConvert.DeserializeObject<ApiSuccessResult<CreateNotification>>(result);
 
             return JsonConvert.DeserializeObject<ApiErrorResult<CreateNotification>>(result);
+        }
+
+        public async Task<Notification> GetNotification(string id)
+        {
+            var client = _httpClientFactory.CreateClient("Notification");
+            client.BaseAddress = new Uri(_configuration["OneSignalBaseAddress"]);
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", $"{_configuration["OneSignalRestApiKey"]}");
+
+            var response = await client.GetAsync($"/api/v1/notifications/{id}?app_id={_configuration["OneSignalAppId"]}");
+
+            var result = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+
+                return JsonConvert.DeserializeObject<Notification>(result);
+
+            return JsonConvert.DeserializeObject<Notification>(result);
         }
     }
 }

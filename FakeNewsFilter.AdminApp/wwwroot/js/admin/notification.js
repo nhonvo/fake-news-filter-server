@@ -86,11 +86,11 @@ $(document).ready(function () {
                 targets: 7,
                 orderable: false,
                 render: function (data, type, full, meta) {
-                    var $newsId = full['newsId'];
+                    const id = full['id'];
                     return (
                         '<div class="row-actions text-center">' +
-                        '<a href="/News/Edit/' + $newsId + '" data-bs-toggle="tooltip" data-bs-placement="top" title = "Edit"> <i class="os-icon os-icon-ui-49"></i> </a>' +
-                        '<a class="danger" onclick=DeleteData("' + $newsId + '"); data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"> <i class="os-icon os-icon-ui-15"></i> </a>' +
+                        `<a href="#" data-toggle="modal" data-target="#myModalNotification" onclick="showNotification('${id}')" title = "Edit"> <i class="os-icon os-icon-ui-49"></i>view </a>` +
+                        '<a class="danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"> <i class="os-icon os-icon-ui-15"></i> </a>' +
                         '</div>'
                     );
                 }
@@ -175,19 +175,19 @@ $(document).ready(function () {
                             column.search(val ? '^' + val + '$' : '', true, false).draw();
                         });
 
-                    column
-                        .data()
-                        .unique()
-                        .sort()
-                        .each(function (d, j) {
-                            select.append(
-                                '<option value="' +
-                                statusObj[d].title +
-                                '" class="text-capitalize">' +
-                                statusObj[d].title +
-                                '</option>'
-                            );
-                        });
+                    // column
+                    //     .data()
+                    //     .unique()
+                    //     .sort()
+                    //     .each(function (d, j) {
+                    //         select.append(
+                    //             '<option value="' +
+                    //             statusObj[d].title +
+                    //             '" class="text-capitalize">' +
+                    //             statusObj[d].title +
+                    //             '</option>'
+                    //         );
+                    //     });
 
                 });
         },
@@ -318,6 +318,25 @@ function CreateNews(frm, caller) {
                 }, 2000);
             }
         })
+}
+
+function showNotification(data){
+    console.log(data);
+    // call ajax get
+    $.ajax({
+        type: "GET",
+        url: "/Notification/GetNotification",
+        data: {
+            id: data
+        },
+        success: function (data) {
+            console.log(data);
+            $('#myModalNotification .modal-body').html('').html(data);
+        },
+        error: function (data) {
+            console.log(data);
+        }
+    });
 }
 
 function DeleteData(newsId) {

@@ -39,6 +39,9 @@ namespace FakeNewsFilter.ViewModel.Catalog.Notification
         public int failed { get; set; }
         public Headings headings { get; set; }
         public string id { get; set; }
+        public string url { get; set; }
+        public string web_url { get; set; }
+        public string app_url { get; set; }
         public object include_player_ids { get; set; }
         public object include_external_user_ids { get; set; }
         public List<object> included_segments { get; set; }

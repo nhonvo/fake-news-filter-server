@@ -39,6 +39,13 @@ namespace FakeNewsFilter.AdminApp.Controllers
                 data = data.notifications,
             });
         }
+        [HttpGet]
+        public async Task<IActionResult> GetNotification(string id)
+        {
+            var data = await _notificationApi.GetNotification(id);
+
+            return PartialView("GetNotification", data);
+        }
         [HttpPost]
         public async Task<IActionResult> Create(CreateNotificationRequest createNotificationRequest)
         {
@@ -63,5 +70,6 @@ namespace FakeNewsFilter.AdminApp.Controllers
 
             return RedirectToAction("Index");
         }
+        
     }
 }
