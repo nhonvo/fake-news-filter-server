@@ -32,7 +32,7 @@ namespace FakeNewsFilter.Application.Catalog
             _mapper = mapper;
         }
 
-
+        //Tìm kiếm
         public async Task<ApiResult<SearchViewModel>> SearchContent(SeachContentRequest request)
         {
             var language = await _context.Languages.SingleOrDefaultAsync(x => x.Id == request.languageId);
@@ -98,7 +98,7 @@ namespace FakeNewsFilter.Application.Catalog
         {
             try
             {
-                //Check user
+                //Kiểm tra người dùng có tồn tại hay không
                 var user = await _context.UserLogins.FirstOrDefaultAsync(x => x.UserId == id);
                 if (user == null)
                 {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using FakeNewsFilter.Application.Common;
 using FakeNewsFilter.Data.EF;
 using FakeNewsFilter.Data.Entities;
 using FakeNewsFilter.ViewModel.Catalog.Vote;
@@ -12,7 +13,7 @@ namespace FakeNewsFilter.Application.Catalog;
 
 public interface IVoteService
 {
-    Task<ApiResult<bool>> Create(VoteCreateRequest request);
+    Task<ApiResult<string>> Create(VoteCreateRequest request);
 }
 
 public class VoteService : IVoteService
@@ -28,20 +29,21 @@ public class VoteService : IVoteService
         _userManager = userManager;
     }
 
-    public async Task<ApiResult<bool>> Create(VoteCreateRequest request)
+    //Tạo phiếu vote mới
+    public async Task<ApiResult<string>> Create(VoteCreateRequest request)
     {
         try
         {
-            var user = await _userManager.FindByIdAsync(request.UserId.ToString());
+            var user = await UserCommon.CheckExistUser(_context, request.UserId);
 
-            if (user == null) return new ApiErrorResult<bool>("UserIsNotExist");
+            if (user == null) return new ApiErrorResult<string>("UserIsNotExist"," " + request.UserId.ToString());
 
-            var news = await _context.News.Include(t => t.NewsInTopics)
-                .FirstOrDefaultAsync(t => t.NewsId == request.NewsId);
+            var news = await NewsCommon.CheckExistNews(_context, request.NewsId);
 
-            if (news == null) return new ApiErrorResult<bool>("NewsIsNotExist");
+            if (news == null) return new ApiErrorResult<string>("NewsIsNotExist"," " + request.NewsId);
 
-            //Clear existing vote
+
+            // Xóa phiếu vote hiện có
             var existingVote = _context.Vote.Where(x => x.NewsId == request.NewsId && x.UserId == request.UserId);
             if (existingVote.Any())
             {
@@ -61,13 +63,13 @@ public class VoteService : IVoteService
 
             var result = await _context.SaveChangesAsync();
 
-            if (result != 0) return new ApiSuccessResult<bool>("VoteSuccessful", false);
+            if (result != 0) return new ApiSuccessResult<string>("VoteSuccessful", " " + result.ToString());
 
-            return new ApiErrorResult<bool>("VoteUnsuccessful");
+            return new ApiErrorResult<string>("VoteUnsuccessful", " " + result.ToString());
         }
         catch (Exception ex)
         {
-            return new ApiErrorResult<bool>(ex.Message);
+            return new ApiErrorResult<string>(ex.Message);
         }
     }
 

@@ -118,42 +118,39 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CommentNotFound" xml:space="preserve">
-    <value>Comment not found!</value>
+    <value>Comment not found :</value>
   </data>
   <data name="CreateCommentSuccessful" xml:space="preserve">
-    <value>Create comment successful!</value>
+    <value>Create comment successful :</value>
   </data>
   <data name="CreateCommentUnsuccessful" xml:space="preserve">
-    <value>Create comment unsuccessful!</value>
+    <value>Create comment unsuccessful :</value>
   </data>
   <data name="DeleteCommentSuccessful" xml:space="preserve">
-    <value>Delete comment successful!</value>
+    <value>Delete comment successful :</value>
   </data>
   <data name="DeleteCommentUnsuccessful" xml:space="preserve">
-    <value>Delete comment unsuccessful!</value>
+    <value>Delete comment unsuccessful :</value>
   </data>
   <data name="DoNotHaveGetCommentByNewsId" xml:space="preserve">
-    <value>Do not have get comment by news id!</value>
+    <value>Do not have get comment by news id :</value>
   </data>
   <data name="GetCommentByNewsIdSuccessful" xml:space="preserve">
-    <value>Get comment by news id successful!</value>
+    <value>Get comment by news id successful :</value>
   </data>
   <data name="NewsIsNotExist" xml:space="preserve">
-    <value>News is not exist!</value>
-  </data>
-  <data name="String" xml:space="preserve">
-    <value>CreateCommentUnsuccessful</value>
+    <value>News is not exist :</value>
   </data>
   <data name="UpdateCommentSuccessful" xml:space="preserve">
-    <value>Update comment successful!</value>
+    <value>Update comment successful :</value>
   </data>
   <data name="UpdateCommentUnsuccessful" xml:space="preserve">
-    <value>Update comment unsuccessful! Try again!</value>
+    <value>Update comment unsuccessful! Try again :</value>
   </data>
   <data name="UserIsNotExist" xml:space="preserve">
-    <value>User is not exist!</value>
+    <value>User is not exis :</value>
   </data>
   <data name="YouCanOnlyDeleteYourComment" xml:space="preserve">
-    <value>You can only delete your comment!</value>
+    <value>You can only delete your comment :</value>
   </data>
 </root>

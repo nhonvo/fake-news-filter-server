@@ -53,7 +53,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 var createNews = await _newsService.Create(request);
 
-                createNews.Message = _localizer[createNews.Message].Value;
+                createNews.Message = _localizer[createNews.Message].Value + createNews.ResultObj;
 
                 if (createNews.IsSuccessed == false)
                 {
@@ -61,7 +61,7 @@ namespace FakeNewsFilter.API.Controllers
                     return BadRequest(createNews);
                 }
 
-                var getNews = await _newsService.GetById(createNews.ResultObj);
+                var getNews = await _newsService.GetById(Int32.Parse(createNews.ResultObj));
 
                 getNews.Message = _localizer[getNews.Message].Value;
 
@@ -84,9 +84,9 @@ namespace FakeNewsFilter.API.Controllers
             {
                 var result = await _newsService.Delete(newsId);
 
-                result.Message = _localizer[result.Message].Value;
+                result.Message = _localizer[result.Message].Value + result.ResultObj;
 
-                if (result.ResultObj != false)
+                if (result.ResultObj != null)
                 {
                     _logger.LogError(result.Message);
                     return BadRequest(result);
@@ -182,9 +182,9 @@ namespace FakeNewsFilter.API.Controllers
 
                 var resultToken = await _newsService.Update(request);
 
-                resultToken.Message = _localizer[resultToken.Message].Value;
+                resultToken.Message = _localizer[resultToken.Message].Value + resultToken.ResultObj;
 
-                if (resultToken.ResultObj != false)
+                if (resultToken.ResultObj != null)
                 {
                     _logger.LogError(resultToken.Message);
                     return BadRequest(resultToken);
@@ -212,9 +212,9 @@ namespace FakeNewsFilter.API.Controllers
                 }
                 var result = await _newsService.UpdateLink(newsId, newLink);
 
-                result.Message = _localizer[result.Message].Value;
+                result.Message = _localizer[result.Message].Value + result.ResultObj;
 
-                if (result.ResultObj == false)
+                if (result.ResultObj == null)
                 {
                     _logger.LogError(result.Message);
                     return BadRequest(result);

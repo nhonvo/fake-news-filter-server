@@ -59,7 +59,7 @@ namespace FakeNewsFilter.API.Controllers
 
                     var resultToken = await _topicService.Create(request);
 
-                    resultToken.Message = _localizer[resultToken.Message].Value;
+                    resultToken.Message = _localizer[resultToken.Message].Value + resultToken.ResultObj;
 
                     if (resultToken.IsSuccessed == false)
                     {
@@ -148,7 +148,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 var result = await _topicService.Update(request);
 
-                result.Message = _localizer[result.Message].Value;
+                result.Message = _localizer[result.Message].Value + result.ResultObj;
 
                 if (result.IsSuccessed == false)
                 {
@@ -175,7 +175,7 @@ namespace FakeNewsFilter.API.Controllers
             {
                 var result = await _topicService.Delete(topicId);
 
-                result.Message = _localizer[result.Message].Value;
+                result.Message = _localizer[result.Message].Value + result.ResultObj;
 
                 if (result.IsSuccessed == false)
                 {
