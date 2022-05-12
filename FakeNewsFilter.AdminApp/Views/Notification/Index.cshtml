@@ -1,7 +1,7 @@
-﻿@model FakeNewsFilter.ViewModel.Catalog.Notification.CreateNotificationRequest
+@model FakeNewsFilter.ViewModel.Catalog.Notification.CreateNotificationRequest
 
 @{
-    ViewData["Title"] = "Fake News Filter - Admin Manage";
+    ViewData["Title"] = "Fake News Filter - Create Notification";
 }
 
 @section headerscripts{
@@ -11,86 +11,6 @@
     <link href="/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
 }
 
-<div class="row">
-    <div class="col-sm-12">
-        <div class="element-wrapper">
-            <div class="element-actions">
-                <form class="form-inline justify-content-sm-end">
-                    <select class="form-control form-control-sm rounded">
-                        <option value="Pending">
-                            Today
-                        </option>
-                        <option value="Active">
-                            Last Week
-                        </option>
-                        <option value="Cancelled">
-                            Last 30 Days
-                        </option>
-                    </select>
-                </form>
-            </div>
-            <h6 class="element-header">
-                Sales Dashboard
-            </h6>
-            <div class="element-content">
-                <div class="row">
-                    <div class="col-sm-4 col-xxxl-3">
-                        <a class="element-box el-tablo" href="#">
-                            <div class="label">
-                                Products Sold
-                            </div>
-                            <div class="value">
-                                57
-                            </div>
-                            <div class="trending trending-up-basic">
-                                <span>12%</span><i class="os-icon os-icon-arrow-up2"></i>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-sm-4 col-xxxl-3">
-                        <a class="element-box el-tablo" href="#">
-                            <div class="label">
-                                Gross Profit
-                            </div>
-                            <div class="value">
-                                $457
-                            </div>
-                            <div class="trending trending-down-basic">
-                                <span>12%</span><i class="os-icon os-icon-arrow-down"></i>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-sm-4 col-xxxl-3">
-                        <a class="element-box el-tablo" href="#">
-                            <div class="label">
-                                New Customers
-                            </div>
-                            <div class="value">
-                                125
-                            </div>
-                            <div class="trending trending-down-basic">
-                                <span>9%</span><i class="os-icon os-icon-arrow-down"></i>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="d-none d-xxxl-block col-xxxl-3">
-                        <a class="element-box el-tablo" href="#">
-                            <div class="label">
-                                Refunds Processed
-                            </div>
-                            <div class="value">
-                                $294
-                            </div>
-                            <div class="trending trending-up-basic">
-                                <span>12%</span><i class="os-icon os-icon-arrow-up2"></i>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 <div class="row">
     <div class="col-sm-12">
         <div class="element-wrapper">
@@ -178,6 +98,26 @@
         </div>
     </div>
 </div>
+
+<div id="myModalNotification" aria-labelledby="myModalNotification" class="modal fade bd-example-modal-lg show" role="dialog" tabindex="-1" style="padding-right: 15px; display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    View Notification
+                </h5>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true"> ×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+               
+            </div>
+
+        </div>
+    </div>
+</div>
+
 
 @section footerscripts{
     <script src="/bower_components/datatables.net-buttons-bs/js/jquery.dataTables.min.js"></script>

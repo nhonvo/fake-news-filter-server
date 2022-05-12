@@ -1,0 +1,116 @@
+@model FakeNewsFilter.ViewModel.Catalog.Notification.Notification
+
+<div class="row">
+    <div class="col-sm-4 col-xxxl-3">
+        <a class="element-box el-tablo" href="#">
+            <div class="value">
+                <div class="label">
+                    Name of the notification
+                </div>
+                <div class="value">
+                    @Model.name
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-sm-4 col-xxxl-3">
+        <a class="element-box el-tablo" href="#">
+            <div class="value">
+                <div class="label">
+                    Headings
+                </div>
+                <div class="value">
+                    @Model.headings.en
+                </div>
+                <hr>
+                <div class="value">
+                    @Model.headings.vi
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-sm-4 col-xxxl-3">
+        <a class="element-box el-tablo" href="#">
+            <div class="value">
+                <div class="label">
+                    Contents
+                </div>
+                <div class="value">
+                    @Model.contents.en
+                </div>
+                <hr>
+                <div class="value">
+                    @Model.contents.vi
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-4 col-xxxl-3">
+        <a class="element-box el-tablo" href="#">
+            <div class="value">
+                <div class="label">
+                    Success
+                </div>
+                <div class="value">
+                    @Model.successful
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-sm-4 col-xxxl-3">
+        <a class="element-box el-tablo" href="#">
+            <div class="value">
+                <div class="label">
+                    Failed
+                </div>
+                <div class="value">
+                    @Model.failed
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-sm-4 col-xxxl-3">
+        <a class="element-box el-tablo" href="#">
+            <div class="value">
+                <div class="label">
+                    Remaining
+                </div>
+                <div class="value">
+                    @Model.remaining
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-sm-4 col-xxxl-3">
+        <a class="element-box el-tablo" href="#">
+            <div class="value">
+                <div class="label">
+                    Completed at
+                </div>
+                <div class="value">
+                    @{
+                        DateTime dateTime = DateTimeOffset.FromUnixTimeSeconds(Model.completed_at).DateTime;
+                        @Html.Raw(dateTime.ToString("dd/MM/yyyy HH:mm:ss"))
+                    }
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-sm-4 col-xxxl-3">
+        <a class="element-box el-tablo" href="#">
+            <div class="value">
+                @foreach (var filter in Model.filters)
+                {
+                    <div class="label">
+                        @filter.key
+                    </div>
+                    <div class="value">
+                        @filter.value
+                    </div>
+                }
+            </div>
+        </a>
+    </div>
+</div>
