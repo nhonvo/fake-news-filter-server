@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 
 namespace FakeNewsFilter.Application.Common
 {
@@ -10,6 +11,8 @@ namespace FakeNewsFilter.Application.Common
         Task DeleteFileAsync(string fileName);
 
         string GetFileUrl(string fileName);
+
+        string GetNewsUrl(string alias);
 
         Task SaveFileAsync(Stream mediaBinaryStream, string fileName);
     }
@@ -20,10 +23,13 @@ namespace FakeNewsFilter.Application.Common
 
         private readonly string _userContentFolder;
 
-        public FileStorageService(IWebHostEnvironment webHostEnvironment)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public FileStorageService(IWebHostEnvironment webHostEnvironment, IHttpContextAccessor httpContextAccessor)
         {
             _userContentFolder = Path.Combine(webHostEnvironment.WebRootPath, USER_CONTENT_FOLDER_NAME);
-        }
+            _httpContextAccessor = httpContextAccessor;
+    }
 
         public async Task DeleteFileAsync(string fileName)
         {
@@ -33,16 +39,24 @@ namespace FakeNewsFilter.Application.Common
                 await Task.Run(() => File.Delete(filePath));
             }
         }
-        public string GetFileUrl(string fileName)
-        {
-            return $"/{USER_CONTENT_FOLDER_NAME}/{fileName}";
-        }
-
+        
         public async Task SaveFileAsync(Stream mediaBinaryStream, string fileName)
         {
             var filePath = Path.Combine(_userContentFolder, fileName);
             using var output = new FileStream(filePath, FileMode.Create);
             await mediaBinaryStream.CopyToAsync(output);
+        }
+
+        //Hàm lấy ra URL hình ảnh (trường hợp ảnh được tạo bởi hệ thống)
+        public string GetFileUrl(string fileName)
+        {
+            return _httpContextAccessor.HttpContext.Request.Scheme + "://" + _httpContextAccessor.HttpContext.Request.Host.Value + $"/{USER_CONTENT_FOLDER_NAME}/{fileName}";
+        }
+
+        //Hàm lấy ra URL của tin tức (trong trường hợp tin được tạo bởi hệ thống)
+        public string GetNewsUrl(string alias)
+        {
+            return _httpContextAccessor.HttpContext.Request.Scheme + "://" + _httpContextAccessor.HttpContext.Request.Host.Value + $"/news/{alias}";
         }
     }
 }

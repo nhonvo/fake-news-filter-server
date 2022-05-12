@@ -20,6 +20,8 @@ namespace FakeNewsFilter.Data.EF
 
         public DbSet<News> News { get; set; }
 
+        public DbSet<DetailNews> DetailNews { get; set; }
+
         public DbSet<TopicNews> TopicNews { get; set; }
 
         public DbSet<Language> Languages { get; set; }
@@ -44,6 +46,7 @@ namespace FakeNewsFilter.Data.EF
             modelBuilder.ApplyConfiguration(new TopicNewsConfiguration());
             modelBuilder.ApplyConfiguration(new LanguageConfiguration());
             modelBuilder.ApplyConfiguration(new NewsConfiguration());
+            modelBuilder.ApplyConfiguration(new DetailNewsConfiguration());
             modelBuilder.ApplyConfiguration(new NewsInTopicsConfiguration());
             modelBuilder.ApplyConfiguration(new FollowConfiguration());
             modelBuilder.ApplyConfiguration(new UserRoleConfiguration());

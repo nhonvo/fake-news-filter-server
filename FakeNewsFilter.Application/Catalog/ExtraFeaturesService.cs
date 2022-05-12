@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using FakeNewsFilter.Application.Common;
 using FakeNewsFilter.Data.EF;
 using FakeNewsFilter.ViewModel.Catalog.ExtraFeatures;
-using FakeNewsFilter.ViewModel.Catalog.Media;
 using FakeNewsFilter.ViewModel.Catalog.NewsManage;
 using FakeNewsFilter.ViewModel.Catalog.TopicNews;
 using FakeNewsFilter.ViewModel.Common;
@@ -26,9 +26,13 @@ namespace FakeNewsFilter.Application.Catalog
 
         private readonly IMapper _mapper;
 
-        public ExtraFeaturesService(ApplicationDBContext context, IMapper mapper)
+        private readonly FileStorageService _storageService;
+
+        public ExtraFeaturesService(ApplicationDBContext context, FileStorageService storageService, IMapper mapper)
         {
+            FileStorageService.USER_CONTENT_FOLDER_NAME = "images/news";
             _context = context;
+            _storageService = storageService;
             _mapper = mapper;
         }
 
@@ -60,23 +64,24 @@ namespace FakeNewsFilter.Application.Catalog
                 RealTime = x.synctime,
             }).ToListAsync();
 
-            var list_news = await _context.News.Where(n => string.IsNullOrEmpty(request.languageId) ? true : n.LanguageId == request.languageId && n.Description.ToLower().Trim().Contains(request.keyword.ToLower().Trim()))
+            var list_news = await _context.News
+                .Include(i => i.DetailNews)
+                .Where(n => string.IsNullOrEmpty(request.languageId) ? true : n.LanguageId == request.languageId && n.DetailNews.Content.ToLower().Trim().Contains(request.keyword.ToLower().Trim()))
                 .Select(x => new NewsViewModel()
                 {
                     NewsId = x.NewsId,
-                    Name = x.Name,
+                    Title = x.Title,
                     TopicInfo = x.NewsInTopics.Select(o => new TopicInfo { TopicId = o.TopicId, TopicName = o.TopicNews.Tag }).ToList(),
-                    Description = x.Description,
-                    Content = x.Content,
                     OfficialRating = x.OfficialRating,
                     Publisher = x.Publisher,
                     Status = x.Status,
-                    ThumbNews = x.Media.PathMedia,
+                    ThumbNews = string.IsNullOrEmpty(x.ImageLink) ? null : _storageService.GetFileUrl(x.DetailNews.Media.PathMedia),
                     LanguageId = x.LanguageId,
-                    Timestamp = x.Timestamp,
-                }).ToListAsync();
+                    Timestamp = x.Timestamp
+                })
+                .ToListAsync();
 
-            if(list_topics.Count == 0 && list_news.Count ==0)
+            if(list_topics.Count == 0 && list_news.Count == 0)
             {
                 return new ApiErrorResult<SearchViewModel>("NotFound");
             }

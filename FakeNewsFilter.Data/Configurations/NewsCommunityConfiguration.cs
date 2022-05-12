@@ -29,7 +29,7 @@ namespace FakeNewsFilter.Data.Configurations
 
             builder.Property(x => x.Status).HasDefaultValue(Status.Pending);
 
-            builder.HasOne(x => x.Media).WithOne(x => x.newsCommunity).HasForeignKey<NewsCommunity>(x => x.ThumbNews);
+            builder.HasOne(x => x.Media).WithOne(x => x.NewsCommunity).HasForeignKey<NewsCommunity>(x => x.ThumbNews);
         }
     }
 }
