@@ -40,14 +40,10 @@ namespace FakeNewsFilter.Application.Mapping
                 ;
             CreateMap<News, NewsViewModel>()
                 .ForMember(n => n.NewsId, o => o.MapFrom(x => x.NewsId))
-                .ForMember(n => n.Name, o => o.MapFrom(x => x.Name))
                 .ForMember(n => n.TopicInfo, o => o.MapFrom(x => x.NewsInTopics.Select(k => new TopicInfo {TopicId = k.TopicId, TopicName = k.TopicNews.Tag}).ToList()))
-                .ForMember(n => n.Description, o => o.MapFrom(x => x.Description))
-                .ForMember(n => n.Content, o => o.MapFrom(x => x.Content))
                 .ForMember(n => n.OfficialRating, o => o.MapFrom(x => x.OfficialRating))
                 .ForMember(n => n.Publisher, o => o.MapFrom(x => x.Publisher))
                 .ForMember(n => n.Status, o => o.MapFrom(x => x.Status))
-                .ForMember(n => n.ThumbNews, o => o.MapFrom(x => x.ThumbNews))
                 .ForMember(n => n.LanguageId, o => o.MapFrom(x => x.LanguageId))
                 .ForMember(n => n.Timestamp, o => o.MapFrom(x => x.Timestamp));
 

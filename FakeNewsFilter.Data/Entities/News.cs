@@ -8,24 +8,21 @@ namespace FakeNewsFilter.Data.Entities
     {
         public int NewsId { get; set; }
 
-        public string Name { get; set; }
-
-        public string Description { get; set; }
+        public string Title { get; set; }
 
         public string OfficialRating { get; set; }
 
-        public string Content { get; set; }
+        public string ImageLink { get; set; }
 
         public string Source { get; set; }
+
         public string Publisher { get; set; }
+
+        public double SocialBeliefs { get; set; }
 
         public DateTime DatePublished { get; set; }
 
         public DateTime Timestamp { get; set; }
-
-        public int? ThumbNews { get; set; }
-
-        public Media Media { get; set; }
 
         public Status Status { get; set; }
 
@@ -33,10 +30,16 @@ namespace FakeNewsFilter.Data.Entities
 
         public Language Language { get; set; }
 
+        public int? DetailNewsId { get; set; }
+
+        public DetailNews DetailNews { get; set; }
+
         public List<NewsInTopics> NewsInTopics { get; set; }
 
         public List<Vote> Vote { get; set; }
 
         public List<Comment> Comment { get; set; }
+
+   
     }
 }

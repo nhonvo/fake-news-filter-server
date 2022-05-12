@@ -20,6 +20,7 @@ namespace FakeNewsFilter.Data.Entities
         public User Publisher { get; set; }
 
         public DateTime DatePublished { get; set; }
+
         public int? ThumbNews { get; set; }
 
         public Media Media { get; set; }
