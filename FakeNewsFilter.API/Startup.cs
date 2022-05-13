@@ -90,7 +90,7 @@ namespace FakeNewsFilter
             services.AddScoped<INewsCommunityService , NewsCommunityService>();
 
             //Fluent Validation
-            //user
+            //User
             services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestUserValidator>());
             services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RegisterRequestUserValidator>());
             services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UpdateRequestUserValidator>());
