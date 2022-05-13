@@ -20,6 +20,8 @@ namespace FakeNewsFilter.Data.Entities
 
         public double SocialBeliefs { get; set; }
 
+        public bool isVote { get; set; }
+
         public DateTime DatePublished { get; set; }
 
         public DateTime Timestamp { get; set; }
@@ -39,7 +41,5 @@ namespace FakeNewsFilter.Data.Entities
         public List<Vote> Vote { get; set; }
 
         public List<Comment> Comment { get; set; }
-
-   
     }
 }

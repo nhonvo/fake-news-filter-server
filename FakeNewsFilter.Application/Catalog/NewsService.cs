@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using FakeNewsFilter.Application.Common;
 using FakeNewsFilter.Data.EF;
+using FakeNewsFilter.Data.Entities;
+using FakeNewsFilter.Data.Enums;
 using FakeNewsFilter.ViewModel.Catalog.NewsManage;
 using FakeNewsFilter.ViewModel.Catalog.TopicNews;
 using FakeNewsFilter.ViewModel.Common;
@@ -54,7 +56,7 @@ public class NewsService : INewsService
         _mapper = mapper;
     }
 
-    //Lấy tất cả các tin tức
+    //Lấy tất cả các tin tức (với Filter là lọc tin giả hay tin thật)
     public async Task<ApiResult<List<NewsViewModel>>> GetAll(string languageId, string filter)
     {
         var language = await LanguageCommon.CheckExistLanguage(_context, languageId);
@@ -63,7 +65,7 @@ public class NewsService : INewsService
 
         if (string.IsNullOrEmpty(filter))
 
-            // nếu bộ lọc là null
+            //Nếu bộ lọc là null
             newsList = await _context.News
                 .Include(x => x.DetailNews)
                 .Where(n => !string.IsNullOrEmpty(languageId) ? n.LanguageId == languageId : true)
@@ -206,16 +208,17 @@ public class NewsService : INewsService
 
         query = query.Where(t => topicId == t.nit.TopicId);
 
-        /* var data = await query
+        var data = await query
              .Select(x => new NewsViewModel
              {
                  NewsId = x.n.NewsId,
-                 Name = x.n.Name,
-                 LanguageId = x.n.LanguageId,
-                 Description = x.n.Description,
-                 Content = x.n.Content,
+                 Title = x.n.Title,
+                 OfficialRating = x.n.OfficialRating,
+                 Publisher = x.n.Publisher,
                  Status = x.n.Status,
-                 ThumbNews = x.n.Media.PathMedia,
+                 ThumbNews = string.IsNullOrEmpty(x.n.ImageLink) ? _storageService.GetFileUrl(x.n.DetailNews.Media.PathMedia) : x.n.ImageLink,
+                 URL = string.IsNullOrEmpty(x.n.Source) ? _storageService.GetNewsUrl(x.n.DetailNews.Alias) : x.n.Source,
+                 LanguageId = x.n.LanguageId,
                  Timestamp = x.n.Timestamp
              }).ToListAsync();
 
@@ -224,8 +227,7 @@ public class NewsService : INewsService
          if (data.Count == 0) return new ApiSuccessResult<List<NewsViewModel>>("DoNotHaveNewsInTopic");
 
          return new ApiSuccessResult<List<NewsViewModel>>("GetAllNewsInTopicSuccessful", data);
-        */
-        return new ApiSuccessResult<List<NewsViewModel>>("GetAllNewsInTopicSuccessful", null);
+     
     }
 
     //Tạo mới 1 tin tức
@@ -235,72 +237,147 @@ public class NewsService : INewsService
             
                 try
                 {
-                    //kiểm tra ngôn ngữ
+                    //Kiểm tra ngôn có tồn tại
                     var language = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
-                if (language == null) return new ApiErrorResult<string>("LanguageNotFound", " " + request.LanguageId);
 
-                    //Kiểm tra id chủ đề
+                    if (language == null) return new ApiErrorResult<string>("LanguageNotFound", " " + request.LanguageId);
+
+                    //Kiểm tra chủ đề có tồn tại
                     foreach (var item in request.TopicId)
                     {
                         var topic = await _context.TopicNews.FirstOrDefaultAsync(t => t.TopicId == item);
                         if (topic == null) return new ApiErrorResult<string>("TopicNotFound", " " + request.TopicId);
                     }
-                /*
-                var news = new News
-                    {
-                        Name = request.Name,
-                        Description = request.Description,
-                        Content = request.Content,
-                        OfficialRating = request.OfficialRating,
-                        DatePublished = request.DatePublished ?? DateTime.Now,
-                        Publisher = request.Publisher,
-                        LanguageId = request.LanguageId,
-                        Timestamp = DateTime.Now
-                    };
 
-                //Lưu hình ảnh trên máy chủ lưu trữ
-                if (request.ThumbNews != null)
+                    //Bắt buộc phải có 1 trong 2 trường (tin tức tự tạo hay nguồn bên ngoài)
+                    if ((request.Content == null && request.Source == null) || (request.Content != null && request.Source != null))
                     {
-                        var checkExtension =
-                            ImageExtensions.Contains(Path.GetExtension(request.ThumbNews.FileName).ToUpperInvariant());
+                        return new ApiErrorResult<string>("NewsContentOrSourceInvalid");
+                    }
 
-                        if (checkExtension == false)
+                    //Không được bị conflict hình 2 bên (nguồn ngoài và hệ thống)
+                    if (request.ThumbNews != null && request.ImageLink != null)
+                    {
+                        return new ApiErrorResult<string>("FileImageInvalid");
+                    }
+
+                    //Trường hợp tạo tin tức từ nguồn bên ngoài (Có URL)
+                    if (request.Content == null && request.Source != null)
+                    {
+                    
+                        //Tạo tin từ nguồn bên ngoài
+                        var news = new News
                         {
-                            return new ApiErrorResult<string>("FileImageInvalid", " " + checkExtension);
-                        }
-                    news.Media = new Media
-                        {
-                            DateCreated = DateTime.Now,
-                            FileSize = request.ThumbNews.Length,
-                            PathMedia = await SaveFile(request.ThumbNews),
-                            Type = checkExtension ? MediaType.Image : MediaType.Video,
-                            Caption = "Thumb News " + (checkExtension ? "Image" : "Video")
+                            Title = request.Title,
+                            Source = request.Source,
+                            ImageLink = request.ImageLink,
+                            OfficialRating = request.OfficialRating,
+                            DatePublished = request.DatePublished ?? DateTime.Now,
+                            Publisher = request.Publisher,
+                            isVote = request.isVote,
+                            LanguageId = request.LanguageId,
+                            Timestamp = DateTime.Now
                         };
-                    }
+                        _context.News.Add(news);
+                        await _context.SaveChangesAsync();
 
-                    _context.News.Add(news);
+                        //Gán chủ đề cho tin tức vừa tạo
+                        foreach (var topicId in request.TopicId)
+                            _context.NewsInTopics.Add(new NewsInTopics
+                            {
+                                NewsId = news.NewsId,
+                                TopicId = topicId
+                            });
 
-                    await _context.SaveChangesAsync();
+                        var res = await _context.SaveChangesAsync();
 
-                    foreach (var topicId in request.TopicId)
-                        _context.NewsInTopics.Add(new NewsInTopics
+                        if (res == 0)
                         {
-                            NewsId = news.NewsId,
-                            TopicId = topicId
-                        });
-
-                    var result = await _context.SaveChangesAsync();
-                    if (result == 0)
-                    {
-                        transaction.Rollback();
-                        await _storageService.DeleteFileAsync(news.Media.PathMedia);
-                        return new ApiErrorResult<string>("CreateNewsUnsuccessful", result);
+                            transaction.Rollback();
+                            return new ApiErrorResult<string>("CreateNewsUnsuccessful", res);
+                        }
+                        transaction.Commit();
+                        return new ApiSuccessResult<string>("CreateNewsSuccessful", news.NewsId.ToString());
                     }
 
-                    transaction.Commit();
-                    return new ApiSuccessResult<string>("CreateNewsSuccessful", news.NewsId.ToString());
-                */
-                return new ApiSuccessResult<string>("CreateNewsSuccessful", "");
+                    //Trường hợp tạo tin tức từ hệ thống
+                    else
+                    {
+                        //Kiểm tra có Alias cho tin chưa?
+                        if(request.Alias == null)
+                        {
+                            return new ApiErrorResult<string>("AliasNotFound");
+                        }
+
+                        //Tạo thông tin chi tiết cho tin tức
+                        var detail_news = new DetailNews
+                        {
+                            Alias = request.Alias,
+                            Content = request.Content,
+                        };
+
+                        //Lưu hình ảnh trên máy chủ lưu trữ (nếu có)
+                        if (request.ThumbNews != null)
+                        {
+                            var checkExtension =
+                                ImageExtensions.Contains(Path.GetExtension(request.ThumbNews.FileName).ToUpperInvariant());
+
+                            if (checkExtension == false)
+                            {
+                                return new ApiErrorResult<string>("FileImageInvalid", " " + checkExtension);
+                            }
+
+                            detail_news.Media = new Media
+                            {
+                                DateCreated = DateTime.Now,
+                                FileSize = request.ThumbNews.Length,
+                                PathMedia = await SaveFile(request.ThumbNews),
+                                Type = checkExtension ? MediaType.Image : MediaType.Video,
+                                Caption = "Thumb News " + (checkExtension ? "Image" : "Video")
+                            };
+                        }
+
+                        _context.DetailNews.Add(detail_news);
+
+                        await _context.SaveChangesAsync();
+
+                        //Bắt đầu tạo tin tức
+                        var news = new News
+                        {
+                            Title = request.Title,
+                            OfficialRating = request.OfficialRating,
+                            DatePublished = request.DatePublished ?? DateTime.Now,
+                            Publisher = request.Publisher,
+                            isVote = request.isVote,
+                            LanguageId = request.LanguageId,
+                            Timestamp = DateTime.Now,
+                            DetailNewsId = detail_news.DetailNewsId,
+                        };
+                        _context.News.Add(news);
+
+                        await _context.SaveChangesAsync();
+
+                        //Gán chủ đề cho tin tức vừa tạo
+                        foreach (var topicId in request.TopicId)
+                            _context.NewsInTopics.Add(new NewsInTopics
+                            {
+                                NewsId = news.NewsId,
+                                TopicId = topicId
+                            });
+
+                        var res = await _context.SaveChangesAsync();
+
+                        if (res == 0)
+                        {
+                            transaction.Rollback();
+                            await _storageService.DeleteFileAsync(detail_news.Media.PathMedia);
+                            return new ApiErrorResult<string>("CreateNewsUnsuccessful", res);
+                            
+                        }
+                        transaction.Commit();
+                        return new ApiSuccessResult<string>("CreateNewsSuccessful", news.NewsId.ToString());
+
+                }
             }
             catch (DbUpdateException ex)
                 {
@@ -313,124 +390,211 @@ public class NewsService : INewsService
     //Xoá tin tức
     public async Task<ApiResult<string>> Delete(int newsId)
     {
+        //Kiểm tra tin có tồn tại không trước khi xoá
         var news = await NewsCommon.CheckExistNews(_context, newsId);
 
         if (news == null)
             return new ApiErrorResult<string>("CannontFindANewsWithId", newsId);
 
-        /*
-        if (news.ThumbNews != null)
+        if(news.DetailNews != null)
         {
-            var media = _context.Media.Single(x => x.MediaId == news.ThumbNews);
-
-            if (media != null && media.PathMedia != null)
+            //Xoá ảnh trước
+            if(news.DetailNews.ThumbNews != null)
             {
-                await _storageService.DeleteFileAsync(media.PathMedia);
-                _context.Media.Remove(media);
+                var media = _context.Media.Single(x => x.MediaId == news.DetailNews.ThumbNews);
+
+                if (media != null && media.PathMedia != null)
+                {
+                    await _storageService.DeleteFileAsync(media.PathMedia);
+                    _context.Media.Remove(media);
+                }
             }
+            //Xoá chi tiết tin
+            _context.DetailNews.Remove(news.DetailNews);
         }
 
+        //Xoá tin
         _context.News.Remove(news);
-        */
-
+        
         var result = await _context.SaveChangesAsync();
+
         if (result == 0) return new ApiErrorResult<string>("DeleteNewsUnsuccessful"," " + result);
 
         return new ApiSuccessResult<string>("DeleteNewsSuccessful", " " + news.NewsId.ToString());
     }
 
 
-    //Cập nhật tin tức
+    //Cập nhật tin tức (trừ Vote)
     public async Task<ApiResult<string>> Update(NewsUpdateRequest request)
     {
         using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
         {
             try
             {
+                //Kiểm tra tin tức
                 var news_update = await NewsCommon.CheckExistNews(_context, request.Id);
 
                 if (news_update == null)
                     return new ApiErrorResult<string>("CannontFindANewsWithId", request.Id);
-                /*
-                news_update.Name = request.Name ?? news_update.Name;
-                news_update.Description = request.Description ?? news_update.Description;
-                news_update.Content = request.Content ?? news_update.Content;
-                news_update.LanguageId = request.LanguageId ?? news_update.LanguageId;
 
-                
-                if (request.ThumbNews != null)
+                //Trường hợp tin lấy từ nguồn ngoài (Không phải từ hệ thống tạo)
+                if(news_update.DetailNews == null)
                 {
-                    //Kiểm tra hình đã có trên DB chưa
-                    var thumb = _context.Media.FirstOrDefault(i => i.MediaId == news_update.ThumbNews);
+                    news_update.Title = request.Title ?? news_update.Title;
+                    news_update.LanguageId = request.LanguageId ?? news_update.LanguageId;
+                    news_update.ImageLink = request.ImageLink ?? news_update.ImageLink;
+                    news_update.Source = request.Source ?? news_update.Source;
+                    news_update.OfficialRating = request.OfficialRating ?? news_update.OfficialRating;
+                    news_update.Publisher = request.Publisher ?? news_update.Publisher;
+                    news_update.LanguageId = request.LanguageId ?? news_update.LanguageId;
+                    news_update.Timestamp = DateTime.Now;
 
-                    //Nếu chưa có hình thì thêm hình mới
-                    if (thumb == null)
+                    //Tìm các Topic của News đó
+ 
+                    var newsListCanDelete = news_update.NewsInTopics.Select(x=>x.TopicId).ToList();
+
+                    //So sánh có sự thay đổi chủ đề của tin tức đó không?
+                    var compareTopic = Enumerable.SequenceEqual(request.TopicId, newsListCanDelete);
+
+                    if(compareTopic == false)
                     {
-                        //Kiểm tra định dạng file đưa vào
-                        var checkExtension =
-                            ImageExtensions.Contains(Path.GetExtension(request.ThumbNews.FileName).ToUpperInvariant());
-
-                        if (checkExtension == false)
+                        //Kiểm tra id chủ đề
+                        foreach (var item in request.TopicId)
                         {
-                            return new ApiErrorResult<string>("FileImageInvalid", checkExtension.ToString());
+                            var topic = await _context.TopicNews.FirstOrDefaultAsync(t => t.TopicId == item);
+                            if (topic == null) return new ApiErrorResult<string>("CannontFindATopicWithId", " " + request.TopicId);
                         }
 
-                        news_update.Media = new Media
+                        //Xóa tất cả tin tức trong newsInTopics đã yêu cầu. 
+                        foreach (var item in news_update.NewsInTopics)
+                            _context.NewsInTopics.Remove(item);
+
+                        //Cập nhật tin tức trong chủ đề
+                        foreach (var item in request.TopicId)
                         {
-                            Caption = "Thumbnail Topic",
-                            DateCreated = DateTime.Now,
-                            FileSize = request.ThumbNews.Length,
-                            PathMedia = await SaveFile(request.ThumbNews),
-                            Type = MediaType.Image,
-                            SortOrder = 1
-                        };
-                    }
-                    else
-                    {
-                        if (thumb.PathMedia != null) await _storageService.DeleteFileAsync(thumb.PathMedia);
-                        thumb.FileSize = request.ThumbNews.Length;
-                        thumb.PathMedia = await SaveFile(request.ThumbNews);
+                            var newsUpdate = new NewsInTopics
+                            {
+                                NewsId = request.Id,
+                                TopicId = item
+                            };
 
-                        thumb.Type = MediaType.Image;
-
-                        _context.Media.Update(thumb);
-                    }
-                }
-
-                //Kiểm tra id chủ đề
-                foreach (var item in request.TopicId)
-                {
-                    var topic = await _context.TopicNews.FirstOrDefaultAsync(t => t.TopicId == item);
-                    if (topic == null) return new ApiErrorResult<string>("CannontFindATopicWithId", " " + request.TopicId);
-                }
-
-                var newsListDelete = await _context.NewsInTopics.Where(n => n.NewsId == request.Id).ToListAsync();
-
-                //xóa tất cả tin tức trong newsInTopics đã yêu cầu. 
-                foreach (var item in newsListDelete) _context.NewsInTopics.Remove(item);
-
-                // Cập nhật tin tức trong chủ đề
-                foreach (var item in request.TopicId)
-                {
-                    var newsUpdate = new NewsInTopics
-                    {
-                        NewsId = request.Id,
-                        TopicId = item
-                    };
-
+                            _context.NewsInTopics.Add(newsUpdate);
+                        }
                     
-                    _context.NewsInTopics.Add(newsUpdate);
-                }
+                    }
 
-                var result = await _context.SaveChangesAsync();
-                if (result == 0)
+                    _context.News.Update(news_update);
+
+                    var res = await _context.SaveChangesAsync();
+                    if (res == 0)
+                    {
+                        transaction.Rollback();
+                        return new ApiErrorResult<string>("UpdateNewsUnsuccessful", " " + res);
+                    }
+                    transaction.Commit();
+                    return new ApiSuccessResult<string>("UpdateNewsSuccessful", " " + news_update.NewsId.ToString());
+
+                }
+                //Trường hợp cập nhật tin tự tạo
+                else
                 {
-                    transaction.Rollback();
-                    return new ApiErrorResult<string>("UpdateNewsUnsuccessful"," " + result);
-                } 
-                */
-                transaction.Commit();
-                return new ApiSuccessResult<string>("UpdateNewsSuccessful", " " + news_update.NewsId.ToString());
+                    var dnews = news_update.DetailNews;
+
+                    dnews.Alias = request.Alias ?? dnews.Alias;
+                    dnews.Content = request.Content ?? dnews.Content;
+
+                    if (request.ThumbNews != null)
+                    {
+                        //Kiểm tra hình đã có trên DB chưa
+                        var thumb = _context.Media.FirstOrDefault(i => i.MediaId == dnews.ThumbNews);
+
+                        //Nếu chưa có hình thì thêm hình mới
+                        if (thumb == null)
+                        {
+                            //Kiểm tra định dạng file đưa vào
+                            var checkExtension =
+                                ImageExtensions.Contains(Path.GetExtension(request.ThumbNews.FileName).ToUpperInvariant());
+
+                            if (checkExtension == false)
+                            {
+                                return new ApiErrorResult<string>("FileImageInvalid", checkExtension.ToString());
+                            }
+
+                            dnews.Media = new Media
+                            {
+                                Caption = "Thumbnail Topic",
+                                DateCreated = DateTime.Now,
+                                FileSize = request.ThumbNews.Length,
+                                PathMedia = await SaveFile(request.ThumbNews),
+                                Type = MediaType.Image,
+                                SortOrder = 1
+                            };
+                        }
+                        else
+                        {
+                            if (thumb.PathMedia != null) await _storageService.DeleteFileAsync(thumb.PathMedia);
+                            thumb.FileSize = request.ThumbNews.Length;
+                            thumb.PathMedia = await SaveFile(request.ThumbNews);
+
+                            thumb.Type = MediaType.Image;
+
+                            _context.Media.Update(thumb);
+                        }
+                    }
+                    //Cập nhật chi tiết tin tức trước
+                    _context.DetailNews.Update(dnews);
+
+                    //Cập nhật các thông tin chính sau
+                    news_update.Title = request.Title ?? news_update.Title;
+                    news_update.LanguageId = request.LanguageId ?? news_update.LanguageId;
+                    news_update.OfficialRating = request.OfficialRating ?? news_update.OfficialRating;
+                    news_update.Publisher = request.Publisher ?? news_update.Publisher;
+                    news_update.LanguageId = request.LanguageId ?? news_update.LanguageId;
+                    news_update.Timestamp = DateTime.Now;
+
+                    //Tìm các Topic của News đó
+                    var newsListCanDelete = news_update.NewsInTopics.Select(x => x.TopicId).ToList();
+
+                    //So sánh có sự thay đổi chủ đề của tin tức đó không?
+                    var compareTopic = Enumerable.SequenceEqual(request.TopicId, newsListCanDelete);
+
+                    if (compareTopic == false)
+                    {
+                        //Kiểm tra id chủ đề
+                        foreach (var item in request.TopicId)
+                        {
+                            var topic = await _context.TopicNews.FirstOrDefaultAsync(t => t.TopicId == item);
+                            if (topic == null) return new ApiErrorResult<string>("CannontFindATopicWithId", " " + request.TopicId);
+                        }
+
+                        //Xóa tất cả tin tức trong newsInTopics đã yêu cầu. 
+                        foreach (var item in news_update.NewsInTopics)
+                            _context.NewsInTopics.Remove(item);
+
+                        //Cập nhật tin tức trong chủ đề
+                        foreach (var item in request.TopicId)
+                        {
+                            var newsUpdate = new NewsInTopics
+                            {
+                                NewsId = request.Id,
+                                TopicId = item
+                            };
+
+                            _context.NewsInTopics.Add(newsUpdate);
+                        }
+
+                    }
+
+                    var res = await _context.SaveChangesAsync();
+                    if (res == 0)
+                    {
+                        transaction.Rollback();
+                        return new ApiErrorResult<string>("UpdateNewsUnsuccessful", " " + res);
+                    }
+                    transaction.Commit();
+                    return new ApiSuccessResult<string>("UpdateNewsSuccessful", " " + news_update.NewsId.ToString());
+
+                }
             }
             catch (DbUpdateException ex)
             {
@@ -439,8 +603,6 @@ public class NewsService : INewsService
             }
 
         }
-
-        
     }
 
     //Cập nhật đường dẫn tin tức
@@ -459,6 +621,7 @@ public class NewsService : INewsService
         return new ApiSuccessResult<string>("UpdateLinkNewsSuccessful", newLink);
     }
 
+    //Lưu file ảnh
     private async Task<string> SaveFile(IFormFile file)
     {
         var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');

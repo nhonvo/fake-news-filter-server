@@ -12,9 +12,7 @@ namespace FakeNewsFilter.ViewModel.Validator.News
     {
         public CreateRequestNewsValidator(IStringLocalizer<NewsController> localizer)
         {
-            RuleFor(x => x.Name).NotEmpty().WithMessage(x => localizer["NameIsRequired"]);
-            RuleFor(x => x.Description).NotEmpty().WithMessage(x => localizer["DescriptionIsRequired"]);
-            RuleFor(x => x.Content).NotEmpty().WithMessage(x => localizer["ContentIsRequired"]);
+            RuleFor(x => x.Title).NotEmpty().WithMessage(x => localizer["NameIsRequired"]);
         }
     }
 }
