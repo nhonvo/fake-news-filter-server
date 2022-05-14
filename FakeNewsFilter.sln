@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeNewsFilter.AdminApp", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeNewsFilter.API", "FakeNewsFilter.API\FakeNewsFilter.API.csproj", "{125A9BAC-17C7-403F-AF22-2CEC630C0440}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeNewsFilter.UserApp", "FakeNewsFilter.UserApp\FakeNewsFilter.UserApp.csproj", "{6399929E-CAC0-4DE1-A536-FE2BF22512A7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{125A9BAC-17C7-403F-AF22-2CEC630C0440}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{125A9BAC-17C7-403F-AF22-2CEC630C0440}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{125A9BAC-17C7-403F-AF22-2CEC630C0440}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6399929E-CAC0-4DE1-A536-FE2BF22512A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6399929E-CAC0-4DE1-A536-FE2BF22512A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6399929E-CAC0-4DE1-A536-FE2BF22512A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6399929E-CAC0-4DE1-A536-FE2BF22512A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,6 +68,7 @@ Global
 		{BA376108-2BBD-41DE-BA9A-0A06A260B988} = {DF5A968E-8B94-4F4E-96DA-6E9EF40A4C6B}
 		{97DE56D6-3F29-4046-89A4-4DADB5C373DF} = {61068DD9-3284-44BD-99DF-F9A126D4FBB7}
 		{125A9BAC-17C7-403F-AF22-2CEC630C0440} = {61068DD9-3284-44BD-99DF-F9A126D4FBB7}
+		{6399929E-CAC0-4DE1-A536-FE2BF22512A7} = {61068DD9-3284-44BD-99DF-F9A126D4FBB7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8EA5F126-401A-47B1-9CE5-45942D2D6118}
