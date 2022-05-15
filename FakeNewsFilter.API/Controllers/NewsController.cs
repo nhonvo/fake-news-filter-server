@@ -60,7 +60,7 @@ namespace FakeNewsFilter.API.Controllers
                     _logger.LogError(createNews.Message);
                     return BadRequest(createNews);
                 }
-
+                
                 var getNews = await _newsService.GetById(Int32.Parse(createNews.ResultObj));
 
                 getNews.Message = _localizer[getNews.Message].Value;
@@ -130,6 +130,21 @@ namespace FakeNewsFilter.API.Controllers
             return Ok(news);
         }
 
+        [HttpGet("Content")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetContent(int newsId)
+        {
+            var content = await _newsService.GetContent(newsId);
+
+            // news.Message = _localizer[news.Message].Value;
+
+            // if (news == null)
+            // {
+            //     return NotFound(news);
+            // }
+            return Ok(content);
+        }
+        
         // GET: api/news/topic
         [HttpGet("Topic")]
         [AllowAnonymous]

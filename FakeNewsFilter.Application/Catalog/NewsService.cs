@@ -15,6 +15,7 @@ using FakeNewsFilter.ViewModel.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Slugify;
 
 namespace FakeNewsFilter.Application.Catalog;
 
@@ -31,6 +32,8 @@ public interface INewsService
     Task<ApiResult<string>> Delete(int NewsId);
 
     Task<ApiResult<NewsViewModel>> GetById(int newsId);
+    
+    Task<ApiResult<NewsSystemViewModel>> GetContent(int newsId);
 
     Task<ApiResult<string>> Update(NewsUpdateRequest request);
 
@@ -48,12 +51,15 @@ public class NewsService : INewsService
 
     private readonly FileStorageService _storageService;
 
-    public NewsService(ApplicationDBContext context, FileStorageService storageService, IMapper mapper)
+    private SlugHelper _slugHelper;
+
+    public NewsService(ApplicationDBContext context, FileStorageService storageService, IMapper mapper, SlugHelper slugHelper)
     {
         _context = context;
         FileStorageService.USER_CONTENT_FOLDER_NAME = "images/news";
         _storageService = storageService;
         _mapper = mapper;
+        _slugHelper = slugHelper;
     }
 
     //Lấy tất cả các tin tức (với Filter là lọc tin giả hay tin thật)
@@ -81,7 +87,7 @@ public class NewsService : INewsService
                         Publisher = x.Publisher,
                         Status = x.Status,
                         ThumbNews = string.IsNullOrEmpty(x.ImageLink) ? _storageService.GetFileUrl(x.DetailNews.Media.PathMedia) : x.ImageLink,
-                        URL = string.IsNullOrEmpty(x.Source) ? _storageService.GetNewsUrl(x.DetailNews.Alias) : x.Source,
+                        URL = string.IsNullOrEmpty(x.Source) ? _storageService.GetNewsUrl(x.DetailNews.Alias, x.NewsId) : x.Source,
                         LanguageId = x.LanguageId,
                         Timestamp = x.Timestamp
                     }
@@ -102,7 +108,7 @@ public class NewsService : INewsService
                     Publisher = x.Publisher,
                     Status = x.Status,
                     ThumbNews = string.IsNullOrEmpty(x.ImageLink) ? _storageService.GetFileUrl(x.DetailNews.Media.PathMedia) : x.ImageLink,
-                    URL = string.IsNullOrEmpty(x.Source) ? _storageService.GetNewsUrl(x.DetailNews.Alias) : x.Source,
+                    URL = string.IsNullOrEmpty(x.Source) ? _storageService.GetNewsUrl(x.DetailNews.Alias, x.NewsId) : x.Source,
                     LanguageId = x.LanguageId,
                     Timestamp = x.Timestamp
                 }).ToListAsync();
@@ -121,7 +127,7 @@ public class NewsService : INewsService
                     Publisher = x.Publisher,
                     Status = x.Status,
                     ThumbNews = string.IsNullOrEmpty(x.ImageLink) ? _storageService.GetFileUrl(x.DetailNews.Media.PathMedia) : x.ImageLink,
-                    URL = string.IsNullOrEmpty(x.Source) ? _storageService.GetNewsUrl(x.DetailNews.Alias) : x.Source,
+                    URL = string.IsNullOrEmpty(x.Source) ? _storageService.GetNewsUrl(x.DetailNews.Alias, x.NewsId) : x.Source,
                     LanguageId = x.LanguageId,
                     Timestamp = x.Timestamp
                 }).ToListAsync();
@@ -153,8 +159,8 @@ public class NewsService : INewsService
                 Title = news.Title,
                 OfficialRating = news.OfficialRating,
                 Publisher = news.Publisher,
-                ThumbNews = string.IsNullOrEmpty(news.ImageLink) ? _storageService.GetFileUrl(_context.Media.FirstOrDefault(x => x.MediaId == news.DetailNews.ThumbNews).PathMedia) : news.ImageLink,
-                URL = string.IsNullOrEmpty(news.Source) ? _storageService.GetNewsUrl(news.DetailNews.Alias) : news.Source,
+                ThumbNews = string.IsNullOrEmpty(news.ImageLink) ? _storageService.GetFileUrl(_context.Media.FirstOrDefault(x => x.MediaId == news.DetailNews.ThumbNews)?.PathMedia) : news.ImageLink,
+                URL = string.IsNullOrEmpty(news.Source) ? _storageService.GetNewsUrl(news.DetailNews.Alias, news.NewsId) : news.Source,
                 LanguageId = news.LanguageId,
                 Timestamp = news.Timestamp,
                 Status = news.Status,
@@ -167,6 +173,43 @@ public class NewsService : INewsService
         return new ApiErrorResult<NewsViewModel>("NewsIsNotFound");
     }
 
+    //Lấy nội dung 1 tin tức thông qua Id
+    public async Task<ApiResult<NewsSystemViewModel>> GetContent(int newsId)
+    {
+        var news = await _context.News
+            .Include(t => t.NewsInTopics)
+            .Include(t=>t.DetailNews)
+            .FirstOrDefaultAsync(t => t.NewsId == newsId);
+
+
+        if (news != null)
+        {
+            var topic = news.NewsInTopics.Select(o => new TopicInfo
+            {
+                TopicId = o.TopicId, TopicName = _context.TopicNews.FirstOrDefault(m => m.TopicId == o.TopicId).Tag
+            }).ToList();
+            
+            NewsSystemViewModel result = new NewsSystemViewModel
+            {
+                NewsId = news.NewsId,
+                Title = news.Title,
+                Content = news.DetailNews.Content,
+                OfficialRating = news.OfficialRating,
+                Publisher = news.Publisher,
+                ThumbNews = _storageService.GetFileUrl(_context.Media.FirstOrDefault(x => x.MediaId == news.DetailNews.ThumbNews)?.PathMedia),
+                Alias = news.DetailNews.Alias,
+                LanguageId = news.LanguageId,
+                Timestamp = news.Timestamp,
+                Status = news.Status,
+                TopicInfo = topic.ToList()
+            };
+
+            return new ApiSuccessResult<NewsSystemViewModel>("GetThisNewsSuccessful", result);
+        }
+
+        return new ApiErrorResult<NewsSystemViewModel>("NewsIsNotFound");
+    }
+    
     //Lấy tin tức theo chủ đề mà người dùng theo dõi
     public async Task<ApiResult<List<NewsViewModel>>> GetNewsByFollowedTopic(List<int> topicList, Guid userId)
     {
@@ -186,7 +229,7 @@ public class NewsService : INewsService
                 Publisher = x.Publisher,
                 Status = x.Status,
                 ThumbNews = string.IsNullOrEmpty(x.ImageLink) ? _storageService.GetFileUrl(x.DetailNews.Media.PathMedia) : x.ImageLink,
-                URL = string.IsNullOrEmpty(x.Source) ? _storageService.GetNewsUrl(x.DetailNews.Alias) : x.Source,
+                URL = string.IsNullOrEmpty(x.Source) ? _storageService.GetNewsUrl(x.DetailNews.Alias, x.NewsId) : x.Source,
                 LanguageId = x.LanguageId,
                 Timestamp = x.Timestamp
             }).ToListAsync();
@@ -217,7 +260,7 @@ public class NewsService : INewsService
                  Publisher = x.n.Publisher,
                  Status = x.n.Status,
                  ThumbNews = string.IsNullOrEmpty(x.n.ImageLink) ? _storageService.GetFileUrl(x.n.DetailNews.Media.PathMedia) : x.n.ImageLink,
-                 URL = string.IsNullOrEmpty(x.n.Source) ? _storageService.GetNewsUrl(x.n.DetailNews.Alias) : x.n.Source,
+                 URL = string.IsNullOrEmpty(x.n.Source) ? _storageService.GetNewsUrl(x.n.DetailNews.Alias, x.n.NewsId) : x.n.Source,
                  LanguageId = x.n.LanguageId,
                  Timestamp = x.n.Timestamp
              }).ToListAsync();
@@ -303,16 +346,10 @@ public class NewsService : INewsService
                     //Trường hợp tạo tin tức từ hệ thống
                     else
                     {
-                        //Kiểm tra có Alias cho tin chưa?
-                        if(request.Alias == null)
-                        {
-                            return new ApiErrorResult<string>("AliasNotFound");
-                        }
-
                         //Tạo thông tin chi tiết cho tin tức
                         var detail_news = new DetailNews
                         {
-                            Alias = request.Alias,
+                            Alias = $"{_slugHelper.GenerateSlug(request.Title)}",
                             Content = request.Content,
                         };
 
@@ -499,8 +536,7 @@ public class NewsService : INewsService
                 else
                 {
                     var dnews = news_update.DetailNews;
-
-                    dnews.Alias = request.Alias ?? dnews.Alias;
+                    
                     dnews.Content = request.Content ?? dnews.Content;
 
                     if (request.ThumbNews != null)

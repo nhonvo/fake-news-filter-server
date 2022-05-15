@@ -25,6 +25,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.Options;
 using FakeNewsFilter.API.Contract;
+using Slugify;
 
 namespace FakeNewsFilter
 {
@@ -85,6 +86,7 @@ namespace FakeNewsFilter
             services.AddTransient<IScourceService, SourceService>();
             services.AddTransient<IStoryService, StoryService>();
             services.AddTransient<IVoteService, VoteService>();
+            services.AddTransient<SlugHelper>();
             services.AddTransient<IExtraFeaturesService, ExtraFeaturesService>();
             services.AddScoped<ICommentService , CommentService>();
             services.AddScoped<INewsCommunityService , NewsCommunityService>();
