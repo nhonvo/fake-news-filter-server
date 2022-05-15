@@ -60,7 +60,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
                 data = data.ResultObj
             });
         }
-
+  
         [HttpGet]
         public async Task<IActionResult> GetNewsById(int Id)
         {
@@ -75,7 +75,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(NewsCreateRequest request)
         {
-            if (request.TopicId == null || request.Content == null || request.Description == null || request.Name == null || request.LanguageId == null)
+            if (request.TopicId == null || request.Content == null || request.Title == null || request.LanguageId == null)
             {
                 throw new Exception("Cannot create news");
             }

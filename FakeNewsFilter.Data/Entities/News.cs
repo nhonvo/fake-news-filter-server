@@ -32,8 +32,6 @@ namespace FakeNewsFilter.Data.Entities
 
         public Language Language { get; set; }
 
-        public int? DetailNewsId { get; set; }
-
         public DetailNews DetailNews { get; set; }
 
         public List<NewsInTopics> NewsInTopics { get; set; }

@@ -21,8 +21,6 @@ namespace FakeNewsFilter.Data.Configurations
 
             builder.HasOne(x => x.Media).WithOne(x => x.DetailNews).HasForeignKey<DetailNews>(x => x.ThumbNews);
 
-            builder.HasOne(x => x.News).WithOne(x => x.DetailNews).HasForeignKey<News>(x => x.DetailNewsId);
-
         }
     }
 }
