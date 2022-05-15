@@ -13,6 +13,8 @@ namespace FakeNewsFilter.Data.Entities
 
 		public Media Media { get; set; }
 
+		public int NewsId { get; set; }
+
 		public News News { get; set; }
 	}
 }

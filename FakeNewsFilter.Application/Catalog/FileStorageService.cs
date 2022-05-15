@@ -12,7 +12,7 @@ namespace FakeNewsFilter.Application.Common
 
         string GetFileUrl(string fileName);
 
-        string GetNewsUrl(string alias, int newsId);
+        string GetNewsUrl(string alias);
 
         Task SaveFileAsync(Stream mediaBinaryStream, string fileName);
     }
@@ -50,14 +50,17 @@ namespace FakeNewsFilter.Application.Common
         //Hàm lấy ra URL hình ảnh (trường hợp ảnh được tạo bởi hệ thống)
         public string GetFileUrl(string fileName)
         {
-            return _httpContextAccessor.HttpContext.Request.Scheme + "://" + _httpContextAccessor.HttpContext.Request.Host.Value + $"/{USER_CONTENT_FOLDER_NAME}/{fileName}";
+           if(string.IsNullOrEmpty(fileName))
+                return null;
+
+           return _httpContextAccessor.HttpContext.Request.Scheme + "://" + _httpContextAccessor.HttpContext.Request.Host.Value + $"/{USER_CONTENT_FOLDER_NAME}/{fileName}";
         }
 
         //Hàm lấy ra URL của tin tức (trong trường hợp tin được tạo bởi hệ thống)
-        public string GetNewsUrl(string alias, int newsId)
+        public string GetNewsUrl(string alias)
         {
             // return _httpContextAccessor.HttpContext.Request.Scheme + "://" + _httpContextAccessor.HttpContext.Request.Host.Value + $"/news/{alias}";
-            return _httpContextAccessor.HttpContext.Request.Scheme + "://" + "localhost:5003" + $"/news/{alias}-{newsId}";
+            return _httpContextAccessor.HttpContext.Request.Scheme + "://" + "localhost:5003" + $"/news/{alias}";
         }
     }
 }

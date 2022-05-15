@@ -130,7 +130,7 @@ namespace FakeNewsFilter.API.Controllers
             return Ok(news);
         }
 
-        [HttpGet("Content")]
+        [HttpGet("content/{newsId}")]
         [AllowAnonymous]
         public async Task<IActionResult> GetContent(int newsId)
         {
