@@ -1,21 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using FakeNewsFilter.UserApp.Models;
+using FakeNewsFilter.UserApp.Services;
 
 namespace FakeNewsFilter.UserApp.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly NewsApi _newsApi;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, NewsApi newsApi)
         {
             _logger = logger;
+            _newsApi = newsApi;
         }
 
         public IActionResult Index()
