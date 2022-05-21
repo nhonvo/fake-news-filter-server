@@ -19,7 +19,7 @@ namespace FakeNewsFilter.Data.Configurations
 
             builder.Property(x => x.Timestamp);
 
-            builder.Property(x => x.isVote).HasDefaultValue(true);
+            builder.Property(x => x.IsVote).HasDefaultValue(true);
 
             builder.Property(x => x.LanguageId).IsUnicode(false).IsRequired().HasMaxLength(5);
 

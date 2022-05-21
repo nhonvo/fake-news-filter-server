@@ -59,8 +59,8 @@ namespace FakeNewsFilter.Application.Common
         //Hàm lấy ra URL của tin tức (trong trường hợp tin được tạo bởi hệ thống)
         public string GetNewsUrl(string alias)
         {
-            // return _httpContextAccessor.HttpContext.Request.Scheme + "://" + _httpContextAccessor.HttpContext.Request.Host.Value + $"/news/{alias}";
-            return _httpContextAccessor.HttpContext.Request.Scheme + "://" + "localhost:5003" + $"/news/{alias}";
+            // return _httpContextAccessor.HttpContext.Request.Scheme + "://" + "localhost:5003" + $"/news/{alias}";
+            return $"https://localhost:5003/news/{alias}";
         }
     }
 }

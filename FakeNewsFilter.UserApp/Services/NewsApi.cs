@@ -14,6 +14,7 @@ namespace FakeNewsFilter.UserApp.Services;
 public interface INewsApi
 {
     Task<ApiResult<NewsViewModel>?> GetById(int id);
+    Task<ApiResult<NewsSystemViewModel>?> GetContent(int id);
 }
 
 public class NewsApi : INewsApi
@@ -47,5 +48,23 @@ public class NewsApi : INewsApi
             return JsonConvert.DeserializeObject<ApiSuccessResult<NewsViewModel>>(body);
 
         return JsonConvert.DeserializeObject<ApiErrorResult<NewsViewModel>>(body);
+    }
+    
+    public async Task<ApiResult<NewsSystemViewModel>?> GetContent(int id)
+    {
+        var client = _httpClientFactory.CreateClient();
+        client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+
+        var sessions = _httpContextAccessor.HttpContext?.Session.GetString("Token");
+        
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+
+        var response = await client.GetAsync($"/api/News/Content/{id}");
+        var body = await response.Content.ReadAsStringAsync();
+
+        if (response.IsSuccessStatusCode)
+            return JsonConvert.DeserializeObject<ApiSuccessResult<NewsSystemViewModel>>(body);
+
+        return JsonConvert.DeserializeObject<ApiErrorResult<NewsSystemViewModel>>(body);
     }
 }

@@ -323,7 +323,7 @@ public class NewsService : INewsService
                             OfficialRating = request.OfficialRating,
                             DatePublished = request.DatePublished ?? DateTime.Now,
                             Publisher = request.Publisher,
-                            isVote = request.isVote,
+                            IsVote = request.isVote,
                             LanguageId = request.LanguageId,
                             Timestamp = DateTime.Now
                         };
@@ -359,7 +359,7 @@ public class NewsService : INewsService
                             OfficialRating = request.OfficialRating,
                             DatePublished = request.DatePublished ?? DateTime.Now,
                             Publisher = request.Publisher,
-                            isVote = request.isVote,
+                            IsVote = request.isVote,
                             LanguageId = request.LanguageId,
                             Timestamp = DateTime.Now,
                         };
