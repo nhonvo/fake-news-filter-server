@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FakeNewsFilter.Data.Configurations
 {
-    internal class NewsConfiguration : IEntityTypeConfiguration<News>
+    internal class NewsConfig : IEntityTypeConfiguration<News>
     {
         public void Configure(EntityTypeBuilder<News> builder)
         {
@@ -19,7 +19,7 @@ namespace FakeNewsFilter.Data.Configurations
 
             builder.Property(x => x.Timestamp);
 
-            builder.Property(x => x.isVote).HasDefaultValue(true);
+            builder.Property(x => x.IsVote).HasDefaultValue(true);
 
             builder.Property(x => x.LanguageId).IsUnicode(false).IsRequired().HasMaxLength(5);
 

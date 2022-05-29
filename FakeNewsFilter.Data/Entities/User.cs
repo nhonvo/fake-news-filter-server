@@ -19,8 +19,12 @@ namespace FakeNewsFilter.Data.Entities
 
         public virtual ICollection<UserRoles> UserRoles { get; set; }
 
+        public ICollection<RefreshToken> RefreshTokens { get; set; }
+
         public List<Vote> Vote { get; set; }
+
         public List<TopicNews> TopicId { get; set; }
+
         public List <Comment> Comment { get; set; }
         
         public List <NewsCommunity> NewsCommunity { get; set; }
