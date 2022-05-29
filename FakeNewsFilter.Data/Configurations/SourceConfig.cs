@@ -5,7 +5,7 @@ using System;
 
 namespace FakeNewsFilter.Data.Configurations
 {
-    public class SourceConfiguration : IEntityTypeConfiguration<Source>
+    public class SourceConfig : IEntityTypeConfiguration<Source>
     {
         public void Configure(EntityTypeBuilder<Source> builder)
         {

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FakeNewsFilter.Data.Configurations
 {
-    public class LanguageConfiguration : IEntityTypeConfiguration<Language>
+    public class LanguageConfig: IEntityTypeConfiguration<Language>
     {
         public void Configure(EntityTypeBuilder<Language> builder)
         {

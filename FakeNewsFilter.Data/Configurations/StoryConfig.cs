@@ -5,7 +5,7 @@ using System;
 
 namespace FakeNewsFilter.Data.Configurations
 {
-    public class StoryConfiguration : IEntityTypeConfiguration<Story>
+    public class StoryConfig : IEntityTypeConfiguration<Story>
     {
         public void Configure(EntityTypeBuilder<Story> builder)
         {

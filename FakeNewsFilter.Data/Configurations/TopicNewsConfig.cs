@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FakeNewsFilter.Data.Configurations
 {
-    public class TopicNewsConfiguration : IEntityTypeConfiguration<TopicNews>
+    public class TopicNewsConfig : IEntityTypeConfiguration<TopicNews>
     {
         public void Configure(EntityTypeBuilder<TopicNews> builder)
         {
