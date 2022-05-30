@@ -11,7 +11,6 @@
     <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FakeNewsFilter.AdminApp\FakeNewsFilter.AdminApp.csproj" />
     <ProjectReference Include="..\FakeNewsFilter.ViewModel\FakeNewsFilter.ViewModel.csproj" />
   </ItemGroup>
   <ItemGroup>

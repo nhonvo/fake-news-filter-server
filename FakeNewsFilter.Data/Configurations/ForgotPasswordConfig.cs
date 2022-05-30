@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FakeNewsFilter.Data.Configurations
 {
-    public class ForgotPasswordConfiguration : IEntityTypeConfiguration<ForgotPassword>
+    public class ForgotPasswordConfig : IEntityTypeConfiguration<ForgotPassword>
     {
         public void Configure(EntityTypeBuilder<ForgotPassword> builder)
         {

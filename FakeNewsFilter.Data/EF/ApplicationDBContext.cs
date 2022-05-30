@@ -28,12 +28,20 @@ namespace FakeNewsFilter.Data.EF
 
         public DbSet<NewsInTopics> NewsInTopics { get; set; }
 
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
+
         public DbSet<Vote> Vote { get; set; }
+
         public DbSet<Follow> Follow { get; set; }
+
         public DbSet<Source> Source { get; set; }
+
         public DbSet<Story> Story { get; set; }
+
         public DbSet<ForgotPassword> ForgotPassword { get; set; }
+
         public DbSet<Comment> Comment { get; set; }
+
         public DbSet<NewsCommunity> NewsCommunity { get; set; }
 
 
@@ -41,23 +49,24 @@ namespace FakeNewsFilter.Data.EF
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //Configuration using Fluent API
-            modelBuilder.ApplyConfiguration(new AppConfigConfiguration());
-            modelBuilder.ApplyConfiguration(new UserConfiguration()); 
-            modelBuilder.ApplyConfiguration(new TopicNewsConfiguration());
-            modelBuilder.ApplyConfiguration(new LanguageConfiguration());
-            modelBuilder.ApplyConfiguration(new NewsConfiguration());
-            modelBuilder.ApplyConfiguration(new DetailNewsConfiguration());
-            modelBuilder.ApplyConfiguration(new NewsInTopicsConfiguration());
-            modelBuilder.ApplyConfiguration(new FollowConfiguration());
-            modelBuilder.ApplyConfiguration(new UserRoleConfiguration());
+            modelBuilder.ApplyConfiguration(new AppConfigs());
+            modelBuilder.ApplyConfiguration(new UserConfig()); 
+            modelBuilder.ApplyConfiguration(new TopicNewsConfig());
+            modelBuilder.ApplyConfiguration(new LanguageConfig());
+            modelBuilder.ApplyConfiguration(new NewsConfig());
+            modelBuilder.ApplyConfiguration(new DetailNewsConfig());
+            modelBuilder.ApplyConfiguration(new NewsInTopicsConfig());
+            modelBuilder.ApplyConfiguration(new FollowConfig());
+            modelBuilder.ApplyConfiguration(new UserRoleConfig());
             modelBuilder.ApplyConfiguration(new MediaConfiguration());
-            modelBuilder.ApplyConfiguration(new UserRolesConfiguration());
-            modelBuilder.ApplyConfiguration(new VoteConfiguration());
-            modelBuilder.ApplyConfiguration(new StoryConfiguration());
-            modelBuilder.ApplyConfiguration(new SourceConfiguration());
-            modelBuilder.ApplyConfiguration(new ForgotPasswordConfiguration());
-            modelBuilder.ApplyConfiguration(new CommentConfiguration());
-            modelBuilder.ApplyConfiguration(new NewsCommunityConfiguration());
+            modelBuilder.ApplyConfiguration(new UserRolesConfig());
+            modelBuilder.ApplyConfiguration(new VoteConfig());
+            modelBuilder.ApplyConfiguration(new StoryConfig());
+            modelBuilder.ApplyConfiguration(new SourceConfig());
+            modelBuilder.ApplyConfiguration(new ForgotPasswordConfig());
+            modelBuilder.ApplyConfiguration(new CommentConfig());
+            modelBuilder.ApplyConfiguration(new NewsCommunityConfig());
+            modelBuilder.ApplyConfiguration(new RefreshTokenConfig());
 
             modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("UserClaims");
             modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("UserLogin").HasKey(l => new { l.LoginProvider, l.ProviderKey, l.UserId });

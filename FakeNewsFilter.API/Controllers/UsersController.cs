@@ -33,6 +33,35 @@ namespace FakeNewsFilter.API.Controllers
             _logger = logger;
         }
 
+        //Phương thức thêm Token vào Cookie
+        private void SetRefreshTokenInCookie(string refreshToken)
+        {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = DateTime.UtcNow.AddDays(10),
+            };
+            Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
+        }
+
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshToken()
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+
+            var response = await _userService.RefreshTokenAsync(refreshToken);
+
+            if (string.IsNullOrEmpty(response.ResultObj?.Token))
+            {
+                _logger.LogError(response.Message);
+                return BadRequest(response);
+            }
+            //Cập nhật lại Cookies
+            SetRefreshTokenInCookie(response.ResultObj.Token);
+            
+            return Ok(response);
+        } 
+
         [HttpPost("Authenticate")]
         [AllowAnonymous]
         public async Task<IActionResult> Authenticate([FromBody]LoginRequest request)
@@ -61,6 +90,10 @@ namespace FakeNewsFilter.API.Controllers
                     _logger.LogError(resultToken.Message);
                     return BadRequest(resultToken);
                 }
+
+                //Lưu Token vào Cookie
+                SetRefreshTokenInCookie(resultToken.ResultObj.Token);
+
                 _logger.LogInformation(resultToken.Message);
                 return Ok(resultToken);
             }
@@ -111,8 +144,7 @@ namespace FakeNewsFilter.API.Controllers
             }
 
         }
-
-       
+ 
         [HttpGet("List")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllPaging()

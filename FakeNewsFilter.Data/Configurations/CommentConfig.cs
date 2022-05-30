@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace FakeNewsFilter.Data.Configurations
 {
-    public class CommentConfiguration : IEntityTypeConfiguration<Comment>
+    public class CommentConfig : IEntityTypeConfiguration<Comment>
     {
         public void Configure(EntityTypeBuilder<Comment> builder)
         {

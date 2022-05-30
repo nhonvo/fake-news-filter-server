@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FakeNewsFilter.Data.Configurations
 {
-    public class UserRolesConfiguration : IEntityTypeConfiguration<UserRoles>
+    public class UserRolesConfig : IEntityTypeConfiguration<UserRoles>
     {
         public void Configure(EntityTypeBuilder<UserRoles> builder)
         {

@@ -41,8 +41,7 @@ namespace FakeNewsFilter.Application.System
         Task<ApiResult<TokenResult>> SignInGoogle(string accessToken);
         Task<ApiResult<ForgotPassword>> SendPasswordResetCode(string Email);
         Task<ApiResult<ForgotPassword>> ResetPassword(string email, string opt, string newPassword);
-        
-
+        Task<ApiResult<TokenResult>> RefreshTokenAsync(string token);
     }
 
     public class UserService : IUserService
@@ -78,16 +77,16 @@ namespace FakeNewsFilter.Application.System
         }
 
         
-
         //Tạo Token
         private async Task<TokenResult> GenerateUserTokenAsync(User user, string avatar)
         {
+            var token_result = new TokenResult();
 
             var roles = await _userManager.GetRolesAsync(user);
 
             var claims = new[] {
-                new Claim(ClaimTypes.Uri, avatar ?? "default.png"),
                 new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Uri, avatar ?? "default.png"),
                 new Claim(ClaimTypes.GivenName, user.Name),
                 new Claim(ClaimTypes.Role, roles==null ? "Subscriber" :  string.Join(";", roles)),
                 new Claim(ClaimTypes.Name, user.UserName),
@@ -96,7 +95,7 @@ namespace FakeNewsFilter.Application.System
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var expires = DateTime.UtcNow.AddMonths(1);
+            var expires = DateTime.UtcNow.AddDays(10);
 
             var token = new JwtSecurityToken(
                 _config["Tokens:Issuer"],
@@ -105,15 +104,89 @@ namespace FakeNewsFilter.Application.System
                 expires: expires,
                 signingCredentials: creds);
 
-            return new TokenResult
+            var tokenResult = new JwtSecurityTokenHandler().WriteToken(token);
+
+            token_result.UserId = user.Id;
+
+            token_result.Expires = expires;
+
+            token_result.Token = tokenResult;
+
+            var checkToken = _context.RefreshTokens.FirstOrDefault(f => f.UserId == user.Id);
+
+            var refreshToken = new RefreshToken
             {
-                Token = new JwtSecurityTokenHandler().WriteToken(token),
+                Token = tokenResult,
                 UserId = user.Id,
-                Email = user.Email,
                 Expires = expires,
+                Created = DateTime.UtcNow
             };
 
+            //Trường hợp chưa có 1 token nào trên DB thì tạo mới và lưu trên DB
+            if (checkToken == null)
+            {
+                await _context.RefreshTokens.AddAsync(refreshToken);
+
+                await _context.SaveChangesAsync();
+
+            }
+            //Trường hợp Token hợp lệ
+            else if(user.RefreshTokens.Any(a=> a.IsActive))
+            {
+                var activeRefreshToken = user.RefreshTokens.Where(a => a.IsActive == true).FirstOrDefault();
+                token_result.Token = activeRefreshToken.Token;
+                token_result.Expires = activeRefreshToken.Expires;
+            }
+            //Trường hợp có Token nhưng hết hạn, cần Refresh (cập nhật lại Token)
+            else
+            {
+
+                user.RefreshTokens.Add(refreshToken);
+
+                _context.Update(user);
+
+                await _context.SaveChangesAsync();
+            }
+            return token_result;
+
         }
+
+        //Refresh Token
+        public async Task<ApiResult<TokenResult>> RefreshTokenAsync(string token)
+        {
+            var user = _context.Users.Include(i=>i.RefreshTokens).SingleOrDefault(u => u.RefreshTokens.Any(t => t.Token == token));
+
+            if (user == null)
+            {
+                //Token không tồn tại ở bất kỳ user nào
+                return new ApiErrorResult<TokenResult>("TokenNotExist");
+            }
+
+            var refreshToken = user.RefreshTokens.Single(x => x.Token == token);
+
+            if (!refreshToken.IsActive)
+            {
+                //Token không hoạt động
+                return new ApiErrorResult<TokenResult>("TokenNotActive");
+            }
+
+            //Thu hồi Token hiện tại
+            refreshToken.Revoked = DateTime.UtcNow;
+
+            //Tạo Token mới và cập nhật lại trên DB
+            var res = await GenerateUserTokenAsync(user, null);
+
+           
+            var token_result = new TokenResult
+            {
+                UserId = res.UserId,
+                Expires = res.Expires,
+                Token = res.Token,
+            };
+
+            return new ApiSuccessResult<TokenResult>("RefreshTokenSuccess", token_result);
+        }
+
 
         //Đăng nhập
         public async Task<ApiResult<TokenResult>> Authencate(LoginRequest request)
@@ -130,11 +203,10 @@ namespace FakeNewsFilter.Application.System
                 {
                     return new ApiErrorResult<TokenResult>("LoginUnsuccessful");
                 }
-
-                
+ 
                 var avatar = _context.Media.Where(m => m.MediaId == user.AvatarId).Select(m => m.PathMedia).FirstOrDefault();
 
-                var tokenResult = await GenerateUserTokenAsync(user, avatar);
+                var tokenResult = await GenerateUserTokenAsync(user, null);
 
                 return new ApiSuccessResult<TokenResult>("LoginSuccessful", tokenResult);
             }
@@ -305,7 +377,6 @@ namespace FakeNewsFilter.Application.System
             }
         }
 
-        
         //Lấy Id của người dùng
         public async Task<ApiResult<UserViewModel>> GetById(Guid id)
         {
@@ -692,6 +763,7 @@ namespace FakeNewsFilter.Application.System
 
             return new ApiSuccessResult<ForgotPassword>("ChangePasswordSuccessful");
         }
+
         public static class RandomNumberGeneartor
         {
             private static readonly Random _random = new Random();
