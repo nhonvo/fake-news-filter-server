@@ -286,7 +286,7 @@ public class NewsService : INewsService
             
                 try
                 {
-                    //Kiểm tra ngôn có tồn tại
+                    //Kiểm tra ngôn ngữ có tồn tại
                     var language = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
 
                     if (language == null) return new ApiErrorResult<string>("LanguageNotFound", " " + request.LanguageId);
@@ -438,7 +438,10 @@ public class NewsService : INewsService
         var news = await NewsCommon.CheckExistNews(_context, newsId);
 
         if (news == null)
+        {
             return new ApiErrorResult<string>("CannontFindANewsWithId", newsId);
+
+        }
 
         if(news.DetailNews != null)
         {

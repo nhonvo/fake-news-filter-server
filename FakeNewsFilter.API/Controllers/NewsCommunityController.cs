@@ -31,7 +31,6 @@ namespace FakeNewsFilter.API.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
         public async Task<IActionResult> Create([FromForm] NewsCommunityCreateRequest request)
         {
             try

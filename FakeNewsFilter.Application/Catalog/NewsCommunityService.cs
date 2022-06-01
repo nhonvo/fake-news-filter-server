@@ -147,7 +147,7 @@ namespace FakeNewsFilter.Application.Catalog
                 return new ApiSuccessResult<NewsCommunityViewModel>("GetThisNewsSuccessful", result);
             }
 
-            return new ApiErrorResult<NewsCommunityViewModel>("NewsIsNotFound", news.NewsCommunityId);
+            return new ApiErrorResult<NewsCommunityViewModel>("NewsIsNotFound");
         }
 
         //Xoá tin tức

@@ -86,7 +86,7 @@ public class CommentService : ICommentService
     {
         //Kiểm tra tin tức có tồn tại hay không
         var news = await NewsCommon.CheckExistNews(_context, newsId);
-        if (news == null) return new ApiErrorResult<List<CommentViewModel>>("NewsIsNotExist");
+        if (news == null) return new ApiErrorResult<List<CommentViewModel>>("NewsIsNotExist", newsId);
 
         var commentsList = await _context.Comment.Where(x => x.NewsId == newsId).ToListAsync();
         var map = new Dictionary<int, CommentViewModel>();

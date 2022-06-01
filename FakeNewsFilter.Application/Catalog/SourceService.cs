@@ -40,8 +40,8 @@ namespace FakeNewsFilter.Application.Catalog
                     return new ApiErrorResult<string>("LanguageNotFound", " " + request.LanguageId);
                 }
                 //Kiểm tra đã tồn tại trong hệ thống hay chưa
-                var sourcename = SourceCommon.CheckExistSourceName(_context, request.SourceName);
-                if(sourcename != null)
+                var sourcename = await _context.Source.FirstOrDefaultAsync(x => x.SourceName == request.SourceName);
+                if (sourcename != null)
                 {
                     return new ApiErrorResult<string>("SourceNameFound", " " + request.SourceName);
                 }
@@ -61,7 +61,7 @@ namespace FakeNewsFilter.Application.Catalog
                     return new ApiErrorResult<string>("CreateSourceStoryUnsuccessful", result.ToString());
                 }
 
-                return new ApiSuccessResult<string>("CreateSourceStorySuccessful", sourcename.ToString());
+                return new ApiSuccessResult<string>("CreateSourceStorySuccessful");
             }
             catch (Exception)
             {
@@ -104,7 +104,7 @@ namespace FakeNewsFilter.Application.Catalog
 
                 if (result > 0)
                 {
-                    return new ApiSuccessResult<string>("SourceStoryUpdateSuccessful", " " + sourcename.ToString());
+                    return new ApiSuccessResult<string>("SourceStoryUpdateSuccessful", " " + sourcename);
                 }
 
                 return new ApiErrorResult<string>("SourceStoryUpdateUnsuccessful"," " + result.ToString());

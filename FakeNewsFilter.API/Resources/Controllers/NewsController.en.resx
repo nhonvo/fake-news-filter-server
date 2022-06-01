@@ -189,4 +189,10 @@
   <data name="ContentIsRequired" xml:space="preserve">
     <value>Content is required</value>
   </data>
+  <data name="NewsContentOrSourceInvalid" xml:space="preserve">
+    <value>News Content Or Source Invalid</value>
+  </data>
+  <data name="ContentNewsIsNotFound" xml:space="preserve">
+    <value>Content News Is Not Found</value>
+  </data>
 </root>
