@@ -178,7 +178,7 @@
     <value>Đăng nhập thành công!</value>
   </data>
   <data name="LoginUnsuccessful" xml:space="preserve">
-    <value>Đăng nhập không thành công, vui lòng kiểm tra thông tin tài khoản và mật khẩu!</value>
+    <value>Đăng nhập không thành công, vui lòng kiểm tra lại mật khẩu!</value>
   </data>
   <data name="OTPWrong" xml:space="preserve">
     <value>OTP sai, vui lòng nhập lại!</value>
@@ -242,5 +242,8 @@
   </data>
   <data name="PhoneWrongFormat" xml:space="preserve">
     <value>Số điện thoại sai định dạng</value>
+  </data>
+  <data name="UserIsRequired" xml:space="preserve">
+    <value>Người dùng là bắt buộc</value>
   </data>
 </root>
