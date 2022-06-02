@@ -178,7 +178,7 @@
     <value>Login successful!</value>
   </data>
   <data name="LoginUnsuccessful" xml:space="preserve">
-    <value>Login Unsuccessful. Please Check Username or Password!</value>
+    <value>Login Unsuccessful. Please Check Your Password!</value>
   </data>
   <data name="OTPWrong" xml:space="preserve">
     <value>OTP wrong!</value>
@@ -242,5 +242,8 @@
   </data>
   <data name="PhoneWrongFormat" xml:space="preserve">
     <value>Wrong phone number format</value>
+  </data>
+  <data name="UserIsRequired" xml:space="preserve">
+    <value>User Is Required</value>
   </data>
 </root>

@@ -318,13 +318,7 @@ namespace FakeNewsFilter.Application.System
             try
             {
                 var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == request.UserId);
-                //Kiểm tra trùng Email
-                var email = await _userManager.Users.AnyAsync(x => x.Email == request.Email && x.Id == request.UserId);
-                if (email == true)
-                {
-                    return new ApiErrorResult<bool>("EmailIsAvailable");
-                }
-
+                
                 user.Email = request.Email ?? user.Email;
                 user.Name = request.Name ?? user.Name;
                 user.PhoneNumber = request.PhoneNumber ?? user.PhoneNumber;
@@ -746,7 +740,7 @@ namespace FakeNewsFilter.Application.System
                 .Where(x => x.OTP == otp && x.UserId == user.Id)
                 .OrderByDescending(x => x.DateTime).FirstOrDefaultAsync();
 
-            //Verify if token is older than 15 minutes
+            //Verify if token is older than 3 minutes
             var expirationDateTime = resetPasswordDetails.DateTime.AddMinutes(3);
 
             if(expirationDateTime < DateTime.Now)
@@ -779,7 +773,7 @@ namespace FakeNewsFilter.Application.System
             public static async Task SendEmailAsync(string email, string subject, string htmlMessage)
             {
                 string fromMail = "thanh26092000@gmail.com";
-                string fromPassword = "ldhopwrtqzfypdkq";
+                string fromPassword = "rwgewnngblhsttyu";
 
                 MailMessage message = new MailMessage();
                 message.From = new MailAddress(fromMail);

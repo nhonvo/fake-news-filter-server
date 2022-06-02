@@ -11,7 +11,7 @@ namespace FakeNewsFilter.ViewModel.System.Users
         {
             RuleFor(x => x.Name).NotEmpty().WithMessage(x => localizer["NameIsRequired"]).MaximumLength(100).WithMessage(x => localizer["NameMaximum100Characters"]);
             RuleFor(x => x.Email).NotEmpty().WithMessage(x => localizer["EmailIsRequired"]).Matches(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$").WithMessage(x => localizer["EmailWrongFormat"]);
-            RuleFor(x => x.PhoneNumber).NotEmpty().WithMessage(x => localizer["PhoneIsRequired"]);//.Matches(@"/^\+?(\d.*){10,}$/").WithMessage(x => localizer["PhoneWrongFormat"]);
+            RuleFor(x => x.PhoneNumber).NotEmpty().WithMessage(x => localizer["PhoneIsRequired"]).Matches(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$").WithMessage(x => localizer["PhoneWrongFormat"]);
             RuleFor(x => x.UserName).NotEmpty().WithMessage(x => localizer["UsernameIsRequired"]);
             RuleFor(x => x.Password).NotEmpty().WithMessage(x => localizer["PasswordIsRequired"]).MinimumLength(6).WithMessage(x => localizer["PasswordAtLeast6Characters"]);
 

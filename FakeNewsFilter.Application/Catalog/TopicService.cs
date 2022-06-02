@@ -237,13 +237,13 @@ namespace FakeNewsFilter.Application.Catalog
             try
             {
                 var topic = await TopicCommon.CheckExistTopic(_context, id);
-
-                var thumb = _context.Media.Where(m => m.MediaId == topic.ThumbTopic).Select(m => m.PathMedia).FirstOrDefault();
-
                 if (topic == null)
                 {
                     return new ApiErrorResult<TopicInfoVM>("TopicNotFound", id);
                 }
+                var thumb = _context.Media.Where(m => m.MediaId == topic.ThumbTopic).Select(m => m.PathMedia).FirstOrDefault();
+
+                
                 var topicvm = new TopicInfoVM
                 {
                     TopicId = topic.TopicId,

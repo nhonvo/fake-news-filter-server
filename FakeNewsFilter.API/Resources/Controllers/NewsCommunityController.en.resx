@@ -126,6 +126,9 @@
   <data name="ContentIsRequired" xml:space="preserve">
     <value>Content is required</value>
   </data>
+  <data name="ContentNewsIsNotFound" xml:space="preserve">
+    <value>Content News Is Not Found</value>
+  </data>
   <data name="CreateNewsSuccessful" xml:space="preserve">
     <value>Create news successful!</value>
   </data>
@@ -143,6 +146,9 @@
   </data>
   <data name="DoNotHaveNewsInTopic" xml:space="preserve">
     <value>Don't have news in topic!</value>
+  </data>
+  <data name="DoNotHaveNewsOfUser" xml:space="preserve">
+    <value>Do Not Have News Of User</value>
   </data>
   <data name="GetAllNewsInTopicSuccessful" xml:space="preserve">
     <value>Get all news in topic successful!</value>
@@ -162,6 +168,12 @@
   <data name="GetNewsByFollowedTopicUnsuccessful" xml:space="preserve">
     <value>Get all news by followed topic unsuccessful!</value>
   </data>
+  <data name="GetNewsByIdSuccessful" xml:space="preserve">
+    <value>Get News By Id Successful</value>
+  </data>
+  <data name="GetNewsByIdUnsuccessful" xml:space="preserve">
+    <value>Get News By Id Unsuccessful</value>
+  </data>
   <data name="GetThisNewsSuccessful" xml:space="preserve">
     <value>Get this news successful!</value>
   </data>
@@ -173,6 +185,9 @@
   </data>
   <data name="NewsIsNotFound" xml:space="preserve">
     <value>News is not found!</value>
+  </data>
+  <data name="TitleIsRequired" xml:space="preserve">
+    <value>Title Is Required</value>
   </data>
   <data name="TopicNotFound" xml:space="preserve">
     <value>Topic not found!</value>
