@@ -1,8 +1,11 @@
 ﻿using System.Diagnostics;
+using System.Linq;
+using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using FakeNewsFilter.UserApp.Models;
 using FakeNewsFilter.UserApp.Services;
+using FakeNewsFilter.ViewModel.Catalog.NewsManage;
 
 namespace FakeNewsFilter.UserApp.Controllers
 {
@@ -17,14 +20,17 @@ namespace FakeNewsFilter.UserApp.Controllers
             _newsApi = newsApi;
         }
 
-        public IActionResult Index()
+        [HttpGet("/")]
+        public IActionResult Dashboard()
         {
-            return View();
+            var newsList = _newsApi.GetAll();
+            
+            return View("Dashboard", newsList.Result?.ResultObj);
         }
 
         public IActionResult Privacy()
         {
-            return View();
+            return View("Privacy");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

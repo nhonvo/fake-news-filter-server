@@ -37,12 +37,21 @@ $(document).ready(function () {
             contentType: "application/json",
             dataType: "json",
             data: function (data) {
+                console.log(data);
                 return JSON.stringify(data);
             }
         },
+
+    // <th>ID</th>
+    // <th>News</th>
+    // <th>Lang</th>
+    // <th>SyncTime</th>
+    // <th>Status</th>
+    // <th>Actions</th>
+        
         columns: [
             { "data": 'newsId' },
-            { "data": 'name' },
+            { "data": 'title' },
             { "data": 'languageId' },
             { "data": 'timestamp' },
             { "data": 'status' },
