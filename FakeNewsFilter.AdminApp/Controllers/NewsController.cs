@@ -75,7 +75,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(NewsCreateRequest request)
         {
-            if (request.TopicId == null || request.Content == null || request.Title == null || request.LanguageId == null)
+            if (request.TopicId == null || request.Content == null || request.Publisher == null || request.DatePublished == null || request.Title == null || request.LanguageId == null)
             {
                 throw new Exception("Cannot create news");
             }

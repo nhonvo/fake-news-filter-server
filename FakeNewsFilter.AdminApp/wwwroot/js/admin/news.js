@@ -269,8 +269,9 @@ function CreateNews(frm, caller) {
     $('#loading').show();
     caller.preventDefault();
     var fdata = new FormData();
-    var name = $(frm).find('input#Name')[0].value;
-    var description = $(frm).find('#Description')[0].value;
+    var Title = $(frm).find('input#Title')[0].value;
+    var Publisher = $(frm).find('#Publisher')[0].value;
+    var DatePublished = $(frm).find('#DatePublished')[0].value;
     var officialRating = $(frm).find('#OfficialRating')[0].value;
     var content = CKEDITOR.instances.ckeditor1.getData();
     var languageId = $(frm).find('#LanguageId')[0].value;
@@ -278,8 +279,9 @@ function CreateNews(frm, caller) {
 
     var thumbNews = $(frm).find('input:file[name="ThumbNews"]')[0].files[0];
 
-    fdata.append("Name", name);
-    fdata.append("Description", description);
+    fdata.append("Title", Title);
+    fdata.append("Publisher", Publisher);
+    fdata.append("DatePublished", DatePublished);
     fdata.append("OfficialRating", officialRating);
     fdata.append("Content", content);
     fdata.append("LanguageId", languageId);

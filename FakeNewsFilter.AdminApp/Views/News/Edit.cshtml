@@ -19,14 +19,26 @@
       Update News
     </div>
     <div class="form-group">
-      <label for="name" class="form-label">Name</label>
-      <input type="text" asp-for="Name" class="form-control border-start-0">
+      <label for="title" class="form-label">Title</label>
+      <input type="text" asp-for="Title" class="form-control border-start-0">
     </div>
     <div class="row">
       <div class="col-sm-3">
         <div class="form-group">
           <label for="publisher" class="form-label">Publisher</label>
           <input type="text" asp-for="Publisher" class="form-control border-start-0" placeholder="Publisher"/>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label for="Source" class="form-label">Source</label>
+          <input type="text" asp-for="Source" class="form-control border-start-0" placeholder="Source"/>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label for="ImageLink" class="form-label">ImageLink</label>
+          <input type="text" asp-for="ImageLink" class="form-control border-start-0" placeholder="ImageLink"/>
         </div>
       </div>
       <div class="col-sm-3">
@@ -49,15 +61,11 @@
       </div>
     </div>
     <div class="form-group">
-      <label for="description" class="form-label">Description</label>
-      <textarea type="text" rows="5" class="form-control border-start-0" asp-for="Description"> </textarea>
-    </div>
-    <div class="form-group">
       <label for="content" class="form-label">Content</label>
       <textarea id="ckeditor1" typeof="text" class="form-control border-start-0" asp-for="Content"> </textarea>
     </div>
     <div class="form-buttons-w">
-      <button class="btn btn-primary" type="submit"> Submit</button>
+      <button class="btn btn-primary" type="submit">Submit</button>
     </div>
      <input id="newsId" type="hidden" asp-for="NewsId" class="form-control border-start-0">
   </form>
