@@ -9,13 +9,15 @@ namespace FakeNewsFilter.ViewModel.Catalog.NewsManage
     {
         public int NewsId { get; set; }
 
-        public string Name { get; set; }
+        public string Title { get; set; }
 
         public string Description { get; set; }
 
         public string OfficialRating { get; set; }
 
         public string Content { get; set; }
+        public string Source { get; set; }
+        public string ImageLink { get; set; }
 
         public MediaType? Type { get; set; }
 

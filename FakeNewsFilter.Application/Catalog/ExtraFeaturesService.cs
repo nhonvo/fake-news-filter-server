@@ -66,7 +66,7 @@ namespace FakeNewsFilter.Application.Catalog
 
             var list_news = await _context.News
                 .Include(i => i.DetailNews)
-                .Where(n => string.IsNullOrEmpty(request.languageId) ? true : n.LanguageId == request.languageId && n.DetailNews.Content.ToLower().Trim().Contains(request.keyword.ToLower().Trim()))
+                .Where(n => string.IsNullOrEmpty(request.languageId) ? true : n.LanguageId == request.languageId && n.Title.ToLower().Trim().Contains(request.keyword.ToLower().Trim()))
                 .Select(x => new NewsViewModel()
                 {
                     NewsId = x.NewsId,

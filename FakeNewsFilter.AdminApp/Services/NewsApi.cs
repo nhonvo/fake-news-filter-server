@@ -98,12 +98,14 @@ namespace FakeNewsFilter.AdminApp.Services
                 requestContent.Add(bytes, "ThumbNews", request.ThumbNews.FileName);
             }
 
-            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Title) ? "" : request.Title.ToString()), "Name");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Title) ? "" : request.Title.ToString()), "Title");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.OfficialRating) ? "" : request.OfficialRating.ToString()), "OfficialRating");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Content) ? "" : request.Content.ToString()), "Content");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.LanguageId) ? "" : request.LanguageId.ToString()), "LanguageId");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Publisher) ? "" : request.Publisher.ToString()), "Publisher");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.DatePublished.ToString()) ? "" : request.DatePublished.ToString()), "DatePublished");
 
-            foreach(int topicId in request.TopicId)
+            foreach (int topicId in request.TopicId)
             {
                 requestContent.Add(new StringContent(string.IsNullOrEmpty(topicId.ToString()) ? "" : topicId.ToString()), "TopicId");
             }
@@ -162,9 +164,13 @@ namespace FakeNewsFilter.AdminApp.Services
             }
 
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Id.ToString()) ? "" : request.Id.ToString()), "Id");
-            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Title) ? "" : request.Title.ToString()), "Name");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Title) ? "" : request.Title.ToString()), "Title");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.OfficialRating) ? "" : request.OfficialRating.ToString()), "OfficialRating");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Content) ? "" : request.Content.ToString()), "Content");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Publisher) ? "" : request.Publisher.ToString()), "Publisher");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.LanguageId) ? "" : request.LanguageId.ToString()), "LanguageId");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Source) ? "" : request.Source.ToString()), "Source");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.ImageLink) ? "" : request.ImageLink.ToString()), "ImageLink");
 
             foreach (int topicId in request.TopicId)
             {
