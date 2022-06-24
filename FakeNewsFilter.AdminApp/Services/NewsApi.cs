@@ -9,6 +9,7 @@ using FakeNewsFilter.ViewModel.Catalog.NewsManage;
 using FakeNewsFilter.ViewModel.Catalog.TopicNews;
 using FakeNewsFilter.ViewModel.Common;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 
@@ -17,6 +18,7 @@ namespace FakeNewsFilter.AdminApp.Services
     public interface INewsApi
     {
         Task<ApiResult<List<NewsViewModel>>> GetNewsInfo();
+        Task<ApiResult<List<NewsViewModel>>> GetNewsByTopic(int topicId);
 
         Task<ApiResult<NewsInfoVM>> CreateNews(NewsCreateRequest request);
 
@@ -73,7 +75,35 @@ namespace FakeNewsFilter.AdminApp.Services
                 return new ApiErrorResult<List<NewsViewModel>>("Error System: " + e.Message);
             }
         }
+        
+        public async Task<ApiResult<List<NewsViewModel>>> GetNewsByTopic(int topicId)
+        {
+            try
+            {
+                var client = _httpClientFactory.CreateClient();
 
+                client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+
+                var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+
+                var respone = await client.GetAsync($"/api/News/Topic?TopicId={topicId}");
+
+
+                var body = await respone.Content.ReadAsStringAsync();
+
+                if (respone.IsSuccessStatusCode)
+                {
+                    return JsonConvert.DeserializeObject<ApiSuccessResult<List<NewsViewModel>>>(body);
+                }
+                return JsonConvert.DeserializeObject<ApiErrorResult<List<NewsViewModel>>>(body);
+            }
+            catch (FakeNewsException e)
+            {
+                return new ApiErrorResult<List<NewsViewModel>>("Error System: " + e.Message);
+            }
+        }
 
         public async Task<ApiResult<NewsInfoVM>> CreateNews(NewsCreateRequest request)
         {

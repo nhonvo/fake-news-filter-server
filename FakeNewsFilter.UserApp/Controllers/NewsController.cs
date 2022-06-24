@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using FakeNewsFilter.UserApp.Services;
+using FakeNewsFilter.AdminApp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,13 +15,25 @@ public class NewsController : Controller
         _newsApi = newsApi;
     }
     
-    [Route("news/{alias}-{Id:int}")]
+    // [Route("news/{alias}-{Id:int}")]
+    // [AllowAnonymous]
+    // // public async Task<IActionResult> GetNewsById(int Id)
+    // {
+    //
+    //     // var data = await _newsApi.GetContent(Id);
+    //     
+    //     // return View("Details", data?.ResultObj);
+    //     // return View("Details");
+    // }
+    
     [AllowAnonymous]
-    public async Task<IActionResult> GetNewsById(int Id)
+    [HttpGet]
+    public async Task<IActionResult> GetNewsByTopic(int topicId)
     {
 
-        var data = await _newsApi.GetContent(Id);
+        var data = await _newsApi.GetNewsByTopic(topicId);
         
-        return View("Details", data?.ResultObj);
+        return View("NewsByTopic", data.ResultObj);
     }
+    
 }
