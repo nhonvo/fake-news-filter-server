@@ -207,5 +207,46 @@ namespace FakeNewsFilter.API.Controllers
 
             return Ok(newsintopics);
         }
+
+
+        [HttpPut]
+        public async Task<IActionResult> Archive([FromForm] NewsCommunityUpdateRequest request)
+        {
+            try
+            {
+                UpdateRequestNewsCommunityValidator validator = new UpdateRequestNewsCommunityValidator(_localizer);
+
+                List<string> ValidationMessages = new List<string>();
+
+                var validationResult = validator.Validate(request);
+
+                if (!validationResult.IsValid)
+                {
+                    string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
+
+                    var result = new ApiErrorResult<bool>(errors);
+
+                    return BadRequest(result);
+                }
+
+                var resultToken = await _NewsCommunityService.Archive(request);
+
+                resultToken.Message = _localizer[resultToken.Message].Value + resultToken.ResultObj;
+
+                if (resultToken.ResultObj != null)
+                {
+                    _logger.LogError(resultToken.Message);
+                    return BadRequest(resultToken);
+                }
+                _logger.LogInformation(resultToken.Message);
+                return Ok(resultToken);
+            }
+            catch (FakeNewsException e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest(e.Message);
+            }
+
+        }
     }
 }

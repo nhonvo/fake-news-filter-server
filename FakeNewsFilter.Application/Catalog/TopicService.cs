@@ -27,6 +27,7 @@ namespace FakeNewsFilter.Application.Catalog
         Task<ApiResult<string>> Delete(int TopicId);
 
         Task<ApiResult<string>> Update(TopicUpdateRequest request);
+        Task<ApiResult<string>> Archive(TopicUpdateRequest request);
     }
 
     public class TopicService : ITopicService
@@ -304,5 +305,19 @@ namespace FakeNewsFilter.Application.Catalog
             }
         }
 
+        public async Task<ApiResult<string>> Archive(TopicUpdateRequest request)
+        {
+            var topic = await TopicCommon.CheckExistTopic(_context, request.TopicId);
+
+            if (topic == null)
+                return new ApiErrorResult<string>("CannontFindCommentWithId", request.TopicId);
+
+            topic.Status = Status.Archive;
+
+            var result = await _context.SaveChangesAsync();
+            if (result == 0) return new ApiErrorResult<string>("UpdateLinkNewsUnsuccessful", result);
+
+            return new ApiSuccessResult<string>("UpdateLinkNewsSuccessful");
+        }
     }
 }

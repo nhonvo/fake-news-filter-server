@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FakeNewsFilter.Data.Enums;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -15,5 +16,7 @@ namespace FakeNewsFilter.Data.Entities
         public Source Source { get; set; }
         public string LanguageId { set; get; }
         public Language Language { get; set; }
+        public Status Status { get; set; }
+
     }
 }

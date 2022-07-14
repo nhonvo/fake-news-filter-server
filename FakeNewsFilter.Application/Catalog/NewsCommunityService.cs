@@ -26,6 +26,7 @@ namespace FakeNewsFilter.Application.Catalog
         Task<ApiResult<NewsCommunityViewModel>> GetById(int newsCommunityId);
         Task<ApiResult<string>> Delete(int NewsCommunityId);
         Task<ApiResult<string>> Update(NewsCommunityUpdateRequest request);
+        Task<ApiResult<string>> Archive(NewsCommunityUpdateRequest request);
         Task<ApiResult<string>> UpdateLink(int newsCommunityId, string newLink);
         Task<ApiResult<List<NewsCommunityViewModel>>> GetAll(string languageId);
         Task<ApiResult<List<NewsCommunityViewModel>>> GetNewsByUserId(Guid userId);
@@ -339,6 +340,21 @@ namespace FakeNewsFilter.Application.Catalog
             var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
             await _storageService.SaveFileAsync(file.OpenReadStream(), fileName);
             return fileName;
+        }
+
+        public async Task<ApiResult<string>> Archive(NewsCommunityUpdateRequest request)
+        {
+            var news_community = await NewscommunityCommon.CheckExistNews(_context, request.NewsCommunityId);
+
+            if (news_community == null)
+                return new ApiErrorResult<string>("CannontFindCommentWithId", request.NewsCommunityId);
+
+            news_community.Status = Status.Archive;
+
+            var result = await _context.SaveChangesAsync();
+            if (result == 0) return new ApiErrorResult<string>("UpdateLinkNewsUnsuccessful", result);
+
+            return new ApiSuccessResult<string>("UpdateLinkNewsSuccessful");
         }
     }
 }

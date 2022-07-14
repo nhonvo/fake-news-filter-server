@@ -102,6 +102,37 @@ namespace FakeNewsFilter.API.Controllers
 
         }
 
+        [HttpPut]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Archive([FromForm] StoryUpdateRequest request)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var result = await _IStoryService.Archive(request);
+
+                result.Message = _localizer[result.Message].Value + result.ResultObj;
+
+                if (result.ResultObj != null)
+                {
+                    _logger.LogError(result.Message);
+                    return BadRequest(result);
+                }
+                _logger.LogInformation(result.Message);
+                return Ok(result);
+            }
+            catch (FakeNewsException e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest(e.Message);
+            }
+
+        }
+
         [HttpDelete("{StoryId}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int storyId)

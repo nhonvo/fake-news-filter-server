@@ -1,6 +1,7 @@
 ﻿using FakeNewsFilter.Application.Common;
 using FakeNewsFilter.Data.EF;
 using FakeNewsFilter.Data.Entities;
+using FakeNewsFilter.Data.Enums;
 using FakeNewsFilter.ViewModel.Catalog.SourceStory;
 using FakeNewsFilter.ViewModel.Common;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ namespace FakeNewsFilter.Application.Catalog
     {
         Task<ApiResult<string>> Create(SourceCreateRequest request);
         Task<ApiResult<string>> Update(SourceUpdateRequest request);
+        Task<ApiResult<string>> Archive(SourceUpdateRequest request);
         Task<ApiResult<string>> Delete(int sourceid);
         Task<ApiResult<List<SourceViewModel>>> GetAll(string languageId);
         Task<ApiResult<SourceViewModel>> GetoneStory(int SourceId);
@@ -180,6 +182,20 @@ namespace FakeNewsFilter.Application.Catalog
 
         }
 
+        public async Task<ApiResult<string>> Archive(SourceUpdateRequest request)
+        {
+            var source = await SourceCommon.CheckExistSource(_context, request.SourceId);
+
+            if (source == null)
+                return new ApiErrorResult<string>("CannontFindCommentWithId", request.SourceId);
+
+            source.Status = Status.Archive;
+
+            var result = await _context.SaveChangesAsync();
+            if (result == 0) return new ApiErrorResult<string>("UpdateLinkNewsUnsuccessful", result);
+
+            return new ApiSuccessResult<string>("UpdateLinkNewsSuccessful");
+        }
     }
 
 

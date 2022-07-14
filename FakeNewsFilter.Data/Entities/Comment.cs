@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FakeNewsFilter.Data.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace FakeNewsFilter.Data.Entities
         public int? ParentId { get; set; }
         public Guid UserId { get; set; }
         public User User { get; set; }
+        public Status Status { get; set; }
         public DateTime Timestamp { get; set; }
         public virtual Comment Parent {get; set;}
         

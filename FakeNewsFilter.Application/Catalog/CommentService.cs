@@ -6,6 +6,7 @@ using AutoMapper;
 using FakeNewsFilter.Application.Common;
 using FakeNewsFilter.Data.EF;
 using FakeNewsFilter.Data.Entities;
+using FakeNewsFilter.Data.Enums;
 using FakeNewsFilter.ViewModel.Catalog.Comment;
 using FakeNewsFilter.ViewModel.Common;
 using Microsoft.AspNetCore.Identity;
@@ -19,6 +20,7 @@ public interface ICommentService
     Task<ApiResult<string>> Delete(int commentId, Guid userId);
     Task<ApiResult<List<CommentViewModel>>> GetCommentByNewsId(int NewsId);
     Task<ApiResult<string>> Update(CommentUpdateRequest request);
+    Task<ApiResult<string>> Archive (CommentUpdateRequest request);
 }
 
 public class CommentService : ICommentService
@@ -150,5 +152,20 @@ public class CommentService : ICommentService
         if (result == 0) return new ApiErrorResult<string>("UpdateCommentUnsuccessful", " " + result);
 
         return new ApiSuccessResult<string>("UpdateCommentSuccessful", " " + comment.CommentId.ToString());
+    }
+
+    public async Task<ApiResult<string>> Archive(CommentUpdateRequest request)
+    {
+        var cmt_update = await CommentCommon.CheckExistComment(_context, request.CommentId);
+
+        if (cmt_update == null)
+            return new ApiErrorResult<string>("CannontFindCommentWithId", request.CommentId);
+
+        cmt_update.Status = Status.Archive;
+
+        var result = await _context.SaveChangesAsync();
+        if (result == 0) return new ApiErrorResult<string>("UpdateLinkNewsUnsuccessful", result);
+
+        return new ApiSuccessResult<string>("UpdateLinkNewsSuccessful");
     }
 }

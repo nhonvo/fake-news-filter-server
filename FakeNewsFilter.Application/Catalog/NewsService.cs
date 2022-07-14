@@ -36,6 +36,7 @@ public interface INewsService
     Task<ApiResult<NewsSystemViewModel>> GetContent(int newsId);
 
     Task<ApiResult<string>> Update(NewsUpdateRequest request);
+    Task<ApiResult<string>> Archive(NewsUpdateRequest request);
 
     Task<ApiResult<string>> UpdateLink(int newsId, string newLink);
 
@@ -674,5 +675,20 @@ public class NewsService : INewsService
         var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
         await _storageService.SaveFileAsync(file.OpenReadStream(), fileName);
         return fileName;
+    }
+
+    public async Task<ApiResult<string>> Archive(NewsUpdateRequest request)
+    {
+        var news = await NewsCommon.CheckExistNews(_context, request.Id);
+
+        if (news == null)
+            return new ApiErrorResult<string>("CannontFindCommentWithId", request.Id);
+
+        news.Status = Status.Archive;
+
+        var result = await _context.SaveChangesAsync();
+        if (result == 0) return new ApiErrorResult<string>("UpdateLinkNewsUnsuccessful", result);
+
+        return new ApiSuccessResult<string>("UpdateLinkNewsSuccessful");
     }
 }

@@ -21,6 +21,7 @@ namespace FakeNewsFilter.Application.Catalog
     {
         Task<ApiResult<string>> Create(StoryCreateRequest request);
         Task<ApiResult<string>> Update(StoryUpdateRequest request);
+        Task<ApiResult<string>> Archive(StoryUpdateRequest request);
         Task<ApiResult<string>> Delete(int StoryId);
         Task<ApiResult<StoryViewModel>> GetOneStory(int StoryId);
         Task<ApiResult<List<StoryViewModel>>> GetAllStory(string languageId);
@@ -274,6 +275,21 @@ namespace FakeNewsFilter.Application.Catalog
             
             await _storageService.SaveFileAsync(file.OpenReadStream(), fileName);
             return fileName;
+        }
+
+        public async Task<ApiResult<string>> Archive(StoryUpdateRequest request)
+        {
+            var story = await StoryCommon.CheckExistStory(_context, request.StoryId);
+
+            if (story == null)
+                return new ApiErrorResult<string>("CannontFindCommentWithId", request.StoryId);
+
+            story.Status = Status.Archive;
+
+            var result = await _context.SaveChangesAsync();
+            if (result == 0) return new ApiErrorResult<string>("UpdateLinkNewsUnsuccessful", result);
+
+            return new ApiSuccessResult<string>("UpdateLinkNewsSuccessful");
         }
     }
 }
