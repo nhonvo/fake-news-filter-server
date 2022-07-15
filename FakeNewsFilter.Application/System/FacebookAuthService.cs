@@ -48,8 +48,8 @@ namespace FakeNewsFilter.Application.System
 
         public async Task<FacebookTokenValidationResult> ValidationAcessTokenAsync(string accessToken)
         {
-            string AppId = "263493625606585";
-            string AppSecret = "c7e450a259a3a5ec1892d0f99e28b917";
+            string AppId = "1001624143838277";
+            string AppSecret = "a78ba77845f78f80b32337227240def5";
 
             string formattedUrl = $"https://graph.facebook.com/debug_token?input_token={accessToken}&access_token={AppId}|{AppSecret}";
 
