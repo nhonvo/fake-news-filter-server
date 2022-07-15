@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FakeNewsFilter.AdminApp.Services;
 using FakeNewsFilter.UserApp.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -27,8 +28,12 @@ namespace FakeNewsFilter.UserApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpClient();
+            services.AddTransient<TopicApi>();
+            services.AddTransient<LanguageApi>();
             services.AddTransient<NewsApi>();
-            
+            services.AddTransient<NotificationApi>();
+            services.AddTransient<FactCheckApi>();
+
             //Authen
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>

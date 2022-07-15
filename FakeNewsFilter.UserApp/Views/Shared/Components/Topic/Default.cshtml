@@ -1,0 +1,16 @@
+@model System.Collections.Generic.List<FakeNewsFilter.ViewModel.Catalog.TopicNews.TopicInfoVM>
+
+<div class="sidebar-widget widget_categories_2 border-radius-10 bg-white mb-30">
+    <ul class="font-small text-muted">
+        @foreach (var topic in Model)
+        {
+            <li class="cat-item cat-item-2 active">
+                <a asp-action="GetNewsByTopic" asp-controller="News" asp-route-topicId="@topic.TopicId">
+                    <span class="mr-10">
+                        <ion-icon name="earth-outline"></ion-icon>
+                    </span>@topic.Label
+                </a>
+            </li>
+        }
+    </ul>
+</div>
