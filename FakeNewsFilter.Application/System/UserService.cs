@@ -240,7 +240,6 @@ namespace FakeNewsFilter.Application.System
                 {
                     Email = request.Email,
                     UserName = request.UserName,
-                    PhoneNumber = request.PhoneNumber,
                     Name = request.Name,
                 };
                 var result = await _userManager.CreateAsync(user, request.Password);
@@ -282,7 +281,6 @@ namespace FakeNewsFilter.Application.System
                                           FullName = x.Name,
                                           Status = x.Status,
                                           UserName = x.UserName,
-                                          PhoneNumber = x.PhoneNumber,
                                           Avatar = _context.Media.Where(m => m.MediaId == x.AvatarId).Select(m => m.PathMedia).FirstOrDefault(),
                                           RoleNames = (from userRole in x.UserRoles 
                                                        join role in _roleManager.Roles 
@@ -297,7 +295,6 @@ namespace FakeNewsFilter.Application.System
                         FullName = p.FullName,
                         Status = p.Status,
                         UserName = p.UserName,
-                        PhoneNumber = p.PhoneNumber,
                         Avatar = p.Avatar,
                         Roles = p.RoleNames
                     }
@@ -321,7 +318,6 @@ namespace FakeNewsFilter.Application.System
                 
                 user.Email = request.Email ?? user.Email;
                 user.Name = request.Name ?? user.Name;
-                user.PhoneNumber = request.PhoneNumber ?? user.PhoneNumber;
 
                 //Lưu Avatar vào Host
                 if (request.MediaFile != null)

@@ -35,7 +35,6 @@ namespace FakeNewsFilter.Application.Mapping
                  .ForMember(d => d.Email, o => o.MapFrom(s => s.Email))
                   .ForMember(d => d.UserName, o => o.MapFrom(s => s.UserName))
                    .ForMember(d => d.FullName, o => o.MapFrom(s => s.Name))
-                    .ForMember(d => d.PhoneNumber, o => o.MapFrom(s => s.PhoneNumber))
                     
                 ;
             CreateMap<News, NewsViewModel>()
