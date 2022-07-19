@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using FakeNewsFilter.Data.Entities;
 using FakeNewsFilter.Data.Enums;
 using FakeNewsFilter.ViewModel.Catalog.TopicNews;
+using Microsoft.AspNetCore.Authentication;
 
 namespace FakeNewsFilter.ViewModel.Catalog.NewsManage
 {
@@ -21,6 +22,7 @@ namespace FakeNewsFilter.ViewModel.Catalog.NewsManage
         public string ThumbNews { get; set; }
 
         public string OfficialRating { get; set; }
+        public int ViewCount { get; set; }
 
         public string Publisher { get; set; }
 

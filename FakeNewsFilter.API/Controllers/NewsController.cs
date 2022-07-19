@@ -161,7 +161,7 @@ namespace FakeNewsFilter.API.Controllers
             var newsCached = _distributedCache.GetString(cacheKey);
             if (newsCached == null)
             {
-                _distributedCache.SetString(cacheKey, "1");
+                await _distributedCache.SetStringAsync(cacheKey, "1");
                 news.ResultObj = 1;
             }
             else

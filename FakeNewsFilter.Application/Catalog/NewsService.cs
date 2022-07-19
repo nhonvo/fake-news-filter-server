@@ -77,6 +77,7 @@ public class NewsService : INewsService
                         TopicInfo = x.NewsInTopics
                             .Select(o => new TopicInfo {TopicId = o.TopicId, TopicName = o.TopicNews.Tag}).ToList(),
                         OfficialRating = x.OfficialRating,
+                        ViewCount = x.ViewCount,
                         Publisher = x.Publisher,
                         Status = x.Status,
                         ThumbNews = string.IsNullOrEmpty(x.ImageLink)
@@ -102,6 +103,7 @@ public class NewsService : INewsService
                     TopicInfo = x.NewsInTopics
                         .Select(o => new TopicInfo {TopicId = o.TopicId, TopicName = o.TopicNews.Tag}).ToList(),
                     OfficialRating = x.OfficialRating,
+                    ViewCount = x.ViewCount,
                     Publisher = x.Publisher,
                     Status = x.Status,
                     ThumbNews = string.IsNullOrEmpty(x.ImageLink)
@@ -123,6 +125,7 @@ public class NewsService : INewsService
                     TopicInfo = x.NewsInTopics
                         .Select(o => new TopicInfo {TopicId = o.TopicId, TopicName = o.TopicNews.Tag}).ToList(),
                     OfficialRating = x.OfficialRating,
+                    ViewCount = x.ViewCount,
                     Publisher = x.Publisher,
                     Status = x.Status,
                     ThumbNews = string.IsNullOrEmpty(x.ImageLink)
@@ -168,6 +171,7 @@ public class NewsService : INewsService
                 Title = news.Title,
                 OfficialRating = news.OfficialRating,
                 Publisher = news.Publisher,
+                ViewCount = news.ViewCount,
                 ThumbNews = string.IsNullOrEmpty(news.ImageLink)
                     ? _storageService.GetFileUrl(_context.Media
                         .FirstOrDefault(x => x.MediaId == news.DetailNews.ThumbNews)?.PathMedia)
@@ -247,6 +251,7 @@ public class NewsService : INewsService
                 TopicInfo = x.NewsInTopics.Select(o => new TopicInfo {TopicId = o.TopicId, TopicName = o.TopicNews.Tag})
                     .ToList(),
                 OfficialRating = x.OfficialRating,
+                ViewCount = x.ViewCount,
                 Publisher = x.Publisher,
                 Status = x.Status,
                 ThumbNews = string.IsNullOrEmpty(x.ImageLink)
@@ -282,6 +287,7 @@ public class NewsService : INewsService
                 OfficialRating = x.n.OfficialRating,
                 Publisher = x.n.Publisher,
                 Status = x.n.Status,
+                ViewCount = x.n.ViewCount,
                 ThumbNews = string.IsNullOrEmpty(x.n.ImageLink)
                     ? _storageService.GetFileUrl(x.n.DetailNews.Media.PathMedia)
                     : x.n.ImageLink,
@@ -684,6 +690,7 @@ public class NewsService : INewsService
 
         return new ApiSuccessResult<string>("UpdateLinkNewsSuccessful", newLink);
     }
+
     //Lưu file ảnh
     private async Task<string> SaveFile(IFormFile file)
     {
@@ -707,7 +714,7 @@ public class NewsService : INewsService
 
         return new ApiSuccessResult<string>("UpdateLinkNewsSuccessful");
     }
-    
+
     public async Task<ApiResult<bool>> UpdateViewCount(Dictionary<int, int> newsViewCountDict)
     {
         foreach (var item in newsViewCountDict)
@@ -723,6 +730,5 @@ public class NewsService : INewsService
         var result = await _context.SaveChangesAsync();
         if (result == 0) return new ApiErrorResult<bool>("Update View Count News Unsuccessful", result);
         return new ApiSuccessResult<bool>("Update View Count News Successful");
-        
     }
 }
