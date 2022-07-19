@@ -18,7 +18,9 @@ namespace FakeNewsFilter.Application.Catalog
 {
     public interface ITopicService
     {
-        Task<ApiResult<List<TopicInfoVM>>> GetTopicHotNews(string languageId);
+        Task<ApiResult<List<TopicInfoVM>>> GetAllTopic(string languageId);
+
+        Task<ApiResult<PagedResult<TopicInfoVM>>> GetTopicPaging(GetTopicNewsRequest request);
 
         Task<ApiResult<string>> Create(TopicCreateRequest request);
 
@@ -43,25 +45,26 @@ namespace FakeNewsFilter.Application.Catalog
             _storageService = storageService;
         }
 
-        //Lấy 10 chủ đề tin tức nóng nhất
-        public async Task<ApiResult<List<TopicInfoVM>>> GetTopicHotNews(string languageId)
+        //Lấy toàn bộ tin tức
+        public async Task<ApiResult<List<TopicInfoVM>>> GetAllTopic(string LanguageId)
         {
-            
-                try
-                {
-                    var language = await LanguageCommon.CheckExistLanguage(_context, languageId);
+            try
+            {
+                //1. Chạy câu truy vấn
+                var language = await LanguageCommon.CheckExistLanguage(_context, LanguageId);
 
                 var query = from t in _context.TopicNews
-                                where (string.IsNullOrEmpty(languageId) || t.LanguageId == languageId)
-                                select new
-                                {
-                                    topic = t,
-                                    newscount = _context.NewsInTopics.Where(n => n.TopicId == t.TopicId).Count(),
-                                    thumb = _context.Media.Where(m => m.MediaId == t.ThumbTopic).Select(m => m.PathMedia).FirstOrDefault(),
-                                    synctime = _context.NewsInTopics.Where(n => n.TopicId == t.TopicId).Max(n => n.Timestamp)
-                                };
+                            where (string.IsNullOrEmpty(LanguageId) || t.LanguageId == LanguageId)
+                            select new
+                            {
+                                topic = t,
+                                newscount = _context.NewsInTopics.Where(n => n.TopicId == t.TopicId).Count(),
+                                thumb = _context.Media.Where(m => m.MediaId == t.ThumbTopic).Select(m => m.PathMedia).FirstOrDefault(),
+                                synctime = _context.NewsInTopics.Where(n => n.TopicId == t.TopicId).Max(n => n.Timestamp)
+                            };
 
-                    var topics = await query.Select(x => new TopicInfoVM()
+                var data = await query
+                    .Select(x => new TopicInfoVM()
                     {
                         TopicId = x.topic.TopicId,
                         Label = x.topic.Label,
@@ -74,24 +77,84 @@ namespace FakeNewsFilter.Application.Catalog
                         RealTime = x.synctime,
                     }).ToListAsync();
 
-                    if (topics == null)
-                    {
-                        return new ApiErrorResult<List<TopicInfoVM>>("GetTopicUnsuccessful", topics);
-                    }
 
-                    if (language == null)
-                    {
-                        return new ApiSuccessResult<List<TopicInfoVM>>("GetTopicSuccessful", topics);
-                    }
-
-                    return new ApiSuccessResult<List<TopicInfoVM>>("GetTopicSuccessful", topics);
-                }
-                catch (Exception ex)
+                if (data == null)
                 {
-                    return new ApiErrorResult<List<TopicInfoVM>>(ex.Message);
+                    return new ApiErrorResult<List<TopicInfoVM>>("GetTopicUnsuccessful", data);
                 }
+
+                return new ApiSuccessResult<List<TopicInfoVM>>("GetTopicSuccessful", data);
+            }
+            catch (Exception ex)
+            {
+                return new ApiErrorResult<List<TopicInfoVM>>(ex.Message);
+            }
+        }
+
+        //Lấy thông tin các chủ đề tin tức có phân trang
+        public async Task<ApiResult<PagedResult<TopicInfoVM>>> GetTopicPaging(GetTopicNewsRequest request)
+        {
             
-            
+            try
+            {
+                //1. Chạy câu truy vấn
+                var language = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
+
+                var query = from t in _context.TopicNews
+                                where (string.IsNullOrEmpty(request.LanguageId) || t.LanguageId == request.LanguageId)
+                                select new
+                                {
+                                    topic = t,
+                                    newscount = _context.NewsInTopics.Where(n => n.TopicId == t.TopicId).Count(),
+                                    thumb = _context.Media.Where(m => m.MediaId == t.ThumbTopic).Select(m => m.PathMedia).FirstOrDefault(),
+                                    synctime = _context.NewsInTopics.Where(n => n.TopicId == t.TopicId).Max(n => n.Timestamp)
+                                };
+
+                //2. Lọc theo điều kiện
+                if (!string.IsNullOrEmpty(request.Keyword))
+                {
+                    query = query.Where(x => x.topic.Label.Contains(request.Keyword));
+                }
+                    
+
+                //3. Phân trang
+                int totalRow = await query.CountAsync();
+
+                var data = await query.Skip((request.PageIndex - 1) * request.PageSize)
+                    .Take(request.PageSize)
+                    .Select(x => new TopicInfoVM()
+                    {
+                        TopicId = x.topic.TopicId,
+                        Label = x.topic.Label,
+                        Tag = x.topic.Tag,
+                        Description = x.topic.Description,
+                        NONews = x.newscount,
+                        ThumbImage = x.thumb,
+                        Status = x.topic.Status,
+                        LanguageId = x.topic.LanguageId,
+                        RealTime = x.synctime,
+                    }).ToListAsync();
+
+                //4. Hiển thị kết quả
+                var pagedResult = new PagedResult<TopicInfoVM>()
+                {
+                    TotalRecords = totalRow,
+                    PageSize = request.PageSize,
+                    PageIndex = request.PageIndex,
+                    Items = data
+                };
+
+                if (pagedResult == null)
+                {
+                    return new ApiErrorResult<PagedResult<TopicInfoVM>>("GetTopicUnsuccessful", pagedResult);
+                }
+
+                return new ApiSuccessResult<PagedResult<TopicInfoVM>>("GetTopicSuccessful", pagedResult);
+            }
+            catch (Exception ex)
+            {
+                return new ApiErrorResult<PagedResult<TopicInfoVM>>(ex.Message);
+            } 
         }
 
         //Tạo chủ đề mới
@@ -319,5 +382,6 @@ namespace FakeNewsFilter.Application.Catalog
 
             return new ApiSuccessResult<string>("UpdateLinkNewsSuccessful");
         }
+
     }
 }

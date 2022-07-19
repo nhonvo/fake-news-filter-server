@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using FakeNewsFilter.AdminApp.Services;
 using FakeNewsFilter.ViewModel.Catalog.Claims;
 using FakeNewsFilter.ViewModel.Catalog.Claims.ClaimCreateNewsVM;
-using FakeNewsFilter.ViewModel.Catalog.NewsManage;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using SmartBreadcrumbs.Attributes;
 
@@ -32,7 +27,8 @@ namespace FakeNewsFilter.AdminApp.Controllers
         public async Task<IActionResult> Index()
         {
 
-            var topicData = await _topicApi.GetTopicInfo();
+            var topicData = await _topicApi.GetAllTopic();
+
             var languageData = await _languageApi.GetLanguageInfo();
 
             var model = new ClaimCreateNewsVM();
@@ -64,7 +60,8 @@ namespace FakeNewsFilter.AdminApp.Controllers
 
             var data = await _factCheckApi.Search(query);
 
-            var topicData = await _topicApi.GetTopicInfo();
+            var topicData = await _topicApi.GetAllTopic();
+
             var languageData = await _languageApi.GetLanguageInfo();
 
             var model = new ClaimCreateNewsVM();
@@ -101,7 +98,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
 
             var data = await _factCheckApi.LoadMore(nextPageToken, query);
 
-            var topicData = await _topicApi.GetTopicInfo();
+            var topicData = await _topicApi.GetAllTopic();
             var languageData = await _languageApi.GetLanguageInfo();
 
             var model = new ClaimCreateNewsVM();

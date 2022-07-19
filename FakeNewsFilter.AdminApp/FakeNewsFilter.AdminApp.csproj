@@ -17,6 +17,7 @@
     <Folder Include="Views\Shared\Components\" />
     <Folder Include="Views\Topic\" />
     <Folder Include="Views\News\" />
+    <Folder Include="Views\Shared\Components\Pager\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FakeNewsFilter.ViewModel\FakeNewsFilter.ViewModel.csproj">
@@ -39,6 +40,8 @@
     <None Remove="SmartBreadcrumbs" />
     <None Remove="Views\Topic\" />
     <None Remove="Views\News\" />
+    <None Remove="Views\Shared\Components\Pager\" />
+    <None Remove="Swashbuckle.AspNetCore" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="elFinder.NetCore" Version="1.3.6" />
@@ -50,5 +53,6 @@
     <PackageReference Include="Quartz.Extensions.Microsoft.DependencyInjection" Version="0.0.3" />
     <PackageReference Include="Quartz.Plugins.TimeZoneConverter" Version="3.4.0" />
     <PackageReference Include="SmartBreadcrumbs" Version="3.6.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
   </ItemGroup>
 </Project>

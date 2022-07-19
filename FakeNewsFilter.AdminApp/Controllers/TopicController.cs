@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FakeNewsFilter.AdminApp.Services;
+using FakeNewsFilter.Utilities.Constants;
 using FakeNewsFilter.ViewModel.Catalog.TopicNews;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SmartBreadcrumbs.Attributes;
@@ -29,7 +31,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
         }
 
         [Breadcrumb("Topic Manager")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10)
         {
             if (TempData["result"] != null)
             {
@@ -39,25 +41,26 @@ namespace FakeNewsFilter.AdminApp.Controllers
             {
                 ViewBag.Error = TempData["Error"];
             }
-            var data = await _topicApi.GetTopicInfo();
+
+            var languageId = HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
+
+            var request = new GetTopicNewsRequest()
+            {
+                Keyword = keyword,
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                LanguageId = languageId
+            };
+
+            var data = await _topicApi.GetTopicPaging(request);
+
             var languageData = await _languageApi.GetLanguageInfo();
 
            
-            ViewBag.ListTopic = new SelectList(data.ResultObj.GroupBy(x => x.Label).Select(y => y.First()).Distinct(), "Label", "Label");
+            ViewBag.ListTopic = new SelectList(data.ResultObj.Items.GroupBy(x => x.Label).Select(y => y.First()).Distinct(), "Label", "Label");
             ViewBag.ListLanguage = new SelectList(languageData.ResultObj, "Id", "Name");
 
-            return View();
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetTopics()
-        {
-            var data = await _topicApi.GetTopicInfo();
-
-            return Json(new
-            {
-                data = data.ResultObj
-            });
+            return View(data);
         }
 
         [HttpPost]

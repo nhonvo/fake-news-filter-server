@@ -41,7 +41,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
                 ViewBag.Error = TempData["Error"];
             }
 
-            var topicData = await _topicApi.GetTopicInfo();
+            var topicData = await _topicApi.GetAllTopic();
             var languageData = await _languageApi.GetLanguageInfo();
 
             ViewBag.ListTopic = new SelectList(topicData.ResultObj, "TopicId", "Tag");
@@ -107,7 +107,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
 
             var result = await _newsApi.GetById(Id);
 
-            var topicData = await _topicApi.GetTopicInfo();
+            var topicData = await _topicApi.GetAllTopic();
             var languageData = await _languageApi.GetLanguageInfo();
 
             ViewBag.ListTopic = new SelectList(topicData.ResultObj, "TopicId", "Tag");

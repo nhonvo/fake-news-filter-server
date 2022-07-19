@@ -4,6 +4,7 @@ using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using FakeNewsFilter.Utilities.Constants;
 using FakeNewsFilter.Utilities.Exceptions;
 using FakeNewsFilter.ViewModel.Catalog.TopicNews;
 using FakeNewsFilter.ViewModel.Common;
@@ -15,7 +16,9 @@ namespace FakeNewsFilter.AdminApp.Services
 {
     public interface ITopicApi
     {
-        Task<ApiResult<List<TopicInfoVM>>> GetTopicInfo();
+        Task<ApiResult<List<TopicInfoVM>>> GetAllTopic();
+
+        Task<ApiResult<PagedResult<TopicInfoVM>>> GetTopicPaging(GetTopicNewsRequest request);
 
         Task<ApiResult<bool>> CreateTopic(TopicCreateRequest request);
 
@@ -26,7 +29,7 @@ namespace FakeNewsFilter.AdminApp.Services
         Task<ApiResult<bool>> Delete(int topicId);
     }
 
-    public class TopicApi : ITopicApi
+    public class TopicApi : BaseApiClient, ITopicApi
     {
         private readonly IHttpClientFactory _httpClientFactory;
 
@@ -35,41 +38,39 @@ namespace FakeNewsFilter.AdminApp.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public TopicApi(IHttpClientFactory httpClientFactory, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+        : base(httpClientFactory, httpContextAccessor, configuration)
         {
             _httpClientFactory = httpClientFactory;
             _configuration = configuration;
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<ApiResult<List<TopicInfoVM>>> GetTopicInfo()
+        //Lấy toàn bộ chủ đề tin tức
+        public async Task<ApiResult<List<TopicInfoVM>>> GetAllTopic()
+        {
+                var data = await GetAsync<ApiResult<List<TopicInfoVM>>>($"/api/topic/list");
+
+                return data;
+        }
+
+        //Lấy danh sách chủ đề (có phân trang)
+        public async Task<ApiResult<PagedResult<TopicInfoVM>>> GetTopicPaging(GetTopicNewsRequest request)
         {
             try
             {
-                var client = _httpClientFactory.CreateClient();
+                var data = await GetAsync<ApiResult<PagedResult<TopicInfoVM>>>(
+                $"/api/topic/paging?pageIndex={request.PageIndex}" +
+                $"&pageSize={request.PageSize}" +
+                $"&keyword={request.Keyword}&languageId={request.LanguageId}");
 
-                client.BaseAddress = new Uri(_configuration["BaseAddress"]);
-
-                var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
-
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
-
-                var respone = await client.GetAsync($"/api/topic/List");
-
-                
-                var body = await respone.Content.ReadAsStringAsync();
-
-                if (respone.IsSuccessStatusCode)
-                {
-
-                    return JsonConvert.DeserializeObject<ApiSuccessResult<List<TopicInfoVM>>>(body);
-                }
-                return JsonConvert.DeserializeObject<ApiErrorResult<List<TopicInfoVM>>>(body);
+                return data;
             }
             catch (FakeNewsException e)
             {
-                return new ApiErrorResult<List<TopicInfoVM>>("Error System: " + e.Message);
+                return new ApiErrorResult<PagedResult<TopicInfoVM>>("Error System: " + e.Message);
             }
         }
+
 
         public async Task<ApiResult<bool>> CreateTopic(TopicCreateRequest request)
         {

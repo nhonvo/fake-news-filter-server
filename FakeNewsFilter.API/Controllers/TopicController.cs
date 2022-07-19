@@ -78,15 +78,13 @@ namespace FakeNewsFilter.API.Controllers
             
         }
 
-        
-        // GET: api/topic
-        [HttpGet("List")]
+        [HttpGet("list")]
         [AllowAnonymous]
-        public async Task<IActionResult> Get(string languageId)
+        public async Task<IActionResult> GetAll(string LanguageId)
         {
             try
             {
-                var topics = await _topicService.GetTopicHotNews(languageId);
+                var topics = await _topicService.GetAllTopic(LanguageId);
 
                 topics.Message = _localizer[topics.Message].Value;
 
@@ -100,7 +98,29 @@ namespace FakeNewsFilter.API.Controllers
             {
                 return BadRequest(e.Message);
             }
+        }
 
+        // GET: api/topic
+        [HttpGet("paging")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetPaging(GetTopicNewsRequest request)
+        {
+            try
+            {
+                var topics = await _topicService.GetTopicPaging(request);
+
+                topics.Message = _localizer[topics.Message].Value;
+
+                if (topics.IsSuccessed == false)
+                {
+                    return BadRequest(topics);
+                }
+                return Ok(topics);
+            }
+            catch (FakeNewsException e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
 

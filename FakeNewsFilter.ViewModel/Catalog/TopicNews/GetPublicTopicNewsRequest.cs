@@ -1,8 +1,12 @@
 ﻿using System;
+using FakeNewsFilter.ViewModel.Common;
+
 namespace FakeNewsFilter.ViewModel.Catalog.TopicNews
 {
-    public class GetPublicTopicNewsRequest
+    public class GetTopicNewsRequest : PagingBase
     {
-        public int? TopicId { get; set; }
+        public string Keyword { get; set; }
+
+        public string LanguageId { get; set; }
     }
 }
