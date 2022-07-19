@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using FakeNewsFilter.Data.Enums;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace FakeNewsFilter.Data.Entities
 {
@@ -21,6 +22,8 @@ namespace FakeNewsFilter.Data.Entities
         public double SocialBeliefs { get; set; }
 
         public bool? IsVote { get; set; }
+
+        public int ViewCount { get; set; }
 
         public DateTime DatePublished { get; set; }
 

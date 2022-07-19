@@ -12,8 +12,6 @@ namespace FakeNewsFilter
         {
             var logPath = Path.Combine(Directory.GetCurrentDirectory(), "Logs");
             NLog.GlobalDiagnosticsContext.Set("LogDirectory", logPath);
-            
-
             CreateHostBuilder(args).Build().Run();
         }
 

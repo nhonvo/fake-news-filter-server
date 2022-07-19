@@ -11,23 +11,39 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using FakeNewsFilter.Utilities.Exceptions;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
+using Quartz;
+using StackExchange.Redis;
 
 namespace FakeNewsFilter.API.Controllers
 {
     [Route("api/[controller]")]
     [Authorize]
-    public class NewsController : ControllerBase
+    public class NewsController : ControllerBase, IJob
     {
+        private readonly IMemoryCache _memoryCache;
+        private readonly IDistributedCache _distributedCache;
         private readonly INewsService _newsService;
         private readonly IStringLocalizer<NewsController> _localizer;
         private readonly IFollowService _followService;
         private readonly ILogger<NewsController> _logger;
-        public NewsController(INewsService newsService, IFollowService followService, IStringLocalizer<NewsController> localizer, ILogger<NewsController> logger)
+        private readonly IConfiguration _configuration;
+        private readonly IConnectionMultiplexer _redis;
+
+        public NewsController(IMemoryCache memoryCache, IDistributedCache distributedCache, INewsService newsService,
+            IFollowService followService, IStringLocalizer<NewsController> localizer, ILogger<NewsController> logger,
+            IConnectionMultiplexer redis, IConfiguration configuration)
         {
+            _memoryCache = memoryCache;
+            _distributedCache = distributedCache;
             _newsService = newsService;
             _followService = followService;
             _localizer = localizer;
             _logger = logger;
+            _configuration = configuration;
+            _redis = redis;
         }
 
         [HttpPost]
@@ -60,20 +76,19 @@ namespace FakeNewsFilter.API.Controllers
                     _logger.LogError(createNews.Message);
                     return BadRequest(createNews);
                 }
-                
+
                 var getNews = await _newsService.GetById(Int32.Parse(createNews.ResultObj));
 
                 getNews.Message = _localizer[getNews.Message].Value;
 
                 _logger.LogInformation(createNews.Message);
-                return CreatedAtAction(nameof(GetById), new { newsId = createNews }, getNews);
+                return CreatedAtAction(nameof(GetById), new {newsId = createNews}, getNews);
             }
             catch (FakeNewsException e)
             {
                 _logger.LogError(e.Message);
                 return BadRequest(e.Message);
             }
-
         }
 
         [HttpDelete("{newsId}")]
@@ -100,7 +115,6 @@ namespace FakeNewsFilter.API.Controllers
                 _logger.LogError(e.Message);
                 return BadRequest(e.Message);
             }
-
         }
 
         // GET: api/news
@@ -127,6 +141,37 @@ namespace FakeNewsFilter.API.Controllers
             {
                 return NotFound(news);
             }
+
+            return Ok(news);
+        }
+
+        [HttpGet("views/{newsId}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetViewCount(int newsId)
+        {
+            var news = await _newsService.GetViewCount(newsId);
+
+            if (news == null)
+            {
+                return NotFound(news);
+            }
+
+            // news.Message = _localizer[news.Message].Value;
+            var cacheKey = "view_count_news_" + newsId;
+            var newsCached = _distributedCache.GetString(cacheKey);
+            if (newsCached == null)
+            {
+                _distributedCache.SetString(cacheKey, "1");
+                news.ResultObj = 1;
+            }
+            else
+            {
+                var viewCount = Int32.Parse(newsCached);
+                viewCount++;
+                _distributedCache.SetString(cacheKey, viewCount.ToString());
+                news.ResultObj = viewCount;
+            }
+
             return Ok(news);
         }
 
@@ -144,7 +189,7 @@ namespace FakeNewsFilter.API.Controllers
             // }
             return Ok(content);
         }
-        
+
         // GET: api/news/topic
         [HttpGet("Topic")]
         [AllowAnonymous]
@@ -204,6 +249,7 @@ namespace FakeNewsFilter.API.Controllers
                     _logger.LogError(resultToken.Message);
                     return BadRequest(resultToken);
                 }
+
                 _logger.LogInformation(resultToken.Message);
                 return Ok(resultToken);
             }
@@ -212,7 +258,6 @@ namespace FakeNewsFilter.API.Controllers
                 _logger.LogError(e.Message);
                 return BadRequest(e.Message);
             }
-
         }
 
         [HttpPatch("link/{newsId}/{newLink}")]
@@ -225,6 +270,7 @@ namespace FakeNewsFilter.API.Controllers
                 {
                     return BadRequest(ModelState);
                 }
+
                 var result = await _newsService.UpdateLink(newsId, newLink);
 
                 result.Message = _localizer[result.Message].Value + result.ResultObj;
@@ -234,6 +280,7 @@ namespace FakeNewsFilter.API.Controllers
                     _logger.LogError(result.Message);
                     return BadRequest(result);
                 }
+
                 _logger.LogInformation(result.Message);
                 return Ok(result);
             }
@@ -242,7 +289,31 @@ namespace FakeNewsFilter.API.Controllers
                 _logger.LogError(e.Message);
                 return BadRequest(e.Message);
             }
+        }
+        public Dictionary<int, int> GetKeysAndValuesInRedisCache()
+        {
+            var dict = new Dictionary<int, int>();
+            string connectionString = _configuration["Redis:ConnectionString"];
+            var redisServer = _redis.GetServer(connectionString);
+            var keys = redisServer.Keys();
 
+            foreach (var key in keys)
+            {
+                //get newsId from key
+                var keySplit = key.ToString().Split('_');
+                var newsId = Int32.Parse(keySplit[^1]);
+
+                var value = _distributedCache.GetString(key);
+                dict.Add(newsId, Int32.Parse(value));
+            }
+
+            return dict;
+        }
+
+        public async Task Execute(IJobExecutionContext context)
+        {
+            var newsViewCountDict = GetKeysAndValuesInRedisCache();
+            await _newsService.UpdateViewCount(newsViewCountDict);
         }
 
         [HttpPut]
@@ -275,6 +346,7 @@ namespace FakeNewsFilter.API.Controllers
                     _logger.LogError(resultToken.Message);
                     return BadRequest(resultToken);
                 }
+
                 _logger.LogInformation(resultToken.Message);
                 return Ok(resultToken);
             }
@@ -283,7 +355,6 @@ namespace FakeNewsFilter.API.Controllers
                 _logger.LogError(e.Message);
                 return BadRequest(e.Message);
             }
-
         }
     }
 }

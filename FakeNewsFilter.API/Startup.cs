@@ -1,6 +1,6 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Text.Json.Serialization;
 using FakeNewsFilter.Application.Catalog;
 using FakeNewsFilter.Application.Common;
 using FakeNewsFilter.Application.Mapping;
@@ -22,10 +22,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.Options;
-using FakeNewsFilter.API.Contract;
+using FakeNewsFilter.API.Controllers;
+using Quartz;
+using Quartz.Impl.Calendar;
+using Quartz.Impl.Matchers;
 using Slugify;
+using StackExchange.Redis;
+using Role = FakeNewsFilter.Data.Entities.Role;
 
 namespace FakeNewsFilter
 {
@@ -49,21 +53,23 @@ namespace FakeNewsFilter
 
             services.Configure<RequestLocalizationOptions>(options =>
             {
-                var cultures = new List<CultureInfo> {
+                var cultures = new List<CultureInfo>
+                {
                     new CultureInfo("en"),
                     new CultureInfo("vi")
                 };
                 options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("en");
                 options.SupportedCultures = cultures;
-                options.SupportedUICultures = cultures; 
+                options.SupportedUICultures = cultures;
             });
-            
+
             //Config Database Connection
-            services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString(SystemConstants.MainConnectionString)));
+            services.AddDbContext<ApplicationDBContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString(SystemConstants.MainConnectionString)));
 
             //AutoMapper
             services.AddAutoMapper(typeof(MappingProfile));
-           
+
             //Indentity
             services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<ApplicationDBContext>()
@@ -87,85 +93,150 @@ namespace FakeNewsFilter
             services.AddTransient<IStoryService, StoryService>();
             services.AddTransient<IVoteService, VoteService>();
             services.AddTransient<SlugHelper>();
+            services.AddSingleton<IConnectionMultiplexer>(
+                ConnectionMultiplexer.Connect(Configuration["Redis:ConnectionString"]));
             services.AddTransient<IExtraFeaturesService, ExtraFeaturesService>();
-            services.AddScoped<ICommentService , CommentService>();
-            services.AddScoped<INewsCommunityService , NewsCommunityService>();
+            services.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<INewsCommunityService, NewsCommunityService>();
 
             //Fluent Validation
             //User
-            services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestUserValidator>());
-            services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RegisterRequestUserValidator>());
-            services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UpdateRequestUserValidator>());
+            services.AddControllers().AddFluentValidation(fv =>
+                fv.RegisterValidatorsFromAssemblyContaining<LoginRequestUserValidator>());
+            services.AddControllers().AddFluentValidation(fv =>
+                fv.RegisterValidatorsFromAssemblyContaining<RegisterRequestUserValidator>());
+            services.AddControllers().AddFluentValidation(fv =>
+                fv.RegisterValidatorsFromAssemblyContaining<UpdateRequestUserValidator>());
             //Topic
-            services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateRequestTopicValidator>());
-            services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UpdateRequestTopicValidator>());
+            services.AddControllers().AddFluentValidation(fv =>
+                fv.RegisterValidatorsFromAssemblyContaining<CreateRequestTopicValidator>());
+            services.AddControllers().AddFluentValidation(fv =>
+                fv.RegisterValidatorsFromAssemblyContaining<UpdateRequestTopicValidator>());
             //News
-            services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateRequestNewsValidator>());
-            services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UpdateRequestNewsValidator>());
+            services.AddControllers().AddFluentValidation(fv =>
+                fv.RegisterValidatorsFromAssemblyContaining<CreateRequestNewsValidator>());
+            services.AddControllers().AddFluentValidation(fv =>
+                fv.RegisterValidatorsFromAssemblyContaining<UpdateRequestNewsValidator>());
             //Story
-            services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateRequestStoryValidator>());
+            services.AddControllers().AddFluentValidation(fv =>
+                fv.RegisterValidatorsFromAssemblyContaining<CreateRequestStoryValidator>());
 
             //Swagger
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Fake News Filter API", Version = "v1" });
-
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                {
-                    Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n
-                      Enter 'Bearer' [space] and then your token in the text input below.
-                      \r\n\r\nExample: 'Bearer 12345abcdef'",
-                    Name = "Authorization",
-                    In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer"
-                });
-
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
-                  {
-                    {
-                      new OpenApiSecurityScheme
-                      {
-                        Reference = new OpenApiReference
-                          {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                          },
-                          Scheme = "oauth2",
-                          Name = "Bearer",
-                          In = ParameterLocation.Header,
-                        },
-                        new List<string>()
-                      }
-                    });
-            });
+            // services.AddSwaggerGen(c =>
+            // {
+            //     c.SwaggerDoc("v1", new OpenApiInfo {Title = "Fake News Filter API", Version = "v1"});
+            //
+            //     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            //     {
+            //         Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n
+            //           Enter 'Bearer' [space] and then your token in the text input below.
+            //           \r\n\r\nExample: 'Bearer 12345abcdef'",
+            //         Name = "Authorization",
+            //         In = ParameterLocation.Header,
+            //         Type = SecuritySchemeType.ApiKey,
+            //         Scheme = "Bearer"
+            //     });
+            //
+            //     c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+            //     {
+            //         {
+            //             new OpenApiSecurityScheme
+            //             {
+            //                 Reference = new OpenApiReference
+            //                 {
+            //                     Type = ReferenceType.SecurityScheme,
+            //                     Id = "Bearer"
+            //                 },
+            //                 Scheme = "oauth2",
+            //                 Name = "Bearer",
+            //                 In = ParameterLocation.Header,
+            //             },
+            //             new List<string>()
+            //         }
+            //     });
+            // });
 
             string issuer = Configuration.GetValue<string>("Tokens:Issuer");
             string signingKey = Configuration.GetValue<string>("Tokens:Key");
             byte[] signingKeyBytes = System.Text.Encoding.UTF8.GetBytes(signingKey);
 
             services.AddAuthentication(opt =>
-            {
-                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(options =>
-            {
-                options.RequireHttpsMetadata = false;
-                options.SaveToken = true;
-                options.TokenValidationParameters = new TokenValidationParameters()
                 {
-                    ValidateIssuer = true,
-                    ValidIssuer = issuer,
-                    ValidateAudience = true,
-                    ValidAudience = issuer,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ClockSkew = System.TimeSpan.Zero,
-                    IssuerSigningKey = new SymmetricSecurityKey(signingKeyBytes)
-                };
+                    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(options =>
+                {
+                    options.RequireHttpsMetadata = false;
+                    options.SaveToken = true;
+                    options.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = issuer,
+                        ValidateAudience = true,
+                        ValidAudience = issuer,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ClockSkew = System.TimeSpan.Zero,
+                        IssuerSigningKey = new SymmetricSecurityKey(signingKeyBytes)
+                    };
+                });
 
-        });
+            //Redis
+            services.AddStackExchangeRedisCache(options => { options.Configuration = "localhost"; });
+
+            //Quartz
+            // if you are using persistent job store, you might want to alter some options
+            services.Configure<QuartzOptions>(options =>
+            {
+                options.Scheduling.IgnoreDuplicates = true; // default: false
+                options.Scheduling.OverWriteExistingData = true; // default: true
+            });
+
+            services.AddQuartz(q =>
+            {
+                // handy when part of cluster or you want to otherwise identify multiple schedulers
+                q.SchedulerId = "Scheduler-Core";
+
+                // we take this from appsettings.json, just show it's possible
+                q.SchedulerName = "Quartz ASP.NET Core Sample Scheduler";
+
+                // as of 3.3.2 this also injects scoped services (like EF DbContext) without problems
+                q.UseMicrosoftDependencyInjectionJobFactory();
+
+                // or for scoped service support like EF Core DbContext
+                // q.UseMicrosoftDependencyInjectionScopedJobFactory();
+
+                // these are the defaults
+                q.UseSimpleTypeLoader();
+                q.UseInMemoryStore();
+                q.UseDefaultThreadPool(tp => { tp.MaxConcurrency = 10; });
+
+                // quickest way to create a job with single trigger is to use ScheduleJob
+                // (requires version 3.2)
+                q.ScheduleJob<NewsController>(trigger => trigger
+                    .WithIdentity("Combined Configuration Trigger")
+                    .StartAt(DateBuilder.EvenSecondDate(DateTimeOffset.UtcNow.AddSeconds(7)))
+                    .WithDailyTimeIntervalSchedule(x => x.WithInterval(60, IntervalUnit.Second))
+                    .WithDescription("my awesome trigger configured for a job with single call")
+                );
+
+
+                const string calendarName = "myHolidayCalendar";
+                q.AddCalendar<HolidayCalendar>(
+                    name: calendarName,
+                    replace: true,
+                    updateTriggers: true,
+                    x => x.AddExcludedDate(new DateTime(2020, 5, 15))
+                );
+            });
+
+            // Quartz.Extensions.Hosting allows you to fire background service that handles scheduler lifecycle
+            services.AddQuartzHostedService(options =>
+            {
+                // when shutting down we want jobs to complete gracefully
+                options.WaitForJobsToComplete = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -181,10 +252,12 @@ namespace FakeNewsFilter
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            app.UseRequestLocalization(app.ApplicationServices.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
+            app.UseRequestLocalization(app.ApplicationServices
+                .GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 
             app.UseCors(x => x
                 .AllowAnyMethod()
@@ -199,17 +272,11 @@ namespace FakeNewsFilter
 
             app.UseHttpsRedirection();
 
-            app.UseSwagger();
+            // app.UseSwagger();
 
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Fake News Filter API v1");
-            });
+            // app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Fake News Filter API v1"); });
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }
