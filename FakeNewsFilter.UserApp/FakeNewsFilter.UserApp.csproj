@@ -5,18 +5,18 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Remove="Services\"/>
+        <None Remove="Services\" />
     </ItemGroup>
     <ItemGroup>
-        <Folder Include="Services\"/>
+        <Folder Include="Services\" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\FakeNewsFilter.ViewModel\FakeNewsFilter.ViewModel.csproj"/>
+        <ProjectReference Include="..\FakeNewsFilter.ViewModel\FakeNewsFilter.ViewModel.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.5"/>
-        <PackageReference Include="Quartz.AspNetCore" Version="3.4.0"/>
-        <PackageReference Include="Quartz.Extensions.Microsoft.DependencyInjection" Version="0.0.3"/>
-        <PackageReference Include="Quartz.Plugins.TimeZoneConverter" Version="3.4.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.7" />
+        <PackageReference Include="Quartz.AspNetCore" Version="3.4.0" />
+        <PackageReference Include="Quartz.Extensions.Microsoft.DependencyInjection" Version="0.0.3" />
+        <PackageReference Include="Quartz.Plugins.TimeZoneConverter" Version="3.4.0" />
     </ItemGroup>
 </Project>

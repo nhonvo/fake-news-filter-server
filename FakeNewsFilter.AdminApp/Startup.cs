@@ -36,7 +36,7 @@ namespace FakeNewsFilter.WebApp
             services.AddBreadcrumbs(GetType().Assembly, options =>
             {
                 options.TagName = "nav";
-                options.TagClasses = "";
+                options.TagClasses = "lead";
                 options.OlClasses = "breadcrumb mb-0 p-0";
                 options.LiClasses = "breadcrumb-item";
                 options.ActiveLiClasses = "breadcrumb-item active";

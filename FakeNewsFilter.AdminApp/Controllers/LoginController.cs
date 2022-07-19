@@ -44,6 +44,8 @@ namespace FakeNewsFilter.AdminApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(LoginRequest request)
         {
+            try
+            {
                 if (!ModelState.IsValid)
                 {
                     ViewBag.ModelState = ModelState;
@@ -52,25 +54,25 @@ namespace FakeNewsFilter.AdminApp.Controllers
 
                 var result = await _userApi.Authenticate(request);
 
-                if(string.IsNullOrEmpty(result.ResultObj?.Token)) 
+                if (string.IsNullOrEmpty(result.ResultObj?.Token))
                 {
                     ViewBag.Error = result.Message;
                     return View();
                 }
 
-            var userPrincipal = this.ValidateToken(result.ResultObj.Token);
+                var userPrincipal = this.ValidateToken(result.ResultObj.Token);
 
-            // Gets list of claims.
-            IEnumerable<Claim> claim = userPrincipal.Claims;
+                // Gets list of claims.
+                IEnumerable<Claim> claim = userPrincipal.Claims;
 
-            var role = claim
-                .Where(x => x.Type == ClaimTypes.Role)
-                .FirstOrDefault();
+                var role = claim
+                    .Where(x => x.Type == ClaimTypes.Role)
+                    .FirstOrDefault();
 
-            if (role.Value.Contains("Admin"))
-            {
+                if (role.Value.Contains("Admin"))
+                {
 
-                var authProperties = new AuthenticationProperties
+                    var authProperties = new AuthenticationProperties
                     {
                         ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
                         IsPersistent = false
@@ -89,7 +91,12 @@ namespace FakeNewsFilter.AdminApp.Controllers
                 {
                     ViewBag.Error = "You don't have role to access ";
                     return View();
-                }      
+                }
+            }catch(Exception ex)
+            {
+                ViewBag.Error = ex.Message.ToString();
+                return View();
+            }
         }
 
         private ClaimsPrincipal ValidateToken(string jwtToken)
