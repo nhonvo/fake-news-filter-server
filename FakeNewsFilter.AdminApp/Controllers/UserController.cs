@@ -92,7 +92,6 @@ namespace FakeNewsFilter.WebApp.Controllers
                     Email = user.Email,
                     Name = user.FullName,
                     UserName = user.UserName,
-                    PhoneNumber = user.PhoneNumber,
                     Avatar = user.Avatar ?? "default.png"
                 };
 

@@ -163,7 +163,6 @@ namespace FakeNewsFilter.WebApp.Services
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.UserName) ? "" : request.UserName.ToString()), "UserName");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Name) ? "" : request.Name.ToString()), "Name");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Email) ? "" : request.Email.ToString()), "Email");
-            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.PhoneNumber) ? "" : request.PhoneNumber.ToString()), "PhoneNumber");
 
            
             var response = await client.PutAsync($"/api/users/", requestContent);

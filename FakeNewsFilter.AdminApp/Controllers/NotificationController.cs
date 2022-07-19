@@ -15,7 +15,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
         }
 
         // GET
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             if (TempData["result"] != null)
             {
@@ -29,6 +29,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
 
             return View();
         }
+
         [HttpGet]
         public async Task<IActionResult> GetViewNotifications()
         {
@@ -39,6 +40,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
                 data = data.notifications,
             });
         }
+
         [HttpGet]
         public async Task<IActionResult> GetNotification(string id)
         {
