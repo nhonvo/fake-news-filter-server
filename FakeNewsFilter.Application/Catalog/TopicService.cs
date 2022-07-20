@@ -113,7 +113,10 @@ namespace FakeNewsFilter.Application.Catalog
                 //2. Lọc theo điều kiện
                 if (!string.IsNullOrEmpty(request.Keyword))
                 {
-                    query = query.Where(x => x.topic.Label.Contains(request.Keyword));
+                    query = query.Where(x => (x.topic.Label.Contains(request.Keyword)) ||
+                                             (x.topic.Description.Contains(request.Keyword)) ||
+                                             (x.topic.Status.Equals(request.Keyword))
+                                       );
                 }
                     
 
@@ -175,7 +178,8 @@ namespace FakeNewsFilter.Application.Catalog
                         Description = request.Description,
                         Tag = request.Tag,
                         Timestamp = DateTime.Now,
-                        LanguageId = request.LanguageId
+                        LanguageId = request.LanguageId,
+                        Status = Status.Active
                     };
 
                     //Lưu ảnh, video,...

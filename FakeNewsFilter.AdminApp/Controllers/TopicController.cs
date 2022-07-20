@@ -31,17 +31,8 @@ namespace FakeNewsFilter.AdminApp.Controllers
         }
 
         [Breadcrumb("Topic Manager")]
-        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10)
+        public async Task<IActionResult> Index(string keyword,int pageIndex = 1, int pageSize = 10)
         {
-            if (TempData["result"] != null)
-            {
-                ViewBag.SuccessMsg = TempData["Result"];
-            }
-            if (TempData["Error"] != null)
-            {
-                ViewBag.Error = TempData["Error"];
-            }
-
             var languageId = HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
 
             var request = new GetTopicNewsRequest()
@@ -54,11 +45,22 @@ namespace FakeNewsFilter.AdminApp.Controllers
 
             var data = await _topicApi.GetTopicPaging(request);
 
+            ViewBag.Keyword = keyword;
+
             var languageData = await _languageApi.GetLanguageInfo();
 
            
             ViewBag.ListTopic = new SelectList(data.ResultObj.Items.GroupBy(x => x.Label).Select(y => y.First()).Distinct(), "Label", "Label");
             ViewBag.ListLanguage = new SelectList(languageData.ResultObj, "Id", "Name");
+
+            if (TempData["result"] != null)
+            {
+                ViewBag.SuccessMsg = TempData["Result"];
+            }
+            if (TempData["Error"] != null)
+            {
+                ViewBag.Error = TempData["Error"];
+            }
 
             return View(data);
         }

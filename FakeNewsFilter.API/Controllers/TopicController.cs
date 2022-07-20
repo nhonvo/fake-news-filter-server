@@ -9,7 +9,6 @@ using FakeNewsFilter.ViewModel.Common;
 using FakeNewsFilter.ViewModel.Validator.Topic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 
@@ -39,7 +38,6 @@ namespace FakeNewsFilter.API.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromForm]TopicCreateRequest request)
         {
-            
                 try
                 {
                     CreateRequestTopicValidator validator = new CreateRequestTopicValidator(_localizer);

@@ -2,9 +2,7 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using FakeNewsFilter.Data.Entities;
 using FakeNewsFilter.ViewModel.System.Users;
-using FakeNewsFilter.WebApp.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FakeNewsFilter.AdminApp.Controllers.Components

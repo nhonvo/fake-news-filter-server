@@ -10,6 +10,7 @@
 //Load Datatable List Topic
 var select = $('.select2');
 
+
 $(function () {
     //Select
     // Loading array data
