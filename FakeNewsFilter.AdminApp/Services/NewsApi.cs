@@ -207,7 +207,7 @@ namespace FakeNewsFilter.AdminApp.Services
                 requestContent.Add(new StringContent(string.IsNullOrEmpty(topicId.ToString()) ? "" : topicId.ToString()), "TopicId");
             }
 
-            var response = await client.PutAsync($"/api/News/", requestContent);
+            var response = await client.PutAsync($"/api/News/Update", requestContent);
 
             var result = await response.Content.ReadAsStringAsync();
 

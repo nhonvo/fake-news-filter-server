@@ -159,7 +159,7 @@ namespace FakeNewsFilter.AdminApp.Services
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.LanguageId) ? "" : request.LanguageId.ToString()), "LanguageId");
 
 
-            var response = await client.PutAsync($"/api/topic/" + request.TopicId, requestContent);
+            var response = await client.PutAsync($"/api/topic/Update/" + request.TopicId, requestContent);
 
             var result = await response.Content.ReadAsStringAsync();
 

@@ -219,7 +219,7 @@ namespace FakeNewsFilter.API.Controllers
             return Ok(newsList);
         }
 
-        [HttpPut]
+        [HttpPut("Update")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update([FromForm] NewsUpdateRequest request)
         {
@@ -316,7 +316,7 @@ namespace FakeNewsFilter.API.Controllers
             await _newsService.UpdateViewCount(newsViewCountDict);
         }
 
-        [HttpPut]
+        [HttpPut("Archive")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Archive([FromForm] NewsUpdateRequest request)
         {
