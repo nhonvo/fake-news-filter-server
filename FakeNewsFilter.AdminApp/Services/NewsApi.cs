@@ -20,13 +20,13 @@ namespace FakeNewsFilter.AdminApp.Services
         Task<ApiResult<List<NewsViewModel>>> GetNewsInfo();
         Task<ApiResult<List<NewsViewModel>>> GetNewsByTopic(int topicId);
 
-        Task<ApiResult<NewsInfoVM>> CreateNews(NewsCreateRequest request);
+        Task<ApiResult<string>> CreateNews(NewsCreateRequest request);
 
-        Task<ApiResult<bool>> UpdateNews(NewsUpdateRequest request);
+        Task<ApiResult<string>> UpdateNews(NewsUpdateRequest request);
 
         Task<ApiResult<NewsInfoVM>> GetById(int Id);
 
-        Task<ApiResult<bool>> Delete(int newsId);
+        Task<ApiResult<string>> Delete(int newsId);
     }
 
     public class NewsApi : INewsApi
@@ -105,7 +105,7 @@ namespace FakeNewsFilter.AdminApp.Services
             }
         }
 
-        public async Task<ApiResult<NewsInfoVM>> CreateNews(NewsCreateRequest request)
+        public async Task<ApiResult<string>> CreateNews(NewsCreateRequest request)
         {
             var client = _httpClientFactory.CreateClient();
 
@@ -146,9 +146,9 @@ namespace FakeNewsFilter.AdminApp.Services
 
             if (response.IsSuccessStatusCode)
 
-                return JsonConvert.DeserializeObject<ApiSuccessResult<NewsInfoVM>>(result);
+                return new ApiSuccessResult<string>("Create News Successfully");
 
-            return JsonConvert.DeserializeObject<ApiErrorResult<NewsInfoVM>>(result);
+            return  new ApiErrorResult<string>("Create News Unsuccessfully");
         }
 
         public async Task<ApiResult<NewsInfoVM>> GetById(int Id)
@@ -170,7 +170,7 @@ namespace FakeNewsFilter.AdminApp.Services
         }
 
         /////////////update news
-        public async Task<ApiResult<bool>> UpdateNews(NewsUpdateRequest request)
+        public async Task<ApiResult<string>> UpdateNews(NewsUpdateRequest request)
         {
             var client = _httpClientFactory.CreateClient();
 
@@ -213,12 +213,12 @@ namespace FakeNewsFilter.AdminApp.Services
 
             if (response.IsSuccessStatusCode)
 
-                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);
+                return new ApiSuccessResult<string>("Update News Successfully");
 
-            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
+            return  new ApiErrorResult<string>("Update News Unsuccessfully");
         }
 
-        public async Task<ApiResult<bool>> Delete(int newsId)
+        public async Task<ApiResult<string>> Delete(int newsId)
         {
             var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
             var client = _httpClientFactory.CreateClient();
@@ -227,9 +227,10 @@ namespace FakeNewsFilter.AdminApp.Services
             var response = await client.DeleteAsync($"/api/News/" + newsId);
             var body = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
-                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(body);
 
-            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(body);
+                return new ApiSuccessResult<string>("Delete News Successfully");
+
+            return  new ApiErrorResult<string>("Delete News Unsuccessfully");
         }
     }
 }

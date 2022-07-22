@@ -106,7 +106,6 @@ function CreateTopic(frm, caller) {
     var description = $(frm).find('#Description')[0].value;
     var languageId = $(frm).find('#LanguageId')[0].value;
     var label = $(frm).find('#Label')[0].value;
-
     var thumbTopic = $(frm).find('input:file[name="ThumbTopic"]')[0].files[0];
 
     fdata.append("Tag", tag);
@@ -114,7 +113,6 @@ function CreateTopic(frm, caller) {
     fdata.append("LanguageId", languageId);
     fdata.append("Label", label);
     fdata.append("ThumbTopic", thumbTopic);
-
     $.ajax(
         {
             type: frm.method,
@@ -124,32 +122,28 @@ function CreateTopic(frm, caller) {
             contentType: false,
             success: function (data) {
                 $('#loading').hide();
-
-                setTimeout(function () {
-                    toastr['success'](
-                        'Create Topic Successfully', 'Success', {
-                            closeButton: true,
-                            tapToDismiss: false,
-                            positionClass: "toast-bottom-left",
-                            rtl: $('html').attr('data-textdirection') === 'rtl'
-                        }
-                    );
-                }, 2000);
+                $('.bd-example-modal-lg').modal('hide');
+                toastr['success'](
+                    'Create Topic Successfully', 'Success', {
+                        closeButton: true,
+                        tapToDismiss: false,
+                        positionClass: "toast-bottom-left",
+                        rtl: $('html').attr('data-textdirection') === 'rtl'
+                    }
+                );
             },
             error: function (data) {
                 $('#loading').hide();
-
-                setTimeout(function () {
-                    toastr['error'](
-                        'Create Topic Unsuccessfully', 'Error'
-                        , {
-                            closeButton: true,
-                            tapToDismiss: false,
-                            positionClass: "toast-bottom-left",
-                            rtl: $('html').attr('data-textdirection') === 'rtl'
-                        }
-                    );
-                }, 2000);
+                $('.bd-example-modal-lg').modal('hide');
+                toastr['error'](
+                    'Create Topic Unsuccessfully', 'Error'
+                    , {
+                        closeButton: true,
+                        tapToDismiss: false,
+                        positionClass: "toast-bottom-left",
+                        rtl: $('html').attr('data-textdirection') === 'rtl'
+                    }
+                );
             }
         })
 }

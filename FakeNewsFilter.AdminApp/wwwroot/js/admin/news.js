@@ -15,10 +15,10 @@ $(document).ready(function () {
     var select = $('.select2');
 
     var statusObj = {
-            0: { title: 'Archive', class: 'status-pill red' },
-            1: { title: 'Active', class: 'status-pill green' },
-            2: { title: 'Inactive', class: 'status-pill yellow' }
-        };
+        0: {title: 'Archive', class: 'status-pill red'},
+        1: {title: 'Active', class: 'status-pill green'},
+        2: {title: 'Inactive', class: 'status-pill yellow'}
+    };
 
     select.each(function () {
         var $this = $(this);
@@ -42,20 +42,20 @@ $(document).ready(function () {
             }
         },
 
-    // <th>ID</th>
-    // <th>News</th>
-    // <th>Lang</th>
-    // <th>SyncTime</th>
-    // <th>Status</th>
-    // <th>Actions</th>
-        
+        // <th>ID</th>
+        // <th>News</th>
+        // <th>Lang</th>
+        // <th>SyncTime</th>
+        // <th>Status</th>
+        // <th>Actions</th>
+
         columns: [
-            { "data": 'newsId' },
-            { "data": 'title' },
-            { "data": 'languageId' },
-            { "data": 'timestamp' },
-            { "data": 'status' },
-            { "data": '' }
+            {"data": 'newsId'},
+            {"data": 'title'},
+            {"data": 'languageId'},
+            {"data": 'timestamp'},
+            {"data": 'status'},
+            {"data": ''}
         ],
         columnDefs: [
             {
@@ -88,18 +88,18 @@ $(document).ready(function () {
                 }
             },
             {
-                 //Các nút Actions
-                 targets: 5,
-                 orderable: false,
-                 render: function (data, type, full, meta) {
-                     var $newsId = full['newsId'];
-                     return (
-                         '<div class="row-actions text-center">' +
-                         '<a href="/News/Edit/' + $newsId + '" data-bs-toggle="tooltip" data-bs-placement="top" title = "Edit"> <i class="os-icon os-icon-ui-49"></i> </a>' +
-                         '<a class="danger" onclick=DeleteData("' + $newsId + '"); data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"> <i class="os-icon os-icon-ui-15"></i> </a>' +
-                         '</div>'
-                     );
-                 }
+                //Các nút Actions
+                targets: 5,
+                orderable: false,
+                render: function (data, type, full, meta) {
+                    var $newsId = full['newsId'];
+                    return (
+                        '<div class="row-actions text-center">' +
+                        '<a href="/News/Edit/' + $newsId + '" data-bs-toggle="tooltip" data-bs-placement="top" title = "Edit"> <i class="os-icon os-icon-ui-49"></i> </a>' +
+                        '<a class="danger" onclick=DeleteData("' + $newsId + '"); data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"> <i class="os-icon os-icon-ui-15"></i> </a>' +
+                        '</div>'
+                    );
+                }
             }
         ],
         dom:
@@ -158,9 +158,9 @@ $(document).ready(function () {
                         .each(function (d, j) {
                             select.append(
                                 '<option value="' +
-                                    d +
-                                    '" class="text-capitalize">' +
-                                    d +
+                                d +
+                                '" class="text-capitalize">' +
+                                d +
                                 '</option>'
                             );
                         });
@@ -203,7 +203,7 @@ $(document).ready(function () {
 
 $(function () {
     //Select
- 
+
     selectArray = $('.select2-data-array'),
 
         selectArray.wrap('<div class="position-relative"></div>').select2({
@@ -297,33 +297,28 @@ function CreateNews(frm, caller) {
             contentType: false,
             success: function (data) {
                 $('#loading').hide();
-
-                setTimeout(function () {
-                    toastr['success'](
-                        'Create News Successfully', 'Success', {
+                $('.bd-example-modal-lg').modal('hide');
+                toastr['success'](
+                    'Create News Successfully', 'Success', {
                         closeButton: true,
                         tapToDismiss: false,
                         positionClass: "toast-bottom-left",
                         rtl: $('html').attr('data-textdirection') === 'rtl'
                     }
-                    );
-                }, 2000);
+                );
             },
             error: function (data) {
-
-                setTimeout(function () {
-                    $('#loading').hide();
-
-                    toastr['error'](
-                        'Create News Unsuccessfully', 'Error'
-                        , {
-                            closeButton: true,
-                            tapToDismiss: false,
-                            positionClass: "toast-bottom-left",
-                            rtl: $('html').attr('data-textdirection') === 'rtl'
-                        }
-                    );
-                }, 2000);
+                $('#loading').hide();
+                $('.bd-example-modal-lg').modal('hide');
+                toastr['error'](
+                    'Create News Unsuccessfully', 'Error'
+                    , {
+                        closeButton: true,
+                        tapToDismiss: false,
+                        positionClass: "toast-bottom-left",
+                        rtl: $('html').attr('data-textdirection') === 'rtl'
+                    }
+                );
             }
         })
 }
@@ -331,15 +326,14 @@ function CreateNews(frm, caller) {
 function DeleteData(newsId) {
     if (confirm("Are you sure want to delele this news?")) {
         Delete(newsId);
-    }
-    else {
+    } else {
         return false;
     }
 }
 
 function Delete(newsId) {
     var url = "/News/Delete";
-    $.post(url, { newsId: newsId }, function (data) {
+    $.post(url, {newsId: newsId}, function (data) {
         location.reload();
     });
 }
