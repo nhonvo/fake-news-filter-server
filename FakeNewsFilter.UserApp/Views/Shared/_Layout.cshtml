@@ -2,6 +2,7 @@
 <html class="no-js" lang="en">
 
 <head>
+    @RenderSection("headerscripts", required: false)
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>NewsViral - NewsViral HTML Template</title>
@@ -571,7 +572,7 @@
             <div class="container">
                 <div class="row">
                     <!-- sidebar-left -->
-                    <div class="col-lg-2 col-md-3 primary-sidebar sticky-sidebar sidebar-left order-2 order-md-1">
+                    @*<div class="col-lg-2 col-md-3 primary-sidebar sticky-sidebar sidebar-left order-2 order-md-1">
                         <!-- Widget Weather -->
                         <div class="sidebar-widget widget-weather border-radius-10 bg-white mb-30 mt-55">
                             <div class="d-flex">
@@ -634,7 +635,7 @@
                             </ul>
                         </div>
                     </div>
-                    <!-- main content -->
+                    <!-- main content -->*@
                         @RenderBody()
 
                 </div>
@@ -642,6 +643,7 @@
         </main>
         <!-- Footer Start-->
         <footer>
+            @RenderSection("footerscripts", required: false)
             <div class="footer-area pt-50 bg-white">
                 <div class="container">
                     <div class="row pb-30">
