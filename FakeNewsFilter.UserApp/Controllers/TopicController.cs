@@ -30,7 +30,7 @@ public class TopicViewComponent : ViewComponent
             ViewBag.Error = TempData["Error"];
         }
 
-        var data = await _topicApi.GetTopicInfo();
+        var data = await _topicApi.GetAllTopic();
         return View(data.ResultObj);
     }
 }
