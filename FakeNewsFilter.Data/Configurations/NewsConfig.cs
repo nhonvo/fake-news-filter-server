@@ -1,4 +1,5 @@
-﻿using FakeNewsFilter.Data.Entities;
+﻿using System;
+using FakeNewsFilter.Data.Entities;
 using FakeNewsFilter.Data.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -17,7 +18,7 @@ namespace FakeNewsFilter.Data.Configurations
 
             builder.Property(x => x.Title).IsRequired().HasMaxLength(150);
 
-            builder.Property(x => x.Timestamp);
+            builder.Property(x => x.Timestamp).HasDefaultValue(DateTime.Now);
 
             builder.Property(x => x.IsVote).HasDefaultValue(true);
 

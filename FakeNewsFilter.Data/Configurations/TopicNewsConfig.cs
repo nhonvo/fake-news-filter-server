@@ -28,7 +28,7 @@ namespace FakeNewsFilter.Data.Configurations
 
             builder.HasOne(x => x.Language).WithMany(x => x.TopicNews).HasForeignKey(x => x.LanguageId).OnDelete(DeleteBehavior.Restrict);
 
-            builder.Property(x => x.Timestamp);
+            builder.Property(x => x.Timestamp).HasDefaultValue(DateTime.Now);
 
             builder.HasOne(x => x.Media).WithOne(x => x.TopicNews).HasForeignKey<TopicNews>(x => x.ThumbTopic);
 
