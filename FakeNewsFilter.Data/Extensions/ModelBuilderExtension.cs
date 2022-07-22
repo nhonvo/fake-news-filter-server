@@ -182,7 +182,7 @@ namespace FakeNewsFilter.Data.Extensions
                new TopicNews()
                {
                    TopicId = 8,
-                   Label = "Thế giới",
+                   Label = "breaking",
                    Tag = "dịch bệnh",
                    ThumbTopic = 3,
                    LanguageId = "vi",
@@ -192,7 +192,7 @@ namespace FakeNewsFilter.Data.Extensions
                new TopicNews()
                {
                    TopicId = 9,
-                   Label = "Thế giới",
+                   Label = "normal",
                    Tag = "người Việt Nam",
                    ThumbTopic = 4,
                    LanguageId = "vi",
@@ -202,7 +202,7 @@ namespace FakeNewsFilter.Data.Extensions
                new TopicNews()
                {
                    TopicId = 10,
-                   Label = "TÀI CHÍNH - KINH DOANH",
+                   Label = "normal",
                    Tag = "Kinh tế",
                    ThumbTopic = 5,
                    LanguageId = "vi",
@@ -212,7 +212,7 @@ namespace FakeNewsFilter.Data.Extensions
                new TopicNews()
                {
                    TopicId = 11,
-                   Label = "GIÁO DỤC",
+                   Label = "normal",
                    Tag = "học hành",
                    ThumbTopic = 6,
                    LanguageId = "vi",
@@ -222,7 +222,7 @@ namespace FakeNewsFilter.Data.Extensions
                new TopicNews()
                {
                    TopicId = 12,
-                   Label = "Trò chơi",
+                   Label = "normal",
                    Tag = "Trò chơi",
                    ThumbTopic = 7,
                    LanguageId = "vi",
@@ -232,7 +232,7 @@ namespace FakeNewsFilter.Data.Extensions
                new TopicNews()
                {
                    TopicId = 13,
-                   Label = "Công Nghệ",
+                   Label = "featured",
                    Tag = "Sản phẩm",
                    ThumbTopic = 8,
                    LanguageId = "vi",
@@ -242,7 +242,7 @@ namespace FakeNewsFilter.Data.Extensions
                new TopicNews()
                {
                    TopicId = 14,
-                   Label = "Thời sự",
+                   Label = "normal",
                    Tag = "Phóng sự",
                    ThumbTopic = 9,
                    LanguageId = "vi",
