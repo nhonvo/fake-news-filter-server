@@ -15,12 +15,6 @@ namespace FakeNewsFilter.UserApp.Controllers
             _logger = logger;
         }
 
-
-        [HttpGet("/intro")]
-        public IActionResult Index()
-        {
-            return View();
-        }
         public IActionResult Privacy()
         {
             return View("Privacy");
