@@ -8,17 +8,17 @@
 ==========================================================================================*/
 
 //Load Datatable List Topic
+var statusObj = {
+    0: {title: 'Archive', class: 'status-pill red'},
+    1: {title: 'Active', class: 'status-pill green'},
+    2: {title: 'Inactive', class: 'status-pill yellow'}
+};
+
 $(document).ready(function () {
 
     $('#loading').hide();
 
     var select = $('.select2');
-
-    var statusObj = {
-        0: {title: 'Archive', class: 'status-pill red'},
-        1: {title: 'Active', class: 'status-pill green'},
-        2: {title: 'Inactive', class: 'status-pill yellow'}
-    };
 
     select.each(function () {
         var $this = $(this);
@@ -37,8 +37,7 @@ $(document).ready(function () {
             contentType: "application/json",
             dataType: "json",
             data: function (data) {
-                console.log(data);
-                return JSON.stringify(data);
+                // return JSON.stringify(data);
             }
         },
 
@@ -210,7 +209,6 @@ $(function () {
             dropdownAutoWidth: true,
             dropdownParent: selectArray.parent(),
             width: '100%',
-            // data: data
         });
 
     var changePicture = $('#ThumbNews'),
@@ -297,7 +295,21 @@ function CreateNews(frm, caller) {
             contentType: false,
             success: function (data) {
                 $('#loading').hide();
-                $('.bd-example-modal-lg').modal('hide');
+                var dataTable = $('#list_news').DataTable();
+
+                dataTable.row.add({
+                    "newsId": data.resultObj.newsId,
+                    "title": data.resultObj.title,
+                    "languageId": data.resultObj.languageId,
+                    "timestamp": data.resultObj.timestamp,
+                    "status": data.resultObj.status,
+                    "newsId": data.resultObj.newsId
+                }).draw();
+                
+                $('form[action="/News/Create"]')[0].reset();
+                CKEDITOR.instances.ckeditor1.setData("");
+                $('#TopicId').val(null).trigger('change');
+                
                 toastr['success'](
                     'Create News Successfully', 'Success', {
                         closeButton: true,
@@ -307,6 +319,7 @@ function CreateNews(frm, caller) {
                     }
                 );
             },
+            
             error: function (data) {
                 $('#loading').hide();
                 $('.bd-example-modal-lg').modal('hide');

@@ -20,7 +20,7 @@ namespace FakeNewsFilter.AdminApp.Services
         Task<ApiResult<List<NewsViewModel>>> GetNewsInfo();
         Task<ApiResult<List<NewsViewModel>>> GetNewsByTopic(int topicId);
 
-        Task<ApiResult<string>> CreateNews(NewsCreateRequest request);
+        Task<ApiResult<NewsViewModel>> CreateNews(NewsCreateRequest request);
 
         Task<ApiResult<string>> UpdateNews(NewsUpdateRequest request);
 
@@ -105,7 +105,7 @@ namespace FakeNewsFilter.AdminApp.Services
             }
         }
 
-        public async Task<ApiResult<string>> CreateNews(NewsCreateRequest request)
+        public async Task<ApiResult<NewsViewModel>> CreateNews(NewsCreateRequest request)
         {
             var client = _httpClientFactory.CreateClient();
 
@@ -145,10 +145,10 @@ namespace FakeNewsFilter.AdminApp.Services
             var result = await response.Content.ReadAsStringAsync();
 
             if (response.IsSuccessStatusCode)
-
-                return new ApiSuccessResult<string>("Create News Successfully");
-
-            return  new ApiErrorResult<string>("Create News Unsuccessfully");
+                
+                return JsonConvert.DeserializeObject<ApiSuccessResult<NewsViewModel>>(result);
+            
+            return JsonConvert.DeserializeObject<ApiErrorResult<NewsViewModel>>(result);
         }
 
         public async Task<ApiResult<NewsInfoVM>> GetById(int Id)
