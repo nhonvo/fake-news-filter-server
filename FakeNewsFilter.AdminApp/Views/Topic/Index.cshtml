@@ -2,114 +2,69 @@
 @using FakeNewsFilter.Data.Enums;
 @using FakeNewsFilter.ViewModel.Catalog.TopicNews;
 
-@model ApiResult<PagedResult<FakeNewsFilter.ViewModel.Catalog.TopicNews.TopicInfoVM>>
+@model ApiResult<List<TopicInfoVM>>
 
 @{
     ViewData["Title"] = "Topic List - Fake News Filter";
 }
 
 @section headerscripts{
-    <link rel="stylesheet" type="text/css" href="/bower_components/datatables.net-buttons-bs/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" type="text/css" href="/bower_components/datatables.net-buttons-bs/css/responsive.bootstrap4.min.css">
-    <link rel="stylesheet" type="text/css" href="/bower_components/datatables.net-buttons-bs/css/buttons.bootstrap5.min.css">
-    <link href="/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="/bower_components/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <script src="https://momentjs.com/downloads/moment.js"></script>
 }
 
-@if (ViewBag.SuccessMsg != null)
-{
-    <script>
-        setTimeout(function() {
-            toastr['success'](
-                '@ViewBag.SuccessMsg',
-                'Success', {
-                    closeButton: true,
-                    tapToDismiss: false,
-                    positionClass: "toast-bottom-left",
-                    rtl: $('html').attr('data-textdirection') === 'rtl'
-                }
-            );
-        }, 2000);
-    </script>
-}
+@*Partial View hiển thị các thông báo*@
+<partial name="_Toastr" />
 
 
-@if (ViewBag.Error != null)
-{
-    <script>
-        setTimeout(function() {
-            toastr['error'](
-                '@ViewBag.Error',
-                'Error', {
-                    closeButton: true,
-                    tapToDismiss: false,
-                    positionClass: "toast-bottom-left",
-                    rtl: $('html').attr('data-textdirection') === 'rtl'
-                }
-            );
-        }, 2000);
-    </script>
-}
+@*Hiển thị tổng quan dữ liệu (số lượng chủ đề, số lượng tin tức có trong các chủ )*@
+<div class="container-fluid">
+    <div class="element-wrapper">
+        <h6 class="element-header">
+            SUMMARY INFOMATION
+        </h6>
+    </div>
+    <div class="row">
+        <div class="col-sm-6 col-xxxl-6">
+            <a class="element-box el-tablo centered" href="#">
+                <div class="label">
+                    Number of Topic
+                </div>
+                <div class="value">
+                    @Model.ResultObj.Count
+                </div>
+            </a>
+        </div>
 
-
-@foreach (var error in ViewData.ModelState.SelectMany(x => x.Value.Errors))
-{
-    <script>
-            setTimeout(function() {
-                toastr['warning'](
-                    '@error.ErrorMessage',
-                    'Warning', {
-                        closeButton: true,
-                        tapToDismiss: false,
-                        rtl: $('html').attr('data-textdirection') === 'rtl'
-                    }
-                );
-            }, 2000);
-    </script>
-}
-
-<div class="element-wrapper">
-    <h6 class="element-header">
-        Topic List
-    </h6>
-
-    <div class="controls-above-table">
-        <div class="row">
-            @*Nút thêm mới 1 chủ đề tin tức*@
-            <div class="col-sm-6">
-                <button class="btn btn-success" data-target="#createTopic" data-toggle="modal" type="button">Add New Topic</button>
-            </div>
-
-            @*Nút chức năng (Tìm kiếm và Lọc)*@
-            <div class="col-sm-6">
-                <form asp-action="Index" method="get" class="form-inline justify-content-sm-end">
-                    <input class="form-control form-control-sm rounded bright" placeholder="Search" type="text" value="@ViewBag.Keyword" name="keyword" >
-
-                    <select class="form-control form-control-sm rounded bright">
-                        <option selected="selected" value="">
-                            Select Status
-                        </option>
-                        <option value="1">
-                            Active
-                        </option>
-                        <option value="2">
-                            In Active
-                        </option>
-                        <option value="3">
-                            Archive
-                        </option>
-                    </select>
-                </form>
-            </div>
+        <div class="col-sm-6 col-xxxl-6">
+            <a class="element-box el-tablo centered" href="#">
+                <div class="label">
+                    Number of News
+                </div>
+                <div class="value">
+                    @Model.ResultObj.Sum(c => c.NONews)
+                </div>
+            </a>
         </div>
     </div>
+</div>
 
+<div class="element-wrapper">
+    @*Nút thêm mới 1 chủ đề*@
+    <div class="element-actions">
+        <a class="btn btn-success btn-sm text-white" data-target="#createTopic" data-toggle="modal"> <i class="os-icon os-icon-ui-22"></i> <span>Add New Topic</span></a>
+    </div>
+    <h6 class="element-header">
+        LIST TOPIC
+    </h6>
+    @*Hiển thị bảng danh sách chủ đề*@
     <div class="table-responsive">
         <table id="list_topic" width="100%" class="table table-padded text-center">
-            <thead>
+            <thead class="row-actions">
                 <tr>
+                    <th>ID</th>
                     <th>Name</th>
-                    <th>Description</th>
+                    <th>Label</th>
                     <th>Lang</th>
                     <th>Number of News</th>
                     <th>SyncTime</th>
@@ -118,81 +73,100 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.ResultObj.Items)
+                @foreach (var item in Model.ResultObj)
                 {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Tag)
-                    </td>
-                    <td class="cell-with-media">
-                        <img alt="" src="@item.ThumbImage" style="height: 25px;">
-                        <div class="smaller lighter">
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </div>
-                    </td>
-                    <td>
-                        <img alt="" src="/img/flags-icons/@{@item.LanguageId}.png" width="30px">
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.NONews)
-                    </td>
-                    <td>
-                        <script>
-                                document.write(moment('@item.RealTime?.ToString("yyyy-MM-dd HH:mm")').fromNow())
-                        </script>
-                    </td>
-                    <td>
-                        @{
-                            switch (item.Status)
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TopicId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Tag)
+                        </td>
+                        <td class="cell-with-media">
+                            @switch (item.Label)
                             {
-                                case Status.Active:
+                                case "featured":
                                     {
-                                        <div class="status-pill green" data-title="Active" data-toggle="tooltip"> </div>
+                                        <div class="badge badge-success-inverted">@item.Label</div>
                                         break;
                                     }
-                                case Status.InActive:
+                                case "breaking":
                                     {
-                                        <div class="status-pill red" data-title="InActive" data-toggle="tooltip"></div>
+                                        <div class="badge badge-danger-inverted">@item.Label</div>
                                         break;
                                     }
-                                case Status.Archive:
+                                default:
                                     {
-                                        <div class="status-pill yellow" data-title="Archive" data-toggle="tooltip"></div>
+                                        @Html.DisplayFor(modelItem => item.Label)
                                         break;
                                     }
                             }
-                        }
-                    </td>
-                    <td>
-                        <div class="row-actions text-center">
-                            <a href="/Topic/Edit/@item.TopicId" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
-                                <i class="os-icon os-icon-ui-49"></i>
-                            </a>
-                            <a class="danger" onclick=DeleteData(@item.TopicId); data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
-                                <i class="os-icon os-icon-ui-15"></i>
-                            </a>
-                        </div>
-                    </td>
-                </tr>
+                        </td>
+                        <td>
+                            <img alt="" src="/img/flags-icons/@{@item.LanguageId}.png" width="30px">
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NONews)
+                        </td>
+                        <td>
+                            <script>
+                                document.write(moment('@item.RealTime?.ToString("yyyy-MM-dd HH:mm")').fromNow())
+                            </script>
+                        </td>
+                        <td>
+                            @{
+                                    switch (item.Status)
+                                    {
+                                        case Status.Active:
+                                            {
+                                            <div class="status-pill green" data-title="Active" data-toggle="tooltip"> </div>
+                                            break;
+                                        }
+                                    case Status.InActive:
+                                        {
+                                            <div class="status-pill red" data-title="InActive" data-toggle="tooltip"></div>
+                                            break;
+                                        }
+                                    case Status.Archive:
+                                        {
+                                            <div class="status-pill yellow" data-title="Archive" data-toggle="tooltip"></div>
+                                            break;
+                                        }
+                                }
+                            }
+                        </td>
+                        <td class="row-actions">
+                            <div>
+                                <a class="btn btn-link" onclick=Detail(@item.TopicId) data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+                                    <i class="os-icon os-icon-ui-49"></i>
+                                </a>
+
+                                <a class="danger" onclick=DeleteData(@item.TopicId) data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
+                                    <i class="os-icon os-icon-ui-15"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
+        <div class="table-records-pages">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                </ul>
+            </nav>
+        </div>
     </div>
-    @await Component.InvokeAsync("Pager", Model.ResultObj)
 </div>
+
+@*Hiển thị Partial View Xem chi tiết chủ đề*@
+<div id="PartialViewTopic"></div>
 
 @await Html.PartialAsync("Create", new TopicCreateRequest())
 
 @section footerscripts{
-
-    <script src="/bower_components/datatables.net-buttons-bs/js/jquery.dataTables.min.js"></script>
-    <script src="/bower_components/datatables.net-buttons-bs/js/dataTables.bootstrap5.min.js"></script>
-    <script src="/bower_components/datatables.net-buttons-bs/js/dataTables.responsive.min.js"></script>
-    <script src="/bower_components/datatables.net-buttons-bs/js/responsive.bootstrap4.js"></script>
-    <script src="/bower_components/datatables.net-buttons-bs/js/responsive.bootstrap4.js"></script>
-    <script src="/bower_components/datatables.net-buttons-bs/js/datatables.checkboxes.min.js"></script>
-    <script src="/bower_components/datatables.net-buttons-bs/js/datatables.buttons.min.js"></script>
-    <script src="/bower_components/datatables.net-buttons-bs/js/buttons.bootstrap5.min.js"></script>
+    <script src="/bower_components/datatables/jquery.dataTables.min.js"></script>
+    <script src="/bower_components/datatables/dataTables.bootstrap4.min.js"></script>
     <script src="/bower_components/bootstrap/js/dist/modal.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/31.0.0/classic/ckeditor.js"></script>
     <script src="/js/admin/topic.js"></script>

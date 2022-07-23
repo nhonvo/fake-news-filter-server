@@ -10234,12 +10234,12 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 .table .row-actions {
-  text-align: center;
+    text-align: center;
+    background: #047bf8;
+    color: white
 }
 
-.table .row-actions .os-icon {
-  font-size: 16px;
-}
+
 
 .table .row-actions a {
   margin-right: 0.8rem;
@@ -10406,7 +10406,7 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 .all-wrapper table.dataTable {
-  border-collapse: collapse !important;
+    border-collapse: separate !important;
 }
 
 .table.table-padded {
@@ -10414,13 +10414,16 @@ a.text-dark:hover, a.text-dark:focus {
   border-spacing: 0 5px;
 }
 
-.table.table-padded thead tr th {
-  border: none;
-  font-size: 0.81rem;
-  color: rgba(90, 99, 126, 0.49);
-  letter-spacing: 1px;
-  padding: 0.3rem 1.1rem;
-}
+    .table.table-padded thead tr th {
+        border: none;
+        font-size: 0.81rem;
+        color: rgba(90, 99, 126, 0.49);
+        letter-spacing: 1px;
+        padding: 0.3rem 1.1rem;
+        color: white;
+        text-align: center;
+        vertical-align: middle;
+    }
 
 .table.table-padded tbody tr {
   border-radius: 4px;
@@ -11164,7 +11167,7 @@ legend:before {
   margin-bottom: 0px;
   display: inline-block;
   text-transform: uppercase;
-  font-size: 0.585rem;
+  font-size: 1rem;
   font-family: "Nunito", "Avenir Next W01", "Proxima Nova W01", "Rubik", -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
@@ -11756,17 +11759,13 @@ body .daterangepicker .fa.fa-chevron-right.glyphicon.glyphicon-chevron-right:bef
 }
 
 .dataTables_wrapper .row:first-child {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  margin-bottom: 1rem;
-  margin-top: 1rem;
-  padding-bottom: 0.5rem;
+    border-bottom: 0px solid rgba(0, 0, 0, 0.1);
+    padding-bottom: 0.5rem;
 }
 
 .dataTables_wrapper .row:last-child {
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  padding-top: 0.5rem;
+    border-top: 0px solid rgba(0, 0, 0, 0.1);
+    padding-top: 0.5rem;
 }
 
 /* CALENDAR  */
@@ -15652,7 +15651,7 @@ body.menu-side-right .layout-w {
  #1. Element Wrapper Styles
 */
 .element-wrapper {
-  padding-bottom: 3rem;
+  padding-bottom: 1rem;
 }
 
 .element-wrapper .btn + .btn, .element-wrapper .all-wrapper .fc-button + .btn, .all-wrapper .element-wrapper .fc-button + .btn, .element-wrapper .all-wrapper .btn + .fc-button, .all-wrapper .element-wrapper .btn + .fc-button, .element-wrapper .all-wrapper .fc-button + .fc-button, .all-wrapper .element-wrapper .fc-button + .fc-button {
@@ -15773,13 +15772,14 @@ body.menu-side-right .layout-w {
   color: #3E4B5B;
 }
 
-.element-wrapper .element-header {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  padding-bottom: 1rem;
-  margin-bottom: 2rem;
-  position: relative;
-  z-index: 1;
-}
+    .element-wrapper .element-header {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        padding-bottom: 1rem;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+        margin-top: 1rem;
+    }
 
 .element-wrapper .element-header:after {
   content: "";

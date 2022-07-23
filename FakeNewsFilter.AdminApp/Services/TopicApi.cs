@@ -113,20 +113,9 @@ namespace FakeNewsFilter.AdminApp.Services
 
         public async Task<ApiResult<TopicInfoVM>> GetById(int Id)
         {
-            var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+            var data = await GetAsync<ApiResult<TopicInfoVM>>($"/api/topic/{Id}");
 
-            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
-
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
-
-            var response = await client.GetAsync($"/api/topic/{Id}");
-            var body = await response.Content.ReadAsStringAsync();
-
-            if (response.IsSuccessStatusCode)
-                return JsonConvert.DeserializeObject<ApiSuccessResult<TopicInfoVM>>(body);
-
-            return JsonConvert.DeserializeObject<ApiErrorResult<TopicInfoVM>>(body);
+            return data;
         }
 
         public async Task<ApiResult<string>> UpdateTopic(TopicUpdateRequest request)
