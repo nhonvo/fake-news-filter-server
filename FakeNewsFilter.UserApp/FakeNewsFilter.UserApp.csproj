@@ -9,7 +9,6 @@
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Services\" />
-        <Folder Include="wwwroot\intro\images\avatar\" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\FakeNewsFilter.AdminApp\FakeNewsFilter.AdminApp.csproj" />

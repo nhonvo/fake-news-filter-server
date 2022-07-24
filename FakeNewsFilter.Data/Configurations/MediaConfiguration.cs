@@ -17,7 +17,7 @@ namespace FakeNewsFilter.Data.Configurations
 
             builder.Property(x => x.Type).IsRequired();
 
-            builder.Property(x => x.DateCreated);        
+            builder.Property(x => x.DateCreated).HasDefaultValue(DateTime.Now);        
         }
     }
 }

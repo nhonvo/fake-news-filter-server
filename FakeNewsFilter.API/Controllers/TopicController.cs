@@ -141,7 +141,7 @@ namespace FakeNewsFilter.API.Controllers
 
         }
 
-        [HttpPut("{topicId}")]
+        [HttpPut("Update/{topicId}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update([FromRoute]int topicId, [FromForm] TopicUpdateRequest request)
         {
@@ -185,7 +185,7 @@ namespace FakeNewsFilter.API.Controllers
 
         }
 
-        [HttpPut("{topicId}")]
+        [HttpPut("Archive/{topicId}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Archive([FromRoute] int topicId, [FromForm] TopicUpdateRequest request)
         {

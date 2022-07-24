@@ -18,6 +18,17 @@ namespace FakeNewsFilter.UserApp.Controllers
         }
 
         [HttpGet("/")]
+        public IActionResult Index()
+        {
+            return View();
+        }
+        [HttpGet("privacy-policy")]
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+
         public IActionResult Dashboard()
         {
             // var newsList = _newsApi.GetAll();
@@ -26,11 +37,7 @@ namespace FakeNewsFilter.UserApp.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
-        {
-            return View("Privacy");
-        }
-
+       
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

@@ -37,7 +37,7 @@ public interface INewsService
 
 public class NewsService : INewsService
 {
-    public static readonly List<string> ImageExtensions = new() {".JPG", ".JPE", ".BMP", ".GIF", ".PNG"};
+    public static readonly List<string> ImageExtensions = new() {".JPG", ".JPE", ".BMP", ".GIF", ".PNG", ".JPEG"};
     private readonly ApplicationDBContext _context;
 
     private readonly IMapper _mapper;

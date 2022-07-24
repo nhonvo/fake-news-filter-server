@@ -311,12 +311,11 @@ namespace FakeNewsFilter.Application.Catalog
                 }
                 var thumb = _context.Media.Where(m => m.MediaId == topic.ThumbTopic).Select(m => m.PathMedia).FirstOrDefault();
 
-                
                 var topicvm = new TopicInfoVM
                 {
                     TopicId = topic.TopicId,
                     Tag = topic.Tag,
-                    ThumbImage = thumb,
+                    ThumbImage = _storageService.GetFileUrl(thumb),
                     Description = topic.Description,
                     Label = topic.Label,
                     Status = topic.Status,

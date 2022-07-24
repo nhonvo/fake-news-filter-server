@@ -1,0 +1,52 @@
+﻿@*Thông báo Toastr cho trường hợp thành công*@
+@if (ViewBag.SuccessMsg != null)
+{
+    <script>
+        setTimeout(function() {
+            toastr['success'](
+                '@ViewBag.SuccessMsg',
+                'Success', {
+                    closeButton: true,
+                    tapToDismiss: false,
+                    positionClass: "toast-bottom-left",
+                    rtl: $('html').attr('data-textdirection') === 'rtl'
+                }
+            );
+        }, 2000);
+    </script>
+}
+
+@*Thông báo Toastr cho trường hợp lỗi*@
+@if (ViewBag.Error != null)
+{
+    <script>
+        setTimeout(function() {
+            toastr['error'](
+                '@ViewBag.Error',
+                'Error', {
+                    closeButton: true,
+                    tapToDismiss: false,
+                    positionClass: "toast-bottom-left",
+                    rtl: $('html').attr('data-textdirection') === 'rtl'
+                }
+            );
+        }, 2000);
+    </script>
+}
+
+@*Thông báo Toastr cho trường hợp lỗi Validation*@
+@foreach (var error in ViewData.ModelState.SelectMany(x => x.Value.Errors))
+{
+    <script>
+            setTimeout(function() {
+                toastr['warning'](
+                    '@error.ErrorMessage',
+                    'Warning', {
+                        closeButton: true,
+                        tapToDismiss: false,
+                        rtl: $('html').attr('data-textdirection') === 'rtl'
+                    }
+                );
+            }, 2000);
+    </script>
+}

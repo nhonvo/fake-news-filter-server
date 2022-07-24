@@ -19,13 +19,13 @@ namespace FakeNewsFilter.AdminApp.Services
 
         Task<ApiResult<PagedResult<TopicInfoVM>>> GetTopicPaging(GetTopicNewsRequest request);
 
-        Task<ApiResult<bool>> CreateTopic(TopicCreateRequest request);
+        Task<ApiResult<string>> CreateTopic(TopicCreateRequest request);
 
         Task<ApiResult<TopicInfoVM>> GetById(int Id);
 
-        Task<ApiResult<bool>> UpdateTopic(TopicUpdateRequest request);
+        Task<ApiResult<string>> UpdateTopic(TopicUpdateRequest request);
 
-        Task<ApiResult<bool>> Delete(int topicId);
+        Task<ApiResult<string>> Delete(int topicId);
     }
 
     public class TopicApi : BaseApiClient, ITopicApi
@@ -71,7 +71,7 @@ namespace FakeNewsFilter.AdminApp.Services
         }
 
 
-        public async Task<ApiResult<bool>> CreateTopic(TopicCreateRequest request)
+        public async Task<ApiResult<string>> CreateTopic(TopicCreateRequest request)
         {
             var client = _httpClientFactory.CreateClient();
 
@@ -106,30 +106,19 @@ namespace FakeNewsFilter.AdminApp.Services
 
             if (response.IsSuccessStatusCode)
 
-                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);
+                return new ApiSuccessResult<string>("Create Topic Successfully");
 
-            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
+            return  new ApiErrorResult<string>("Create Topic Unsuccessfully");
         }
 
         public async Task<ApiResult<TopicInfoVM>> GetById(int Id)
         {
-            var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+            var data = await GetAsync<ApiResult<TopicInfoVM>>($"/api/topic/{Id}");
 
-            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
-
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
-
-            var response = await client.GetAsync($"/api/topic/{Id}");
-            var body = await response.Content.ReadAsStringAsync();
-
-            if (response.IsSuccessStatusCode)
-                return JsonConvert.DeserializeObject<ApiSuccessResult<TopicInfoVM>>(body);
-
-            return JsonConvert.DeserializeObject<ApiErrorResult<TopicInfoVM>>(body);
+            return data;
         }
 
-        public async Task<ApiResult<bool>> UpdateTopic(TopicUpdateRequest request)
+        public async Task<ApiResult<string>> UpdateTopic(TopicUpdateRequest request)
         {
             var client = _httpClientFactory.CreateClient();
 
@@ -159,18 +148,19 @@ namespace FakeNewsFilter.AdminApp.Services
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.LanguageId) ? "" : request.LanguageId.ToString()), "LanguageId");
 
 
-            var response = await client.PutAsync($"/api/topic/" + request.TopicId, requestContent);
+            var response = await client.PutAsync($"/api/topic/Update/" + request.TopicId, requestContent);
 
             var result = await response.Content.ReadAsStringAsync();
 
+            
             if (response.IsSuccessStatusCode)
 
-                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);
+                return new ApiSuccessResult<string>("Update Topic Successfully");
 
-            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
+            return  new ApiErrorResult<string>("Update Topic Unsuccessfully");
         }
 
-        public async Task<ApiResult<bool>> Delete(int topicId)
+        public async Task<ApiResult<string>> Delete(int topicId)
         {
             var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
             var client = _httpClientFactory.CreateClient();
@@ -178,10 +168,12 @@ namespace FakeNewsFilter.AdminApp.Services
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
             var response = await client.DeleteAsync($"/api/topic/"+topicId);
             var body = await response.Content.ReadAsStringAsync();
+            
             if (response.IsSuccessStatusCode)
-                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(body);
 
-            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(body);
+                return new ApiSuccessResult<string>("Delete Topic Successfully");
+
+            return  new ApiErrorResult<string>("Delete Topic Unsuccessfully");
         }
     }
 }

@@ -28,7 +28,7 @@ namespace FakeNewsFilter.Data.Configurations
 
             builder.HasOne(t => t.User).WithMany(t => t.Comment).HasForeignKey(t => t.UserId);
 
-            builder.Property(x => x.Timestamp);
+            builder.Property(x => x.Timestamp).HasDefaultValue(DateTime.Now);
 
             builder.Property(x => x.Status).HasDefaultValue(Status.Active);
         }

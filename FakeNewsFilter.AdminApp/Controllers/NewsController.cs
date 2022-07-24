@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using FakeNewsFilter.AdminApp.Services;
@@ -16,7 +15,6 @@ namespace FakeNewsFilter.AdminApp.Controllers
     [Authorize]
     public class NewsController : BaseController
     {
-
         private readonly NewsApi _newsApi;
         private readonly TopicApi _topicApi;
         private readonly LanguageApi _languageApi;
@@ -36,6 +34,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
             {
                 ViewBag.SuccessMsg = TempData["Result"];
             }
+
             if (TempData["Error"] != null)
             {
                 ViewBag.Error = TempData["Error"];
@@ -60,7 +59,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
                 data = data.ResultObj
             });
         }
-  
+
         [HttpGet]
         public async Task<IActionResult> GetNewsById(int Id)
         {
@@ -75,9 +74,10 @@ namespace FakeNewsFilter.AdminApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(NewsCreateRequest request)
         {
-            if (request.TopicId == null || request.Content == null || request.Publisher == null || request.DatePublished == null || request.Title == null || request.LanguageId == null)
+            if (request.TopicId == null)
             {
-                throw new Exception("Cannot create news");
+                TempData["Error"] = "Please select topic";
+                return RedirectToAction("Index");
             }
 
             if (!ModelState.IsValid)
@@ -85,26 +85,29 @@ namespace FakeNewsFilter.AdminApp.Controllers
                 ViewBag.ModelState = ModelState;
                 return RedirectToAction("Index");
             }
-            
+
             var result = await _newsApi.CreateNews(request);
 
             if (result.IsSuccessed)
             {
                 TempData["Result"] = $"Create News Successful!";
 
+                return Json(new
+                {
+                   result.ResultObj
+                });
+            }
+            else
+            {
+                TempData["Error"] = $"Create News Failed!";
                 return RedirectToAction("Index");
             }
-
-            TempData["Error"] = result.Message;
-
-            return RedirectToAction("Index");
         }
 
         [HttpGet]
         [Breadcrumb("Edit News", FromController = typeof(NewsController), FromPage = typeof(Index))]
         public async Task<IActionResult> Edit(int Id)
         {
-
             var result = await _newsApi.GetById(Id);
 
             var topicData = await _topicApi.GetAllTopic();
@@ -162,4 +165,3 @@ namespace FakeNewsFilter.AdminApp.Controllers
         }
     }
 }
-
