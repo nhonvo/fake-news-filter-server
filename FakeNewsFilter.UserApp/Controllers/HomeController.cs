@@ -28,6 +28,11 @@ namespace FakeNewsFilter.UserApp.Controllers
             return View();
         }
 
+        [HttpGet("contact")]
+        public IActionResult contact()
+        {
+            return View();
+        }
 
         public IActionResult Dashboard()
         {
