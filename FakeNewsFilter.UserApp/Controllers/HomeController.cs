@@ -29,13 +29,13 @@ namespace FakeNewsFilter.UserApp.Controllers
         }
 
         [HttpGet("contact")]
-        public IActionResult contact()
+        public IActionResult Contact()
         {
             return View();
         }
 
         [HttpGet("guide")]
-        public IActionResult guide()
+        public IActionResult Guide()
         {
             return View();
         }

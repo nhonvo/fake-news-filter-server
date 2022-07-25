@@ -17,6 +17,7 @@
 
     <!--====== Bootstrap css ======-->
     <link rel="stylesheet" href="~/intro/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.css"/>
 
     <!--====== Fontawesome css ======-->
     <link rel="stylesheet" href="~/intro/css/font-awesome.min.css">
@@ -39,7 +40,7 @@
 
 </head>
 
-<body>
+<body data-spy="scroll" data-target="#toc">
 
     <partial name="Header" />
 
@@ -48,9 +49,14 @@
     <section class="appie-hero-area">
         <div class="container">
             <div class="row">
+                <h1 style="text-align: center; width: 100%;">CHÍNH SÁCH QUYỀN RIÊNG TƯ</h1>
+
                 <div class="row justify-content-center">
-                    <h1>CHÍNH SÁCH QUYỀN RIÊNG TƯ</h1>
-                    <div class="service-details-content">
+                    <div class="col-sm-3">
+                        <nav id="toc" data-toggle="toc" style="position: fixed;top: 200px; z-index: 9999; width: 100%; height: 50px; ">Mục lục</nav>
+                    </div>
+                    <div class="col-sm-9">
+                        <div class="service-details-content">
                         <div class="content">
                             <h3 class="title">Cam kết</h3>
                             <p>Tại Owl Trust – Fake News Filter chúng tôi hiểu rằng sự riêng tư là rất quan trọng đối với bạn và các khách hàng của bạn. Những điều khoản bảo bảo mật này phản ánh được sự tôn trọng của chúng tôi đối với quyền riêng tư của bạn và Owl Trust cam kết đảm bảo bảo mật cho tất cả thông tin của bạn.</p>
@@ -109,6 +115,7 @@
 
                         </div>
                     </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -125,7 +132,7 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="appie-project-content">
-                                    <h3 class="title">Đăng ký tài khoản qua mail</h3>
+                                    <h3 class="title" data-toc-skip>Đăng ký tài khoản qua mail</h3>
                                     <p>Chúng tôi chỉ gửi các thông tin về ứng dụng qua mail cho bạn.</p>
                                     <form action="#">
                                         <div class="input-box mt-30">
@@ -153,6 +160,7 @@
 
     <!--====== Bootstrap js ======-->
     <script src="~/intro/js/bootstrap.min.js"></script>
+    <script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script>
     <script src="~/intro/js/popper.min.js"></script>
 
     <!--====== wow js ======-->
