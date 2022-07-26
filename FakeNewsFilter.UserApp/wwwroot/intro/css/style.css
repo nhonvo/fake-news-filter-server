@@ -6342,4 +6342,22 @@ blockquote cite {
     .shop-related-product-slider-active .slick-dots li.slick-active button {
       background: #2b70fa; }
 
-/*# sourceMappingURL=style.css.map */
+
+nav[data-toggle="toc"] {
+    top: 42px;
+}
+
+/* small screens */
+/*@media (max-width: 768px) {*/
+    /* override stickyness so that the navigation does not follow scrolling */
+    /*nav[data-toggle="toc"] {
+        margin-bottom: 42px;
+        position: static;
+    }*/
+
+        /* PICK ONE */
+        /* don't expand nested items, which pushes down the rest of the page when navigating */
+        /*nav[data-toggle="toc"] .nav .active .nav {
+            display: none;
+        }*/
+    /*# sourceMappingURL=style.css.map */
