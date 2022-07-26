@@ -39,6 +39,7 @@ namespace FakeNewsFilter.UserApp.Controllers
         {
             return View();
         }
+
         public IActionResult Dashboard()
         {
             // var newsList = _newsApi.GetAll();

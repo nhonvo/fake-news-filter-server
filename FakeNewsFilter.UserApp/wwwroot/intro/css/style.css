@@ -713,6 +713,11 @@ p {
 /*===========================
     2.HEADER css 
 ===========================*/
+
+.bolded {
+    font-weight: bold;
+}
+
 .appie-sticky.sticky {
   position: fixed;
   left: 0;
@@ -902,8 +907,8 @@ p {
       .appie-header-main-menu ul > li {
         margin-right: 14px; } }
     .appie-header-main-menu ul > li > a {
-      font-size: 15px;
-      font-weight: 500;
+      font-size: 16px;
+      font-weight: bold;
       color: #0e1133;
       line-height: 45px; }
       .appie-header-main-menu ul > li > a i {
@@ -6343,3 +6348,29 @@ blockquote cite {
       background: #2b70fa; }
 
 /*# sourceMappingURL=style.css.map */
+
+
+nav[data-toggle="toc"] {
+    top: 42px;
+}
+
+/* small screens */
+@media (max-width: 768px) {
+    /* override stickyness so that the navigation does not follow scrolling */
+    nav[data-toggle="toc"] {
+        margin-bottom: 42px;
+        position: static;
+    }
+
+        /* PICK ONE */
+        /* don't expand nested items, which pushes down the rest of the page when navigating */
+        nav[data-toggle="toc"] .nav .active .nav {
+            display: none;
+        }
+    /* alternatively, if you *do* want the second-level navigation to be shown (as seen on this page on mobile), use this */
+    /*
+  nav[data-toggle='toc'] .nav .nav {
+    display: block;
+  }
+  */
+}
