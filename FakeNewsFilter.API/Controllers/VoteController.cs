@@ -6,12 +6,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
+using Quartz;
 
 namespace FakeNewsFilter.API.Controllers
 {
     [Route("api/[controller]")]
     [Authorize]
-    public class VoteController : ControllerBase
+    public class VoteController : ControllerBase, IJob
     {
         private readonly IVoteService _voteService;
         private readonly IStringLocalizer<VoteController> _localizer;
@@ -52,6 +53,11 @@ namespace FakeNewsFilter.API.Controllers
                 return BadRequest(e.Message);
             }
 
+        }
+        
+        public async Task Execute(IJobExecutionContext context)
+        {
+            await _voteService.UpdateRatingVote();
         }
     }
 }

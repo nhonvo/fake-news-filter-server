@@ -180,13 +180,19 @@ namespace FakeNewsFilter
                 // quickest way to create a job with single trigger is to use ScheduleJob
                 // (requires version 3.2)
                 q.ScheduleJob<NewsController>(trigger => trigger
-                    .WithIdentity("Combined Configuration Trigger")
+                    .WithIdentity("News Trigger")
                     .StartAt(DateBuilder.EvenSecondDate(DateTimeOffset.UtcNow.AddSeconds(7)))
                     .WithDailyTimeIntervalSchedule(x => x.WithInterval(60, IntervalUnit.Second))
-                    .WithDescription("my awesome trigger configured for a job with single call")
+                    .WithDescription("Trigger to update view count of news")
                 );
-
-
+                
+                q.ScheduleJob<VoteController>(trigger => trigger
+                    .WithIdentity("Vote Trigger")
+                    .StartAt(DateBuilder.EvenSecondDate(DateTimeOffset.UtcNow.AddSeconds(7)))
+                    .WithDailyTimeIntervalSchedule(x => x.WithInterval(60, IntervalUnit.Second))
+                    .WithDescription("Trigger to update rate of news")
+                );
+                
                 const string calendarName = "myHolidayCalendar";
                 q.AddCalendar<HolidayCalendar>(
                     name: calendarName,
