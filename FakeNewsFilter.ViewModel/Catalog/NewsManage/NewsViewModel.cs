@@ -20,6 +20,8 @@ namespace FakeNewsFilter.ViewModel.Catalog.NewsManage
         public string URL { get; set; }
 
         public string ThumbNews { get; set; }
+        
+        public double SocialBeliefs { get; set; }
 
         public string OfficialRating { get; set; }
         public int ViewCount { get; set; }

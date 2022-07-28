@@ -77,6 +77,7 @@ public class NewsService : INewsService
                         TopicInfo = x.NewsInTopics
                             .Select(o => new TopicInfo {TopicId = o.TopicId, TopicName = o.TopicNews.Tag}).ToList(),
                         OfficialRating = x.OfficialRating,
+                        SocialBeliefs = x.SocialBeliefs,
                         ViewCount = x.ViewCount,
                         Publisher = x.Publisher,
                         Status = x.Status,
@@ -103,6 +104,7 @@ public class NewsService : INewsService
                     TopicInfo = x.NewsInTopics
                         .Select(o => new TopicInfo {TopicId = o.TopicId, TopicName = o.TopicNews.Tag}).ToList(),
                     OfficialRating = x.OfficialRating,
+                    SocialBeliefs = x.SocialBeliefs,
                     ViewCount = x.ViewCount,
                     Publisher = x.Publisher,
                     Status = x.Status,
@@ -125,6 +127,7 @@ public class NewsService : INewsService
                     TopicInfo = x.NewsInTopics
                         .Select(o => new TopicInfo {TopicId = o.TopicId, TopicName = o.TopicNews.Tag}).ToList(),
                     OfficialRating = x.OfficialRating,
+                    SocialBeliefs = x.SocialBeliefs,
                     ViewCount = x.ViewCount,
                     Publisher = x.Publisher,
                     Status = x.Status,
@@ -172,6 +175,7 @@ public class NewsService : INewsService
                 OfficialRating = news.OfficialRating,
                 Publisher = news.Publisher,
                 ViewCount = news.ViewCount,
+                SocialBeliefs = news.SocialBeliefs,
                 ThumbNews = string.IsNullOrEmpty(news.ImageLink)
                     ? _storageService.GetFileUrl(_context.Media
                         .FirstOrDefault(x => x.MediaId == news.DetailNews.ThumbNews)?.PathMedia)
@@ -251,6 +255,7 @@ public class NewsService : INewsService
                 TopicInfo = x.NewsInTopics.Select(o => new TopicInfo {TopicId = o.TopicId, TopicName = o.TopicNews.Tag})
                     .ToList(),
                 OfficialRating = x.OfficialRating,
+                SocialBeliefs = x.SocialBeliefs,
                 ViewCount = x.ViewCount,
                 Publisher = x.Publisher,
                 Status = x.Status,
@@ -287,6 +292,7 @@ public class NewsService : INewsService
                 OfficialRating = x.n.OfficialRating,
                 Publisher = x.n.Publisher,
                 Status = x.n.Status,
+                SocialBeliefs = x.n.SocialBeliefs,
                 ViewCount = x.n.ViewCount,
                 ThumbNews = string.IsNullOrEmpty(x.n.ImageLink)
                     ? _storageService.GetFileUrl(x.n.DetailNews.Media.PathMedia)
@@ -518,7 +524,6 @@ public class NewsService : INewsService
                     news_update.Publisher = request.Publisher ?? news_update.Publisher;
                     news_update.LanguageId = request.LanguageId ?? news_update.LanguageId;
                     news_update.Timestamp = DateTime.Now;
-
                     //Tìm các Topic của News đó
 
                     var newsListCanDelete = news_update.NewsInTopics.Select(x => x.TopicId).ToList();
