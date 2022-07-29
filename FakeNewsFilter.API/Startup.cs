@@ -25,8 +25,6 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Options;
 using FakeNewsFilter.API.Controllers;
 using Quartz;
-using Quartz.Impl.Calendar;
-using Quartz.Impl.Matchers;
 using Slugify;
 using StackExchange.Redis;
 using Role = FakeNewsFilter.Data.Entities.Role;
@@ -65,7 +63,9 @@ namespace FakeNewsFilter
 
             //Config Database Connection
             services.AddDbContext<ApplicationDBContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString(SystemConstants.MainConnectionString)));
+                    options.UseSqlServer(Configuration.GetConnectionString(SystemConstants.MainConnectionString)),
+                ServiceLifetime.Transient);
+
 
             //AutoMapper
             services.AddAutoMapper(typeof(MappingProfile));
@@ -86,16 +86,17 @@ namespace FakeNewsFilter
             services.AddTransient<RoleManager<Role>, RoleManager<Role>>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IRoleService, RoleService>();
-            services.AddTransient<INewsService, NewsService>();
             services.AddTransient<IFollowService, FollowService>();
             services.AddTransient<ILanguageService, LanguageService>();
             services.AddTransient<IScourceService, SourceService>();
             services.AddTransient<IStoryService, StoryService>();
-            services.AddTransient<IVoteService, VoteService>();
             services.AddTransient<SlugHelper>();
+            services.AddTransient<IExtraFeaturesService, ExtraFeaturesService>();
+            services.AddTransient<INewsService, NewsService>();
+            services.AddTransient<IVoteService, VoteService>();
+
             services.AddSingleton<IConnectionMultiplexer>(
                 ConnectionMultiplexer.Connect(Configuration["Redis:ConnectionString"]));
-            services.AddTransient<IExtraFeaturesService, ExtraFeaturesService>();
             services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<INewsCommunityService, NewsCommunityService>();
 
@@ -177,28 +178,20 @@ namespace FakeNewsFilter
                 q.UseInMemoryStore();
                 q.UseDefaultThreadPool(tp => { tp.MaxConcurrency = 10; });
 
+                q.UseTimeZoneConverter();
+
                 // quickest way to create a job with single trigger is to use ScheduleJob
                 // (requires version 3.2)
                 q.ScheduleJob<NewsController>(trigger => trigger
-                    .WithIdentity("News Trigger")
-                    .StartAt(DateBuilder.EvenSecondDate(DateTimeOffset.UtcNow.AddSeconds(7)))
-                    .WithDailyTimeIntervalSchedule(x => x.WithInterval(60, IntervalUnit.Second))
+                    .StartAt(DateBuilder.EvenSecondDate(DateTimeOffset.UtcNow.AddSeconds(1)))
+                    .WithSimpleSchedule(x => x.WithIntervalInSeconds(60).RepeatForever())
                     .WithDescription("Trigger to update view count of news")
                 );
-                
+
                 q.ScheduleJob<VoteController>(trigger => trigger
-                    .WithIdentity("Vote Trigger")
-                    .StartAt(DateBuilder.EvenSecondDate(DateTimeOffset.UtcNow.AddSeconds(7)))
-                    .WithDailyTimeIntervalSchedule(x => x.WithInterval(60, IntervalUnit.Second))
+                    .StartAt(DateBuilder.EvenSecondDate(DateTimeOffset.UtcNow.AddSeconds(10)))
+                    .WithSimpleSchedule(x => x.WithIntervalInSeconds(60).RepeatForever())
                     .WithDescription("Trigger to update rate of news")
-                );
-                
-                const string calendarName = "myHolidayCalendar";
-                q.AddCalendar<HolidayCalendar>(
-                    name: calendarName,
-                    replace: true,
-                    updateTriggers: true,
-                    x => x.AddExcludedDate(new DateTime(2020, 5, 15))
                 );
             });
 

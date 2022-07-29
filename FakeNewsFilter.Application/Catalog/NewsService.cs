@@ -725,15 +725,17 @@ public class NewsService : INewsService
         foreach (var item in newsViewCountDict)
         {
             var news = await NewsCommon.CheckExistNews(_context, item.Key);
-
+            
             if (news == null)
                 return new ApiErrorResult<bool>("News not found", item.Key);
 
             news.ViewCount = item.Value;
+            _context.News.Update(news);
         }
 
         var result = await _context.SaveChangesAsync();
         if (result == 0) return new ApiErrorResult<bool>("Update View Count News Unsuccessful", result);
         return new ApiSuccessResult<bool>("Update View Count News Successful");
     }
+
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FakeNewsFilter.Application.Common;
@@ -7,10 +6,7 @@ using FakeNewsFilter.Data.EF;
 using FakeNewsFilter.Data.Entities;
 using FakeNewsFilter.ViewModel.Catalog.Vote;
 using FakeNewsFilter.ViewModel.Common;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using NLog.Targets;
-using Org.BouncyCastle.Asn1.Anssi;
 
 namespace FakeNewsFilter.Application.Catalog;
 
@@ -25,7 +21,7 @@ public class VoteService : IVoteService
     private readonly ApplicationDBContext _context;
 
     public VoteService(ApplicationDBContext context)
-    {
+    { 
         _context = context;
     }
 
@@ -100,5 +96,4 @@ public class VoteService : IVoteService
         }
 
     }
-
 }
