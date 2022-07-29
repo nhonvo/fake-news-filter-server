@@ -23,7 +23,6 @@ namespace FakeNewsFilter.API.Controllers
     [Authorize]
     public class NewsController : ControllerBase, IJob
     {
-        private readonly IMemoryCache _memoryCache;
         private readonly IDistributedCache _distributedCache;
         private readonly INewsService _newsService;
         private readonly IStringLocalizer<NewsController> _localizer;
@@ -32,11 +31,10 @@ namespace FakeNewsFilter.API.Controllers
         private readonly IConfiguration _configuration;
         private readonly IConnectionMultiplexer _redis;
 
-        public NewsController(IMemoryCache memoryCache, IDistributedCache distributedCache, INewsService newsService,
+        public NewsController(IDistributedCache distributedCache, INewsService newsService,
             IFollowService followService, IStringLocalizer<NewsController> localizer, ILogger<NewsController> logger,
             IConnectionMultiplexer redis, IConfiguration configuration)
         {
-            _memoryCache = memoryCache;
             _distributedCache = distributedCache;
             _newsService = newsService;
             _followService = followService;
@@ -290,6 +288,7 @@ namespace FakeNewsFilter.API.Controllers
                 return BadRequest(e.Message);
             }
         }
+
         public Dictionary<int, int> GetKeysAndValuesInRedisCache()
         {
             var dict = new Dictionary<int, int>();
