@@ -2,8 +2,10 @@
 using System.Linq;
 using System.Threading.Tasks;
 using FakeNewsFilter.AdminApp.Services;
+using FakeNewsFilter.Utilities.Constants;
 using FakeNewsFilter.ViewModel.Catalog.NewsManage;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SmartBreadcrumbs.Attributes;
@@ -30,23 +32,51 @@ namespace FakeNewsFilter.AdminApp.Controllers
         [Breadcrumb("News Manager")]
         public async Task<IActionResult> Index()
         {
+            // if (TempData["result"] != null)
+            // {
+            //     ViewBag.SuccessMsg = TempData["Result"];
+            // }
+            //
+            // if (TempData["Error"] != null)
+            // {
+            //     ViewBag.Error = TempData["Error"];
+            // }
+            //
+            // var topicData = await _topicApi.GetAllTopic();
+            // var languageData = await _languageApi.GetLanguageInfo();
+            //
+            // ViewBag.ListTopic = new SelectList(topicData.ResultObj, "TopicId", "Tag");
+            // ViewBag.ListLanguage = new SelectList(languageData.ResultObj, "Id", "Name");
+            //
+            // return View();
+            
+            
+            var languageId = HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
+
+            var data = _newsApi.GetNewsInfo();
+
+            var topicData = await _topicApi.GetAllTopic();
+
+            var languageData = await _languageApi.GetLanguageInfo();
+          
+            ViewBag.ListLabel = new SelectList(topicData.ResultObj.GroupBy(x => x.Label).Select(y => y.First()).Distinct(), "Label", "Label");
+
+            ViewBag.ListLanguage = new SelectList(languageData.ResultObj, "Id", "Name");
+            
+            ViewBag.ListTopic = new SelectList(topicData.ResultObj, "TopicId", "Tag");
+
             if (TempData["result"] != null)
             {
                 ViewBag.SuccessMsg = TempData["Result"];
             }
-
             if (TempData["Error"] != null)
             {
                 ViewBag.Error = TempData["Error"];
             }
 
-            var topicData = await _topicApi.GetAllTopic();
-            var languageData = await _languageApi.GetLanguageInfo();
-
-            ViewBag.ListTopic = new SelectList(topicData.ResultObj, "TopicId", "Tag");
-            ViewBag.ListLanguage = new SelectList(languageData.ResultObj, "Id", "Name");
-
-            return View();
+            return View(data.Result);
+            
+            
         }
 
         [HttpGet]
@@ -63,12 +93,18 @@ namespace FakeNewsFilter.AdminApp.Controllers
         [HttpGet]
         public async Task<IActionResult> GetNewsById(int Id)
         {
-            var data = await _newsApi.GetById(Id);
+            var topicData = await _topicApi.GetAllTopic();
 
-            return Json(new
-            {
-                data = data.ResultObj
-            });
+            var model = await _newsApi.GetById(Id);
+
+            var languageData = await _languageApi.GetLanguageInfo();
+
+            ViewBag.ListTopic = new SelectList(topicData.ResultObj, "TopicId", "Tag");
+
+            ViewBag.ListLanguage = new SelectList(languageData.ResultObj, "Id", "Name");
+
+            return PartialView("Edit", model.ResultObj);
+            
         }
 
         [HttpPost]
