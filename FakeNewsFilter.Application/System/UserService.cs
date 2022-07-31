@@ -61,9 +61,11 @@ namespace FakeNewsFilter.Application.System
         private readonly RoleManager<Role> _roleManager;
 
         private FileStorageService _storageService;
-        
-        
-        public UserService(ApplicationDBContext context, UserManager<User> userManager, SignInManager<User> signInManager, FacebookAuthService facebookAuthService, IConfiguration config, IMapper mapper, RoleManager<Role> roleManager, FileStorageService storageService)
+
+
+        public UserService(ApplicationDBContext context, UserManager<User> userManager,
+            SignInManager<User> signInManager, FacebookAuthService facebookAuthService, IConfiguration config,
+            IMapper mapper, RoleManager<Role> roleManager, FileStorageService storageService)
         {
             _context = context;
             _userManager = userManager;
@@ -72,11 +74,11 @@ namespace FakeNewsFilter.Application.System
             _config = config;
             _mapper = mapper;
             _roleManager = roleManager;
-            FileStorageService.USER_CONTENT_FOLDER_NAME= "images/avatars";
+            FileStorageService.USER_CONTENT_FOLDER_NAME = "images/avatars";
             _storageService = storageService;
         }
 
-        
+
         //Tạo Token
         private async Task<TokenResult> GenerateUserTokenAsync(User user, string avatar)
         {
@@ -84,11 +86,12 @@ namespace FakeNewsFilter.Application.System
 
             var roles = await _userManager.GetRolesAsync(user);
 
-            var claims = new[] {
+            var claims = new[]
+            {
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Uri, avatar ?? "default.png"),
                 new Claim(ClaimTypes.GivenName, user.Name),
-                new Claim(ClaimTypes.Role, roles==null ? "Subscriber" :  string.Join(";", roles)),
+                new Claim(ClaimTypes.Role, roles == null ? "Subscriber" : string.Join(";", roles)),
                 new Claim(ClaimTypes.Name, user.UserName),
             };
 
@@ -122,39 +125,33 @@ namespace FakeNewsFilter.Application.System
                 Created = DateTime.UtcNow
             };
 
-            //Trường hợp chưa có 1 token nào trên DB thì tạo mới và lưu trên DB
+            //check if refresh token is not exist, then add new one
             if (checkToken == null)
             {
-                await _context.RefreshTokens.AddAsync(refreshToken);
-
-                await _context.SaveChangesAsync();
-
+                _context.RefreshTokens.Add(refreshToken);
             }
-            //Trường hợp Token hợp lệ
-            else if(user.RefreshTokens.Any(a=> a.IsActive))
+            //if refresh token is exist and valid, then update it
+            else if (checkToken.Expires > DateTime.UtcNow)
             {
-                var activeRefreshToken = user.RefreshTokens.Where(a => a.IsActive == true).FirstOrDefault();
-                token_result.Token = activeRefreshToken.Token;
-                token_result.Expires = activeRefreshToken.Expires;
+                checkToken.Token = tokenResult;
+                checkToken.Expires = expires;
+                checkToken.Created = DateTime.UtcNow;
             }
-            //Trường hợp có Token nhưng hết hạn, cần Refresh (cập nhật lại Token)
+            //if refresh token is exist and expired, then delete it and add new one
             else
             {
-
-                user.RefreshTokens.Add(refreshToken);
-
-                _context.Update(user);
-
-                await _context.SaveChangesAsync();
+                _context.RefreshTokens.Remove(checkToken);
+                _context.RefreshTokens.Add(refreshToken);
             }
+            await _context.SaveChangesAsync();
             return token_result;
-
         }
 
         //Refresh Token
         public async Task<ApiResult<TokenResult>> RefreshTokenAsync(string token)
         {
-            var user = _context.Users.Include(i=>i.RefreshTokens).SingleOrDefault(u => u.RefreshTokens.Any(t => t.Token == token));
+            var user = _context.Users.Include(i => i.RefreshTokens)
+                .SingleOrDefault(u => u.RefreshTokens.Any(t => t.Token == token));
 
             if (user == null)
             {
@@ -176,7 +173,7 @@ namespace FakeNewsFilter.Application.System
             //Tạo Token mới và cập nhật lại trên DB
             var res = await GenerateUserTokenAsync(user, null);
 
-           
+
             var token_result = new TokenResult
             {
                 UserId = res.UserId,
@@ -193,7 +190,8 @@ namespace FakeNewsFilter.Application.System
         {
             try
             {
-                var user = await _userManager.FindByNameAsync(request.UserName) ?? await _userManager.FindByEmailAsync(request.UserName);
+                var user = await _userManager.FindByNameAsync(request.UserName) ??
+                           await _userManager.FindByEmailAsync(request.UserName);
 
                 if (user == null) return new ApiErrorResult<TokenResult>("AccountDoesNotExist");
 
@@ -203,10 +201,11 @@ namespace FakeNewsFilter.Application.System
                 {
                     return new ApiErrorResult<TokenResult>("LoginUnsuccessful");
                 }
- 
-                var avatar = _context.Media.Where(m => m.MediaId == user.AvatarId).Select(m => m.PathMedia).FirstOrDefault();
 
-                var tokenResult = await GenerateUserTokenAsync(user, null);
+                var avatar = _context.Media.Where(m => m.MediaId == user.AvatarId).Select(m => m.PathMedia)
+                    .FirstOrDefault();
+
+                var tokenResult = await GenerateUserTokenAsync(user, avatar);
 
                 return new ApiSuccessResult<TokenResult>("LoginSuccessful", tokenResult);
             }
@@ -218,23 +217,23 @@ namespace FakeNewsFilter.Application.System
         }
 
         //Đăng ký người dùng mới
-        public async Task<ApiResult<bool>>  Register(RegisterRequest request)
+        public async Task<ApiResult<bool>> Register(RegisterRequest request)
         {
             try
             {
                 var user = await _userManager.FindByNameAsync(request.UserName);
 
-                if(user != null)
+                if (user != null)
                 {
                     return new ApiErrorResult<bool>("UsernameIsvAvailable");
                 }
 
                 user = await _userManager.FindByEmailAsync(request.Email);
 
-                if ( user != null)
+                if (user != null)
                 {
                     return new ApiErrorResult<bool>("EmailIsAvailable");
-                }    
+                }
 
                 user = new User()
                 {
@@ -274,20 +273,21 @@ namespace FakeNewsFilter.Application.System
                 var query = _userManager.Users;
 
                 var userList = await (from x in query
-                                      select new
-                                      {
-                                          UserId = x.Id,
-                                          Email = x.Email,
-                                          FullName = x.Name,
-                                          Status = x.Status,
-                                          UserName = x.UserName,
-                                          Avatar = _context.Media.Where(m => m.MediaId == x.AvatarId).Select(m => m.PathMedia).FirstOrDefault(),
-                                          RoleNames = (from userRole in x.UserRoles 
-                                                       join role in _roleManager.Roles 
-                                                       on userRole.RoleId
-                                                       equals role.Id
-                                                       select role.Name).ToList()
-                 }).Select(
+                    select new
+                    {
+                        UserId = x.Id,
+                        Email = x.Email,
+                        FullName = x.Name,
+                        Status = x.Status,
+                        UserName = x.UserName,
+                        Avatar = _context.Media.Where(m => m.MediaId == x.AvatarId).Select(m => m.PathMedia)
+                            .FirstOrDefault(),
+                        RoleNames = (from userRole in x.UserRoles
+                            join role in _roleManager.Roles
+                                on userRole.RoleId
+                                equals role.Id
+                            select role.Name).ToList()
+                    }).Select(
                     p => new UserViewModel
                     {
                         UserId = p.UserId,
@@ -298,7 +298,7 @@ namespace FakeNewsFilter.Application.System
                         Avatar = p.Avatar,
                         Roles = p.RoleNames
                     }
-                   ).ToListAsync();
+                ).ToListAsync();
 
 
                 return new ApiSuccessResult<List<UserViewModel>>("LoadingListUsersSuccessful", userList);
@@ -315,18 +315,17 @@ namespace FakeNewsFilter.Application.System
             try
             {
                 var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == request.UserId);
-                
+
                 user.Email = request.Email ?? user.Email;
                 user.Name = request.Name ?? user.Name;
 
                 //Lưu Avatar vào Host
                 if (request.MediaFile != null)
                 {
-                    
                     var thumb = _context.Media.FirstOrDefault(i => i.MediaId == user.AvatarId);
 
                     //Thêm mới Avatar nếu Tài khoản chưa có
-                    if(thumb == null)
+                    if (thumb == null)
                     {
                         user.Avatar = new Media()
                         {
@@ -336,7 +335,7 @@ namespace FakeNewsFilter.Application.System
                             PathMedia = await this.SaveFile(request.MediaFile),
                             Type = MediaType.Image,
                             SortOrder = 1
-                        }; 
+                        };
                     }
                     else
                     {
@@ -351,7 +350,6 @@ namespace FakeNewsFilter.Application.System
 
                         _context.Media.Update(thumb);
                     }
-                    
                 }
 
                 var result = await _userManager.UpdateAsync(user);
@@ -359,6 +357,7 @@ namespace FakeNewsFilter.Application.System
                 {
                     return new ApiSuccessResult<bool>("UpdateUserSuccessful", false);
                 }
+
                 return new ApiErrorResult<bool>("UpdateUnsuccessful");
             }
             catch (FakeNewsException e)
@@ -372,7 +371,6 @@ namespace FakeNewsFilter.Application.System
         {
             try
             {
-
                 var user = await _userManager.FindByIdAsync(id.ToString());
 
                 if (user == null)
@@ -382,27 +380,28 @@ namespace FakeNewsFilter.Application.System
 
                 var roles = await _userManager.GetRolesAsync(user);
 
-                var avatar = _context.Media.Where(m => m.MediaId == user.AvatarId).Select(m => m.PathMedia).FirstOrDefault();
+                var avatar = _context.Media.Where(m => m.MediaId == user.AvatarId).Select(m => m.PathMedia)
+                    .FirstOrDefault();
 
                 var userVm = _mapper.Map<UserViewModel>(user);
 
                 userVm.Roles = roles;
                 userVm.Avatar = avatar;
 
-                return new ApiSuccessResult<UserViewModel>("GetInfoUserSuccessful",userVm);
+                return new ApiSuccessResult<UserViewModel>("GetInfoUserSuccessful", userVm);
             }
 
             catch (FakeNewsException e)
             {
                 return new ApiErrorResult<UserViewModel>("ErrorSystem: " + e.Message);
             }
-
         }
 
         //Xoá người dùng
         public async Task<ApiResult<bool>> Delete(string UserId)
         {
-            try {
+            try
+            {
                 var user = await _userManager.FindByIdAsync(UserId);
                 if (user == null)
                 {
@@ -412,11 +411,11 @@ namespace FakeNewsFilter.Application.System
                 //Xoá Avatar ra khỏi Source
                 var avatar = _context.Media.SingleOrDefault(x => x.MediaId == user.AvatarId);
 
-                if (avatar != null )
+                if (avatar != null)
                 {
                     if (avatar.PathMedia != null)
                         await _storageService.DeleteFileAsync(avatar.PathMedia);
-                        _context.Media.Remove(avatar);
+                    _context.Media.Remove(avatar);
                 }
 
                 var result = await _userManager.DeleteAsync(user);
@@ -450,6 +449,7 @@ namespace FakeNewsFilter.Application.System
                     await _userManager.RemoveFromRoleAsync(user, roleName);
                 }
             }
+
             await _userManager.RemoveFromRolesAsync(user, removedRoles);
 
             var addedRoles = request.Roles.Where(x => x.Selected).Select(x => x.Name).ToList();
@@ -478,7 +478,6 @@ namespace FakeNewsFilter.Application.System
         {
             try
             {
-
                 var validatedTokenResult = await _facebookAuthService.ValidationAcessTokenAsync(accessToken);
 
                 if (!validatedTokenResult.Data.IsValid)
@@ -503,14 +502,14 @@ namespace FakeNewsFilter.Application.System
                 {
                     var exist_user = await _userManager.FindByNameAsync(userName);
 
-                    var avatar = _context.Media.Where(m => m.MediaId == exist_user.AvatarId).Select(m => m.PathMedia).FirstOrDefault();
+                    var avatar = _context.Media.Where(m => m.MediaId == exist_user.AvatarId).Select(m => m.PathMedia)
+                        .FirstOrDefault();
 
                     var tokenResult = await GenerateUserTokenAsync(exist_user, avatar);
 
                     return new ApiSuccessResult<TokenResult>("LoginFacebookSuccessful", tokenResult);
-                    
                 }
-                else  //Chưa được liên kết với Facebook
+                else //Chưa được liên kết với Facebook
                 {
                     var info = new ExternalLoginInfo(ClaimsPrincipal.Current, "Facebook", userInfo.Id, null);
 
@@ -523,7 +522,8 @@ namespace FakeNewsFilter.Application.System
                         var result = await _userManager.AddLoginAsync(exist_user, info);
                         if (result.Succeeded)
                         {
-                            var avatar = _context.Media.Where(m => m.MediaId == exist_user.AvatarId).Select(m => m.PathMedia).FirstOrDefault();
+                            var avatar = _context.Media.Where(m => m.MediaId == exist_user.AvatarId)
+                                .Select(m => m.PathMedia).FirstOrDefault();
 
                             var tokenResult = await GenerateUserTokenAsync(exist_user, avatar);
 
@@ -561,7 +561,6 @@ namespace FakeNewsFilter.Application.System
                             var tokenResult = await GenerateUserTokenAsync(exist_user, null);
 
                             return new ApiSuccessResult<TokenResult>("LoginFacebookSuccessful", tokenResult);
-
                         }
                         else
                         {
@@ -569,7 +568,6 @@ namespace FakeNewsFilter.Application.System
                             var errors = string.Join(", ", errorList.Select(e => e.Description));
                             return new ApiErrorResult<TokenResult>("RegisterFacebookUnsuccessful " + errors);
                         }
-
                     }
                 }
             }
@@ -591,7 +589,7 @@ namespace FakeNewsFilter.Application.System
                     return new ApiErrorResult<TokenResult>("InvalidGoogleToken");
                 }
 
-               
+
                 //Kiểm tra user đã liên kết với Google chưa
                 var checkLinked = await _signInManager.ExternalLoginSignInAsync("Google", payload.Subject, false);
 
@@ -606,14 +604,14 @@ namespace FakeNewsFilter.Application.System
                 {
                     var exist_user = await _userManager.FindByNameAsync(userName);
 
-                    var avatar = _context.Media.Where(m => m.MediaId == exist_user.AvatarId).Select(m => m.PathMedia).FirstOrDefault();
+                    var avatar = _context.Media.Where(m => m.MediaId == exist_user.AvatarId).Select(m => m.PathMedia)
+                        .FirstOrDefault();
 
                     var tokenResult = await GenerateUserTokenAsync(exist_user, avatar);
 
                     return new ApiSuccessResult<TokenResult>("LoginGoogleSuccessful", tokenResult);
-
                 }
-                else  //Chưa được liên kết với Facebook
+                else //Chưa được liên kết với Facebook
                 {
                     var info = new ExternalLoginInfo(ClaimsPrincipal.Current, "Google", payload.Subject, null);
 
@@ -627,7 +625,8 @@ namespace FakeNewsFilter.Application.System
 
                         if (result.Succeeded)
                         {
-                            var avatar = _context.Media.Where(m => m.MediaId == exist_user.AvatarId).Select(m => m.PathMedia).FirstOrDefault();
+                            var avatar = _context.Media.Where(m => m.MediaId == exist_user.AvatarId)
+                                .Select(m => m.PathMedia).FirstOrDefault();
 
                             var tokenResult = await GenerateUserTokenAsync(exist_user, avatar);
 
@@ -665,7 +664,6 @@ namespace FakeNewsFilter.Application.System
                             var tokenResult = await GenerateUserTokenAsync(exist_user, null);
 
                             return new ApiSuccessResult<TokenResult>("LoginGoogleSuccessful", tokenResult);
-
                         }
                         else
                         {
@@ -673,7 +671,6 @@ namespace FakeNewsFilter.Application.System
                             var errors = string.Join(", ", errorList.Select(e => e.Description));
                             return new ApiErrorResult<TokenResult>("RegisterGoogleUnsuccessful " + errors);
                         }
-
                     }
                 }
             }
@@ -681,19 +678,18 @@ namespace FakeNewsFilter.Application.System
             {
                 return new ApiErrorResult<TokenResult>("LoginUnsuccessful" + e.Message);
             }
-
         }
 
         public async Task<ApiResult<ForgotPassword>> SendPasswordResetCode(string email)
         {
-
             //Get identity user details user manager
             var user = await _userManager.FindByEmailAsync(email);
-            
+
             if (user == null)
             {
                 return new ApiErrorResult<ForgotPassword>("UserNotFound");
             }
+
             //Generate password reset token
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
@@ -716,8 +712,10 @@ namespace FakeNewsFilter.Application.System
             //To do: Send token in email
 
             await EmailSender.SendEmailAsync(email, "Reset Password OTP", "Hello "
-                + email + "<br><br>Please find the reset password token below<br><br><b>" 
-                + otp + "<b><br><br>Thanks<br>FakenewsFilter.tk");
+                                                                          + email +
+                                                                          "<br><br>Please find the reset password token below<br><br><b>"
+                                                                          + otp +
+                                                                          "<b><br><br>Thanks<br>FakenewsFilter.tk");
 
             return new ApiSuccessResult<ForgotPassword>("TokenSendSuccess", resetPassword);
         }
@@ -731,6 +729,7 @@ namespace FakeNewsFilter.Application.System
             {
                 return new ApiErrorResult<ForgotPassword>("EmailAndPasswordNotNull");
             }
+
             //Getting token from otp
             var resetPasswordDetails = await _context.ForgotPassword
                 .Where(x => x.OTP == otp && x.UserId == user.Id)
@@ -739,14 +738,14 @@ namespace FakeNewsFilter.Application.System
             //Verify if token is older than 3 minutes
             var expirationDateTime = resetPasswordDetails.DateTime.AddMinutes(3);
 
-            if(expirationDateTime < DateTime.Now)
+            if (expirationDateTime < DateTime.Now)
             {
                 return new ApiErrorResult<ForgotPassword>("GenerateTheNewOTP");
             }
 
             var res = await _userManager.ResetPasswordAsync(user, resetPasswordDetails.Token, newPassword);
 
-            if(!res.Succeeded)
+            if (!res.Succeeded)
             {
                 return new ApiErrorResult<ForgotPassword>("OTPWrong");
             }
@@ -763,7 +762,7 @@ namespace FakeNewsFilter.Application.System
                 return _random.Next(min, max);
             }
         }
-        
+
         public static class EmailSender
         {
             public static async Task SendEmailAsync(string email, string subject, string htmlMessage)
