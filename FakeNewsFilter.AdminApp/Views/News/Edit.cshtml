@@ -1,78 +1,83 @@
 ﻿@model FakeNewsFilter.ViewModel.Catalog.NewsManage.NewsInfoVM
 
-@section headerscripts
-{
-    
-}
-
 @{
     ViewData["Title"] = "Update News";
 }
 
-<div class="element-box">
-  <form asp-action="Edit" asp-controller="News" method="post" enctype="multipart/form-data">
-    <input type="hidden" asp-for="NewsId" />
-    <h5 class="form-header">
-      Edit News
-    </h5>
-    <div class="form-desc">
-      Update News
-    </div>
-    <div class="form-group">
-      <label for="title" class="form-label">Title</label>
-      <input type="text" asp-for="Title" class="form-control border-start-0">
-    </div>
-    <div class="row">
-      <div class="col-sm-3">
-        <div class="form-group">
-          <label for="publisher" class="form-label">Publisher</label>
-          <input type="text" asp-for="Publisher" class="form-control border-start-0" placeholder="Publisher"/>
-        </div>
-      </div>
-      <div class="col-sm-3">
-        <div class="form-group">
-          <label for="Source" class="form-label">Source</label>
-          <input type="text" asp-for="Source" class="form-control border-start-0" placeholder="Source"/>
-        </div>
-      </div>
-      <div class="col-sm-3">
-        <div class="form-group">
-          <label for="ImageLink" class="form-label">ImageLink</label>
-          <input type="text" asp-for="ImageLink" class="form-control border-start-0" placeholder="ImageLink"/>
-        </div>
-      </div>
-      <div class="col-sm-3">
-        <div class="form-group">
-          <label for="official-rating" class="form-label">Official Rating</label>
-          <input type="text" asp-for="OfficialRating" class="form-control border-start-0" placeholder="Official Rating" />
-        </div>
-      </div>
-      <div class="col-sm-3">
-        <div class="form-group">
-          <label class="form-label" for="status">Topic</label>
-          <select class="select2 form-select" asp-for="TopicId" asp-items="@ViewBag.ListTopic" aria-invalid="false" multiple="multiple"></select>
-        </div>
-      </div>
-      <div class="col-sm-3">
-        <div class="form-group">
-          <label for="language" class="form-label">Language</label>
-          <select class="form-control" asp-for="LanguageId" asp-items="@ViewBag.ListLanguage" aria-invalid="false" placeholder="Language"></select>
-        </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="content" class="form-label">Content</label>
-      <textarea id="ckeditor1" typeof="text" class="form-control border-start-0" asp-for="Content"> </textarea>
-    </div>
-    <div class="form-buttons-w">
-      <button class="btn btn-primary" type="submit">Submit</button>
-    </div>
-     <input id="newsId" type="hidden" asp-for="NewsId" class="form-control border-start-0">
-  </form>
-  </div>
+<div id="updateNews" class="modal fade bd-example-modal-lg show" role="dialog" tabindex="-1" aria-hidden="true" style="display: none;">
+    <form asp-action="Edit" asp-controller="News" method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="NewsId"/>
+        <div class="modal-dialog modal-lg">
+            >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        Update News
+                    </h5>
+                    <button aria-label="Đóng" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true"> ×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" asp-for="Title" class="form-control border-start-0">
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="publisher" class="form-label">Publisher</label>
+                                <input type="text" asp-for="Publisher" class="form-control border-start-0" placeholder="Publisher"/>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="Source" class="form-label">Source</label>
+                                <input type="text" asp-for="Source" class="form-control border-start-0" placeholder="Source"/>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="ImageLink" class="form-label">ImageLink</label>
+                                <input type="text" asp-for="ImageLink" class="form-control border-start-0" placeholder="ImageLink"/>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="official-rating" class="form-label">Official Rating</label>
+                                <input type="text" asp-for="OfficialRating" class="form-control border-start-0" placeholder="Official Rating"/>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="form-label" for="topic">Topic</label>
+                                <select class="select2 form-control" asp-for="TopicId" asp-items="@ViewBag.ListTopic" aria-invalid="false" multiple="multiple"></select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="language" class="form-label">Language</label>
+                                <select class="form-control" asp-for="LanguageId" asp-items="@ViewBag.ListLanguage" aria-invalid="false" placeholder="Language"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="content" class="form-label">Content</label>
+                        <textarea id="ckeditor1" typeof="text" class="form-control border-start-0" asp-for="Content"> </textarea>
+                    </div>
+                    <input id="newsId" type="hidden" asp-for="NewsId" class="form-control border-start-0">
+                    <div class="modal-footer">
+                        <button class="btn btn-danger" data-dismiss="modal" type="button">Close</button>
+                        <button class="btn btn-success" type="submit" onclick="EditNews(this.parentElement.parentElement, event)">Save change</button>
+                    </div>
+                </div>
 
+            </div>
+        </div>
+    </form>
+</div>
 
 
 @section footerscripts{
-    <script src="/js/admin/editnews.js"></script>
 }
