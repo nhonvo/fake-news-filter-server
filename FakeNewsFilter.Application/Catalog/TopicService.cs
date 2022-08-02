@@ -168,11 +168,13 @@ namespace FakeNewsFilter.Application.Catalog
                 try
                 {
                     var language = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
+
                     if (language == null)
                     {
                         return new ApiErrorResult<string>("LanguageNotFound", " " + request.LanguageId);
                     }
-                    var topic = new Data.Entities.TopicNews()
+
+                    var topic = new TopicNews()
                     {
                         Label = request.Label,
                         Description = request.Description,

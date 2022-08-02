@@ -94,6 +94,7 @@ namespace FakeNewsFilter
             services.AddTransient<IExtraFeaturesService, ExtraFeaturesService>();
             services.AddTransient<INewsService, NewsService>();
             services.AddTransient<IVoteService, VoteService>();
+            services.AddTransient<VersionService>();
 
             services.AddSingleton<IConnectionMultiplexer>(
                 ConnectionMultiplexer.Connect(Configuration["Redis:ConnectionString"]));

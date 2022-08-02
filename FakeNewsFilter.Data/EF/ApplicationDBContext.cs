@@ -5,6 +5,7 @@ using FakeNewsFilter.Data.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Version = FakeNewsFilter.Data.Entities.Version;
 
 namespace FakeNewsFilter.Data.EF
 {
@@ -44,6 +45,8 @@ namespace FakeNewsFilter.Data.EF
 
         public DbSet<NewsCommunity> NewsCommunity { get; set; }
 
+        public DbSet<Version> Version { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -67,6 +70,7 @@ namespace FakeNewsFilter.Data.EF
             modelBuilder.ApplyConfiguration(new CommentConfig());
             modelBuilder.ApplyConfiguration(new NewsCommunityConfig());
             modelBuilder.ApplyConfiguration(new RefreshTokenConfig());
+            modelBuilder.ApplyConfiguration(new VersionConfig());
 
             modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("UserClaims");
             modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("UserLogin").HasKey(l => new { l.LoginProvider, l.ProviderKey, l.UserId });

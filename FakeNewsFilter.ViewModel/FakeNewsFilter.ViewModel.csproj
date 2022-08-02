@@ -17,6 +17,7 @@
     <None Remove="System\Roles\" />
     <None Remove="Catalog\Vote\" />
     <None Remove="System\LoginSocial\" />
+    <None Remove="Catalog\Version\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,5 +37,6 @@
     <Folder Include="Catalog\Media\" />
     <Folder Include="System\Roles\" />
     <Folder Include="Catalog\Vote\" />
+    <Folder Include="Catalog\Version\" />
   </ItemGroup>
 </Project>
