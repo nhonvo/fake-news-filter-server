@@ -35,7 +35,7 @@ namespace FakeNewsFilter.Application.Catalog
 
             if (languagesList == null)
             {
-                return new ApiErrorResult<List<GetLanguageRequest>>("GetAllLanguagesUnsuccessful", languagesList);
+                return new ApiErrorResult<List<GetLanguageRequest>>(400,"GetAllLanguagesUnsuccessful", languagesList);
             }
 
             return new ApiSuccessResult<List<GetLanguageRequest>>("GetAllLanguageSsuccessful", languagesList);

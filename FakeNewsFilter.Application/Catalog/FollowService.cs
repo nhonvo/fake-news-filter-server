@@ -42,7 +42,7 @@ namespace FakeNewsFilter.Application.Catalog
                     var user = await UserCommon.CheckExistUser(_context, request.UserId);
                     if (user == null)
                     {
-                        return new ApiErrorResult<string>("UserIsNotExist", " " + request.UserId.ToString());
+                        return new ApiErrorResult<string>(404, "UserIsNotExist", " " + request.UserId.ToString());
                     }
                     
                     var follow = _context.Follow.Where(t => t.UserId == request.UserId);
@@ -57,7 +57,7 @@ namespace FakeNewsFilter.Application.Catalog
                         var topic = await _context.TopicNews.FirstOrDefaultAsync(t => t.TopicId == item);
                         if (topic == null)
                         {
-                            return new ApiErrorResult<string>("CannontFindATopicWithId", " " + request.TopicId.ToString());
+                            return new ApiErrorResult<string>(404, "CannontFindATopicWithId", " " + request.TopicId.ToString());
                         }
                         
                         var followCreate = new Data.Entities.Follow()
@@ -76,13 +76,13 @@ namespace FakeNewsFilter.Application.Catalog
                         return new ApiSuccessResult<string>("FollowSuccessful", " " + result.ToString());
                     }
                     transaction.Rollback();
-                    return new ApiErrorResult<string>("FollowUnsuccessful"," " + result.ToString());
+                    return new ApiErrorResult<string>(400, "FollowUnsuccessful"," " + result.ToString());
 
                 }
                 catch (DbUpdateException ex)
                 {
                     transaction.Rollback();
-                    return new ApiErrorResult<string>(ex.Message);
+                    return new ApiErrorResult<string>(500, ex.Message);
                 }
             }
                 
@@ -95,7 +95,7 @@ namespace FakeNewsFilter.Application.Catalog
             var user = await UserCommon.CheckExistUser(_context, userId);
             if (user == null)
             {
-                return new ApiErrorResult<List<int>>("AccountDoesNotExist");
+                return new ApiErrorResult<List<int>>(404, "AccountDoesNotExist");
             }
 
             //Lấy topicid từ bảng follow
@@ -103,7 +103,7 @@ namespace FakeNewsFilter.Application.Catalog
 
             if (listFollowTopic == null)
             {
-                return new ApiErrorResult<List<int>>("GetListFollowUnsuccessful");
+                return new ApiErrorResult<List<int>>(400, "GetListFollowUnsuccessful");
             }
             return new ApiSuccessResult<List<int>>("GetListFollowSuccessful", listFollowTopic);
         }

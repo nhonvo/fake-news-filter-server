@@ -35,7 +35,7 @@ namespace FakeNewsFilter.API.Controllers
             }
 
             var result = await _featuresService.SearchContent(request);
-            if (result.IsSuccessed == false)
+            if (result.StatusCode != 200)
             {
                 return BadRequest(result);
             }

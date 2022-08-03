@@ -41,7 +41,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 resultToken.Message = _localizer[resultToken.Message].Value + resultToken.ResultObj;
 
-                if (resultToken.IsSuccessed == false)
+                if (resultToken.StatusCode != 200)
                 {
                     _logger.LogError(resultToken.Message);
                     return BadRequest(resultToken);
@@ -67,7 +67,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 list_version.Message = _localizer[list_version.Message].Value;
 
-                if (list_version.IsSuccessed == false)
+                if (list_version.StatusCode != 200)
                 {
                     return BadRequest(list_version);
                 }
@@ -88,7 +88,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 last_version.Message = _localizer[last_version.Message].Value;
 
-                if (last_version.IsSuccessed == false)
+                if (last_version.StatusCode != 200)
                 {
                     return BadRequest(last_version);
                 }

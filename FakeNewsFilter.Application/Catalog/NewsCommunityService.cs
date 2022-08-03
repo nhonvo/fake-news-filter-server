@@ -62,10 +62,10 @@ namespace FakeNewsFilter.Application.Catalog
                 try
                 {
                     var language = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
-                    if (language == null) return new ApiErrorResult<string>("LanguageNotFound", " " + request.LanguageId);
+                    if (language == null) return new ApiErrorResult<string>(404, "LanguageNotFound", " " + request.LanguageId);
 
                     var user = await UserCommon.CheckExistUser(_context, request.UserId);
-                    if (user == null) return new ApiErrorResult<string>("UserNotFound", " " + request.UserId);
+                    if (user == null) return new ApiErrorResult<string>(404, "UserNotFound", " " + request.UserId);
 
                     var newsCommunity = new NewsCommunity
                     {
@@ -98,7 +98,7 @@ namespace FakeNewsFilter.Application.Catalog
                     {
                         transaction.Rollback();
                         await _storageService.DeleteFileAsync(newsCommunity.Media.PathMedia);
-                        return new ApiErrorResult<string>("CreateNewsUnsuccessful", result);
+                        return new ApiErrorResult<string>(400, "CreateNewsUnsuccessful");
                     }
 
                     transaction.Commit();
@@ -107,7 +107,7 @@ namespace FakeNewsFilter.Application.Catalog
                 catch (DbUpdateException ex)
                 {
                     transaction.Rollback();
-                    return new ApiErrorResult<string>(ex.Message);
+                    return new ApiErrorResult<string>(500, ex.Message);
                 }
         }
 
@@ -147,7 +147,7 @@ namespace FakeNewsFilter.Application.Catalog
                 return new ApiSuccessResult<NewsCommunityViewModel>("GetThisNewsSuccessful", result);
             }
 
-            return new ApiErrorResult<NewsCommunityViewModel>("NewsIsNotFound");
+            return new ApiErrorResult<NewsCommunityViewModel>(404, "NewsIsNotFound");
         }
 
         //Xoá tin tức
@@ -156,7 +156,7 @@ namespace FakeNewsFilter.Application.Catalog
             var news = await NewscommunityCommon.CheckExistNews(_context, newsCommunityId);
 
             if (news == null)
-                return new ApiErrorResult<string>("CannontFindANewsWithId", newsCommunityId);
+                return new ApiErrorResult<string>(404, "CannontFindANewsWithId", " " + newsCommunityId.ToString());
 
             if (news.ThumbNews != null)
             {
@@ -171,7 +171,7 @@ namespace FakeNewsFilter.Application.Catalog
 
             _context.NewsCommunity.Remove(news);
             var result = await _context.SaveChangesAsync();
-            if (result == 0) return new ApiErrorResult<string>("DeleteNewsUnsuccessful", " " + result);
+            if (result == 0) return new ApiErrorResult<string>(400, "DeleteNewsUnsuccessful", " " + result);
 
             return new ApiSuccessResult<string>("DeleteNewsSuccessful"," " + news.NewsCommunityId.ToString());
         }
@@ -186,7 +186,7 @@ namespace FakeNewsFilter.Application.Catalog
                     var news_update = await NewscommunityCommon.CheckExistNews(_context, request.NewsCommunityId);
 
                     if (news_update == null)
-                        return new ApiErrorResult<string>("CannontFindANewsWithId", " " + request.NewsCommunityId);
+                        return new ApiErrorResult<string>(404, "CannontFindANewsWithId", " " + request.NewsCommunityId);
 
                     news_update.Title = request.Title ?? news_update.Title;
                     news_update.Content = request.Content ?? news_update.Content;
@@ -230,7 +230,7 @@ namespace FakeNewsFilter.Application.Catalog
                     if (result == 0)
                     {
                         transaction.Rollback();
-                        return new ApiErrorResult<string>("UpdateNewsUnsuccessful"," " + result);
+                        return new ApiErrorResult<string>(400, "UpdateNewsUnsuccessful"," " + result);
                     }
 
                     transaction.Commit();
@@ -239,7 +239,7 @@ namespace FakeNewsFilter.Application.Catalog
                 catch (DbUpdateException ex)
                 {
                     transaction.Rollback();
-                    return new ApiErrorResult<string>(ex.Message);
+                    return new ApiErrorResult<string>(500, ex.Message);
                 }
             }
         }
@@ -305,8 +305,10 @@ namespace FakeNewsFilter.Application.Catalog
                         DatePublished = x.n.DatePublished,
                     }).ToListAsync();
 
-                if (newsList == null) return new ApiErrorResult<List<NewsCommunityViewModel>>("GetNewsByIdUnsuccessful");
-                if (newsList.Count == 0) return new ApiErrorResult<List<NewsCommunityViewModel>>("DoNotHaveNewsOfUser");
+                if (newsList == null)
+                    return new ApiErrorResult<List<NewsCommunityViewModel>>(400, "GetNewsByIdUnsuccessful");
+                if (newsList.Count == 0)
+                    return new ApiErrorResult<List<NewsCommunityViewModel>>(404, "DoNotHaveNewsOfUser");
                 return new ApiSuccessResult<List<NewsCommunityViewModel>>("GetNewsByIdSuccessful", newsList);
 
             }
@@ -322,12 +324,12 @@ namespace FakeNewsFilter.Application.Catalog
             var news_update = await NewscommunityCommon.CheckExistNews(_context, newsCommunityId);
 
             if (news_update == null)
-                return new ApiErrorResult<string>("CannontFindANewsWithId", newsCommunityId);
+                return new ApiErrorResult<string>(404, "CannontFindANewsWithId", " " + newsCommunityId.ToString());
 
             news_update.Content = newLink;
 
             var result = await _context.SaveChangesAsync();
-            if (result == 0) return new ApiErrorResult<string>("UpdateLinkNewsUnsuccessful", result);
+            if (result == 0) return new ApiErrorResult<string>(400, "UpdateLinkNewsUnsuccessful");
 
             return new ApiSuccessResult<string>("UpdateLinkNewsSuccessful", newLink);
         }
@@ -345,12 +347,12 @@ namespace FakeNewsFilter.Application.Catalog
             var news_community = await NewscommunityCommon.CheckExistNews(_context, request.NewsCommunityId);
 
             if (news_community == null)
-                return new ApiErrorResult<string>("CannontFindCommentWithId", request.NewsCommunityId);
+                return new ApiErrorResult<string>(404, "CannontFindCommentWithId", " " + request.NewsCommunityId);
 
             news_community.Status = Status.Archive;
 
             var result = await _context.SaveChangesAsync();
-            if (result == 0) return new ApiErrorResult<string>("UpdateLinkNewsUnsuccessful", result);
+            if (result == 0) return new ApiErrorResult<string>(400, "UpdateLinkNewsUnsuccessful");
 
             return new ApiSuccessResult<string>("UpdateLinkNewsSuccessful");
         }

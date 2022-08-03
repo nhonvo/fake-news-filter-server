@@ -39,13 +39,13 @@ namespace FakeNewsFilter.Application.Catalog
                 var language = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
                 if (language == null)
                 {
-                    return new ApiErrorResult<string>("LanguageNotFound", " " + request.LanguageId);
+                    return new ApiErrorResult<string>(404, "LanguageNotFound", " " + request.LanguageId);
                 }
                 //Kiểm tra đã tồn tại trong hệ thống hay chưa
                 var sourcename = await _context.Source.FirstOrDefaultAsync(x => x.SourceName == request.SourceName);
                 if (sourcename != null)
                 {
-                    return new ApiErrorResult<string>("SourceNameFound", " " + request.SourceName);
+                    return new ApiErrorResult<string>(404, "SourceNameFound", " " + request.SourceName);
                 }
                 //tạo 1 nguồn mới
                 var ScourceStory = new Source()
@@ -60,7 +60,7 @@ namespace FakeNewsFilter.Application.Catalog
 
                 if (result == 0)
                 {
-                    return new ApiErrorResult<string>("CreateSourceStoryUnsuccessful", result.ToString());
+                    return new ApiErrorResult<string>(400, "CreateSourceStoryUnsuccessful", result.ToString());
                 }
 
                 return new ApiSuccessResult<string>("CreateSourceStorySuccessful");
@@ -80,13 +80,13 @@ namespace FakeNewsFilter.Application.Catalog
                 var sourcename = SourceCommon.CheckExistSourceName(_context, request.SourceName);
                 if (sourcename == null)
                 {
-                    return new ApiErrorResult<string>("CannotFindSourceNameExist", " " + request.SourceName);
+                    return new ApiErrorResult<string>(404, "CannotFindSourceNameExist", " " + request.SourceName);
                 }
                 //Kiểm tra ngôn ngữ có tồn tại trong hệ thống hay không
                 var language = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
                 if (language == null)
                 {
-                    return new ApiErrorResult<string>("LanguageNotFound", " " + request.LanguageId);
+                    return new ApiErrorResult<string>(404, "LanguageNotFound", " " + request.LanguageId);
                 }
 
                 //Xóa nguồn cũ
@@ -109,11 +109,11 @@ namespace FakeNewsFilter.Application.Catalog
                     return new ApiSuccessResult<string>("SourceStoryUpdateSuccessful", " " + sourcename);
                 }
 
-                return new ApiErrorResult<string>("SourceStoryUpdateUnsuccessful"," " + result.ToString());
+                return new ApiErrorResult<string>(400, "SourceStoryUpdateUnsuccessful"," " + result.ToString());
             }
             catch (DbUpdateException ex)
             {
-                return new ApiErrorResult<string>(ex.Message);
+                return new ApiErrorResult<string>(500, ex.Message);
             }
 
         }
@@ -130,7 +130,7 @@ namespace FakeNewsFilter.Application.Catalog
 
             if (list_source == null)
             {
-                return new ApiErrorResult<List<SourceViewModel>>("GetAllSourceStoryUnsuccessful");
+                return new ApiErrorResult<List<SourceViewModel>>(400, "GetAllSourceStoryUnsuccessful");
             }
 
             return new ApiSuccessResult<List<SourceViewModel>>("GetAllSourceStorySuccessful", list_source);
@@ -141,7 +141,7 @@ namespace FakeNewsFilter.Application.Catalog
             var sourcestory = await SourceCommon.CheckExistSource(_context, sourceid);
             if (sourcestory == null)
             {
-                return new ApiErrorResult<SourceViewModel>("SourceNotFound");
+                return new ApiErrorResult<SourceViewModel>(404, "SourceNotFound");
             }
             SourceViewModel result = null;
             if (sourcestory != null)
@@ -157,7 +157,7 @@ namespace FakeNewsFilter.Application.Catalog
             }
             else
             {
-                return new ApiErrorResult<SourceViewModel>("GetOneSourceStoryUnsuccessful");
+                return new ApiErrorResult<SourceViewModel>(400, "GetOneSourceStoryUnsuccessful");
             }
         }
         //Xóa nguồn
@@ -167,7 +167,7 @@ namespace FakeNewsFilter.Application.Catalog
 
             if (deletesourceId == null)
             {
-                return new ApiErrorResult<string>("CanNotFindSourceid", sourceid);
+                return new ApiErrorResult<string>(404, "CanNotFindSourceid", " " + sourceid.ToString());
             }
             
             _context.Source.Remove(deletesourceId);
@@ -175,7 +175,7 @@ namespace FakeNewsFilter.Application.Catalog
             var result = await _context.SaveChangesAsync();
             if (result == 0)
             {
-                return new ApiErrorResult<string>("DeleteSourceStoryUnsuccessful"," " + result.ToString());
+                return new ApiErrorResult<string>(400, "DeleteSourceStoryUnsuccessful"," " + result.ToString());
             }
 
             return new ApiSuccessResult<string>("DeleteSourceStorySuccessful", " " + deletesourceId.SourceId.ToString());
@@ -187,12 +187,12 @@ namespace FakeNewsFilter.Application.Catalog
             var source = await SourceCommon.CheckExistSource(_context, request.SourceId);
 
             if (source == null)
-                return new ApiErrorResult<string>("CannontFindCommentWithId", request.SourceId);
+                return new ApiErrorResult<string>(404, "CannontFindCommentWithId", " " + request.SourceId);
 
             source.Status = Status.Archive;
 
             var result = await _context.SaveChangesAsync();
-            if (result == 0) return new ApiErrorResult<string>("UpdateLinkNewsUnsuccessful", result);
+            if (result == 0) return new ApiErrorResult<string>(400, "UpdateLinkNewsUnsuccessful");
 
             return new ApiSuccessResult<string>("UpdateLinkNewsSuccessful");
         }

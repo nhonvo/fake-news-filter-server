@@ -32,11 +32,11 @@ public class VoteService : IVoteService
         {
             var user = await UserCommon.CheckExistUser(_context, request.UserId);
 
-            if (user == null) return new ApiErrorResult<string>("UserIsNotExist"," " + request.UserId.ToString());
+            if (user == null) return new ApiErrorResult<string>(404, "UserIsNotExist"," " + request.UserId.ToString());
 
             var news = await NewsCommon.CheckExistNews(_context, request.NewsId);
 
-            if (news == null) return new ApiErrorResult<string>("NewsIsNotExist"," " + request.NewsId);
+            if (news == null) return new ApiErrorResult<string>(404, "NewsIsNotExist"," " + request.NewsId);
 
 
             // Xóa phiếu vote hiện có
@@ -61,11 +61,11 @@ public class VoteService : IVoteService
 
             if (result != 0) return new ApiSuccessResult<string>("VoteSuccessful", " " + result.ToString());
 
-            return new ApiErrorResult<string>("VoteUnsuccessful", " " + result.ToString());
+            return new ApiErrorResult<string>(400, "VoteUnsuccessful", " " + result.ToString());
         }
         catch (Exception ex)
         {
-            return new ApiErrorResult<string>(ex.Message);
+            return new ApiErrorResult<string>(500, ex.Message);
         }
     }
 
@@ -87,12 +87,13 @@ public class VoteService : IVoteService
             }
             
             var result = await _context.SaveChangesAsync();
-            if (result != 0) return new ApiSuccessResult<bool>("Update Rating Vote Successful" +  result);
-            return new ApiErrorResult<bool>("Update Rating Vote Unsuccessful" + result);
+            if (result != 0)
+                return new ApiSuccessResult<bool>("Update Rating Vote Successful" +  result);
+            return new ApiErrorResult<bool>(400, "Update Rating Vote Unsuccessful" + result);
         }
         catch (Exception ex)
         {
-            return new ApiErrorResult<bool>(ex.Message);
+            return new ApiErrorResult<bool>(500, ex.Message);
         }
 
     }

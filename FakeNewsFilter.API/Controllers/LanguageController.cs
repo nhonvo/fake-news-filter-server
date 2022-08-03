@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using FakeNewsFilter.Application.Catalog;
+using FakeNewsFilter.Utilities.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
@@ -25,15 +27,23 @@ namespace FakeNewsFilter.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetAll()
         {
-            var languages = await _languageService.GetAllLanguage();
-
-            languages.Message = _localizer[languages.Message].Value;
-
-            if (languages.IsSuccessed == false)
+            try
             {
-                return BadRequest(languages);
+                var languages = await _languageService.GetAllLanguage();
+
+                languages.Message = _localizer[languages.Message].Value;
+
+                if (languages.StatusCode != 200)
+                {
+                    throw new FakeNewsException(languages.Message);
+                }
+                return Ok(languages);
+
             }
-            return Ok(languages);
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }      
         }
     }
 }

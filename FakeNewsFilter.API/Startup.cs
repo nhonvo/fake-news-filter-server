@@ -28,6 +28,7 @@ using Quartz;
 using Slugify;
 using StackExchange.Redis;
 using Role = FakeNewsFilter.Data.Entities.Role;
+using FakeNewsFilter.Utilities.Exceptions;
 
 namespace FakeNewsFilter
 {
@@ -209,12 +210,14 @@ namespace FakeNewsFilter
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                // app.UseDeveloperExceptionPage();
+                app.UseStatusCodePagesWithReExecute("/errors/{0}");
+                app.UseMiddleware<MiddlewareExtentions>();
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseStatusCodePagesWithReExecute("/errors/{0}");
+                app.UseMiddleware<MiddlewareExtentions>();
                 app.UseHsts();
             }
 
@@ -237,9 +240,6 @@ namespace FakeNewsFilter
 
             app.UseHttpsRedirection();
 
-            // app.UseSwagger();
-
-            // app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Fake News Filter API v1"); });
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }

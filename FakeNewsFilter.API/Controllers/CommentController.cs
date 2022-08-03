@@ -40,7 +40,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 result.Message = _localizer[result.Message].Value + result.ResultObj;
 
-                if (result.IsSuccessed == false)
+                if (result.StatusCode != 200)
                 {
                     _logger.LogError(result.Message);
                     return BadRequest(result);

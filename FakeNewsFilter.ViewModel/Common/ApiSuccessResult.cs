@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace FakeNewsFilter.ViewModel.Common
 {
@@ -9,18 +7,18 @@ namespace FakeNewsFilter.ViewModel.Common
 
         public ApiSuccessResult()
         {
-            IsSuccessed = true;
+            StatusCode = 200;
         }
 
         public ApiSuccessResult(string v)
         {
-            IsSuccessed = true;
+            StatusCode = 200;
             Message = v;
         }
 
         public ApiSuccessResult(String message, T resultObj)
         {
-            IsSuccessed = true;
+            StatusCode = 200;
             Message = message;
             ResultObj = resultObj;
         }

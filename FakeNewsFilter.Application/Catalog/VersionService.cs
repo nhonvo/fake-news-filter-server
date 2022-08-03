@@ -64,12 +64,12 @@ namespace FakeNewsFilter.Application.Catalog
                     }
 
                     transaction.Rollback();
-                    return new ApiErrorResult<string>("CreateUnsuccessful", " " + result.ToString());
+                    return new ApiErrorResult<string>(400, "CreateUnsuccessful", " " + result.ToString());
                 }
                 catch (Exception ex)
                 {
                     transaction.Rollback();
-                    return new ApiErrorResult<string>(ex.Message);
+                    return new ApiErrorResult<string>(500, ex.Message);
                 }
             }
         }
@@ -105,17 +105,17 @@ namespace FakeNewsFilter.Application.Catalog
                         return new ApiSuccessResult<List<VersionVM>>("GetVersionPlatformSuccessful", res);
 
                     }
-                    return new ApiErrorResult<List<VersionVM>>("GetVersionPlatformFail");
+                    return new ApiErrorResult<List<VersionVM>>(400, "GetVersionPlatformFail");
                 }
                 else
                 {
-                    return new ApiErrorResult<List<VersionVM>>("PlatformNotFound");
+                    return new ApiErrorResult<List<VersionVM>>(404, "PlatformNotFound");
                 }
                 
             }
             catch(Exception ex)
             {
-                return new ApiErrorResult<List<VersionVM>>(ex.Message);
+                return new ApiErrorResult<List<VersionVM>>(500, ex.Message);
             }
         }
 
@@ -139,17 +139,17 @@ namespace FakeNewsFilter.Application.Catalog
                     if(res.VersionNumber == versionNumber)
                         return new ApiSuccessResult<Version>("AlreadyTheLatestVersion");
                     else
-                        return new ApiErrorResult<Version>("VersionNotFound");
+                        return new ApiErrorResult<Version>(404, "VersionNotFound");
                 }
                 else
                 {
-                    return new ApiErrorResult<Version>("PlatformNotFound");
+                    return new ApiErrorResult<Version>(404, "PlatformNotFound");
                 }
 
             }
             catch (Exception ex)
             {
-                return new ApiErrorResult<Version>(ex.Message);
+                return new ApiErrorResult<Version>(500, ex.Message);
             }
         }
         public Task<ApiResult<VersionVM>> GetVersionDetail(int versionId)

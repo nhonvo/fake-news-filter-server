@@ -45,7 +45,7 @@ namespace FakeNewsFilter.API.Controllers
                 {
                     string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
 
-                    var result = new ApiErrorResult<bool>(errors);
+                    var result = new ApiErrorResult<bool>(400, errors);
 
                     return BadRequest(result);
                 }
@@ -54,7 +54,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 createNews.Message = _localizer[createNews.Message].Value + createNews.ResultObj;
 
-                if (createNews.IsSuccessed == false)
+                if (createNews.StatusCode != 200)
                 {
                     _logger.LogError(createNews.Message);
                     return BadRequest(createNews);
@@ -131,7 +131,7 @@ namespace FakeNewsFilter.API.Controllers
                 {
                     string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
 
-                    var result = new ApiErrorResult<bool>(errors);
+                    var result = new ApiErrorResult<bool>(400, errors);
 
                     return BadRequest(result);
                 }
@@ -224,7 +224,7 @@ namespace FakeNewsFilter.API.Controllers
                 {
                     string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
 
-                    var result = new ApiErrorResult<bool>(errors);
+                    var result = new ApiErrorResult<bool>(400, errors);
 
                     return BadRequest(result);
                 }

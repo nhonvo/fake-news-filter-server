@@ -3,29 +3,24 @@ namespace FakeNewsFilter.ViewModel.Common
 {
     public class ApiErrorResult<T> : ApiResult<T>
     {
-        private int storyId;
 
         public ApiErrorResult()
         {
 
         }
 
-        public ApiErrorResult(string message)
+        public ApiErrorResult(int statuscode, string message)
         {
-            IsSuccessed = false;
+            StatusCode = statuscode;
             Message = message;
         }
 
-        public ApiErrorResult(string message, T detail)
+        public ApiErrorResult(int statuscode, string message, T detail)
         {
-            IsSuccessed = false;
+            StatusCode = statuscode;
             Message = message;
             ResultObj = detail;
         }
 
-        public ApiErrorResult(string message, int storyId) : this(message)
-        {
-            this.storyId = storyId;
-        }
     }
 }

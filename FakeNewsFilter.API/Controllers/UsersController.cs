@@ -76,7 +76,7 @@ namespace FakeNewsFilter.API.Controllers
                 {
                     string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
 
-                    var result = new ApiErrorResult<bool>(errors);
+                    var result = new ApiErrorResult<bool>(400, errors);
 
                     return BadRequest(result);
                 }
@@ -119,7 +119,7 @@ namespace FakeNewsFilter.API.Controllers
                 {
                     string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
 
-                    var result = new ApiErrorResult<bool>(errors);
+                    var result = new ApiErrorResult<bool>(400, errors);
 
                     return BadRequest(result);
                 }
@@ -128,7 +128,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 resultToken.Message = _localizer[resultToken.Message].Value;
 
-                if (!resultToken.IsSuccessed)
+                if (resultToken.StatusCode != 200)
                 {
                     _logger.LogError(resultToken.Message);
                     return BadRequest(resultToken);
@@ -183,7 +183,7 @@ namespace FakeNewsFilter.API.Controllers
                 {
                     string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
 
-                    var result = new ApiErrorResult<bool>(errors);
+                    var result = new ApiErrorResult<bool>(400, errors);
 
                     return BadRequest(result);
                 }
@@ -192,7 +192,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 resultToken.Message = _localizer[resultToken.Message].Value;
 
-                if (!resultToken.IsSuccessed)
+                if (resultToken.StatusCode != 200)
                 {
                     _logger.LogError(resultToken.Message);
                     return BadRequest(resultToken);
@@ -218,7 +218,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 result.Message = _localizer[result.Message].Value;
 
-                if (result.IsSuccessed == false)
+                if (result.StatusCode != 200)
                 {
                     _logger.LogError(result.Message);
                     return BadRequest(result);
@@ -246,7 +246,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 result.Message = _localizer[result.Message].Value;
 
-                if (!result.IsSuccessed)
+                if (result.StatusCode != 200)
                 {
                     _logger.LogError(result.Message);
                     return BadRequest(result);

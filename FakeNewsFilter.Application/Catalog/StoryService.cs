@@ -47,13 +47,13 @@ namespace FakeNewsFilter.Application.Catalog
             var language = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
             if (language == null)
             {
-                return new ApiErrorResult<string>("LanguageIdNotFound"," " + request.LanguageId);
+                return new ApiErrorResult<string>(404, "LanguageIdNotFound"," " + request.LanguageId);
             }
             //kiểm tra nguồn có tồn tại hay không
             var source = await SourceCommon.CheckExistSource(_context, request.SourceId);
             if (source == null)
             {
-                return new ApiErrorResult<string>("SourceIdNotFound", " " + request.SourceId.ToString());
+                return new ApiErrorResult<string>(404, "SourceIdNotFound", " " + request.SourceId.ToString());
             }
             
             var story = new Story()
@@ -72,7 +72,7 @@ namespace FakeNewsFilter.Application.Catalog
 
                 if (checkExtension == false)
                 {
-                    return new ApiErrorResult<string>("FileImageInvalid", " " + checkExtension.ToString());
+                    return new ApiErrorResult<string>(400, "FileImageInvalid", " " + checkExtension.ToString());
                 }
 
                 story.Media = new Media()
@@ -93,7 +93,7 @@ namespace FakeNewsFilter.Application.Catalog
             if (result == 0)
             {
                 await _storageService.DeleteFileAsync(story.Media.PathMedia);
-                return new ApiErrorResult<string>("CreateStoryUnsuccessful", " " + result.ToString());
+                return new ApiErrorResult<string>(400, "CreateStoryUnsuccessful", " " + result.ToString());
             }
 
             return new ApiSuccessResult<string>("CreateStorySuccessful", " " + story.StoryId.ToString());
@@ -106,19 +106,19 @@ namespace FakeNewsFilter.Application.Catalog
             var language_update = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
             if (language_update == null)
             {
-                return new ApiErrorResult<string>("LanguageIdNotFound"," " + request.LanguageId);
+                return new ApiErrorResult<string>(404, "LanguageIdNotFound"," " + request.LanguageId);
             }
             //Kiểm tra story có tồn tại hay không
             var story_update = await StoryCommon.CheckExistStory(_context, request.StoryId);
 
             if (story_update == null)
-                return new ApiErrorResult<string>($"CannontFindAStoryWithId", " " + request.StoryId);
+                return new ApiErrorResult<string>(404, $"CannontFindAStoryWithId", " " + request.StoryId);
 
             //Kiểm tra nguồn có tồn tại hay không
             var source_update = await SourceCommon.CheckExistSource(_context, request.SourceId);
 
             if (source_update == null)
-                return new ApiErrorResult<string>($"CannontFindASourceWithId", " " + request.SourceId);
+                return new ApiErrorResult<string>(404, $"CannontFindASourceWithId", " " + request.SourceId);
 
             //Cập nhật đường dẫn và nguồn mới
             story_update.Link = request.Link ?? story_update.Link;
@@ -142,7 +142,7 @@ namespace FakeNewsFilter.Application.Catalog
 
                     if (checkExtension == false)
                     {
-                        return new ApiErrorResult<string>("FileImageInvalid", " " + checkExtension.ToString());
+                        return new ApiErrorResult<string>(400, "FileImageInvalid", " " + checkExtension.ToString());
                     }
 
                     story_update.Media = new Media()
@@ -174,7 +174,7 @@ namespace FakeNewsFilter.Application.Catalog
 
             if (result == 0)
             {
-                return new ApiErrorResult<string>("UpdateStoryUnsuccessful", " " + result.ToString());
+                return new ApiErrorResult<string>(400, "UpdateStoryUnsuccessful", " " + result.ToString());
             }
 
             return new ApiSuccessResult<string>("UpdateStorySuccessful", " " + story_update.ToString());
@@ -187,7 +187,8 @@ namespace FakeNewsFilter.Application.Catalog
             {
                 var story = await StoryCommon.CheckExistStory(_context, StoryId);
 
-                if (story == null) return new ApiSuccessResult<string>("CannontFindAStoryWithId"," " + StoryId.ToString());
+                if (story == null)
+                    return new ApiErrorResult<string>(404, "CannontFindAStoryWithId"," " + StoryId.ToString());
 
                 var media = _context.Media.FirstOrDefault(i => i.MediaId == story.Thumbstory);
 
@@ -207,12 +208,12 @@ namespace FakeNewsFilter.Application.Catalog
                     return new ApiSuccessResult<string>("DeleteStorySuccessful", " " + story.StoryId.ToString());
                 }
 
-                return new ApiErrorResult<string>("DeleteStoryUnsuccessful", " " + result.ToString());
+                return new ApiErrorResult<string>(400, "DeleteStoryUnsuccessful", " " + result.ToString());
             }
 
             catch (Exception ex)
             {
-                return new ApiErrorResult<string>(ex.Message);
+                return new ApiErrorResult<string>(500, ex.Message);
             }
         }
 
@@ -225,7 +226,7 @@ namespace FakeNewsFilter.Application.Catalog
 
                 if (story == null)
                 {
-                    return new ApiErrorResult<StoryViewModel>("StoryNotFound", storyId);
+                    return new ApiErrorResult<StoryViewModel>(404, "StoryNotFound");
                 }
                 var storyVM = new StoryViewModel
                 {
@@ -241,7 +242,7 @@ namespace FakeNewsFilter.Application.Catalog
             }
             catch (Exception ex)
             {
-                return new ApiErrorResult<StoryViewModel>(ex.Message);
+                return new ApiErrorResult<StoryViewModel>(500, ex.Message);
             }
         }
 
@@ -261,7 +262,7 @@ namespace FakeNewsFilter.Application.Catalog
 
             if (list_story == null)
             {
-                return new ApiErrorResult<List<StoryViewModel>>("GetAllStoryUnsuccessful", list_story);
+                return new ApiErrorResult<List<StoryViewModel>>(400, "GetAllStoryUnsuccessful", list_story);
             }
 
             return new ApiSuccessResult<List<StoryViewModel>>("GetAllStorySuccessful", list_story);
@@ -282,12 +283,13 @@ namespace FakeNewsFilter.Application.Catalog
             var story = await StoryCommon.CheckExistStory(_context, request.StoryId);
 
             if (story == null)
-                return new ApiErrorResult<string>("CannontFindCommentWithId", request.StoryId);
+                return new ApiErrorResult<string>(404, "CannontFindCommentWithId", request.StoryId.ToString());
 
             story.Status = Status.Archive;
 
             var result = await _context.SaveChangesAsync();
-            if (result == 0) return new ApiErrorResult<string>("UpdateLinkNewsUnsuccessful", result);
+            if (result == 0)
+                return new ApiErrorResult<string>(400, "UpdateLinkNewsUnsuccessful");
 
             return new ApiSuccessResult<string>("UpdateLinkNewsSuccessful");
         }

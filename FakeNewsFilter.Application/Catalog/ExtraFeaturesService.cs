@@ -83,7 +83,7 @@ namespace FakeNewsFilter.Application.Catalog
 
             if(list_topics.Count == 0 && list_news.Count == 0)
             {
-                return new ApiErrorResult<SearchViewModel>("NotFound");
+                return new ApiErrorResult<SearchViewModel>(404, "NotFound");
             }
 
             var finalresult = new SearchViewModel
@@ -93,7 +93,6 @@ namespace FakeNewsFilter.Application.Catalog
                 News = list_news,
                 CountNews = list_news.Count
             };
-
 
             return new ApiSuccessResult<SearchViewModel>("SearchSuccessful", finalresult);
         }
@@ -107,7 +106,7 @@ namespace FakeNewsFilter.Application.Catalog
                 var user = await _context.UserLogins.FirstOrDefaultAsync(x => x.UserId == id);
                 if (user == null)
                 {
-                    return new ApiErrorResult<List<GetUserLoginSocialRequest>> ("UserNotFound");
+                    return new ApiErrorResult<List<GetUserLoginSocialRequest>> (404, "UserNotFound");
                 }
 
                 var query = from t in _context.UserLogins
@@ -116,23 +115,23 @@ namespace FakeNewsFilter.Application.Catalog
                             {
                                 topic = t,
                             };
-                if (user != null)
+                
+                var userLogin = await query.Select(x => new GetUserLoginSocialRequest()
                 {
-                    var userLogin = await query.Select(x => new GetUserLoginSocialRequest()
-                    {
                         LoginProvider = user.LoginProvider,
                         ProviderKey = user.ProviderKey,
                         ProviderDisplayName = user.ProviderDisplayName,
                         UserId = user.UserId
-                    }).ToListAsync();
-                    return new ApiSuccessResult<List<GetUserLoginSocialRequest>> ("GetSocialMediaSucessfull", userLogin);
-                }
-                return new ApiErrorResult<List<GetUserLoginSocialRequest>> ("GetSocialMediaUnsucessfull");
-            }
-            catch (Exception)
-            {
+                }).ToListAsync();
 
-                throw;
+                if(userLogin.Count > 0)
+                    return new ApiSuccessResult<List<GetUserLoginSocialRequest>> ("GetSocialMediaSucessfull", userLogin);
+                
+                return new ApiErrorResult<List<GetUserLoginSocialRequest>> (400, "GetSocialMediaUnsucessfull");
+            }
+            catch (Exception ex)
+            {
+                return new ApiErrorResult<List<GetUserLoginSocialRequest>>(500, ex.Message);
             }
         }
     }

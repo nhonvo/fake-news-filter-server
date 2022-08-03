@@ -53,6 +53,9 @@ namespace FakeNewsFilter.Application.Catalog
                 //1. Chạy câu truy vấn
                 var language = await LanguageCommon.CheckExistLanguage(_context, LanguageId);
 
+                if(language == null)
+                    return new ApiErrorResult<List<TopicInfoVM>> (404, "LanguageNotFound");
+
                 var query = from t in _context.TopicNews
                             where (string.IsNullOrEmpty(LanguageId) || t.LanguageId == LanguageId)
                             select new
@@ -80,14 +83,14 @@ namespace FakeNewsFilter.Application.Catalog
 
                 if (data == null)
                 {
-                    return new ApiErrorResult<List<TopicInfoVM>>("GetTopicUnsuccessful", data);
+                    return new ApiErrorResult<List<TopicInfoVM>>(400, "GetTopicUnsuccessful", data);
                 }
 
                 return new ApiSuccessResult<List<TopicInfoVM>>("GetTopicSuccessful", data);
             }
             catch (Exception ex)
             {
-                return new ApiErrorResult<List<TopicInfoVM>>(ex.Message);
+                return new ApiErrorResult<List<TopicInfoVM>>(500, ex.Message);
             }
         }
 
@@ -99,6 +102,11 @@ namespace FakeNewsFilter.Application.Catalog
             {
                 //1. Chạy câu truy vấn
                 var language = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
+
+                if (language == null)
+                {
+                    return new ApiErrorResult<PagedResult<TopicInfoVM>>(404, "LanguageNotFound");
+                }
 
                 var query = from t in _context.TopicNews
                                 where (string.IsNullOrEmpty(request.LanguageId) || t.LanguageId == request.LanguageId)
@@ -149,14 +157,14 @@ namespace FakeNewsFilter.Application.Catalog
 
                 if (pagedResult == null)
                 {
-                    return new ApiErrorResult<PagedResult<TopicInfoVM>>("GetTopicUnsuccessful", pagedResult);
+                    return new ApiErrorResult<PagedResult<TopicInfoVM>>(400, "GetTopicUnsuccessful", pagedResult);
                 }
 
                 return new ApiSuccessResult<PagedResult<TopicInfoVM>>("GetTopicSuccessful", pagedResult);
             }
             catch (Exception ex)
             {
-                return new ApiErrorResult<PagedResult<TopicInfoVM>>(ex.Message);
+                return new ApiErrorResult<PagedResult<TopicInfoVM>>(500, ex.Message);
             } 
         }
 
@@ -171,7 +179,7 @@ namespace FakeNewsFilter.Application.Catalog
 
                     if (language == null)
                     {
-                        return new ApiErrorResult<string>("LanguageNotFound", " " + request.LanguageId);
+                        return new ApiErrorResult<string>(404, "LanguageNotFound");
                     }
 
                     var topic = new TopicNews()
@@ -209,12 +217,12 @@ namespace FakeNewsFilter.Application.Catalog
                     }
 
                     transaction.Rollback();
-                    return new ApiErrorResult<string>("CreateUnsuccessful", " " + result.ToString());
+                    return new ApiErrorResult<string>(400, "CreateUnsuccessful", " " + result.ToString());
                 }
                 catch (Exception ex)
                 {
                     transaction.Rollback();
-                    return new ApiErrorResult<string>(ex.Message);
+                    return new ApiErrorResult<string>(500, ex.Message);
                 }
             }
 
@@ -228,13 +236,13 @@ namespace FakeNewsFilter.Application.Catalog
                 var topic = await TopicCommon.CheckExistTopic(_context, request.TopicId);
                 if (topic == null)
                 {
-                    return new ApiErrorResult<string>("TopicNotFound", " " + request.TopicId.ToString());
+                    return new ApiErrorResult<string>(404, "TopicNotFound");
                 }
 
                 var language = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
                 if (language == null)
                 {
-                    return new ApiErrorResult<string>("LanguageNotFound", " " + request.LanguageId);
+                    return new ApiErrorResult<string>(404, "LanguageNotFound");
                 }
                 
                 topic.Label = request.Label ?? topic.Label;
@@ -284,11 +292,11 @@ namespace FakeNewsFilter.Application.Catalog
                     return new ApiSuccessResult<string>("UpdateTopicSuccessful", " " + topic.TopicId.ToString());
                 }
 
-                return new ApiErrorResult<string>("UpdateUnsuccessful", " " + result.ToString());
+                return new ApiErrorResult<string>(400, "UpdateUnsuccessful", " " + result.ToString());
             }
             catch(Exception ex)
             {
-                return new ApiErrorResult<string>(ex.Message);
+                return new ApiErrorResult<string>(500, ex.Message);
             }
             
         }
@@ -309,7 +317,7 @@ namespace FakeNewsFilter.Application.Catalog
                 var topic = await TopicCommon.CheckExistTopic(_context, id);
                 if (topic == null)
                 {
-                    return new ApiErrorResult<TopicInfoVM>("TopicNotFound", id);
+                    return new ApiErrorResult<TopicInfoVM>(404, "TopicNotFound");
                 }
                 var thumb = _context.Media.Where(m => m.MediaId == topic.ThumbTopic).Select(m => m.PathMedia).FirstOrDefault();
 
@@ -329,7 +337,7 @@ namespace FakeNewsFilter.Application.Catalog
             }
             catch(Exception ex)
             {
-                return new ApiErrorResult<TopicInfoVM>(ex.Message);
+                return new ApiErrorResult<TopicInfoVM>(500, ex.Message);
             }
             
         }
@@ -364,28 +372,38 @@ namespace FakeNewsFilter.Application.Catalog
                     return new ApiSuccessResult<string>("DeleteTopicSuccessful", " " + topic.TopicId.ToString());
                 }
 
-                return new ApiErrorResult<string>("DeleteUnsuccessful", " " + result);
+                return new ApiErrorResult<string>(400, "DeleteUnsuccessful", " " + result);
             }
 
             catch(Exception ex)
             {
-                return new ApiErrorResult<string>(ex.Message);
+                return new ApiErrorResult<string>(500, ex.Message);
             }
         }
 
         public async Task<ApiResult<string>> Archive(TopicUpdateRequest request)
         {
-            var topic = await TopicCommon.CheckExistTopic(_context, request.TopicId);
+            try
+            {
+                var topic = await TopicCommon.CheckExistTopic(_context, request.TopicId);
 
-            if (topic == null)
-                return new ApiErrorResult<string>("CannontFindCommentWithId", request.TopicId);
+                if (topic == null)
+                    return new ApiErrorResult<string>(404, "CannontFindTopicWithId", " " + request.TopicId);
 
-            topic.Status = Status.Archive;
+                topic.Status = Status.Archive;
 
-            var result = await _context.SaveChangesAsync();
-            if (result == 0) return new ApiErrorResult<string>("UpdateLinkNewsUnsuccessful", result);
+                var result = await _context.SaveChangesAsync();
 
-            return new ApiSuccessResult<string>("UpdateLinkNewsSuccessful");
+                if (result == 0)
+                    return new ApiErrorResult<string>(400, "ArchiveTopicUnsuccessful");
+
+                return new ApiSuccessResult<string>("ArchiveTopicSuccessful");
+            }
+            catch(Exception ex)
+            {
+                return new ApiErrorResult<string>(500, ex.Message);
+            }
+            
         }
 
     }
