@@ -30,8 +30,8 @@ namespace FakeNewsFilter.UserApp
             services.AddHttpClient();
             var cultures = new[]
            {
-                new CultureInfo("en"),
-                new CultureInfo("vi"),
+                new CultureInfo("en-US"),
+                new CultureInfo("vi-VN"),
             };
 
             services.AddControllersWithViews()
@@ -61,7 +61,7 @@ namespace FakeNewsFilter.UserApp
                     {
                         o.SupportedCultures = cultures;
                         o.SupportedUICultures = cultures;
-                        o.DefaultRequestCulture = new RequestCulture("vi");
+                        o.DefaultRequestCulture = new RequestCulture("vi-VN");
                     };
                 });
 
@@ -125,7 +125,7 @@ namespace FakeNewsFilter.UserApp
             {
                 endpoints.MapControllerRoute(
                      name: "default",
-                     pattern: "{culture=vi}/{controller=Home}/{action=Index}/{id?}");
+                     pattern: "{culture=vi-VN}/{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

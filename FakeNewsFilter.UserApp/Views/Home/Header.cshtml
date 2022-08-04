@@ -68,11 +68,11 @@
 
                     </div>
                 </div>
-                <div class="col-lg-5 col-md-1 col-sm-1 order-3 order-sm-2">
+                <div class="col-lg-5 order-sm-2">
                     <div class="appie-header-main-menu">
                         <ul>
                             <li>
-                                <a asp-controller="Home" asp-action="Index"  localize-content>Home</a>
+                                <a asp-controller="Home" asp-action="Index" localize-content>Home</a>
                             </li>
                             <li>
                                 <a asp-controller="Home" asp-action="Guide" localize-content>Guide</a>
@@ -86,19 +86,19 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-lg-2 order-3 order-sm-3">
-                    <language-nav language-label="NativeName"
-                                  cookie-handler-url="@(Url.Action("SetCultureCookie", "Home", new { area = "", cltr = "{0}", returnUrl = "{1}" }))">
-                        
-                    </language-nav>
-                </div>
-                <div class="col-lg-2 col-md-4 col-sm-6 col-6 order-3 order-sm-4">
+                <div class="order-sm-3">
                     <div class="appie-btn-box text-right">
-                        <a class="main-btn ml-30" href="#">Bắt đầu khám phá</a>
+                        <a class="main-btn mr-40" href="#">Khám phá ngay</a>
                         <div class="toggle-btn ml-30 canvas_open d-lg-none d-block">
                             <i class="fa fa-bars"></i>
                         </div>
                     </div>
+                </div>
+                <div class="order-sm-4 ml-30">
+                    <language-nav flags="true" language-label="NativeName"
+                                  cookie-handler-url="@(Url.Action("SetCultureCookie", "Home", new { area = "", cltr = "{0}", returnUrl = "{1}" }))">
+
+                    </language-nav>
                 </div>
             </div>
         </div>
