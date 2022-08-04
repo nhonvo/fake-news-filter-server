@@ -1,12 +1,80 @@
-﻿<header class="appie-header-area appie-sticky">
+﻿    <!--====== PRELOADER PART START ======-->
+
+<div class="loader-wrap">
+    <div class="preloader"><div class="preloader-close">Preloader Close</div></div>
+    <div class="layer layer-one"><span class="overlay"></span></div>
+    <div class="layer layer-two"><span class="overlay"></span></div>
+    <div class="layer layer-three"><span class="overlay"></span></div>
+</div>
+
+<!--====== PRELOADER PART ENDS ======-->
+<!--====== OFFCANVAS MENU PART START ======-->
+
+<div class="off_canvars_overlay">
+
+</div>
+<div class="offcanvas_menu">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="offcanvas_menu_wrapper">
+                    <div class="canvas_close">
+                        <a href="javascript:void(0)"><i class="fa fa-times"></i></a>
+                    </div>
+                    <div class="offcanvas-brand text-center mb-40">
+                        <img src="/intro/images/logo.png" alt="" width="100px" />
+                    </div>
+                    <div id="menu" class="text-left ">
+                        <ul class="offcanvas_main_menu">
+                            <li class="menu-item-has-children active">
+                                <a asp-action="Index" asp-controller="Home">Trang chủ</a>
+                            </li>
+                            <li class="menu-item-has-children active">
+                                <a asp-controller="Home" asp-action="guide">Hướng dẫn</a>
+                            </li>
+                            <li class="menu-item-has-children active">
+                                <a asp-controller="Home" asp-action="Privacy">Chính sách</a>
+                            </li>
+                            <li class="menu-item-has-children active">
+                                <a asp-controller="Home" asp-action="contact">Liên hệ</a>
+                            </li>
+                            
+                        </ul>
+                    </div>
+                    <div class="offcanvas-social">
+                        <ul class="text-center">
+                            <li><a href="$"><i class="fab fa-facebook-f"></i></a></li>
+                            <li><a href="$"><i class="fab fa-twitter"></i></a></li>
+                            <li><a href="$"><i class="fab fa-instagram"></i></a></li>
+                            <li><a href="$"><i class="fab fa-dribbble"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-widget-info">
+                        <ul>
+                            <li><a href="#"><i class="fal fa-envelope"></i> khuyenpb@gmail.com</a></li>
+                            <li><a href="#"><i class="fal fa-phone"></i> +(84) 333 093 935</a></li>
+                            <li><a href="#"><i class="fal fa-map-marker-alt"></i> TP.HCM City, VIETNAM </a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--====== OFFCANVAS MENU PART ENDS ======-->
+
+<header class="appie-header-area appie-sticky">
     <div class="container">
         <div class="header-nav-box">
             <div class="row align-items-center">
                 <div class="col-lg-2 col-md-4 col-sm-5 col-6 order-1 order-sm-1">
-                    <div class="appie-logo-box">
+                    <div class="appie-logo-box text-center">
                         <a href="#">
-                            <img src="assets/images/logo.png" alt="" />
+                            <img src="/intro/images/logo.png" alt="" />
+                            <h7>Owl Trust</h7>
                         </a>
+                        
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-1 col-sm-1 order-3 order-sm-2">
@@ -27,6 +95,7 @@
                         </ul>
                     </div>
                 </div>
+
                 <div class="col-lg-4 col-md-7 col-sm-6 col-6 order-2 order-sm-3">
                     <div class="appie-btn-box text-right">
                         <a class="main-btn ml-30" href="#">Bắt đầu khám phá</a>

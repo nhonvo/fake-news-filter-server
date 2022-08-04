@@ -21,6 +21,8 @@
 /*===========================
     1. COMMON css 
 ===========================*/
+
+
 @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@100;300;400;500;700;900&display=swap");
 body {
     font-family: "Nunito", sans-serif;
@@ -38,8 +40,13 @@ body {
   box-sizing: border-box;
   scroll-behavior: smooth; }
 
+.appie-logo-box {
+    max-width: 100px;
+}
+
 img {
-  max-width: 100%; }
+    max-width: 100%;
+}
 
 a:focus,
 input:focus,
