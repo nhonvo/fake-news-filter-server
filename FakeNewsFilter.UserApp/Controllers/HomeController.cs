@@ -3,6 +3,9 @@ using FakeNewsFilter.AdminApp.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using FakeNewsFilter.UserApp.Models;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Http;
+using System;
 
 namespace FakeNewsFilter.UserApp.Controllers
 {
@@ -17,11 +20,11 @@ namespace FakeNewsFilter.UserApp.Controllers
             _newsApi = newsApi;
         }
 
-        [HttpGet("/")]
         public IActionResult Index()
         {
             return View();
         }
+
         [HttpGet("privacy-policy")]
         public IActionResult Privacy()
         {
@@ -55,7 +58,16 @@ namespace FakeNewsFilter.UserApp.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        
+        public IActionResult SetCultureCookie(string cltr, string returnUrl)
+        {
+            Response.Cookies.Append(
+                CookieRequestCultureProvider.DefaultCookieName,
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(cltr)),
+                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+            );
+            return LocalRedirect(returnUrl);
+        }
+
     }
 }
 

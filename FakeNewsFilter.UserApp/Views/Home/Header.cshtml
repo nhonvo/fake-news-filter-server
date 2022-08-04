@@ -1,14 +1,4 @@
-﻿    <!--====== PRELOADER PART START ======-->
-
-<div class="loader-wrap">
-    <div class="preloader"><div class="preloader-close">Preloader Close</div></div>
-    <div class="layer layer-one"><span class="overlay"></span></div>
-    <div class="layer layer-two"><span class="overlay"></span></div>
-    <div class="layer layer-three"><span class="overlay"></span></div>
-</div>
-
-<!--====== PRELOADER PART ENDS ======-->
-<!--====== OFFCANVAS MENU PART START ======-->
+﻿<!--====== OFFCANVAS MENU PART START ======-->
 
 <div class="off_canvars_overlay">
 
@@ -27,20 +17,21 @@
                     <div id="menu" class="text-left ">
                         <ul class="offcanvas_main_menu">
                             <li class="menu-item-has-children active">
-                                <a asp-action="Index" asp-controller="Home">Trang chủ</a>
+                                <a asp-controller="Home" asp-action="Index"  localize-content>Home</a>
                             </li>
                             <li class="menu-item-has-children active">
-                                <a asp-controller="Home" asp-action="guide">Hướng dẫn</a>
+                                <a asp-controller="Home" asp-action="Guide" localize-content>Guide</a>
                             </li>
                             <li class="menu-item-has-children active">
-                                <a asp-controller="Home" asp-action="Privacy">Chính sách</a>
+                                <a asp-controller="Home" asp-action="Privacy" localize-content>Privacy</a>
                             </li>
                             <li class="menu-item-has-children active">
-                                <a asp-controller="Home" asp-action="contact">Liên hệ</a>
+                                <a asp-controller="Home" asp-action="Contact" localize-content>Contact</a>
                             </li>
                             
                         </ul>
                     </div>
+
                     <div class="offcanvas-social">
                         <ul class="text-center">
                             <li><a href="$"><i class="fab fa-facebook-f"></i></a></li>
@@ -74,29 +65,34 @@
                             <img src="/intro/images/logo.png" alt="" />
                             <h7>Owl Trust</h7>
                         </a>
-                        
+
                     </div>
                 </div>
-                <div class="col-lg-6 col-md-1 col-sm-1 order-3 order-sm-2">
+                <div class="col-lg-5 col-md-1 col-sm-1 order-3 order-sm-2">
                     <div class="appie-header-main-menu">
                         <ul>
                             <li>
-                                <a asp-action="Index" asp-controller="Home">Trang chủ</a>
+                                <a asp-controller="Home" asp-action="Index"  localize-content>Home</a>
                             </li>
                             <li>
-                                <a asp-controller="Home" asp-action="guide">Hướng dẫn</a>
+                                <a asp-controller="Home" asp-action="Guide" localize-content>Guide</a>
                             </li>
                             <li>
-                                <a asp-controller="Home" asp-action="Privacy">Chính sách</a>
+                                <a asp-controller="Home" asp-action="Privacy" localize-content>Privacy</a>
                             </li>
                             <li>
-                                <a asp-controller="Home" asp-action="contact">Liên hệ</a>
+                                <a asp-controller="Home" asp-action="Contact" localize-content>Contact</a>
                             </li>
                         </ul>
                     </div>
                 </div>
-
-                <div class="col-lg-4 col-md-7 col-sm-6 col-6 order-2 order-sm-3">
+                <div class="col-lg-2 order-3 order-sm-3">
+                    <language-nav language-label="NativeName"
+                                  cookie-handler-url="@(Url.Action("SetCultureCookie", "Home", new { area = "", cltr = "{0}", returnUrl = "{1}" }))">
+                        
+                    </language-nav>
+                </div>
+                <div class="col-lg-2 col-md-4 col-sm-6 col-6 order-3 order-sm-4">
                     <div class="appie-btn-box text-right">
                         <a class="main-btn ml-30" href="#">Bắt đầu khám phá</a>
                         <div class="toggle-btn ml-30 canvas_open d-lg-none d-block">

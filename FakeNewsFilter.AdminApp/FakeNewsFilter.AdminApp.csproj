@@ -11,7 +11,6 @@
   <ItemGroup>
     <Folder Include="wwwroot\" />
     <Folder Include="Views\User\" />
-    <Folder Include="Services\" />
     <Folder Include="Views\Login\" />
     <Folder Include="Controllers\Components\" />
     <Folder Include="Views\Shared\Components\" />
@@ -25,12 +24,14 @@
     <ProjectReference Include="..\FakeNewsFilter.Utilities\FakeNewsFilter.Utilities.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+    <ProjectReference Include="..\FakeNewsFilter.ClientService\FakeNewsFilter.ClientService.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Remove="Views\User\" />
     <None Remove="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" />
     <None Remove="FluentValidation.AspNetCore" />
-    <None Remove="Services\" />
     <None Remove="Microsoft.AspNetCore.Session" />
     <None Remove="Microsoft.VisualStudio.Web.CodeGeneration.Design" />
     <None Remove="Views\Login\" />

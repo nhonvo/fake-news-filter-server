@@ -1,4 +1,8 @@
-﻿@{ Layout = null; }
+﻿@{
+    var culture = CultureInfo.CurrentCulture.Name;
+}
+
+@{ Layout = null; }
 
 <!doctype html>
 <html lang="en">
@@ -11,7 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!--====== Title ======-->
-    <title>OWL Trust - Fake News Filter</title>
+    <title localize-content>App Full Name</title>
     <!--====== Favicon Icon ======-->
     <link rel="shortcut icon" href="~/intro/images/favicon.png" type="image/png" />
 
@@ -39,8 +43,8 @@
 
     <!--====== PART START ======-->
 </head>
-    <!--====== PART ENDS ======-->
-    <!--====== APPIE HERO PART START ======-->
+<!--====== PART ENDS ======-->
+<!--====== APPIE HERO PART START ======-->
 <body>
 
     <partial name="Header" />
@@ -601,8 +605,8 @@
     <script src="~/intro/js/vendor/jquery-1.12.4.min.js"></script>
 
     <!--====== Bootstrap js ======-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.0.4/popper.js"></script>
     <script src="~/intro/js/bootstrap.min.js"></script>
-    <script src="~/intro/js/popper.min.js"></script>
 
     <!--====== wow js ======-->
     <script src="~/intro/js/wow.js"></script>

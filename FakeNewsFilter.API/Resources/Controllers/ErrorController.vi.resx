@@ -98,4 +98,10 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+	<data name="BadRequest" xml:space="preserve">
+		<value>Yêu cầu không hợp lệ</value>
+	</data>
+	<data name="MethodNotAllowed" xml:space="preserve">
+		<value>Không cho phép truy cập yêu cầu này</value>
+	</data>
 </root>
