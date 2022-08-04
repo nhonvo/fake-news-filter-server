@@ -51,10 +51,14 @@ namespace FakeNewsFilter.Application.Catalog
             try
             {
                 //1. Chạy câu truy vấn
-                var language = await LanguageCommon.CheckExistLanguage(_context, LanguageId);
+                if(LanguageId != null)
+                {
+                    var language = await LanguageCommon.CheckExistLanguage(_context, LanguageId);
 
-                if(language == null)
-                    return new ApiErrorResult<List<TopicInfoVM>> (404, "LanguageNotFound");
+                    if (language == null)
+                        return new ApiErrorResult<List<TopicInfoVM>>(404, "LanguageNotFound");
+
+                }
 
                 var query = from t in _context.TopicNews
                             where (string.IsNullOrEmpty(LanguageId) || t.LanguageId == LanguageId)
@@ -97,17 +101,17 @@ namespace FakeNewsFilter.Application.Catalog
         //Lấy thông tin các chủ đề tin tức có phân trang
         public async Task<ApiResult<PagedResult<TopicInfoVM>>> GetTopicPaging(GetTopicNewsRequest request)
         {
-            
+
             try
             {
-                //1. Chạy câu truy vấn
-                var language = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
-
-                if (language == null)
-                {
-                    return new ApiErrorResult<PagedResult<TopicInfoVM>>(404, "LanguageNotFound");
+                //1. Chạy câu truy vấn 
+                if (request.LanguageId != null) { 
+                    var language = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
+                    if (language == null)
+                    {
+                        return new ApiErrorResult<PagedResult<TopicInfoVM>>(404, "LanguageNotFound");
+                    }
                 }
-
                 var query = from t in _context.TopicNews
                                 where (string.IsNullOrEmpty(request.LanguageId) || t.LanguageId == request.LanguageId)
                                 select new
@@ -175,13 +179,16 @@ namespace FakeNewsFilter.Application.Catalog
             {
                 try
                 {
-                    var language = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
-
-                    if (language == null)
+                    if(request.LanguageId != null)
                     {
-                        return new ApiErrorResult<string>(404, "LanguageNotFound");
-                    }
+                        var language = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
 
+                        if (language == null)
+                        {
+                            return new ApiErrorResult<string>(404, "LanguageNotFound");
+                        }
+                    }
+                    
                     var topic = new TopicNews()
                     {
                         Label = request.Label,

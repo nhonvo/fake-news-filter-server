@@ -92,7 +92,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
 
             var result = await _topicApi.CreateTopic(request);
 
-            if (result.IsSuccessed)
+            if (result.StatusCode == 200)
             {
                 TempData["Result"] = $"Create User {request.Tag} successful!";
 
@@ -112,7 +112,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
 
             var result = await _topicApi.UpdateTopic(request);
 
-            if (result.IsSuccessed)
+            if (result.StatusCode == 200)
             {
                 TempData["result"] = $"Update Topic {request.Tag} successful!";
                 return RedirectToAction("Index");
@@ -133,7 +133,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
             }
 
             var result = await _topicApi.Delete(topicId);
-            if (result.IsSuccessed)
+            if (result.StatusCode == 200)
             {
                 TempData["result"] = $"Delete Topic successful!";
                 return Json("done");

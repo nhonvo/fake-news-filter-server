@@ -63,7 +63,7 @@ namespace FakeNewsFilter.WebApp.Controllers
 
             var result = await _userApi.RegisterUser(request);
 
-            if(result.IsSuccessed)
+            if(result.StatusCode == 200)
             {
                 TempData["Result"] = $"Create User {request.UserName} successful!";
 
@@ -82,7 +82,7 @@ namespace FakeNewsFilter.WebApp.Controllers
 
             var result = await _userApi.GetById(id);
 
-            if (result.IsSuccessed)
+            if (result.StatusCode == 200)
             {
                 var user = result.ResultObj;
 
@@ -115,7 +115,7 @@ namespace FakeNewsFilter.WebApp.Controllers
                 return View();
 
             var result = await _userApi.UpdateUser(request);
-            if (result.IsSuccessed)
+            if (result.StatusCode == 200)
             {
                 TempData["result"] = $"Update User {request.UserName} successful!";
                 return RedirectToAction("Index");
@@ -135,7 +135,7 @@ namespace FakeNewsFilter.WebApp.Controllers
             }
 
             var result = await _userApi.Delete(UserId);
-            if (result.IsSuccessed)
+            if (result.StatusCode == 200)
             {
                 TempData["result"] = $"Delete User successful!";
                 return Json("done");
@@ -165,7 +165,7 @@ namespace FakeNewsFilter.WebApp.Controllers
 
             var result = await _userApi.RoleAssign(request.Id, request);
 
-            if (result.IsSuccessed)
+            if (result.StatusCode == 200)
             {
                 TempData["result"] = "Update Role Successful!";
                 return RedirectToAction("Index");

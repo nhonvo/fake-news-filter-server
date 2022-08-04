@@ -72,7 +72,7 @@ namespace FakeNewsFilter.AdminApp.Services
             }
             catch (FakeNewsException e)
             {
-                return new ApiErrorResult<List<NewsViewModel>>("Error System: " + e.Message);
+                return new ApiErrorResult<List<NewsViewModel>>(500, "Error System: " + e.Message);
             }
         }
         
@@ -101,7 +101,7 @@ namespace FakeNewsFilter.AdminApp.Services
             }
             catch (FakeNewsException e)
             {
-                return new ApiErrorResult<List<NewsViewModel>>("Error System: " + e.Message);
+                return new ApiErrorResult<List<NewsViewModel>>(500, "Error System: " + e.Message);
             }
         }
 
@@ -215,7 +215,7 @@ namespace FakeNewsFilter.AdminApp.Services
 
                 return new ApiSuccessResult<string>("Update News Successfully");
 
-            return  new ApiErrorResult<string>("Update News Unsuccessfully");
+            return  new ApiErrorResult<string>(400, "Update News Unsuccessfully");
         }
 
         public async Task<ApiResult<string>> Delete(int newsId)
@@ -230,7 +230,7 @@ namespace FakeNewsFilter.AdminApp.Services
 
                 return new ApiSuccessResult<string>("Delete News Successfully");
 
-            return  new ApiErrorResult<string>("Delete News Unsuccessfully");
+            return  new ApiErrorResult<string>(400, "Delete News Unsuccessfully");
         }
     }
 }

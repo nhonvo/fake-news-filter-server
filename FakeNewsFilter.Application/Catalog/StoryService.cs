@@ -44,12 +44,16 @@ namespace FakeNewsFilter.Application.Catalog
         public async Task<ApiResult<string>> Create(StoryCreateRequest request)
         {
             //Kiểm tra ngôn ngữ có tồn tại hay không
-            var language = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
-            if (language == null)
+            if(request.LanguageId != null)
             {
-                return new ApiErrorResult<string>(404, "LanguageIdNotFound"," " + request.LanguageId);
+                var language = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
+                if (language == null)
+                {
+                    return new ApiErrorResult<string>(404, "LanguageIdNotFound", " " + request.LanguageId);
+                }
             }
-            //kiểm tra nguồn có tồn tại hay không
+            
+            //Kiểm tra nguồn có tồn tại hay không
             var source = await SourceCommon.CheckExistSource(_context, request.SourceId);
             if (source == null)
             {
@@ -103,11 +107,15 @@ namespace FakeNewsFilter.Application.Catalog
         public async Task<ApiResult<string>> Update(StoryUpdateRequest request)
         {
             //Kiểm tra ngôn ngữ có tồn tại hay không
-            var language_update = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
-            if (language_update == null)
+            if(request.LanguageId != null)
             {
-                return new ApiErrorResult<string>(404, "LanguageIdNotFound"," " + request.LanguageId);
+                var language_update = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
+                if (language_update == null)
+                {
+                    return new ApiErrorResult<string>(404, "LanguageIdNotFound", " " + request.LanguageId);
+                }
             }
+            
             //Kiểm tra story có tồn tại hay không
             var story_update = await StoryCommon.CheckExistStory(_context, request.StoryId);
 

@@ -61,7 +61,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
             
             var result = await _notificationApi.CreateNotification(createNotificationRequest);
             
-            if (result.IsSuccessed)
+            if (result.StatusCode == 200)
             {
                 TempData["Result"] = $"Create Notification Successful!";
             

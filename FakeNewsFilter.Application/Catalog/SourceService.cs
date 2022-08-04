@@ -36,18 +36,23 @@ namespace FakeNewsFilter.Application.Catalog
             try
             {
                 //Kiểm tra ngôn ngữ có trong hệ thống hay không
-                var language = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
-                if (language == null)
+                if(request.LanguageId != null)
                 {
-                    return new ApiErrorResult<string>(404, "LanguageNotFound", " " + request.LanguageId);
+                    var language = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
+                    if (language == null)
+                    {
+                        return new ApiErrorResult<string>(404, "LanguageNotFound", " " + request.LanguageId);
+                    }
                 }
+               
                 //Kiểm tra đã tồn tại trong hệ thống hay chưa
                 var sourcename = await _context.Source.FirstOrDefaultAsync(x => x.SourceName == request.SourceName);
                 if (sourcename != null)
                 {
                     return new ApiErrorResult<string>(404, "SourceNameFound", " " + request.SourceName);
                 }
-                //tạo 1 nguồn mới
+
+                //Tạo 1 nguồn mới
                 var ScourceStory = new Source()
                 {
                     SourceName = request.SourceName,

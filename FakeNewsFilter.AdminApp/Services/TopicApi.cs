@@ -48,7 +48,6 @@ namespace FakeNewsFilter.AdminApp.Services
         public async Task<ApiResult<List<TopicInfoVM>>> GetAllTopic()
         {
                 var data = await GetAsync<ApiResult<List<TopicInfoVM>>>($"/api/topic/list");
-
                 return data;
         }
 
@@ -66,7 +65,7 @@ namespace FakeNewsFilter.AdminApp.Services
             }
             catch (FakeNewsException e)
             {
-                return new ApiErrorResult<PagedResult<TopicInfoVM>>("Error System: " + e.Message);
+                return new ApiErrorResult<PagedResult<TopicInfoVM>>(500, "Error System: " + e.Message);
             }
         }
 
@@ -108,7 +107,7 @@ namespace FakeNewsFilter.AdminApp.Services
 
                 return new ApiSuccessResult<string>("Create Topic Successfully");
 
-            return  new ApiErrorResult<string>("Create Topic Unsuccessfully");
+            return  new ApiErrorResult<string>(400, "Create Topic Unsuccessfully");
         }
 
         public async Task<ApiResult<TopicInfoVM>> GetById(int Id)
@@ -157,7 +156,7 @@ namespace FakeNewsFilter.AdminApp.Services
 
                 return new ApiSuccessResult<string>("Update Topic Successfully");
 
-            return  new ApiErrorResult<string>("Update Topic Unsuccessfully");
+            return  new ApiErrorResult<string>(400, "Update Topic Unsuccessfully");
         }
 
         public async Task<ApiResult<string>> Delete(int topicId)
@@ -173,7 +172,7 @@ namespace FakeNewsFilter.AdminApp.Services
 
                 return new ApiSuccessResult<string>("Delete Topic Successfully");
 
-            return  new ApiErrorResult<string>("Delete Topic Unsuccessfully");
+            return  new ApiErrorResult<string>(400, "Delete Topic Unsuccessfully");
         }
     }
 }

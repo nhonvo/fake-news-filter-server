@@ -61,11 +61,15 @@ public class NewsService : INewsService
     {
         try
         {
-            var language = await LanguageCommon.CheckExistLanguage(_context, languageId);
+            if(languageId !=null)
+            {
+                var language = await LanguageCommon.CheckExistLanguage(_context, languageId);
 
-            if (language == null)
-                return new ApiErrorResult<List<NewsViewModel>>(404, "LanguageNotFound");
-           
+                if (language == null)
+                    return new ApiErrorResult<List<NewsViewModel>>(404, "LanguageNotFound");
+
+            }
+
             var newsList = new List<NewsViewModel>();
 
             if (string.IsNullOrEmpty(filter))

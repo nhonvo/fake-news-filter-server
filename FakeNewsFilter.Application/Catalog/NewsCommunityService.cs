@@ -61,8 +61,13 @@ namespace FakeNewsFilter.Application.Catalog
 
                 try
                 {
-                    var language = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
-                    if (language == null) return new ApiErrorResult<string>(404, "LanguageNotFound", " " + request.LanguageId);
+                    //Kiểm tra Ngôn ngữ có tồn tại hay chưa?
+                    if(request.LanguageId != null)
+                    {
+                        var language = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
+                        if (language == null)
+                            return new ApiErrorResult<string>(404, "LanguageNotFound", " " + request.LanguageId);
+                    }
 
                     var user = await UserCommon.CheckExistUser(_context, request.UserId);
                     if (user == null) return new ApiErrorResult<string>(404, "UserNotFound", " " + request.UserId);
@@ -247,7 +252,14 @@ namespace FakeNewsFilter.Application.Catalog
         //Lấy tất cả các tin tức
         public async Task<ApiResult<List<NewsCommunityViewModel>>> GetAll(string languageId)
         {
-            var language = await LanguageCommon.CheckExistLanguage(_context, languageId);
+            if(languageId != null)
+            {
+                var language = await LanguageCommon.CheckExistLanguage(_context, languageId);
+
+                if (language == null)
+                    return new ApiErrorResult<List<NewsCommunityViewModel>>(400, "LanguageNotFound");
+
+            }
 
             var query = from n in _context.NewsCommunity
                 join user in _context.Users on n.UserId equals user.Id
@@ -275,9 +287,8 @@ namespace FakeNewsFilter.Application.Catalog
                     IsPopular = x.n.IsPopular,
                     DatePublished = x.n.DatePublished,
                 }).ToListAsync();
-            if (language == null)
-                return new ApiSuccessResult<List<NewsCommunityViewModel>>("GetAllNewsSuccessful", newsList);
 
+            
             return new ApiSuccessResult<List<NewsCommunityViewModel>>("GetAllNewsSuccessful", newsList);
         }
 

@@ -57,7 +57,7 @@ namespace FakeNewsFilter.AdminApp.Services
             }
             catch (FakeNewsException e)
             {
-                return new ApiErrorResult<List<GetLanguageRequest>>("Error System: " + e.Message);
+                return new ApiErrorResult<List<GetLanguageRequest>>(500, "Error System: " + e.Message);
             }
         }
     }

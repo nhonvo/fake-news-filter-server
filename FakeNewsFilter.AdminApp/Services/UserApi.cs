@@ -73,7 +73,7 @@ namespace FakeNewsFilter.WebApp.Services
             }
             catch(FakeNewsException e)
             {
-                return new ApiErrorResult<TokenResult>("Error System: " + e.Message);
+                return new ApiErrorResult<TokenResult>(500,"Error System: " + e.Message);
             }
             
         }
@@ -102,7 +102,7 @@ namespace FakeNewsFilter.WebApp.Services
             }
             catch (FakeNewsException e)
             {
-                return new ApiErrorResult<List<UserViewModel>>("Error System: " + e.Message);
+                return new ApiErrorResult<List<UserViewModel>>(500, "Error System: " + e.Message);
             }
         }
 
@@ -130,7 +130,7 @@ namespace FakeNewsFilter.WebApp.Services
             }
             catch (FakeNewsException e)
             {
-                return new ApiErrorResult<bool>("Error System: " + e.Message);
+                return new ApiErrorResult<bool>(500, "Error System: " + e.Message);
             }
 
         }

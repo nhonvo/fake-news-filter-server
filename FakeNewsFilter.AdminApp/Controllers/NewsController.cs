@@ -124,7 +124,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
 
             var result = await _newsApi.CreateNews(request);
 
-            if (result.IsSuccessed)
+            if (result.StatusCode == 200)
             {
                 TempData["Result"] = $"Create News Successful!";
 
@@ -152,7 +152,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
             ViewBag.ListTopic = new SelectList(topicData.ResultObj, "TopicId", "Tag");
             ViewBag.ListLanguage = new SelectList(languageData.ResultObj, "Id", "Name");
 
-            if (result.IsSuccessed)
+            if (result.StatusCode == 200)
             {
                 return View(result.ResultObj);
             }
@@ -168,7 +168,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
 
             var result = await _newsApi.UpdateNews(request);
 
-            if (result.IsSuccessed)
+            if (result.StatusCode == 200)
             {
                 TempData["result"] = $"Update news {request.Id} successful!";
                 return RedirectToAction("Index");
@@ -190,7 +190,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
 
             var result = await _newsApi.Delete(newsId);
 
-            if (result.IsSuccessed)
+            if (result.StatusCode == 200)
             {
                 TempData["result"] = $"Delete news successful!";
                 return Json("done");
