@@ -1,6 +1,8 @@
 ﻿@{
     Layout = null;
+    var culture = CultureInfo.CurrentCulture.Name;
 }
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -42,13 +44,14 @@
 
 <body data-spy="scroll" data-target="#toc">
     <partial name="Header" />
-
+    
     <!--====== APPIE SERVICE DETAILS PART ENDS ======-->
 
     <section class="appie-hero-area">
         <div class="container">
             <div class="row">
-                <h1 style="text-align: center; width: 100%;">CHÍNH SÁCH QUYỀN RIÊNG TƯ</h1>
+
+                <h1 style="text-align: center; width: 100%;" asp-area="" asp-page="/Home/privacy-policy" asp-route-culture="@culture" localize-content>PRIVACY POLICY</h1>
 
                 <div class="row justify-content-center">
                     <div class="col-sm-3">

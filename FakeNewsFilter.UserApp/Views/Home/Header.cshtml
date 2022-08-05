@@ -1,5 +1,7 @@
 ﻿<!--====== OFFCANVAS MENU PART START ======-->
-
+@{
+    var culture = CultureInfo.CurrentCulture.Name;
+}
 <div class="off_canvars_overlay">
 
 </div>
@@ -94,7 +96,7 @@
                 </div>
                 <div class="col-lg-2 col-md-4 col-sm-6 col-6 order-3 order-sm-4">
                     <div class="appie-btn-box text-right">
-                        <a class="main-btn ml-30" href="#">Bắt đầu khám phá</a>
+                        <a class="main-btn ml-30" asp-route-culture="@culture" localize-content>Start exploring</a>
                         <div class="toggle-btn ml-30 canvas_open d-lg-none d-block">
                             <i class="fa fa-bars"></i>
                         </div>
