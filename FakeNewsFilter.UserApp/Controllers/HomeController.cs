@@ -25,19 +25,16 @@ namespace FakeNewsFilter.UserApp.Controllers
             return View();
         }
 
-        [HttpGet("privacy-policy")]
         public IActionResult Privacy()
         {
             return View();
         }
 
-        [HttpGet("contact")]
         public IActionResult Contact()
         {
             return View();
         }
 
-        [HttpGet("guide")]
         public IActionResult Guide()
         {
             return View();

@@ -1,17 +1,21 @@
-﻿<section class="appie-footer-area">
+﻿@{
+    var culture = CultureInfo.CurrentCulture.Name;
+}
+
+<section class="appie-footer-area">
     <div class="container">
         <div class="row">
             <div class="col-lg-4 col-md-6">
                 <div class="footer-about-widget">
                     <div class="logo">
-                        <a href="#"><img src="assets/images/logo.png" alt="" /></a>
+                        <a href="#"><img src="/intro/images/logo.svg" alt="" /></a>
                     </div>
-                    <p>OWL Trust là ứng dụng đọc tin tức giúp người dùng tiếp cận những tin tức mới và chính xác nhất</p>
-                    <a href="#">Xem thêm<i class="fal fa-arrow-right"></i></a>
+                    <p><localize>OWL Trust is a news reader application that helps users access the latest and most accurate news</localize></p>
+                    <a href="#" localize-content>see more<i class="fal fa-arrow-right"></i></a>
                     <div class="social mt-30">
                         <ul>
                             <li>
-                                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                <a href="https://www.facebook.com/owltrustapp"><i class="fab fa-facebook-f"></i></a>
                             </li>
                             <li>
                                 <a href="#"><i class="fab fa-twitter"></i></a>
@@ -28,27 +32,27 @@
             </div>
             <div class="col-lg-2 col-md-6">
                 <div class="footer-navigation">
-                    <h4 class="title" data-toc-skip>Công ty</h4>
+                    <h4 class="title" data-toc-skip><localize>Company</localize></h4>
                     <ul>
-                        <li><a href="#">Về chúng tôi</a></li>
-                        <li><a href="#">Dịch vụ</a></li>
-                        <li><a href="#">Liên hệ</a></li>
+                        <li><a href="#" localize-content>About us</a></li>
+                        <li><a href="#" localize-content>Service</a></li>
+                        <li><a href="#" localize-content>Contact</a></li>
                     </ul>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
                 <div class="footer-navigation">
-                    <h4 class="title" data-toc-skip>Hỗ trợ</h4>
+                    <h4 class="title" data-toc-skip><localize>Support</localize></h4>
                     <ul>
-                        <li><a href="#">Cộng đồng</a></li>
-                        <li><a href="#">Câu hỏi thường gặp</a></li>
-                        <li><a asp-controller="Home" asp-action="Privacy">Chính sách bảo mật</a></li>
+                        <li><a href="#" localize-content>Community</a></li>
+                        <li><a href="#" localize-content>FAQ</a></li>
+                        <li><a asp-controller="Home" asp-action="Privacy" localize-content>Privacy Policy</a></li>
                     </ul>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
                 <div class="footer-widget-info">
-                    <h4 class="title" data-toc-skip>Liên lạc với chúng tôi</h4>
+                    <h4 class="title" data-toc-skip localize-content>Contact us</h4>
                     <ul>
                         <li>
                             <a href="#"><i class="fal fa-envelope"></i>khuyenpb@gmail.com</a>
@@ -69,10 +73,10 @@
                     <div class="apps-download-btn">
                         <ul>
                             <li>
-                                <a href="#" target="_blank"><i class="fab fa-apple"></i>Tải ứng dụng trên iOS</a>
+                                <a href="#" target="_blank"><i class="fab fa-apple" localize-content></i>Download the app on iOS</a>
                             </li>
                             <li>
-                                <a class="item-2" target="_blank" href="https://play.google.com/store/apps/details?id=com.owl_trust"><i class="fab fa-google-play"></i>Tải ứng dụng trên Android</a>
+                                <a class="item-2" target="_blank" href="https://play.google.com/store/apps/details?id=com.owl_trust"><i class="fab fa-google-play" localize-content></i>Download the app on Android</a>
                             </li>
                         </ul>
                     </div>

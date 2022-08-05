@@ -1,5 +1,7 @@
 ﻿<!--====== OFFCANVAS MENU PART START ======-->
-
+@{
+    var culture = CultureInfo.CurrentCulture.Name;
+}
 <div class="off_canvars_overlay">
 
 </div>
@@ -61,7 +63,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-2 col-md-4 col-sm-5 col-6 order-1 order-sm-1">
                     <div class="appie-logo-box text-center">
-                        <a href="#">
+                        <a asp-controller="Home" asp-action="Index" asp-route-culture="@culture" >
                             <img src="/intro/images/logo.png" alt="" />
                             <h7>Owl Trust</h7>
                         </a>
@@ -72,23 +74,23 @@
                     <div class="appie-header-main-menu">
                         <ul>
                             <li>
-                                <a asp-controller="Home" asp-action="Index" localize-content>Home</a>
+                                <a asp-controller="Home" asp-action="Index" asp-route-culture="@culture" localize-content>Home</a>
                             </li>
                             <li>
-                                <a asp-controller="Home" asp-action="Guide" localize-content>Guide</a>
+                                <a asp-controller="Home" asp-action="Guide" asp-route-culture="@culture" localize-content>Guide</a>
                             </li>
                             <li>
-                                <a asp-controller="Home" asp-action="Privacy" localize-content>Privacy</a>
+                                <a asp-controller="Home" asp-action="Privacy" asp-route-culture="@culture" localize-content>Privacy</a>
                             </li>
                             <li>
-                                <a asp-controller="Home" asp-action="Contact" localize-content>Contact</a>
+                                <a asp-controller="Home" asp-action="Contact" asp-route-culture="@culture" localize-content>Contact</a>
                             </li>
                         </ul>
                     </div>
                 </div>
                 <div class="order-sm-3">
                     <div class="appie-btn-box text-right">
-                        <a class="main-btn mr-40" href="#">Khám phá ngay</a>
+                        <a class="main-btn m4-40" asp-route-culture="@culture" localize-content>Start exploring</a>
                         <div class="toggle-btn ml-30 canvas_open d-lg-none d-block">
                             <i class="fa fa-bars"></i>
                         </div>
