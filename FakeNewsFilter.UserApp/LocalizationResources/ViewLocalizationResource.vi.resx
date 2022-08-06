@@ -131,7 +131,7 @@
   </data>
   <data name="Privacy" xml:space="preserve">
     <value>Chính sách</value>
-    <comment>Layouts/Header</comment>
+    <comment>Layouts/Header + Home/Policy</comment>
   </data>
   <data name="Contact" xml:space="preserve">
     <value>Liên hệ</value>
@@ -186,7 +186,139 @@
     <comment>Layouts/Header</comment>
   </data>
   <data name="Support" xml:space="preserve">
-    <value>Support</value>
+    <value>Hỗ trợ</value>
     <comment>Layouts/Footer</comment>
+  </data>
+  <data name="App" xml:space="preserve">
+    <value>Ứng dụng</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="App content" xml:space="preserve">
+    <value>Những điều khoản bảo mật này áp dụng cho tất cả các thông tin cá nhân nhập vào của khách hàng của Owl Trust – Fake News Filter trên website Owl Trust hoặc nhập vào ứng dụng Owl Trust thông qua các thiết bị di động (cùng với ứng dụng nền của Owl Trust).</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Approve and update information" xml:space="preserve">
+    <value>Chấp thuận và cập nhật thông tin</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Approve and update information content" xml:space="preserve">
+    <value>Khách hàng có thể yêu cầu bất kỳ lúc nào để xem thông tin cá nhân mà Owl Trust lưu trữ hoặc chỉnh sửa hoặc cập nhật bất cứ thông tin cá nhân nào. Hãy vui lòng gửi email cho Owl Trust tại khuyenpb@gmail.com.</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Change privacy policy" xml:space="preserve">
+    <value>Thay đổi chính sách riêng tư</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Change privacy policy content" xml:space="preserve">
+    <value>Owl Trust có thể sửa đổi hoặc cập nhật Chính sách Bảo mật này theo thời gian, mà có thể không cần thông báo cho khách hàng Owl Trust. Tất cả các khách hàng đều đồng ý chịu ràng buộc bởi Chính sách Bảo mật có hiệu lực vào thời điểm họ truy cập trang web Owl Trust và/hoặc sử dụng phần mềm thông qua thiết bị điện thoại.</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="commitment" xml:space="preserve">
+    <value>Cam kết</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="commitment content" xml:space="preserve">
+    <value>Tại Owl Trust – Fake News Filter chúng tôi hiểu rằng sự riêng tư là rất quan trọng đối với bạn và các khách hàng của bạn. Những điều khoản bảo bảo mật này phản ánh được sự tôn trọng của chúng tôi đối với quyền riêng tư của bạn và Owl Trust cam kết đảm bảo bảo mật cho tất cả thông tin của bạn.</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Cookies" xml:space="preserve">
+    <value>Cookies</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Cookies content" xml:space="preserve">
+    <value>Owl Trust sử dụng bên thứ ba cho chiến dịch quảng cáo và quảng cáo theo đuôi, dữ liệu được thu thập thông qua quảng cáo và quảng cáo theo đuôi . Quảng cáo cookie được lưu trữ trong trình duyệt của bạn và cung cấp cho bên thứ ba dữ liệu để quảng cáo có liên quan hơn cho khách truy cập vào trang web của chúng tôi và tránh các quảng cáo hiển thị đã được nhìn thấy. Đây là dựa theo lịch sử web trước đó của bạn. Quảng cáo theo đuôi cookie cung cấp dữ liệu để hiển thị quảng cáo thông qua trang web thứ ba dựa trên tương tác trước đó của bạn với trang web Owl Trust. Tùy chọn không tham gia có sẵn, và nếu tại bất kì thời điểm nào bạn muốn chọn không tham gia các tính năng này, hãy truy cập vào các lựa chọn không tham gia, để biết thêm thông tin.</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Disclosure information" xml:space="preserve">
+    <value>Tiết lộ thông tin</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Disclosure information content" xml:space="preserve">
+    <value>Owl Trust sẽ không tiết lộ bất cứ thông tin cá nhân nào của khách hàng cho bên thứ ba trừ khi là nơi mà sự tiết lộ liên quan đến mục đích của thông tĩn đã thu thập (Như đã nói ở đoạn 4 ở trên) trừ không có sự cho phép bởi chính khách hàng đó.</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Effects of information and documents" xml:space="preserve">
+    <value>Sử dụng thông tin và tài liệu</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Effects of information and documents content" xml:space="preserve">
+    <value>Thông tin cá nhân mà khách hàng đã cung cấp sẽ chỉ được sử dụng trong việc kết nối với dịch vụ đã được yêu cầu bởi Owl Trust, để trò chuyện cùng với khách hàng liên quan đến dịch vụ hoặc hợp tác với các ngành công nghiệp chính phủ hoặc những người có thẩm quyền. Owl Trust lưu trữ chính xác để sử dụng dữ liệu có liên quan tới việc sử dụng dịch vụ của khách hàng để quảng bá hoặc cho các mục đích kinh doanh thông min khác. Nhân viên của Owl Trust có thể truy cập vào các thông tin hữu ích và thống kê giao dịch để có thể hiểu hơn cách khách hàng sử dụng ứng dụng nền của Owl Trust, vì vậy chúng tôi có thể cải thiện hệ thống thiết kế, đánh giá, cũng như đưa ra các lời khuyên để thay đổi cách dùng ứng dụng nền Owl Trust của họ.</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Information content" xml:space="preserve">
+    <value>Để sử dụng ứng dụng nền Owl Trust – Fake News Filter, tất cả khách hàng đều cần phải gửi một số thông tin cá nhân như địa chỉ email, tên, địa chỉ, số điện thoại, ngành và thông tin nhất định của công ty. Khách hàng có thể được yêu cầu cung cấp thêm thông tin theo thời gian khi họ tiếp tục sử dụng phần mềm.</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Information repository" xml:space="preserve">
+    <value>Kho chứa thông tin</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Information repository content" xml:space="preserve">
+    <value>Owl Trust sẽ lưu giữ an toàn các thông tin cá nhân của khách hàng ở Hoa Kỳ hoặc bất kì quốc gia nào khác mà Owl Trust có thể lựa chon theo thời gian để cung cấp các dịch vụ của mình.</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Letter of consen content" xml:space="preserve">
+    <value>Bằng việc truy cập vào ứng dụng nền Owl Trust, tất cả các khách hàng đều chấp thuận vào bộ sưu tập, sử dụng, hiệp định, lưu trữ và xử lý thông tin của họ cho phù hợp với Điều khoản bảo mật.</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Letter of consent" xml:space="preserve">
+    <value>Giấy chấp thuận</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="News" xml:space="preserve">
+    <value>Tin tức</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="News content policy" xml:space="preserve">
+    <value>Owl Trust gửi thông tin thanh toán, thông tin sản phẩm, bản tin và thông báo cho bạn thông qua email và trong một số trường hợp xảy ra bên trong ứng dụng nền dịch vụ tin nhắn của Owl Trust. Trường hợp email thích hợp hoặc trong giao tiếp nền sẽ có chứa các hướng dẫn mô tả cách làm thế nào bạn có thể lựa chọn được loại bỏ khỏi danh sách gửi thư.</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Personal information" xml:space="preserve">
+    <value>Thông tin cá nhân</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Đăng ký</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Sign up for an account via email" xml:space="preserve">
+    <value>Đăng ký tài khoản qua email</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Storage" xml:space="preserve">
+    <value>Lưu trữ</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Storage content" xml:space="preserve">
+    <value>Owl Trust sẽ lưu trữ lại thông tin cá nhân của khác hàng trước và sau khi hủy bất cứ một tài khoản nào nhưng chỉ dùng khi Owl Trust bắt buộc dùng tới một cách hợp pháp.</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Table of contents" xml:space="preserve">
+    <value>Mục lục</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Terms of use" xml:space="preserve">
+    <value>Điều khoản sử dụng</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Terms of use content" xml:space="preserve">
+    <value>Cách sử dụng của phần mềm Owl Trust phải tuân theo Các điều kiện và điều khoản và Chính sách Bảo mật này phải được đọc cùng.</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="We only send application information via email to you." xml:space="preserve">
+    <value>Chúng tôi chỉ gửi các thông tin về ứng dụng qua mail cho bạn.</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Your email" xml:space="preserve">
+    <value>Email của bạn</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Your privacy and accounts" xml:space="preserve">
+    <value>Riêng tư và tài khoản của bạn</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Your privacy and accounts content" xml:space="preserve">
+    <value>Dữ liệu đăng ký và các thông tin khác phải tuân theo Chính sách Bảo mật của chúng tôi. Thông tin của bạn có thể được lưu trữ và xử lý tại Hoa Kỳ hoặc bất kỳ quốc gia nào khác nơi Owl Trust có cơ sở vật chất và bằng cách sử dụng Dịch vụ trực tuyến, bạn đồng ý chuyển thông tin ra bên ngoài quốc gia của bạn. Nếu bạn truy cập Dịch vụ bằng mật khẩu, bạn tự chịu trách nhiệm duy trì tính bảo mật của mật khẩu đó. Nếu bạn cung cấp cho người khác quyền truy cập vào mật khẩu của bạn vào Dịch vụ, họ sẽ có thể xem thông tin về tài khoản của bạn và thực hiện các thay đổi thông qua Ứng dụng hoặc Trang web cho Dịch vụ. Tương tự như vậy, nếu bạn cung cấp cho một ai đó tính năng mẫu khóa cho một Dịch vụ, họ sẽ có thể yêu cầu thông tin về tài khoản của bạn và thay đổi thông qua Dịch vụ Khách hàng. Bạn đồng ý sẽ thông báo cho chúng tôi ngay lập tức nếu bạn thay đổi địa chỉ email để chúng tôi có thể tiếp tục liên lạc với bạn và gửi bất kỳ thông báo yêu cầu dưới đây. Nếu bạn không thông báo cho chúng tôi kịp thời về thay đổi, thì mọi thông báo chúng tôi gửi đến địa chỉ email cũ của bạn sẽ được coi là thông báo đầy đủ.</value>
+    <comment>Home/Policy</comment>
   </data>
 </root>

@@ -165,9 +165,6 @@
     <value>FAQ</value>
     <comment>Layouts/Footer</comment>
   </data>
-  <data name="hr" xml:space="preserve">
-    <value />
-  </data>
   <data name="OWL Trust is a news reader application that helps users access the latest and most accurate news" xml:space="preserve">
     <value>OWL Trust is a news reader application that helps users access the latest and most accurate news</value>
     <comment>Layouts/Footer</comment>
@@ -191,5 +188,137 @@
   <data name="Support" xml:space="preserve">
     <value>Support</value>
     <comment>Layouts/Footer</comment>
+  </data>
+  <data name="App" xml:space="preserve">
+    <value>Application</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="App content" xml:space="preserve">
+    <value>These privacy statements apply to all personal information entered by Owl Trust customers – Fake News Filter on the Owl Trust website or entered into the Owl Trust application via mobile devices (along with the Owl Trust application). using the Owl Trust platform).</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Approve and update information" xml:space="preserve">
+    <value>Approve and update information</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Approve and update information content" xml:space="preserve">
+    <value>Customers may request at any time to view the personal information that Owl Trust stores or to correct or update any personal information. Please email the Owl Trust at khuyenpb@gmail.com.</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Change privacy policy" xml:space="preserve">
+    <value>Change privacy policy</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Change privacy policy content" xml:space="preserve">
+    <value>Owl Trust may amend or update this Privacy Policy from time to time, without notice to Owl Trust customers. All customers agree to be bound by the Privacy Policy in effect at the time they access the Owl Trust website and/or use the software via a mobile device.</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="commitment" xml:space="preserve">
+    <value>commitment</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="commitment content" xml:space="preserve">
+    <value>At Owl Trust – Fake News Filter we understand that privacy is very important to you and your customers. These privacy statements reflect our respect for your privacy and Owl Trust's commitment to the security of all your information.</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Cookies" xml:space="preserve">
+    <value>Cookies</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Cookies content" xml:space="preserve">
+    <value>Owl Trust uses third parties for advertising and tracking campaigns, the data is collected through advertising and tail advertising. Advertising cookies are stored in your browser and provide third parties with data to make advertising more relevant to visitors to our website and avoid the advertisements displayed. This is based on your previous web history. Cookie advertising provides data to display ads through third-party websites based on your previous interaction with the Owl Trust website. Opt-out options are available, and if at any time you would like to opt out of these features, visit the opt-out options, for more information.</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Disclosure information" xml:space="preserve">
+    <value>Disclosure information</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Disclosure information content" xml:space="preserve">
+    <value>Owl Trust will not disclose any customer's personal information to third parties except where the disclosure is related to the purpose of the information collected (As mentioned in paragraph 4 above) except without the customer's permission.</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Effects of information and documents" xml:space="preserve">
+    <value>Effects of information and documents</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Effects of information and documents content" xml:space="preserve">
+    <value>The personal information the customer has provided will only be used in connection with the service that has been requested by the Owl Trust, to chat with the customer regarding the service or to cooperate with the industry. government or authorities. Owl Trust stores it precisely to use the data in connection with the customer's use of the service for promotion or other business intelligence purposes. Owl Trust employees can access useful information and transaction statistics to better understand how customers use the Owl Trust platform application, so we can improve the design system, review, as well as give advice to change the way they use their Owl Trust background application.</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Information content" xml:space="preserve">
+    <value>To use the Owl Trust - Fake News Filter background application, all customers are required to submit certain personal information such as email address, name, address, phone number, industry and certain company information. . Customers may be asked to provide additional information from time to time as they continue to use the software.</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Information repository" xml:space="preserve">
+    <value>Information repository</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Information repository content" xml:space="preserve">
+    <value>Owl Trust will securely store the personal information of customers in the United States or any other country that Owl Trust may choose from time to time to provide its services.</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Letter of consen content" xml:space="preserve">
+    <value>By accessing the Owl Trust-based application, all customers consent to the collection, use, agreement, storage and processing of their information in accordance with the Privacy Statement.</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Letter of consent" xml:space="preserve">
+    <value>Letter of consent</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="News" xml:space="preserve">
+    <value>News</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="News content policy" xml:space="preserve">
+    <value>Owl Trust sends payment information, product information, newsletters and notifications to you via email and, in some cases, within the Owl Trust messaging service background application. Where appropriate email or in background communication will contain instructions describing how you can opt-out of being removed from the mailing list.</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Personal information" xml:space="preserve">
+    <value>Personal information</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Register</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Sign up for an account via email" xml:space="preserve">
+    <value>Sign up for an account via email</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Storage" xml:space="preserve">
+    <value>Storage</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Storage content" xml:space="preserve">
+    <value>Owl Trust will store customers' personal information before and after canceling any account but only use it when Owl Trust is legally required to use it.</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Table of contents" xml:space="preserve">
+    <value>Table of contents</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Terms of use" xml:space="preserve">
+    <value>Terms of use</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Terms of use content" xml:space="preserve">
+    <value>Usage of the Owl Trust software is subject to these Terms and Conditions and Privacy Policy to be read together.</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="We only send application information via email to you." xml:space="preserve">
+    <value>We only send application information via email to you.</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Your email" xml:space="preserve">
+    <value>Your email</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Your privacy and accounts" xml:space="preserve">
+    <value>Your privacy and accounts</value>
+    <comment>Home/Policy</comment>
+  </data>
+  <data name="Your privacy and accounts content" xml:space="preserve">
+    <value>Registration data and other information are subject to our Privacy Policy. Your information may be stored and processed in the United States or any other country where Owl Trust has facilities and by using the Online Services you agree to transfer the information outside of the country. your family. If you access the Service with a password, you are solely responsible for maintaining the confidentiality of that password. If you give others access to your password to the Service, they will be able to view information about your account and make changes through the Application or Website for the Service. Likewise, if you provide someone with the pattern lock feature for a Service, they will be able to request information about your account and make changes through Customer Service. You agree to notify us immediately if you change your email address so that we may continue to contact you and send any notices required below. If you do not promptly notify us of the change, then any notice we send to your old email address will be deemed adequate notice.</value>
+    <comment>Home/Policy</comment>
   </data>
 </root>
