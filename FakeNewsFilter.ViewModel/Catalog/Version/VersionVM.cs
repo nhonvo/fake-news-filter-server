@@ -7,7 +7,7 @@ namespace FakeNewsFilter.ViewModel.Catalog.Version
     {
         public int VersionId { get; set; }
 
-        public float VersionNumber { get; set; }
+        public string VersionNumber { get; set; }
 
         public string Content { get; set; }
 

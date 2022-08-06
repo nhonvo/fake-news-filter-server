@@ -20,7 +20,7 @@ namespace FakeNewsFilter.Application.Catalog
 
         Task<ApiResult<VersionVM>> GetVersionDetail(int versionId);
 
-        Task<ApiResult<Version>> CheckNewVersion(float versionNumber, string platform);
+        Task<ApiResult<Version>> CheckNewVersion(string versionNumber, string platform);
 
         Task<ApiResult<string>> Delete(int TopicId);
     }
@@ -35,7 +35,8 @@ namespace FakeNewsFilter.Application.Catalog
             _context = context;
         }
 
-       
+
+
         public async Task<ApiResult<string>> Create(VersionCreateRequest request)
         {
             using (var transaction = _context.Database.BeginTransaction())
@@ -119,7 +120,7 @@ namespace FakeNewsFilter.Application.Catalog
             }
         }
 
-         public async Task<ApiResult<Version>> CheckNewVersion(float versionNumber, string platform)
+         public async Task<ApiResult<Version>> CheckNewVersion(string versionNumber, string platform)
         {
             try
             {
@@ -127,19 +128,40 @@ namespace FakeNewsFilter.Application.Catalog
 
                 if (Enum.TryParse<Platform>(platform, out temp))
                 {
-                    var res = await _context.Version
+                    //Lấy thông tin phiên bản hiện tại
+                    var curr_version = await _context.Version.Where(x => x.Platform.Equals(temp) && x.VersionNumber == versionNumber).SingleOrDefaultAsync();
+
+                    if(curr_version==null)
+                    {
+                        return new ApiErrorResult<Version>(404, "VersionNotFound");
+                    }
+
+                    //Lấy thông tin phiên bản mới nhất
+                    var last_version = await _context.Version
                         .Where(x => x.Platform.Equals(temp))
                         .OrderByDescending(x => x.ReleaseTime)
                         .FirstOrDefaultAsync();
-                       
-                    if(res.VersionNumber > versionNumber)
+
+                    //Lấy thông tin phiên bản bắt buộc phải cập nhật
+                    var version_required = await _context.Version
+                        .Where(x => x.Platform.Equals(temp) && x.isRequired == true && x.ReleaseTime > curr_version.ReleaseTime)
+                        .OrderByDescending(x => x.ReleaseTime)
+                        .FirstOrDefaultAsync();
+
+                    //Trường hợp phiên bản hiện tại cũng là phiên bản mới nhất
+                    if (curr_version.VersionNumber == last_version.VersionNumber)
                     {
-                        return new ApiSuccessResult<Version>("HaveNewsVersion", res);
+                        return new ApiSuccessResult<Version>("AlreadyTheLatestVersion", curr_version);
                     }
-                    if(res.VersionNumber == versionNumber)
-                        return new ApiSuccessResult<Version>("AlreadyTheLatestVersion");
+                    //Trường hợp có phiên bản mới hơn và bắt buộc phải cập nhật
+                    else if (version_required != null && version_required.ReleaseTime > curr_version.ReleaseTime)
+                    {
+                        return new ApiSuccessResult<Version>("MustHaveUpdateVersion", version_required);
+                    }
+                    //Trường hợp chỉ có phiên bản mới (có thể không yêu cầu cập nhật)
                     else
-                        return new ApiErrorResult<Version>(404, "VersionNotFound");
+                        return new ApiSuccessResult<Version>("HaveUpdateVersion", last_version);
+
                 }
                 else
                 {

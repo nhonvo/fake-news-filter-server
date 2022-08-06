@@ -80,7 +80,7 @@ namespace FakeNewsFilter.API.Controllers
         }
 
         [HttpGet("checklastest")]
-        public async Task<IActionResult> GetLastestVersion(string platform, float version_current)
+        public async Task<IActionResult> GetLastestVersion(string platform, string version_current)
         {
             try
             {

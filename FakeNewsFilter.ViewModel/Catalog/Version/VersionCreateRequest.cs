@@ -5,7 +5,7 @@ namespace FakeNewsFilter.ViewModel.Catalog.Version
 {
     public class VersionCreateRequest
     {
-        public float VersionNumber { get; set; }
+        public string VersionNumber { get; set; }
 
         public string Content { get; set; }
 
