@@ -41,31 +41,38 @@ namespace FakeNewsFilter.Application.Catalog
         {
             using (var transaction = _context.Database.BeginTransaction())
             {
-
                 try
                 {
-                    var version = new Version
+                    Platform temp;
+
+                    if (Enum.TryParse<Platform>(request.Platform, out temp))
                     {
-                        VersionNumber = request.VersionNumber,
-                        Content = request.Content,
-                        Platform = request.Platform,
-                        ReleaseTime = request.ReleaseTime,
-                        isRequired = request.isRequired,
-                        Status = request.Status
-                    };
+                       
+                        var version = new Version
+                        {
+                            Content = request.Content,
+                            isRequired = request.isRequired,
+                            VersionNumber = request.VersionNumber,
+                            Platform = temp,
+                            ReleaseTime = request.ReleaseTime,
+                            Status = request.Status,
+                        };
 
-                    _context.Version.Add(version);
+                        _context.Version.Add(version);
 
-                    var result = await _context.SaveChangesAsync();
+                        var result = await _context.SaveChangesAsync();
 
-                    if (result > 0)
-                    {
-                        transaction.Commit();
-                        return new ApiSuccessResult<string>("CreateVersionSuccessful");
+                        if (result > 0)
+                        {
+                            transaction.Commit();
+                            return new ApiSuccessResult<string>("CreateVersionSuccessful");
+                        }
+
+                        transaction.Rollback();
+                        return new ApiErrorResult<string>(400, "CreateUnsuccessful", " " + result.ToString());
                     }
 
-                    transaction.Rollback();
-                    return new ApiErrorResult<string>(400, "CreateUnsuccessful", " " + result.ToString());
+                    return new ApiErrorResult<string>(404, "PlatformNotFound");
                 }
                 catch (Exception ex)
                 {
@@ -80,10 +87,35 @@ namespace FakeNewsFilter.Application.Catalog
             throw new global::System.NotImplementedException();
         }
 
+        //Lấy thông tin các phiên bản (có thể lọc thông qua nền tảng platform)
         public async Task<ApiResult<List<VersionVM>>> GetVerionPlatform(string platform)
         {
             try
             {
+                //Lấy toàn bộ
+                if(platform == null)
+                {
+                    var res = await _context.Version.Select(x => new VersionVM()
+                    {
+                        VersionId = x.VersionId,
+                        Content = x.Content,
+                        isRequired = x.isRequired,
+                        VersionNumber = x.VersionNumber,
+                        CreateTime = x.CreateTime,
+                        Platform = x.Platform.ToString(),
+                        ReleaseTime = x.ReleaseTime,
+                        Status = x.Status.ToString(),
+                    }).ToListAsync();
+
+                    if (res.Count > 0)
+                    {
+                        return new ApiSuccessResult<List<VersionVM>>("GetAllVersionSuccessful", res);
+
+                    }
+                    return new ApiErrorResult<List<VersionVM>>(400, "GetAllVersionPlatformFail");
+                }
+
+                //Lấy theo nền tảng
                 Platform temp;
 
                 if(Enum.TryParse<Platform>(platform, out temp))
@@ -120,6 +152,7 @@ namespace FakeNewsFilter.Application.Catalog
             }
         }
 
+        //Kiểm tra phiên bản mới (tham số: phiên bản hiện tại và nền tảng)
          public async Task<ApiResult<Version>> CheckNewVersion(string versionNumber, string platform)
         {
             try
@@ -151,16 +184,16 @@ namespace FakeNewsFilter.Application.Catalog
                     //Trường hợp phiên bản hiện tại cũng là phiên bản mới nhất
                     if (curr_version.VersionNumber == last_version.VersionNumber)
                     {
-                        return new ApiSuccessResult<Version>("AlreadyTheLatestVersion", curr_version);
+                        return new ApiSuccessResult<Version>(200, "AlreadyTheLatestVersion", curr_version);
                     }
                     //Trường hợp có phiên bản mới hơn và bắt buộc phải cập nhật
                     else if (version_required != null && version_required.ReleaseTime > curr_version.ReleaseTime)
                     {
-                        return new ApiSuccessResult<Version>("MustHaveUpdateVersion", version_required);
+                        return new ApiSuccessResult<Version>(201, "MustHaveUpdateVersion", version_required);
                     }
                     //Trường hợp chỉ có phiên bản mới (có thể không yêu cầu cập nhật)
                     else
-                        return new ApiSuccessResult<Version>("HaveUpdateVersion", last_version);
+                        return new ApiSuccessResult<Version>(202, "HaveUpdateVersion", last_version);
 
                 }
                 else

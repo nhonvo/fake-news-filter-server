@@ -22,5 +22,12 @@ namespace FakeNewsFilter.ViewModel.Common
             Message = message;
             ResultObj = resultObj;
         }
+
+        public ApiSuccessResult(int statusCode, String message, T resultObj)
+        {
+            StatusCode = statusCode;
+            Message = message;
+            ResultObj = resultObj;
+        }
     }
 }

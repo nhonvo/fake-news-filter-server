@@ -9,7 +9,7 @@ namespace FakeNewsFilter.ViewModel.Catalog.Version
 
         public string Content { get; set; }
 
-        public Platform Platform { get; set; }
+        public string Platform { get; set; }
 
         public DateTime CreateTime { get; set; }
 
