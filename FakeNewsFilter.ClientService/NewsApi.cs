@@ -131,9 +131,11 @@ namespace FakeNewsFilter.AdminApp.Services
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Title) ? "" : request.Title.ToString()), "Title");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.OfficialRating) ? "" : request.OfficialRating.ToString()), "OfficialRating");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Content) ? "" : request.Content.ToString()), "Content");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Source) ? "" : request.Source), "Source");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.ImageLink) ? "" : request.ImageLink), "ImageLink");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.LanguageId) ? "" : request.LanguageId.ToString()), "LanguageId");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Publisher) ? "" : request.Publisher.ToString()), "Publisher");
-            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.DatePublished.ToString()) ? "" : request.DatePublished.ToString()), "DatePublished");
+            requestContent.Add(new StringContent((string.IsNullOrEmpty(request.DatePublished.ToString()) ? "" : request.DatePublished.ToString()) ?? string.Empty), "DatePublished");
 
             foreach (int topicId in request.TopicId)
             {
