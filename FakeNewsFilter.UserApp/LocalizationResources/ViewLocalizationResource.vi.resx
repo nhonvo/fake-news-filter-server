@@ -154,11 +154,11 @@
     <comment>Layouts/Footer</comment>
   </data>
   <data name="Download the app on Android" xml:space="preserve">
-    <value>Tải ứng dụng trên Android</value>
+    <value>&lt;i class="fab fa-google-play"&gt;&lt;/i&gt;Tải ứng dụng trên Android</value>
     <comment>Layouts/Footer + Home/Index</comment>
   </data>
   <data name="Download the app on iOS" xml:space="preserve">
-    <value>Tải ứng dụng trên iOS</value>
+    <value>&lt;i class="fab fa-apple"&gt;&lt;/i&gt;Tải ứng dụng trên iOS</value>
     <comment>Layouts/Footer + Home/Index</comment>
   </data>
   <data name="FAQ" xml:space="preserve">
@@ -174,7 +174,7 @@
     <comment>Layouts/Footer</comment>
   </data>
   <data name="see more" xml:space="preserve">
-    <value>Xem thêm</value>
+    <value>Xem thêm &lt;i class="fal fa-arrow-right"&gt;&lt;/i&gt;</value>
     <comment>Layouts/Footer</comment>
   </data>
   <data name="Service" xml:space="preserve">
@@ -504,5 +504,236 @@
   <data name="Welcome to OWL Trust" xml:space="preserve">
     <value>Chào mừng đến với OWL Trust</value>
     <comment>Home/Index</comment>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>Địa chỉ</value>
+    <comment>Home/Contact</comment>
+  </data>
+  <data name="Button send" xml:space="preserve">
+    <value>&lt;input type="submit" name="submit" value="Gửi" /&gt;</value>
+    <comment>Home/Contact</comment>
+  </data>
+  <data name="Categorized news interface" xml:space="preserve">
+    <value>Giao diện tin tức đã được phân loại</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Change language" xml:space="preserve">
+    <value>Thay đổi ngôn ngữ</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Change language content" xml:space="preserve">
+    <value>&amp;#9642; Có thể tùy chỉnh ngôn ngữ hệ thống và ngôn ngữ tin tức linh hoạt&lt;br /&gt;
+                                    &amp;#9642; Có 2 ngôn ngữ trong hệ thống là Tiếng Anh và Tiếng Việt&lt;br /&gt;
+                                    &amp;#9642; Tin tức có 2 ngôn ngữ là Tiếng Anh và Tiếng Việt&lt;br /&gt;
+                                    &amp;#9642; Mặc định của hệ thống là tiếng anh</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Connect with us" xml:space="preserve">
+    <value>Kết nối với chúng tôi</value>
+    <comment>Home/Contact</comment>
+  </data>
+  <data name="Connect with us if you have problems using the app" xml:space="preserve">
+    <value>Kết nối với chúng tôi nếu bạn gặp vấn đề khi sử dụng ứng dụng</value>
+    <comment>Home/Contact</comment>
+  </data>
+  <data name="Contribute news" xml:space="preserve">
+    <value>Đóng góp tin tức</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Contribute news content" xml:space="preserve">
+    <value>&amp;#9642; Người dùng có thể đóng góp tin tức lên hệ thống, admin sẽ kiểm duyệt và đăng lên hệ thống nếu tin tức hợp lý.&lt;br /&gt;
+                                    &amp;#9642; Người dùng có thể tìm các tin tức mà người dùng khác đóng góp ở đây.&lt;br /&gt;
+                                    &amp;#9642; Ở đây sẽ hiện thông tin số bài viết đã đóng góp của người dùng.&lt;br /&gt;
+                                    &amp;#9642; Người dùng có thể xem hướng dẫn chi tiết ở ô xem hướng dẫn.</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="FUNCTIONS" xml:space="preserve">
+    <value>CÁC CHỨC NĂNG</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Home page interface to read news" xml:space="preserve">
+    <value>Giao diện trang chủ đọc tin tức</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="I agree to" xml:space="preserve">
+    <value>Tôi đồng ý với &lt;a asp-controller="Home" asp-action="Privacy"&gt;điều khoản sử dụng&lt;/a&gt;</value>
+    <comment>Home/Contact</comment>
+  </data>
+  <data name="Input email" xml:space="preserve">
+    <value>&lt;input type="email" name="email" placeholder="Địa chỉ Email" /&gt;</value>
+    <comment>Home/Contact</comment>
+  </data>
+  <data name="Input first name" xml:space="preserve">
+    <value>&lt;input type="text" name="f-name" placeholder="Tên" /&gt;</value>
+    <comment>Home/Contact</comment>
+  </data>
+  <data name="Input last name" xml:space="preserve">
+    <value>&lt;input type="text" name="l-name" placeholder="Họ và tên lót" /&gt;</value>
+    <comment>Home/Contact</comment>
+  </data>
+  <data name="Input number phone" xml:space="preserve">
+    <value>&lt;input type="number" name="phone" placeholder="Số điện thoại" /&gt;</value>
+    <comment>Home/Contact</comment>
+  </data>
+  <data name="Input title" xml:space="preserve">
+    <value>&lt;input type="text" name="suject" placeholder=" Tiêu đề" /&gt;</value>
+    <comment>Home/Contact</comment>
+  </data>
+  <data name="Input your email" xml:space="preserve">
+    <value>&lt;input type="text" placeholder="Email của bạn" /&gt;</value>
+    <comment>Home/Policy + home/Guide</comment>
+  </data>
+  <data name="Interface to view news topics" xml:space="preserve">
+    <value>Giao diện xem các chủ đề tin tức</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Language change interface" xml:space="preserve">
+    <value>Giao diện đổi ngôn ngữ</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Log in" xml:space="preserve">
+    <value>Đăng nhập</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Log in content" xml:space="preserve">
+    <value>&amp;#9642; Khi đăng nhập lần đầu, người phải đăng ký thông tin, thông tin sẽ được lưu lại.&lt;br /&gt;
+                                    &amp;#9642; Khi đăng nhập bằng tài khoản google, facebook mà trước đó đã có tài khoản sẽ không cần nhập thông tin lại&lt;br /&gt;
+                                    &amp;#9642; Khi thoát ứng dụng ra màn hình chính sẽ duy trì đăng nhập, không cần đăng nhập lại&lt;br /&gt;
+                                    &amp;#9642; Có thể tùy chỉnh ngôn ngữ hệ thống và ngôn ngữ tin tức ở phía trên bên phải&lt;br /&gt;
+                                    &amp;#9642; Chọn đồng ý điều khoản dịch vụ để sử dụng ứng dụng</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="News classification" xml:space="preserve">
+    <value>Phân loại tin tức</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="News classification content" xml:space="preserve">
+    <value>&amp;#9642; Các tin tức đã được kiểm duyệt sẽ được hiển thị ở đây&lt;br /&gt;
+                                    &amp;#9642; Các tin tức được xác nhận là chính xác sẽ hiện bên ô Tin Thật&lt;br /&gt;
+                                    &amp;#9642; Các tin tức được xác nhận là sai sự thật sẽ hiện bên ô Tin Giả&lt;br /&gt;
+                                    &amp;#9642; Mọi Người có thể đọc thông báo ở đây bằng cách chọn chuông ở gói phải phía trên trang</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="News contribution interface" xml:space="preserve">
+    <value>Giao diện đóng góp tin tức</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="News reading interface" xml:space="preserve">
+    <value>Giao diện đọc tin tức</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Phone" xml:space="preserve">
+    <value>Điện thoại</value>
+    <comment>Home/Contact</comment>
+  </data>
+  <data name="Read news" xml:space="preserve">
+    <value>Đọc tin tức</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Read news content" xml:space="preserve">
+    <value>&amp;#9642; Người dùng có thể đọc, chọn độ tin cậy của tin tức, chia sẻ tin,…&lt;br /&gt;
+                                    &amp;#9642; Người dùng có thể bình luận trao đổi với nhau về tin tức đó</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Read news without logging in" xml:space="preserve">
+    <value>Đọc tin tức khi chưa đăng nhập</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Read news without logging in content" xml:space="preserve">
+    <value>Read news without logging in content
+                                    &amp;#9642; Người dùng có thể xem các tin tức mới nhất của hệ thống&lt;br /&gt;
+                                    &amp;#9642; Các tin tức người dùng xem khi chưa đăng nhập là các tin mới và hot nhất trong ngày của nhiều chủ đề khác nhau</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Register an account via email" xml:space="preserve">
+    <value>Đăng ký tài khoản qua email</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Search news" xml:space="preserve">
+    <value>Tìm kiếm tin tức</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Settings and profile" xml:space="preserve">
+    <value>Cài đặt và trang cá nhân</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Settings and profile content" xml:space="preserve">
+    <value>&amp;#9642; Chỉnh sửa thông tin cá nhân của người dùng ở đây.&lt;br /&gt;
+                                    &amp;#9642; Người dùng có thể tùy chỉnh ngôn ngữ hệ thống và ngôn ngữ tin tức ở đây.&lt;br /&gt;
+                                    &amp;#9642; Người dùng có thể thay đổi các chủ đề đã theo dõi.&lt;br /&gt;
+                                    &amp;#9642; Người dùng có thể kết nối các mạng xã hội khác với tài khoản cá nhân.&lt;br /&gt;
+                                    &amp;#9642; Người dùng có thể xem các thông tin khác về OWL Trust.&lt;br /&gt;
+                                    &amp;#9642; Người dùng có thể đánh giá chất lượng ứng dụng.&lt;br /&gt;
+                                    &amp;#9642; Người dùng nếu gặp khó khăn khi sử dụng hệ thống thì có thể sử dụng tính năng giúp đỡ của hệ thống.</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Settings interface, personal page" xml:space="preserve">
+    <value>Giao diện cài đặt, trang cá nhân</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Start the application" xml:space="preserve">
+    <value>Khởi động ứng dụng</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="String	Users can search by news name, news content, description" xml:space="preserve">
+    <value>Người dùng có thể tìm kiếm theo tên tin tức, nội dung tin tức, mô tả</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Subscribe to news topics" xml:space="preserve">
+    <value>Theo dõi chủ đề tin tức</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="SYSTEM FUNCTIONS" xml:space="preserve">
+    <value>CÁC CHỨC NĂNG HỆ THỐNG</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Text area What can we do for you" xml:space="preserve">
+    <value>&lt;textarea name="message" placeholder="Chúng tôi có thể giúp gì cho bạn?"&gt;&lt;/textarea&gt;</value>
+    <comment>Home/Contact</comment>
+  </data>
+  <data name="The interface to read the news first when not logged in" xml:space="preserve">
+    <value>Giao diện đọc trước tin tức khi chưa đăng nhập</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Trusted news reading app" xml:space="preserve">
+    <value>Ứng dụng đọc tin tức đáng tin cậy</value>
+    <comment>Home/Contact</comment>
+  </data>
+  <data name="User can login with registered account, facebook and google account" xml:space="preserve">
+    <value>Người dùng có thể đăng nhập bằng tài khoản đã đăng ký, tài khoản facebook và google</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="View news list" xml:space="preserve">
+    <value>Xem danh sách tin tức</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="View news list content" xml:space="preserve">
+    <value>&amp;#9642; Khi đăng nhập xong người dùng có thể đọc tin và bình chọn tin tức đó có đáng tin cậy hay không&lt;br /&gt;
+                                    &amp;#9642; Người dùng có thể theo dõi các chủ đề yêu thích và xem các story của các tin tức ở đây&lt;br /&gt;
+                                    &amp;#9642; Người dùng có thể xem các thông báo ở chuông phía trên bên phải trang chủ</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="View news topics" xml:space="preserve">
+    <value>Giao diện các chủ đề</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="View news topics content" xml:space="preserve">
+    <value>&amp;#9642; Có nhiều chủ đề cho người dùng chọn, có thể chọn nhiều chủ đề&lt;br /&gt;
+                                    &amp;#9642; Người dùng có thể thấy được các chủ đề theo ngôn ngữ mà họ đã chọn, khi bấm nút “Khám phá” thì vào trang đăng nhập&lt;br /&gt;
+                                    &amp;#9642; Lần đầu tiên đăng nhập, người dùng phải chọn ít nhất 4 chủ đề khác nhau&lt;br /&gt;
+                                    &amp;#9642; Người dùng cũng có thể tùy chỉnh ngôn ngữ hệ thống ở đây</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="We only send you application information via email" xml:space="preserve">
+    <value>Chúng tôi chỉ gửi các thông tin về ứng dụng qua mail cho bạn</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="When logging in, users are required to choose at least 4 topics to be able to log in and read news" xml:space="preserve">
+    <value>Khi đăng nhập người dùng bắt buộc phải chọn ít nhất 4 chủ đề để có thể đăng nhập và đọc tin tức</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="When you log in, you will see the system icon and say hello" xml:space="preserve">
+    <value>Khi đăng nhập vào sẽ thấy icon của hệ thống và xin chào</value>
+    <comment>Home/Guide</comment>
   </data>
 </root>

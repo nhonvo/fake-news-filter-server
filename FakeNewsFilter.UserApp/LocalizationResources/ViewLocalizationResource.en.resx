@@ -154,11 +154,11 @@
     <comment>Layouts/Footer</comment>
   </data>
   <data name="Download the app on Android" xml:space="preserve">
-    <value>Download the app on Android</value>
+    <value>&lt;i class="fab fa-google-play"&gt;&lt;/i&gt;Download the app on Android</value>
     <comment>Layouts/Footer + Home/Index</comment>
   </data>
   <data name="Download the app on iOS" xml:space="preserve">
-    <value>Download the app on iOS</value>
+    <value>&lt;i class="fab fa-apple"&gt;&lt;/i&gt;Download the app on iOS</value>
     <comment>Layouts/Footer + Home/Index</comment>
   </data>
   <data name="FAQ" xml:space="preserve">
@@ -174,7 +174,7 @@
     <comment>Layouts/Footer +  Home/Policy</comment>
   </data>
   <data name="see more" xml:space="preserve">
-    <value>see more</value>
+    <value>see more &lt;i class="fal fa-arrow-right"&gt;&lt;/i&gt;see more</value>
     <comment>Layouts/Footer + Home/Index</comment>
   </data>
   <data name="Service" xml:space="preserve">
@@ -500,5 +500,236 @@
   <data name="Welcome to OWL Trust" xml:space="preserve">
     <value>Welcome to OWL Trust</value>
     <comment>Home/Index</comment>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>Address</value>
+    <comment>Home/Contact</comment>
+  </data>
+  <data name="Button send" xml:space="preserve">
+    <value>&lt;input type="submit" name="submit" value="Send" /&gt;</value>
+    <comment>Home/Contact</comment>
+  </data>
+  <data name="Categorized news interface" xml:space="preserve">
+    <value>Categorized news interface</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Change language" xml:space="preserve">
+    <value>Change language</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Change language content" xml:space="preserve">
+    <value>&amp;#9642; Flexible system language and news language can be customized&lt;br /&gt;
+                                     &amp;#9642; There are 2 languages in the system, English and Vietnamese&lt;br /&gt;
+                                     &amp;#9642; News has 2 languages: English and Vietnamese&lt;br /&gt;
+                                     &amp;#9642; The system default is English</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Connect with us" xml:space="preserve">
+    <value>Connect with us</value>
+    <comment>Home/Contact</comment>
+  </data>
+  <data name="Connect with us if you have problems using the app" xml:space="preserve">
+    <value>Connect with us if you have problems using the app</value>
+    <comment>Home/Contact</comment>
+  </data>
+  <data name="Contribute news" xml:space="preserve">
+    <value>Contribute news</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Contribute news content" xml:space="preserve">
+    <value>&amp;#9642; Users can contribute news to the system, admin will censor and post on the system if the news is reasonable.&lt;br /&gt;
+                                     &amp;#9642; Users can find news contributed by other users here.&lt;br /&gt;
+                                     &amp;#9642; Here will show information about the number of contributed posts by the user.&lt;br /&gt;
+                                     &amp;#9642; Users can see detailed instructions in the instruction view box.</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="FUNCTIONS" xml:space="preserve">
+    <value>FUNCTIONS</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Home page interface to read news" xml:space="preserve">
+    <value>Home page interface to read news</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="I agree to" xml:space="preserve">
+    <value>I agree to &lt;a asp-controller="Home" asp-action="Privacy"&gt;terms of use&lt;/a&gt;</value>
+    <comment>Home/Contact</comment>
+  </data>
+  <data name="Input email" xml:space="preserve">
+    <value>&lt;input type="email" name="email" placeholder="Your email" /&gt;</value>
+    <comment>Home/Contact</comment>
+  </data>
+  <data name="Input first name" xml:space="preserve">
+    <value>&lt;input type="text" name="f-name" placeholder="First Name" /&gt;</value>
+    <comment>Home/Contact</comment>
+  </data>
+  <data name="Input last name" xml:space="preserve">
+    <value>&lt;input type="text" name="l-name" placeholder="Last Name" /&gt;</value>
+    <comment>Home/Contact</comment>
+  </data>
+  <data name="Input number phone" xml:space="preserve">
+    <value>&lt;input type="number" name="phone" placeholder="Number phone" /&gt;</value>
+    <comment>Home/Contact</comment>
+  </data>
+  <data name="Input title" xml:space="preserve">
+    <value>&lt;input type="text" name="suject" placeholder="Title" /&gt;</value>
+    <comment>Home/Contact</comment>
+  </data>
+  <data name="Input your email" xml:space="preserve">
+    <value>&lt;input type="text" placeholder="Your email" /&gt;</value>
+    <comment>Home/Policy + home/Guide</comment>
+  </data>
+  <data name="Interface to view news topics" xml:space="preserve">
+    <value>Interface to view news topics</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Language change interface" xml:space="preserve">
+    <value>Language change interface</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Log in" xml:space="preserve">
+    <value>Log in</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Log in content" xml:space="preserve">
+    <value>&amp;#9642; When logging in for the first time, the person must register information, the information will be saved&lt;br /&gt;
+                                     &amp;#9642; When logging in with a google account, facebook that previously had an account will not need to re-enter the information&lt;br /&gt;
+                                     &amp;#9642; When exiting the application to the main screen, the login will be maintained, no need to log in again&lt;br /&gt;
+                                     &amp;#9642; System language and news language can be customized at the top right&lt;br /&gt;
+                                     &amp;#9642; Choose to agree to the terms of service to use the app</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="News classification" xml:space="preserve">
+    <value>News classification</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="News classification content" xml:space="preserve">
+    <value>&amp;#9642; Censored news will be displayed here&lt;br /&gt;
+                                     &amp;#9642; Information that is confirmed to be correct will appear in the True News box
+                                     &amp;#9642; Information that is confirmed to be false will appear in the Fake News box
+                                     &amp;#9642; Everyone can read the announcement here by selecting the bell on the right package at the top of the page</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="News contribution interface" xml:space="preserve">
+    <value>News contribution interface</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="News reading interface" xml:space="preserve">
+    <value>News reading interface</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Phone" xml:space="preserve">
+    <value>Phone</value>
+    <comment>Home/Contact</comment>
+  </data>
+  <data name="Read news" xml:space="preserve">
+    <value>Read news</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Read news content" xml:space="preserve">
+    <value>&amp;#9642; Users can read, choose the reliability of news, share news,…&lt;br /&gt;
+                                     &amp;#9642; Users can comment and exchange with each other about that news.</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Read news without logging in" xml:space="preserve">
+    <value>Read news without logging in</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Read news without logging in content" xml:space="preserve">
+    <value>Read news without logging in content
+                                     &amp;#9642; Users can view the latest news of the system.&lt;br /&gt;
+                                     &amp;#9642; The news users view when not logged in are the latest and hottest news of the day on many different topics.</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Register an account via email" xml:space="preserve">
+    <value>Register an account via email</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Search news" xml:space="preserve">
+    <value>Search news</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Settings and profile" xml:space="preserve">
+    <value>Settings and profile</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Settings and profile content" xml:space="preserve">
+    <value>&amp;#9642; Edit user's personal information here.&lt;br /&gt;
+                                     &amp;#9642; User can customize system language and news language here.&lt;br /&gt;
+                                     &amp;#9642; User can change followed topics.&lt;br /&gt;
+                                     &amp;#9642; Users can connect other social networks with personal accounts.&lt;br /&gt;
+                                     &amp;#9642; Users can view other information about OWL Trust.&lt;br /&gt;
+                                     &amp;#9642; Users can rate the quality of the application.&lt;br /&gt;
+                                     &amp;#9642; Users who have difficulty using the system can use the system's help feature.</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Settings interface, personal page" xml:space="preserve">
+    <value>Settings interface, personal page</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Start the application" xml:space="preserve">
+    <value>Start the application</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Subscribe to news topics" xml:space="preserve">
+    <value>Subscribe to news topics</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="SYSTEM FUNCTIONS" xml:space="preserve">
+    <value>SYSTEM FUNCTIONS</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Text area What can we do for you" xml:space="preserve">
+    <value>&lt;textarea name="message" placeholder="What can we do for you?"&gt;&lt;/textarea&gt;</value>
+    <comment>Home/Contact</comment>
+  </data>
+  <data name="The interface to read the news first when not logged in" xml:space="preserve">
+    <value>The interface to read the news first when not logged in</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Trusted news reading app" xml:space="preserve">
+    <value>Trusted news reading app</value>
+    <comment>Home/Contact</comment>
+  </data>
+  <data name="User can login with registered account, facebook and google account" xml:space="preserve">
+    <value>User can login with registered account, facebook and google account</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="Users can search by news name, news content, description" xml:space="preserve">
+    <value>Users can search by news name, news content, description</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="View news list" xml:space="preserve">
+    <value>View news list</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="View news list content" xml:space="preserve">
+    <value>&amp;#9642; Once logged in, users can read the news and vote whether it is reliable or not
+                                     &amp;#9642; Users can follow their favorite topics and view news stories here&lt;br /&gt;
+                                     &amp;#9642; Users can see the notifications in the bell on the top right of the homepage</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="View news topics" xml:space="preserve">
+    <value>View news topics</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="View news topics content" xml:space="preserve">
+    <value>&amp;#9642; There are many themes for users to choose, many topics can be selected&lt;br /&gt;
+                                     &amp;#9642; Users can see topics according to their chosen language, when they press the "Discover" button, they go to the login page&lt;br /&gt;
+                                     &amp;#9642; First time login, user must choose at least 4 different themes&lt;br /&gt;
+                                     &amp;#9642; Users can also customize the system language here</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="We only send you application information via email" xml:space="preserve">
+    <value>We only send you application information via email</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="When logging in, users are required to choose at least 4 topics to be able to log in and read news" xml:space="preserve">
+    <value>When logging in, users are required to choose at least 4 topics to be able to log in and read news</value>
+    <comment>Home/Guide</comment>
+  </data>
+  <data name="When you log in, you will see the system icon and say hello" xml:space="preserve">
+    <value>When you log in, you will see the system icon and say hello</value>
+    <comment>Home/Guide</comment>
   </data>
 </root>
