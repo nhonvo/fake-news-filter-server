@@ -69,20 +69,33 @@ document.addEventListener('click', function (e) {
 
 //load more news
 $(window).scroll(function () {
-    if ($(window).scrollTop() == $(document).height() - $(window).height()) {
-        //get the last value of nextPageToken inputs
-        nextPageToken = [...$('.nextPageToken')][[...$('.nextPageToken')].length - 1].value;
+    if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+        const actionControllerNameInBrowser = $(window.location.pathname.split('/')).get(-1);
 
         $('#loading').show();
-
-        $.ajax({
-            type: "GET",
-            url: `CloneNews/LoadMore/?nextPageToken=${nextPageToken}&query=${queryLoadMore}`,
-            success: function (data) {
-                $('#loading').hide();
-                parentDiv.insertAdjacentHTML('beforeend', data);
-            }
-        });
+        if (actionControllerNameInBrowser === 'GoogleFactCheckIndex') {
+            //get the last value of nextPageToken inputsÎ
+            nextPageToken = [...$('.nextPageToken')][[...$('.nextPageToken')].length - 1].value;
+            $.ajax({
+                type: "GET",
+                url: `LoadMore/?nextPageToken=${nextPageToken}&query=${queryLoadMore}`,
+                success: function (data) {
+                    $('#loading').hide();
+                    parentDiv.insertAdjacentHTML('beforeend', data);
+                }
+            });
+        } else if (actionControllerNameInBrowser === 'NewsApiIndex') {
+            const pageNum = $('.pageNum').last().val();
+            const page = parseInt(pageNum) + 1;
+            $.ajax({
+                type: "GET",
+                url: `NewsApiSearch/?query=${queryLoadMore}&page=${page}`,
+                success: function (data) {
+                    $('#loading').hide();
+                    parentDiv.insertAdjacentHTML('beforeend', `${data} <input type="hidden" class="pageNum" value="${page}">`);
+                }
+            });
+        }
     }
 });
 
@@ -100,10 +113,31 @@ $('#searchBtn').click(function () {
     parentDiv.innerHTML = "";
     $.ajax({
         type: "GET",
-        url: `CloneNews/Search/?query=${query}`,
+        url: `FactCheckSearch/?query=${query}`,
         success: function (data) {
             $('#loading').hide();
             parentDiv.insertAdjacentHTML('beforeend', data);
+        }
+    });
+})
+
+$('#newsApiSearchBtn').click(function () {
+    $('#loading').show();
+
+    //convert normal search input to without whitespace and lowercase
+    const query = $('#newsApiSearchInput').val().toLowerCase().replace(/\s/g, "");
+
+    //assign id querySeach's input equals id searchInput's input (temporary variable)
+    queryLoadMore = $('#newsApiQuerySearch').val(`${$('#newsApiSearchInput').val()}`).val();
+
+    //clear all previous data
+    parentDiv.innerHTML = "";
+    $.ajax({
+        type: "GET",
+        url: `NewsApiSearch/?query=${query}`,
+        success: function (data) {
+            $('#loading').hide();
+            parentDiv.insertAdjacentHTML('beforeend', `${data} <input type="hidden" class="pageNum" value="1">`);
         }
     });
 })
@@ -116,13 +150,13 @@ function CreateNews(frm, caller) {
 
     var Title = $(frm).find('input#Title')[0].value;
     var Source = $(frm).find('#Url').attr('href');
-    
+
     var officialRating = $(frm).find('#OfficialRating')[0].value;
     var languageId = $(frm).find('#LanguageId')[0].value;
     var topicIdList = $(frm).find('#TopicId').select2("val");
     var Publisher = $(frm).find('#Publisher')[0].value;
     var DatePublished = $(frm).find('#DatePublished')[0].value;
-    
+
     fdata.append("Title", Title);
     fdata.append("OfficialRating", officialRating);
     fdata.append("Source", Source);
@@ -130,7 +164,7 @@ function CreateNews(frm, caller) {
     topicIdList.forEach((topicId) => fdata.append("TopicId", topicId));
     fdata.append("Publisher", Publisher);
     fdata.append("DatePublished", DatePublished);
-    
+
     $.ajax(
         {
             type: frm.method,
@@ -139,7 +173,7 @@ function CreateNews(frm, caller) {
             processData: false,
             contentType: false,
             success: function (data) {
-              
+
                 toastr['success'](
                     'Create News Successfully', 'Success', {
                         closeButton: true,
@@ -148,9 +182,9 @@ function CreateNews(frm, caller) {
                         rtl: $('html').attr('data-textdirection') === 'rtl'
                     }
                 );
-               
+
             },
-            error: function (data) { 
+            error: function (data) {
                 $('#loading').hide();
                 toastr['error'](
                     'Create News Unsuccessfully', 'Error'
@@ -161,7 +195,7 @@ function CreateNews(frm, caller) {
                         rtl: $('html').attr('data-textdirection') === 'rtl'
                     }
                 );
-               
+
             }
         })
 }

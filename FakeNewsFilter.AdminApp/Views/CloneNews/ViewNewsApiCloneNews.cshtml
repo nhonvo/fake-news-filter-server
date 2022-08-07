@@ -1,0 +1,31 @@
+﻿@model List<NewsAPI.Models.Article>
+
+@if (@Model?.Count > 0)
+{
+    @foreach (var article in @Model)
+    {
+        var guid = Guid.NewGuid().ToString("N");
+        <div class="col-sm-6 col-xxl-6">
+            <div class="element-wrapper">
+                <div class="element-box">
+                    <div class="card-body" id="card-body-@guid">
+                        <h3 class="card-title">From source @article.Source.Name</h3>
+                        <a href="@article.Url" class="card-text">
+                            <h4 class="card-title">@article.Title</h4>
+                        </a>
+
+                        <p class="card-title">Author @article.Author</p>
+
+                        <label>Published At: </label>
+                        <p class="card-text">@article.PublishedAt!.Value.ToString("dd/MM/yyyy HH:mm:ss") </p>
+                        <div class="card-title">
+                            <a id="@guid" class="btn add-new btn-rounded btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg" href="#">Clone</a>
+                            @* <button id="@guid" class="btn add-new btn-rounded btn-primary" tabindex="0" aria-controls="list_news" type="button" data-toggle="modal" data-target=".bd-example-modal-lg"><span>Clone</span></button> *@
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    }
+}

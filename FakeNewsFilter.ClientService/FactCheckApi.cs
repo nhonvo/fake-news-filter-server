@@ -42,7 +42,7 @@ namespace FakeNewsFilter.AdminApp.Services
                 HttpClient httpClient = new HttpClient();
                 HttpRequestMessage request = new HttpRequestMessage();
 
-                request.RequestUri = new Uri("https://factchecktools.googleapis.com/v1alpha1/claims:search?key=AIzaSyBLYy6lGSiXQd38r-ba0jxsBm56lmXjaXI&languageCode=en-US&maxAgeDays=200&offset=0&pageSize=20&query=" + query + "&pageToken=" + nextPageToken);
+                request.RequestUri = new Uri("https://factchecktools.googleapis.com/v1alpha1/claims:search?key=" + _configuration["GoogleFactCheckAPIKey"] + "&languageCode=en-US&maxAgeDays=200&offset=0&pageSize=20&query=" + query + "&pageToken=" + nextPageToken);
                                 
                 request.Method = HttpMethod.Get;
 
