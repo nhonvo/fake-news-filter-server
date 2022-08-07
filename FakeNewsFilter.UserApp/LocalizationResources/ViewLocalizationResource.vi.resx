@@ -155,11 +155,11 @@
   </data>
   <data name="Download the app on Android" xml:space="preserve">
     <value>Tải ứng dụng trên Android</value>
-    <comment>Layouts/Footer</comment>
+    <comment>Layouts/Footer + Home/Index</comment>
   </data>
   <data name="Download the app on iOS" xml:space="preserve">
     <value>Tải ứng dụng trên iOS</value>
-    <comment>Layouts/Footer</comment>
+    <comment>Layouts/Footer + Home/Index</comment>
   </data>
   <data name="FAQ" xml:space="preserve">
     <value>Các câu hỏi thường gặp</value>
@@ -320,5 +320,189 @@
   <data name="Your privacy and accounts content" xml:space="preserve">
     <value>Dữ liệu đăng ký và các thông tin khác phải tuân theo Chính sách Bảo mật của chúng tôi. Thông tin của bạn có thể được lưu trữ và xử lý tại Hoa Kỳ hoặc bất kỳ quốc gia nào khác nơi Owl Trust có cơ sở vật chất và bằng cách sử dụng Dịch vụ trực tuyến, bạn đồng ý chuyển thông tin ra bên ngoài quốc gia của bạn. Nếu bạn truy cập Dịch vụ bằng mật khẩu, bạn tự chịu trách nhiệm duy trì tính bảo mật của mật khẩu đó. Nếu bạn cung cấp cho người khác quyền truy cập vào mật khẩu của bạn vào Dịch vụ, họ sẽ có thể xem thông tin về tài khoản của bạn và thực hiện các thay đổi thông qua Ứng dụng hoặc Trang web cho Dịch vụ. Tương tự như vậy, nếu bạn cung cấp cho một ai đó tính năng mẫu khóa cho một Dịch vụ, họ sẽ có thể yêu cầu thông tin về tài khoản của bạn và thay đổi thông qua Dịch vụ Khách hàng. Bạn đồng ý sẽ thông báo cho chúng tôi ngay lập tức nếu bạn thay đổi địa chỉ email để chúng tôi có thể tiếp tục liên lạc với bạn và gửi bất kỳ thông báo yêu cầu dưới đây. Nếu bạn không thông báo cho chúng tôi kịp thời về thay đổi, thì mọi thông báo chúng tôi gửi đến địa chỉ email cũ của bạn sẽ được coi là thông báo đầy đủ.</value>
     <comment>Home/Policy</comment>
+  </data>
+  <data name="Answer user questions about the application" xml:space="preserve">
+    <value>Giải đáp các thắc mắc của người dùng về ứng dụng</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="App Founding Member" xml:space="preserve">
+    <value>Thành viên sáng lập ứng dụng</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Can login with different social media accounts" xml:space="preserve">
+    <value>Có thể đăng nhập bằng nhiều tài khoản mạng xã hội khác nhau</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Can read news on website with many advantages" xml:space="preserve">
+    <value>Có thể đọc tin tức trên website với nhiều ưu điểm</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Can't find your question" xml:space="preserve">
+    <value>Bạn không thể tìm thấy câu hỏi của mình?</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Community in" xml:space="preserve">
+    <value>Cộng đồng trong</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Detail" xml:space="preserve">
+    <value>Chi tiết</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Diverse, complete and accurate news" xml:space="preserve">
+    <value>Tin tức đa dạng, đầy đủ, chính xác</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Email us" xml:space="preserve">
+    <value>Gửi email cho chúng tôi</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="evaluation" xml:space="preserve">
+    <value>Đánh giá</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Fast" xml:space="preserve">
+    <value>Nhanh chóng</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="flexible" xml:space="preserve">
+    <value>Linh hoạt</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Founding member" xml:space="preserve">
+    <value>Thành viên sáng lập</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="frequently asked Questions" xml:space="preserve">
+    <value>Các câu hỏi thường gặp</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Friendly interface" xml:space="preserve">
+    <value>Giao diện thân thiện</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Home/Index" xml:space="preserve">
+    <value>Tin tức trong</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="I'm very grateful to the creator of this app, it's amazing" xml:space="preserve">
+    <value>Tôi rất biết ơn người tạo ra ứng dụng này, rất tuyệt vời</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="It's an honor to use this app" xml:space="preserve">
+    <value>Thật vinh hạnh khi được sử dụng ứng dụng này</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Ngôn ngữ</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Makes finding news quick and easy" xml:space="preserve">
+    <value>Makes finding news quick and easy</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Multi-language system" xml:space="preserve">
+    <value>Hệ thống đa ngôn ngữ</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Multi-platform" xml:space="preserve">
+    <value>Đa nền tảng</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="News can be viewed on many different platforms such as Web, Android, iOS" xml:space="preserve">
+    <value>Có thể xem tin tức trên nhiều nền tảng khác nhau như Web, Android, iOS</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="News in" xml:space="preserve">
+    <value>Tin tức trong</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="News interface on OWLTRUST.TK" xml:space="preserve">
+    <value>Giao diện tin tức trên OWLTRUST.TK</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="No need to install" xml:space="preserve">
+    <value>Không cần cài đặt</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="No need to install apps" xml:space="preserve">
+    <value>Không cần cài đặt ứng dụng</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="OWL Trust brings great experiences to users" xml:space="preserve">
+    <value>OWL Trust mang đến những trải nghiệm tuyệt vời cho người dùng</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="OWL Trust has a diverse news system covering many different areas and languages and is labeled as true or fake news" xml:space="preserve">
+    <value>OWL Trust có một hệ thống tin tức đa dạng bao gồm nhiều lĩnh vực và ngôn ngữ khác nhau và được gắn nhãn là tin tức thật hoặc giả</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="OWL Trust has a diverse news system covering many different areas and languages and is labeled as true or fake news." xml:space="preserve">
+    <value>OWL Trust có hệ thống tin tức đa dạng gồm nhiều lĩnh vực và ngôn ngữ khác nhau và được gán nhãn tin thật hoặc tin giả</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="OWL Trust has a diverse topic system covering many different fields and languages" xml:space="preserve">
+    <value>OWL Trust có hệ thống chủ đề đa dạng gồm nhiều lĩnh vực và ngôn ngữ khác nhau</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Questions are being updated" xml:space="preserve">
+    <value>Các câu hỏi đang được cập nhật</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Real and fake news rating system" xml:space="preserve">
+    <value>Hệ thống đánh giá các tin tức thật và giả</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Reliable news reading application" xml:space="preserve">
+    <value>Ứng dụng đọc tin tức đáng tin cậy</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Setting" xml:space="preserve">
+    <value>Cài đặt</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Setting in" xml:space="preserve">
+    <value>Cài đặt trong</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="The advantages of" xml:space="preserve">
+    <value>Các ưu điểm của</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="The community helps app users to share news on the app for other users to evaluate" xml:space="preserve">
+    <value>Cộng đồng giúp người dùng ứng dụng có thể chia sẽ các tin tức lên trên ứng dụng để các người dùng khác đánh giá</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="The website interface helps new users to read the news easily and friendly" xml:space="preserve">
+    <value>Giao diện website giúp người dùng mới có thể đọc các tin tức dễ dàng, thân thiện</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="This is the best app I've ever used" xml:space="preserve">
+    <value>Đây là ứng dụng tuyệt vời nhất mà tôi từng sử dụng</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Topic" xml:space="preserve">
+    <value>Chủ đề</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Topics in" xml:space="preserve">
+    <value>Chủ đề trong</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Users can customize favorite themes, languages and accounts" xml:space="preserve">
+    <value>Người dùng có thể tùy chỉnh các chủ đề yêu thích, ngôn ngữ và tài khoản</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="We will update as soon as possible" xml:space="preserve">
+    <value>Chúng tôi sẽ cập nhật sớm nhất có thể</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Welcome content" xml:space="preserve">
+    <value>OWL Trust là ứng dụng đọc tin tức giúp người dùng tiếp cận những tin tức mới và chính xác nhất</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Welcome to OWL Trust" xml:space="preserve">
+    <value>Chào mừng đến với OWL Trust</value>
+    <comment>Home/Index</comment>
   </data>
 </root>

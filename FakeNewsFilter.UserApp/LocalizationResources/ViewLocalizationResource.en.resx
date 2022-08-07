@@ -135,7 +135,7 @@
   </data>
   <data name="Contact" xml:space="preserve">
     <value>Contact</value>
-    <comment>Layouts/Header+Footer</comment>
+    <comment>Layouts/Header + Footer</comment>
   </data>
   <data name="About us" xml:space="preserve">
     <value>About us</value>
@@ -155,11 +155,11 @@
   </data>
   <data name="Download the app on Android" xml:space="preserve">
     <value>Download the app on Android</value>
-    <comment>Layouts/Footer</comment>
+    <comment>Layouts/Footer + Home/Index</comment>
   </data>
   <data name="Download the app on iOS" xml:space="preserve">
     <value>Download the app on iOS</value>
-    <comment>Layouts/Footer</comment>
+    <comment>Layouts/Footer + Home/Index</comment>
   </data>
   <data name="FAQ" xml:space="preserve">
     <value>FAQ</value>
@@ -175,7 +175,7 @@
   </data>
   <data name="see more" xml:space="preserve">
     <value>see more</value>
-    <comment>Layouts/Footer</comment>
+    <comment>Layouts/Footer + Home/Index</comment>
   </data>
   <data name="Service" xml:space="preserve">
     <value>Service</value>
@@ -320,5 +320,185 @@
   <data name="Your privacy and accounts content" xml:space="preserve">
     <value>Registration data and other information are subject to our Privacy Policy. Your information may be stored and processed in the United States or any other country where Owl Trust has facilities and by using the Online Services you agree to transfer the information outside of the country. your family. If you access the Service with a password, you are solely responsible for maintaining the confidentiality of that password. If you give others access to your password to the Service, they will be able to view information about your account and make changes through the Application or Website for the Service. Likewise, if you provide someone with the pattern lock feature for a Service, they will be able to request information about your account and make changes through Customer Service. You agree to notify us immediately if you change your email address so that we may continue to contact you and send any notices required below. If you do not promptly notify us of the change, then any notice we send to your old email address will be deemed adequate notice.</value>
     <comment>Home/Policy</comment>
+  </data>
+  <data name="Answer user questions about the application" xml:space="preserve">
+    <value>Answer user questions about the application</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="App Founding Member" xml:space="preserve">
+    <value>App Founding Member</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Can login with different social media accounts" xml:space="preserve">
+    <value>Can login with different social media accounts</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Can read news on website with many advantages" xml:space="preserve">
+    <value>Can read news on website with many advantages</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Can't find your question" xml:space="preserve">
+    <value>Can't find your question?</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Community in" xml:space="preserve">
+    <value>Community in</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Detail" xml:space="preserve">
+    <value>Detail</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Diverse, complete and accurate news" xml:space="preserve">
+    <value>Diverse, complete and accurate news</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Email us" xml:space="preserve">
+    <value>Email us</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="evaluation" xml:space="preserve">
+    <value>evaluation</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Fast" xml:space="preserve">
+    <value>Fast</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="flexible" xml:space="preserve">
+    <value>flexible</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Founding member" xml:space="preserve">
+    <value>Founding member</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="frequently asked Questions" xml:space="preserve">
+    <value>frequently asked Questions</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Friendly interface" xml:space="preserve">
+    <value>Friendly interface</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="I'm very grateful to the creator of this app, it's amazing" xml:space="preserve">
+    <value>I'm very grateful to the creator of this app, it's amazing</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="It's an honor to use this app" xml:space="preserve">
+    <value>It's an honor to use this app</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Makes finding news quick and easy" xml:space="preserve">
+    <value>Makes finding news quick and easy</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Multi-language system" xml:space="preserve">
+    <value>Multi-language system</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Multi-platform" xml:space="preserve">
+    <value>Multi-platform</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="News can be viewed on many different platforms such as Web, Android, iOS" xml:space="preserve">
+    <value>News can be viewed on many different platforms such as Web, Android, iOS</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="News in" xml:space="preserve">
+    <value>News in</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="News interface on OWLTRUST.TK" xml:space="preserve">
+    <value>News interface on OWLTRUST.TK</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="No need to install" xml:space="preserve">
+    <value>No need to install</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="No need to install apps" xml:space="preserve">
+    <value>No need to install apps</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="OWL Trust brings great experiences to users" xml:space="preserve">
+    <value>OWL Trust brings great experiences to users</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="OWL Trust has a diverse news system covering many different areas and languages and is labeled as true or fake news" xml:space="preserve">
+    <value>OWL Trust has a diverse news system covering many different areas and languages and is labeled as true or fake news</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="OWL Trust has a diverse news system covering many different areas and languages and is labeled as true or fake news." xml:space="preserve">
+    <value>OWL Trust has a diverse news system covering many different areas and languages and is labeled as true or fake news.</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="OWL Trust has a diverse topic system covering many different fields and languages" xml:space="preserve">
+    <value>OWL Trust has a diverse topic system covering many different fields and languages</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Questions are being updated" xml:space="preserve">
+    <value>Questions are being updated</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Real and fake news rating system" xml:space="preserve">
+    <value>Real and fake news rating system</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Reliable news reading application" xml:space="preserve">
+    <value>Reliable news reading application</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Setting" xml:space="preserve">
+    <value>Setting</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Setting in" xml:space="preserve">
+    <value>Setting in</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="The advantages of" xml:space="preserve">
+    <value>The advantages of</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="The community helps app users to share news on the app for other users to evaluate" xml:space="preserve">
+    <value>The community helps app users to share news on the app for other users to evaluate</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="The website interface helps new users to read the news easily and friendly" xml:space="preserve">
+    <value>The website interface helps new users to read the news easily and friendly</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="This is the best app I've ever used" xml:space="preserve">
+    <value>This is the best app I've ever used</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Topic" xml:space="preserve">
+    <value>Topic</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Topics in" xml:space="preserve">
+    <value>Topics in</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Users can customize favorite themes, languages and accounts" xml:space="preserve">
+    <value>Users can customize favorite themes, languages and accounts</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="We will update as soon as possible" xml:space="preserve">
+    <value>We will update as soon as possible</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Welcome content" xml:space="preserve">
+    <value>OWL Trust is a news reader application that helps users access the latest and most accurate news</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Welcome to OWL Trust" xml:space="preserve">
+    <value>Welcome to OWL Trust</value>
+    <comment>Home/Index</comment>
   </data>
 </root>

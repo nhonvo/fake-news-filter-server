@@ -8,10 +8,13 @@
             <div class="col-lg-4 col-md-6">
                 <div class="footer-about-widget">
                     <div class="logo">
-                        <a href="#"><img src="/intro/images/logo.svg" alt="" /></a>
+                        <a asp-controller="Home" asp-action="Index" asp-route-culture="@culture" >
+                            <img src="/intro/images/logo/logo_OWL_NoText-05.svg" alt="" width="80px"/>
+                            <h7>Owl Trust</h7>
+                        </a>
                     </div>
                     <p><localize>OWL Trust is a news reader application that helps users access the latest and most accurate news</localize></p>
-                    <a href="#" localize-content>see more<i class="fal fa-arrow-right"></i></a>
+                    <a href="#" localize-content>see more</a>
                     <div class="social mt-30">
                         <ul>
                             <li>
@@ -73,10 +76,10 @@
                     <div class="apps-download-btn">
                         <ul>
                             <li>
-                                <a href="#" target="_blank"><i class="fab fa-apple" localize-content></i>Download the app on iOS</a>
+                                <a href="#" target="_blank" localize-content>Download the app on iOS</a>
                             </li>
                             <li>
-                                <a class="item-2" target="_blank" href="https://play.google.com/store/apps/details?id=com.owl_trust"><i class="fab fa-google-play" localize-content></i>Download the app on Android</a>
+                                <a class="item-2" target="_blank" href="https://play.google.com/store/apps/details?id=com.owl_trust" localize-content>Download the app on Android</a>
                             </li>
                         </ul>
                     </div>
