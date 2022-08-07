@@ -108,7 +108,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(NewsCreateRequest request)
+        public async Task<IActionResult> CreateNews(NewsCreateRequest request)
         {
             if (request.TopicId == null)
             {
