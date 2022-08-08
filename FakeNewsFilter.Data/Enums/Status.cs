@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace FakeNewsFilter.Data.Enums
+﻿namespace FakeNewsFilter.Data.Enums
 {
     public enum Status
     {

@@ -739,7 +739,10 @@ START - Main Menu
         <div class="sub-menu-i">
             <ul class="sub-menu">
                 <li>
-                    <a asp-action="Index" asp-controller="News">News List</a>
+                    <a asp-action="Index" asp-controller="News" asp-route-source="system">News List - System</a>
+                </li>
+                <li>
+                    <a asp-action="Index" asp-controller="News" asp-route-source="others">News List - Others</a>
                 </li>
                 <li>
                     <a asp-action="GoogleFactCheckIndex" asp-controller="CloneNews">Google Factcheck Clone News <strong class="badge badge-danger">Hot</strong></a>

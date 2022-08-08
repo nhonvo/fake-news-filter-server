@@ -72,7 +72,7 @@ namespace FakeNewsFilter.Application.Catalog
                     NewsId = x.NewsId,
                     Title = x.Title,
                     TopicInfo = x.NewsInTopics.Select(o => new TopicInfo { TopicId = o.TopicId, TopicName = o.TopicNews.Tag }).ToList(),
-                    OfficialRating = x.OfficialRating,
+                    OfficialRating = x.OfficialRating.ToString(),
                     Publisher = x.Publisher,
                     Status = x.Status,
                     ThumbNews = string.IsNullOrEmpty(x.ImageLink) ? null : _storageService.GetFileUrl(x.DetailNews.Media.PathMedia),

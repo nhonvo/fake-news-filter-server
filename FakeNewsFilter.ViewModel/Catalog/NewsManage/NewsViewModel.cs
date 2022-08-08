@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using FakeNewsFilter.Data.Entities;
 using FakeNewsFilter.Data.Enums;
 using FakeNewsFilter.ViewModel.Catalog.TopicNews;
-using Microsoft.AspNetCore.Authentication;
 
 namespace FakeNewsFilter.ViewModel.Catalog.NewsManage
 {
@@ -17,13 +15,14 @@ namespace FakeNewsFilter.ViewModel.Catalog.NewsManage
 
         public string Title { get; set; }
 
-        public string URL { get; set; }
+        public string UrlNews { get; set; }
 
         public string ThumbNews { get; set; }
         
         public double SocialBeliefs { get; set; }
 
         public string OfficialRating { get; set; }
+
         public int ViewCount { get; set; }
 
         public string Publisher { get; set; }
@@ -32,5 +31,6 @@ namespace FakeNewsFilter.ViewModel.Catalog.NewsManage
 
         public Status Status { get; set; }
 
+        public string SourceCreate { get; set; }
     }
 }

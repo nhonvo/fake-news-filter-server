@@ -15,6 +15,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Quartz;
 using StackExchange.Redis;
+using FakeNewsFilter.API.Validator.News;
 
 namespace FakeNewsFilter.API.Controllers
 {
@@ -43,13 +44,13 @@ namespace FakeNewsFilter.API.Controllers
             _redis = redis;
         }
 
-        [HttpPost]
+        [HttpPost("CreateBySystem")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create([FromForm] NewsCreateRequest request)
+        public async Task<IActionResult> CreateBySytem([FromForm] NewsSystemCreateRequest request)
         {
             try
             {
-                CreateRequestNewsValidator validator = new CreateRequestNewsValidator(_localizer);
+                CreateSystemNewsValidator validator = new CreateSystemNewsValidator(_localizer);
 
                 List<string> ValidationMessages = new List<string>();
 
@@ -64,7 +65,7 @@ namespace FakeNewsFilter.API.Controllers
                     return BadRequest(result);
                 }
 
-                var createNews = await _newsService.Create(request);
+                var createNews = await _newsService.CreateBySystem(request);
 
                 createNews.Message = _localizer[createNews.Message].Value + createNews.ResultObj;
 
@@ -80,6 +81,51 @@ namespace FakeNewsFilter.API.Controllers
 
                 _logger.LogInformation(createNews.Message);
                 return CreatedAtAction(nameof(GetById), new {newsId = createNews}, getNews);
+            }
+            catch (FakeNewsException e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPost("CreateByOutSource")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> CreateByOutSource([FromForm] NewsOutSourceCreateRequest request)
+        {
+            try
+            {
+                CreateOutSourceNewsValidator validator = new CreateOutSourceNewsValidator(_localizer);
+
+                List<string> ValidationMessages = new List<string>();
+
+                var validationResult = validator.Validate(request);
+
+                if (!validationResult.IsValid)
+                {
+                    string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
+
+                    var result = new ApiErrorResult<bool>(400, errors);
+
+                    return BadRequest(result);
+                }
+
+                var createNews = await _newsService.CreateByOther(request);
+
+                createNews.Message = _localizer[createNews.Message].Value + createNews.ResultObj;
+
+                if (createNews.StatusCode != 200)
+                {
+                    _logger.LogError(createNews.Message);
+                    return BadRequest(createNews);
+                }
+
+                var getNews = await _newsService.GetById(Int32.Parse(createNews.ResultObj));
+
+                getNews.Message = _localizer[getNews.Message].Value;
+
+                _logger.LogInformation(createNews.Message);
+                return CreatedAtAction(nameof(GetById), new { newsId = createNews }, getNews);
             }
             catch (FakeNewsException e)
             {
@@ -119,7 +165,31 @@ namespace FakeNewsFilter.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetNews(string languageId, string filter)
         {
-            var topics = await _newsService.GetAll(languageId, filter);
+            try
+            {
+                var news = await _newsService.GetAll(languageId, filter);
+
+                news.Message = _localizer[news.Message].Value;
+
+                if (news.StatusCode == 200)
+                {
+                    return Ok(news);
+                }
+                return BadRequest(news);
+
+            }catch(Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
+            
+        }
+
+        //Lấy các tin tức dựa trên nguồn tạo (từ hệ thống/ nguồn bên ngoài)
+        [HttpGet("Source")]
+        public async Task<IActionResult> GetNewsBySource(string source)
+        {
+            var topics = await _newsService.GetBySouce(source);
 
             topics.Message = _localizer[topics.Message].Value;
 
@@ -216,13 +286,13 @@ namespace FakeNewsFilter.API.Controllers
             return Ok(newsList);
         }
 
-        [HttpPut("Update")]
+        [HttpPut("UpdateBySystem")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Update([FromForm] NewsUpdateRequest request)
+        public async Task<IActionResult> UpdateBySystem([FromForm] NewsSystemUpdateRequest request)
         {
             try
             {
-                UpdateRequestNewsValidator validator = new UpdateRequestNewsValidator(_localizer);
+                UpdateSystemNewsValidator validator = new UpdateSystemNewsValidator(_localizer);
 
                 List<string> ValidationMessages = new List<string>();
 
@@ -237,7 +307,48 @@ namespace FakeNewsFilter.API.Controllers
                     return BadRequest(result);
                 }
 
-                var resultToken = await _newsService.Update(request);
+                var resultToken = await _newsService.UpdateBySystem(request);
+
+                resultToken.Message = _localizer[resultToken.Message].Value + resultToken.ResultObj;
+
+                if (resultToken.ResultObj != null)
+                {
+                    _logger.LogError(resultToken.Message);
+                    return BadRequest(resultToken);
+                }
+
+                _logger.LogInformation(resultToken.Message);
+                return Ok(resultToken);
+            }
+            catch (FakeNewsException e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPut("UpdateByOutSource")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UpdateByOutSource([FromForm] NewsOutSourceUpdateRequest request)
+        {
+            try
+            {
+                UpdateOutSourceNewsValidator validator = new UpdateOutSourceNewsValidator(_localizer);
+
+                List<string> ValidationMessages = new List<string>();
+
+                var validationResult = validator.Validate(request);
+
+                if (!validationResult.IsValid)
+                {
+                    string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
+
+                    var result = new ApiErrorResult<bool>(400, errors);
+
+                    return BadRequest(result);
+                }
+
+                var resultToken = await _newsService.UpdateByOutSource(request);
 
                 resultToken.Message = _localizer[resultToken.Message].Value + resultToken.ResultObj;
 
@@ -316,25 +427,10 @@ namespace FakeNewsFilter.API.Controllers
 
         [HttpPut("Archive")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Archive([FromForm] NewsUpdateRequest request)
+        public async Task<IActionResult> Archive(int request)
         {
             try
             {
-                UpdateRequestNewsValidator validator = new UpdateRequestNewsValidator(_localizer);
-
-                List<string> ValidationMessages = new List<string>();
-
-                var validationResult = validator.Validate(request);
-
-                if (!validationResult.IsValid)
-                {
-                    string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
-
-                    var result = new ApiErrorResult<bool>(400, errors);
-
-                    return BadRequest(result);
-                }
-
                 var resultToken = await _newsService.Archive(request);
 
                 resultToken.Message = _localizer[resultToken.Message].Value + resultToken.ResultObj;

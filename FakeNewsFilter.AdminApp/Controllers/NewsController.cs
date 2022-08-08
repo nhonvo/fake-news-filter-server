@@ -30,30 +30,12 @@ namespace FakeNewsFilter.AdminApp.Controllers
 
 
         [Breadcrumb("News Manager")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string source)
         {
-            // if (TempData["result"] != null)
-            // {
-            //     ViewBag.SuccessMsg = TempData["Result"];
-            // }
-            //
-            // if (TempData["Error"] != null)
-            // {
-            //     ViewBag.Error = TempData["Error"];
-            // }
-            //
-            // var topicData = await _topicApi.GetAllTopic();
-            // var languageData = await _languageApi.GetLanguageInfo();
-            //
-            // ViewBag.ListTopic = new SelectList(topicData.ResultObj, "TopicId", "Tag");
-            // ViewBag.ListLanguage = new SelectList(languageData.ResultObj, "Id", "Name");
-            //
-            // return View();
-            
-            
+                 
             var languageId = HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
 
-            var data = _newsApi.GetNewsInfo();
+            var data = _newsApi.GetNewsBySouce(source);
 
             var topicData = await _topicApi.GetAllTopic();
 
@@ -77,17 +59,6 @@ namespace FakeNewsFilter.AdminApp.Controllers
             return View(data.Result);
             
             
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetNews()
-        {
-            var data = await _newsApi.GetNewsInfo();
-
-            return Json(new
-            {
-                data = data.ResultObj
-            });
         }
 
         [HttpGet]
