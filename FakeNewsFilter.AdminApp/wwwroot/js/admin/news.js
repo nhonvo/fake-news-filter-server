@@ -14,9 +14,19 @@ var statusObj = {
     2: {title: 'Inactive', class: 'status-pill yellow'}
 };
 
-var select = $('.select2');
 
 $(document).ready(function () {
+    var select = $('.select2');
+    select.select2();
+    select.each(function () {
+        var $this = $(this);
+        $this.wrap('<div class="position-relative"></div>');
+        $this.select2({
+            dropdownAutoWidth: true,
+            width: '100%',
+            dropdownParent: $this.parent()
+        });
+    });
 
     table = $('#list_news').dataTable({
         columnDefs: [
@@ -25,7 +35,7 @@ $(document).ready(function () {
             }
         ],
     });
-    
+
     //
     // $('#loading').hide();
     //
@@ -307,20 +317,28 @@ function CreateNews(frm, caller) {
             success: function (data) {
                 $('#loading').hide();
                 var dataTable = $('#list_news').DataTable();
+                dataTable.row.add(
+                    [
+                        data.resultObj.newsId,
+                        data.resultObj.title,
+                        `<img alt="" src="/img/flags-icons/${data.resultObj.languageId}.png" width="30px">`,
+                        moment(`${data.resultObj.timestamp.toString("yyyy-MM-dd HH:mm")}`).fromNow(),
+                        '<div class="' + statusObj[data.resultObj.status].class + '" data-title="' + statusObj[data.resultObj.status].title + '" data-bs-toggle="tooltip" title="' + statusObj[data.resultObj.status].title + '"> <span hidden>' + statusObj[data.resultObj.status].title + '</span></div>',
+                        `<div>
+                            <a class="btn btn-link" onclick=Detail(${data.resultObj.newsId}) data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+                                <i class="os-icon os-icon-ui-49"></i>
+                            </a>
+                            <a class="danger" onclick=DeleteData(${data.resultObj.newsId}) data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
+                                <i class="os-icon os-icon-ui-15"></i>
+                            </a>
+                        </div>`
+                    ]
+                ).draw(false);
 
-                dataTable.row.add({
-                    "newsId": data.resultObj.newsId,
-                    "title": data.resultObj.title,
-                    "languageId": data.resultObj.languageId,
-                    "timestamp": data.resultObj.timestamp,
-                    "status": data.resultObj.status,
-                    "newsId": data.resultObj.newsId
-                }).draw();
-                
-                $('form[action="/News/Create"]')[0].reset();
+                $('form[action="/News/CreateNews"]')[0].reset();
                 CKEDITOR.instances.ckeditor1.setData("");
                 $('#TopicId').val(null).trigger('change');
-                
+
                 toastr['success'](
                     'Create News Successfully', 'Success', {
                         closeButton: true,
@@ -330,7 +348,7 @@ function CreateNews(frm, caller) {
                     }
                 );
             },
-            
+
             error: function (data) {
                 $('#loading').hide();
                 $('.bd-example-modal-lg').modal('hide');
@@ -352,7 +370,7 @@ function Detail(newsId) {
     $.ajax({
         type: "GET",
         url: "News/GetNewsById",
-        data: { Id: newsId },
+        data: {Id: newsId},
         success: function (msg) {
             $('#PartialViewNews').html(msg);
             $('#updateNews').modal('show');

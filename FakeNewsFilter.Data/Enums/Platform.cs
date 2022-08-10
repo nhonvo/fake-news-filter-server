@@ -3,11 +3,11 @@ namespace FakeNewsFilter.Data.Enums
 {
     public enum Platform
     {
-        iOS,
-        Android,
-        WebUser,
-        WebAdmin,
-        API
+        ios,
+        android,
+        webuser,
+        webadmin,
+        api
     }
 }
 

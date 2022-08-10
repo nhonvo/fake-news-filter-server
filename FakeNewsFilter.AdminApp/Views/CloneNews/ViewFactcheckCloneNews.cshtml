@@ -1,10 +1,11 @@
 ﻿@model List<FakeNewsFilter.ViewModel.Catalog.Claims.ClaimViewModel>
 @for (int i = 0; i < Model?.Count; i++)
-    {
-        var guid = Guid.NewGuid().ToString("N");
+{
+    var guid = Guid.NewGuid().ToString("N");
 
-        <div class="col-xl-6 col-lg-12">
-            <div class="card">
+    <div class="col-sm-6 col-xxl-6">
+        <div class="element-wrapper">
+            <div class="element-box">
                 <div class="card-body" id="card-body-@guid">
                     <h3 class="card-title">Claim by @Model[i].Claimant</h3>
 
@@ -12,25 +13,23 @@
 
                     @foreach (var claimReview in @Model[i].ClaimReview)
                     {
-                        <h4 class="card-text">@claimReview.Publisher.Name rating: @claimReview.TextualRating</h4>
-
-                        <a href="@claimReview.Url" class="card-text">@claimReview.Title</a>
+                        <label>Publisher: </label><h4 class="card-text">@claimReview.Publisher.Name </h4>
+                        <h3>
+                            Rating: @claimReview.TextualRating
+                        </h3>
+                        <a href="@claimReview.Url" class="card-text">Title: @claimReview.Title</a>
                     }
 
                     <div class="card-title">
                         <a id="@guid" class="btn add-new btn-rounded btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg" href="#">Clone</a>
                         @* <button id="@guid" class="btn add-new btn-rounded btn-primary" tabindex="0" aria-controls="list_news" type="button" data-toggle="modal" data-target=".bd-example-modal-lg"><span>Clone</span></button> *@
-                        
+
                     </div>
                 </div>
             </div>
+
         </div>
-    }
+    </div>
+}
 
-<input class="nextPageToken" type="hidden" value="@ViewBag.NextPageToken" />
-
-
-
-
-
-
+<input class="nextPageToken" type="hidden" value="@ViewBag.NextPageToken"/>

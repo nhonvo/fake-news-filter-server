@@ -29,6 +29,7 @@ using Slugify;
 using StackExchange.Redis;
 using Role = FakeNewsFilter.Data.Entities.Role;
 using FakeNewsFilter.Utilities.Exceptions;
+using FakeNewsFilter.API.Validator.News;
 
 namespace FakeNewsFilter
 {
@@ -117,9 +118,13 @@ namespace FakeNewsFilter
                 fv.RegisterValidatorsFromAssemblyContaining<UpdateRequestTopicValidator>());
             //News
             services.AddControllers().AddFluentValidation(fv =>
-                fv.RegisterValidatorsFromAssemblyContaining<CreateRequestNewsValidator>());
+                fv.RegisterValidatorsFromAssemblyContaining<CreateSystemNewsValidator>());
             services.AddControllers().AddFluentValidation(fv =>
-                fv.RegisterValidatorsFromAssemblyContaining<UpdateRequestNewsValidator>());
+                fv.RegisterValidatorsFromAssemblyContaining<CreateOutSourceNewsValidator>());
+            services.AddControllers().AddFluentValidation(fv =>
+                fv.RegisterValidatorsFromAssemblyContaining<UpdateSystemNewsValidator>());
+            services.AddControllers().AddFluentValidation(fv =>
+               fv.RegisterValidatorsFromAssemblyContaining<UpdateOutSourceNewsValidator>());
             //Story
             services.AddControllers().AddFluentValidation(fv =>
                 fv.RegisterValidatorsFromAssemblyContaining<CreateRequestStoryValidator>());

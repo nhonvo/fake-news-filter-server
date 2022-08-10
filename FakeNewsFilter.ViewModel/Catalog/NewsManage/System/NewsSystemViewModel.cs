@@ -26,5 +26,8 @@ public class NewsSystemViewModel
     public DateTime Timestamp { get; set; }
 
     public Status Status { get; set; }
+
     public List<TopicInfo> TopicInfo { get; set; }
+
+    public string SourceCreate { get; set; }
 }

@@ -17,7 +17,7 @@ namespace FakeNewsFilter.AdminApp.Services
 {
     public interface INewsApi
     {
-        Task<ApiResult<List<NewsViewModel>>> GetNewsInfo();
+        Task<ApiResult<List<NewsViewModel>>> GetNewsBySouce(string source_name);
         Task<ApiResult<List<NewsViewModel>>> GetNewsByTopic(int topicId);
 
         Task<ApiResult<NewsViewModel>> CreateNews(NewsCreateRequest request);
@@ -29,7 +29,7 @@ namespace FakeNewsFilter.AdminApp.Services
         Task<ApiResult<string>> Delete(int newsId);
     }
 
-    public class NewsApi : INewsApi
+    public class NewsApi : BaseApiClient, INewsApi
     {
         private readonly IHttpClientFactory _httpClientFactory;
 
@@ -38,6 +38,7 @@ namespace FakeNewsFilter.AdminApp.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public NewsApi(IHttpClientFactory httpClientFactory, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+            : base(httpClientFactory, httpContextAccessor, configuration)
         {
             _httpClientFactory = httpClientFactory;
             _configuration = configuration;
@@ -46,63 +47,20 @@ namespace FakeNewsFilter.AdminApp.Services
 
 
         //Lấy danh sách tin tức
-        public async Task<ApiResult<List<NewsViewModel>>> GetNewsInfo()
+        public async Task<ApiResult<List<NewsViewModel>>> GetNewsBySouce(string source_name)
         {
-            try
-            {
-                var client = _httpClientFactory.CreateClient();
 
-                client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+                var data = await GetAsync<ApiResult<List<NewsViewModel>>>($"/api/news/source?source={source_name}");
 
-                var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
-
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
-
-                var respone = await client.GetAsync($"/api/news");
-
-
-                var body = await respone.Content.ReadAsStringAsync();
-
-                if (respone.IsSuccessStatusCode)
-                {
-
-                    return JsonConvert.DeserializeObject<ApiSuccessResult<List<NewsViewModel>>>(body);
-                }
-                return JsonConvert.DeserializeObject<ApiErrorResult<List<NewsViewModel>>>(body);
-            }
-            catch (FakeNewsException e)
-            {
-                return new ApiErrorResult<List<NewsViewModel>>(500, "Error System: " + e.Message);
-            }
+                return data; 
         }
         
         public async Task<ApiResult<List<NewsViewModel>>> GetNewsByTopic(int topicId)
         {
-            try
-            {
-                var client = _httpClientFactory.CreateClient();
 
-                client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+            var data = await GetAsync<ApiResult<List<NewsViewModel>>>($"/api/News/Topic?TopicId={topicId}");
 
-                var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
-
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
-
-                var respone = await client.GetAsync($"/api/News/Topic?TopicId={topicId}");
-
-
-                var body = await respone.Content.ReadAsStringAsync();
-
-                if (respone.IsSuccessStatusCode)
-                {
-                    return JsonConvert.DeserializeObject<ApiSuccessResult<List<NewsViewModel>>>(body);
-                }
-                return JsonConvert.DeserializeObject<ApiErrorResult<List<NewsViewModel>>>(body);
-            }
-            catch (FakeNewsException e)
-            {
-                return new ApiErrorResult<List<NewsViewModel>>(500, "Error System: " + e.Message);
-            }
+            return data;
         }
 
         public async Task<ApiResult<NewsViewModel>> CreateNews(NewsCreateRequest request)
@@ -131,9 +89,11 @@ namespace FakeNewsFilter.AdminApp.Services
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Title) ? "" : request.Title.ToString()), "Title");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.OfficialRating) ? "" : request.OfficialRating.ToString()), "OfficialRating");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Content) ? "" : request.Content.ToString()), "Content");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Source) ? "" : request.Source), "Source");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.ImageLink) ? "" : request.ImageLink), "ImageLink");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.LanguageId) ? "" : request.LanguageId.ToString()), "LanguageId");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Publisher) ? "" : request.Publisher.ToString()), "Publisher");
-            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.DatePublished.ToString()) ? "" : request.DatePublished.ToString()), "DatePublished");
+            requestContent.Add(new StringContent((string.IsNullOrEmpty(request.DatePublished.ToString()) ? "" : request.DatePublished.ToString()) ?? string.Empty), "DatePublished");
 
             foreach (int topicId in request.TopicId)
             {

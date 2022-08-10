@@ -1,6 +1,6 @@
 ﻿@model FakeNewsFilter.ViewModel.Catalog.NewsManage.NewsCreateRequest
 
-<div id="createTopic" class="modal fade bd-example-modal-lg show" role="dialog" tabindex="-1" style="padding-right: 15px; display: none;">
+<div id="createNews" class="modal fade bd-example-modal-lg show" role="dialog" tabindex="-1" style="padding-right: 15px; display: none;">
          <div class="modal-dialog modal-lg">
               <div class="modal-content">
                   <div class="modal-header">
@@ -12,7 +12,7 @@
                       </button>
                   </div>
                   <div class="modal-body">
-                      <form asp-action="Create" asp-controller="News" method="post">
+                      <form asp-action="CreateNews" asp-controller="News" method="post">
                           <div class="form-group">
                               <label class="form-label" for="basic-icon-default-fullname">News Title</label>
                               <input type="text" class="form-control dt-top-tag" asp-for="Title" />
@@ -45,7 +45,7 @@
                               <div class="col-sm-4">
                                   <div class="form-group">
                                       <label class="form-label" for="topic">Label</label>
-                                      <select class="select2 form-select" asp-for="TopicId" asp-items="@ViewBag.ListTopic" aria-invalid="false" multiple="multiple"></select>
+                                      <select class="select2 form-control" asp-for="TopicId" asp-items="@ViewBag.ListTopic" aria-invalid="false" multiple="multiple"></select>
                                   </div>
                               </div>
                           </div>
@@ -74,9 +74,6 @@
                   <div class="modal-footer">
                       <button class="btn btn-secondary" data-dismiss="modal" type="button"> Close</button>
                       <button class="btn btn-primary" type="button" onclick="CreateNews(document.querySelector('.modal-body > form'), event)"> Save changes</button>
-                  </div>
-                  <div id="loading">
-                      <img id="loading-image" src="/img/ajax-loader.gif" alt="Loading..."/>
                   </div>
               </div>
           </div>

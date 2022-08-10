@@ -11,11 +11,11 @@ namespace FakeNewsFilter.Data.Entities
 
         public string Title { get; set; }
 
-        public string OfficialRating { get; set; }
+        public LabelNews OfficialRating { get; set; }
 
         public string ImageLink { get; set; }
 
-        public string Source { get; set; }
+        public string UrlNews { get; set; }
 
         public string Publisher { get; set; }
 
@@ -24,6 +24,8 @@ namespace FakeNewsFilter.Data.Entities
         public bool? IsVote { get; set; }
 
         public int ViewCount { get; set; }
+
+        public SourceCreate SourceCreate { get; set; }
 
         public DateTime DatePublished { get; set; }
 

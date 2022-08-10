@@ -18,11 +18,14 @@
     <None Remove="Catalog\Vote\" />
     <None Remove="System\LoginSocial\" />
     <None Remove="Catalog\Version\" />
+    <None Remove="Catalog\NewsManage\System\" />
+    <None Remove="Catalog\NewsManage\SouceOthers\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="6.0.0-preview.4.21253.5" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="11.1.2" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.1.3" />
+    <PackageReference Include="NewsAPI" Version="0.6.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Quartz.AspNetCore" Version="3.4.0" />
     <PackageReference Include="Quartz.Extensions.Microsoft.DependencyInjection" Version="0.0.3" />
@@ -38,5 +41,7 @@
     <Folder Include="System\Roles\" />
     <Folder Include="Catalog\Vote\" />
     <Folder Include="Catalog\Version\" />
+    <Folder Include="Catalog\NewsManage\System\" />
+    <Folder Include="Catalog\NewsManage\OutSouce\" />
   </ItemGroup>
 </Project>

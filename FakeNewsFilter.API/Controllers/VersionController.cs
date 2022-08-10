@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using FakeNewsFilter.Application.Catalog;
 using FakeNewsFilter.Data.EF;
 using FakeNewsFilter.Utilities.Exceptions;
@@ -13,7 +15,6 @@ using Microsoft.Extensions.Logging;
 namespace FakeNewsFilter.API.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
     public class VersionController : ControllerBase
     {
         private readonly IStringLocalizer<VersionController> _localizer;
@@ -88,7 +89,9 @@ namespace FakeNewsFilter.API.Controllers
 
                 last_version.Message = _localizer[last_version.Message].Value;
 
-                if (last_version.StatusCode != 200)
+                int[] status_code = { 200, 201, 202};
+
+                if (!status_code.Contains(last_version.StatusCode))
                 {
                     return BadRequest(last_version);
                 }
