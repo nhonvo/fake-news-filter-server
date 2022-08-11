@@ -28,11 +28,9 @@ namespace FakeNewsFilter.AdminApp.Controllers
             _languageApi = languageApi;
         }
 
-
         [Breadcrumb("News Manager")]
         public async Task<IActionResult> Index(string source)
         {
-                 
             var languageId = HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
 
             var data = _newsApi.GetNewsBySouce(source);
@@ -40,29 +38,32 @@ namespace FakeNewsFilter.AdminApp.Controllers
             var topicData = await _topicApi.GetAllTopic();
 
             var languageData = await _languageApi.GetLanguageInfo();
-          
-            ViewBag.ListLabel = new SelectList(topicData.ResultObj.GroupBy(x => x.Label).Select(y => y.First()).Distinct(), "Label", "Label");
+
+            ViewBag.ListLabel =
+                new SelectList(topicData.ResultObj.GroupBy(x => x.Label).Select(y => y.First()).Distinct(), "Label",
+                    "Label");
 
             ViewBag.ListLanguage = new SelectList(languageData.ResultObj, "Id", "Name");
-            
+
             ViewBag.ListTopic = new SelectList(topicData.ResultObj, "TopicId", "Tag");
+
+            ViewBag.Source = source;
 
             if (TempData["result"] != null)
             {
                 ViewBag.SuccessMsg = TempData["Result"];
             }
+
             if (TempData["Error"] != null)
             {
                 ViewBag.Error = TempData["Error"];
             }
 
             return View(data.Result);
-            
-            
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetNewsById(int Id)
+        public async Task<IActionResult> GetNewsById(int Id, string source)
         {
             var topicData = await _topicApi.GetAllTopic();
 
@@ -74,12 +75,42 @@ namespace FakeNewsFilter.AdminApp.Controllers
 
             ViewBag.ListLanguage = new SelectList(languageData.ResultObj, "Id", "Name");
 
-            return PartialView("Edit", model.ResultObj);
-            
+            if (source == "system")
+            {
+                //map NewsInfoVM to NewsSystemUpdateRequest
+                var modelUpdate = new NewsSystemUpdateRequest
+                {
+                    Id = model.ResultObj.NewsId,
+                    Title = model.ResultObj.Title,
+                    Content = model.ResultObj.Content,
+                    LanguageId = model.ResultObj.LanguageId,
+                    Publisher = model.ResultObj.Publisher,
+                    TopicId = model.ResultObj.TopicId,
+                    DatePublished = model.ResultObj.DatePublished,
+                };
+                return PartialView("EditNewsSystem", modelUpdate);
+            }
+            else
+            {
+                //map NewsInfoVM to NewsOutSourceUpdateRequest
+                var modelUpdate = new NewsOutSourceUpdateRequest
+                {
+                    Id = model.ResultObj.NewsId,
+                    Title = model.ResultObj.Title,
+                    LanguageId = model.ResultObj.LanguageId,
+                    Publisher = model.ResultObj.Publisher,
+                    TopicId = model.ResultObj.TopicId,
+                    ImageLink = model.ResultObj.ImageLink,
+                    UrlNews = model.ResultObj.UrlNews,
+                    DatePublished = model.ResultObj.DatePublished,
+                };
+                
+                return PartialView("EditNewsOutsource", modelUpdate);
+            }
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateNews(NewsCreateRequest request)
+        public async Task<IActionResult> CreateNewsByOther(NewsOutSourceCreateRequest request)
         {
             if (request.TopicId == null)
             {
@@ -93,7 +124,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
                 return RedirectToAction("Index");
             }
 
-            var result = await _newsApi.CreateNews(request);
+            var result = await _newsApi.CreateByOther(request);
 
             if (result.StatusCode == 200)
             {
@@ -101,7 +132,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
 
                 return Json(new
                 {
-                   result.ResultObj
+                    result.ResultObj
                 });
             }
             else
@@ -111,43 +142,90 @@ namespace FakeNewsFilter.AdminApp.Controllers
             }
         }
 
-        [HttpGet]
-        [Breadcrumb("Edit News", FromController = typeof(NewsController), FromPage = typeof(Index))]
-        public async Task<IActionResult> Edit(int Id)
+        [HttpPost]
+        public async Task<IActionResult> CreateNewsBySystem(NewsSystemCreateRequest request)
         {
-            var result = await _newsApi.GetById(Id);
+            if (request.TopicId == null)
+            {
+                TempData["Error"] = "Please select topic";
+                return RedirectToAction("Index");
+            }
 
-            var topicData = await _topicApi.GetAllTopic();
-            var languageData = await _languageApi.GetLanguageInfo();
+            if (!ModelState.IsValid)
+            {
+                ViewBag.ModelState = ModelState;
+                return RedirectToAction("Index");
+            }
 
-            ViewBag.ListTopic = new SelectList(topicData.ResultObj, "TopicId", "Tag");
-            ViewBag.ListLanguage = new SelectList(languageData.ResultObj, "Id", "Name");
+            var result = await _newsApi.CreateBySystem(request);
 
             if (result.StatusCode == 200)
             {
-                return View(result.ResultObj);
-            }
+                TempData["Result"] = $"Create News Successful!";
 
-            return View("Edit");
+                return Json(new
+                {
+                    result.ResultObj
+                });
+            }
+            else
+            {
+                TempData["Error"] = $"Create News Failed!";
+                return RedirectToAction("Index");
+            }
         }
 
+        // [HttpGet]
+        // [Breadcrumb("Edit News", FromController = typeof(NewsController), FromPage = typeof(Index))]
+        // public async Task<IActionResult> Edit(int Id)
+        // {
+        //     var result = await _newsApi.GetById(Id);
+        //
+        //     var topicData = await _topicApi.GetAllTopic();
+        //     var languageData = await _languageApi.GetLanguageInfo();
+        //
+        //     ViewBag.ListTopic = new SelectList(topicData.ResultObj, "TopicId", "Tag");
+        //     ViewBag.ListLanguage = new SelectList(languageData.ResultObj, "Id", "Name");
+        //
+        //     return View("Edit");
+        // }
+
         [HttpPost]
-        public async Task<IActionResult> Edit(NewsUpdateRequest request)
+        public async Task<IActionResult> UpdateNewsBySystem(NewsSystemUpdateRequest request)
         {
             if (!ModelState.IsValid)
-                return View();
+                return RedirectToAction("Index", new { source = "system" });
 
-            var result = await _newsApi.UpdateNews(request);
+            var result = await _newsApi.UpdateBySystem(request);
 
             if (result.StatusCode == 200)
             {
                 TempData["result"] = $"Update news {request.Id} successful!";
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { source = "system" });
             }
 
             ModelState.AddModelError("", result.Message);
 
-            return View();
+            return RedirectToAction("Index", new { source = "system" });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateNewsByOutSource(NewsOutSourceUpdateRequest request)
+        {
+            if (!ModelState.IsValid)
+                return RedirectToAction("Index", new { source = "outsource" });
+
+            var result = await _newsApi.UpdateByOutSource(request);
+
+            if (result.StatusCode == 200)
+            {
+                TempData["result"] = $"Update news {request.Id} successful!";
+                return RedirectToAction("Index", new { source = "outsource" });
+            }
+
+            ModelState.AddModelError("", result.Message);
+
+            return RedirectToAction("Index", new { source = "outsource" });
         }
 
         [HttpPost]

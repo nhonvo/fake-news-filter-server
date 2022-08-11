@@ -75,6 +75,7 @@ namespace FakeNewsFilter.Application.Catalog
                     OfficialRating = x.OfficialRating.ToString(),
                     Publisher = x.Publisher,
                     Status = x.Status,
+                    UrlNews = x.UrlNews,
                     ThumbNews = string.IsNullOrEmpty(x.ImageLink) ? null : _storageService.GetFileUrl(x.DetailNews.Media.PathMedia),
                     LanguageId = x.LanguageId,
                     Timestamp = x.Timestamp

@@ -27,15 +27,18 @@
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <label class="form-label" for="url">Url</label>
-                                <a id="Url" href="">
-                                    <input type="text" class="form-control dt-top-tag" asp-for="UrlNews"/>
-                                </a>
+                                <a id="Url" href=""></a>
+                                <input type="text" class="form-control dt-top-tag" asp-for="UrlNews"/>
                             </div>
                         </div>
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <label class="form-label" for="source_create">Source create</label>
-                                <input type="text" class="form-control dt-top-tag" asp-for="SourceCreate"/>
+                                <select type="text" class="form-control" asp-for="SourceCreate">
+                                    <option value="GoogleApi">GoogleApi</option>
+                                    <option value="NewsApi">NewsApi</option>
+                                    <option value="Oigetit">Oigetit</option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-sm-3">
@@ -94,7 +97,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" data-dismiss="modal" type="button"> Close</button>
-                <button class="btn btn-primary" type="button" onclick="CreateNews(document.querySelector('.modal-body > form'), event)"> Save changes</button>
+                <button class="btn btn-primary" type="button" onclick="CreateNews(document.querySelector('#createNewsByOutsource form'), event, `outsource`)"> Save changes</button>
             </div>
         </div>
     </div>
