@@ -14,8 +14,7 @@ var statusObj = {
     2: {title: 'Inactive', class: 'status-pill yellow'}
 };
 
-
-$(document).ready(function () {
+function loadSelect2() {
     var select = $('.select2');
     select.select2();
     select.each(function () {
@@ -27,7 +26,11 @@ $(document).ready(function () {
             dropdownParent: $this.parent()
         });
     });
+}
 
+
+$(document).ready(function () {
+    loadSelect2();
     table = $('#list_news').dataTable({
         columnDefs: [
             {
@@ -284,29 +287,39 @@ $(function () {
     }
 });
 
-function CreateNews(frm, caller) {
+function CreateNews(frm, caller, source) {
+    
     $('#loading').show();
     caller.preventDefault();
     var fdata = new FormData();
+    
+    if(source == "system"){
+        var content = CKEDITOR.instances.ckeditor1.getData();
+        fdata.append("Content", content);
+        var thumbNews = $(frm).find('input:file[name="ThumbNews"]')[0]?.files[0];
+        fdata.append("ThumbNews", thumbNews);
+    } else {
+        var ImageLink = $(frm).find('input#ImageLink')[0].value;
+        fdata.append("ImageLink", ImageLink);
+        var SourceCreate = $(frm).find('#SourceCreate')[0].value;
+        fdata.append("SourceCreate", SourceCreate);
+        var UrlNews = $(frm).find('input#UrlNews')[0].value;
+        fdata.append("UrlNews", UrlNews);
+
+    }
     var Title = $(frm).find('input#Title')[0].value;
     var Publisher = $(frm).find('#Publisher')[0].value;
     var DatePublished = $(frm).find('#DatePublished')[0].value;
     var officialRating = $(frm).find('#OfficialRating')[0].value;
-    var content = CKEDITOR.instances.ckeditor1.getData();
     var languageId = $(frm).find('#LanguageId')[0].value;
     var topicIdList = $(frm).find('#TopicId').select2("val");
-
-    var thumbNews = $(frm).find('input:file[name="ThumbNews"]')[0].files[0];
 
     fdata.append("Title", Title);
     fdata.append("Publisher", Publisher);
     fdata.append("DatePublished", DatePublished);
     fdata.append("OfficialRating", officialRating);
-    fdata.append("Content", content);
     fdata.append("LanguageId", languageId);
     topicIdList.forEach((topicId) => fdata.append("TopicId", topicId));
-    fdata.append("ThumbNews", thumbNews);
-
     $.ajax(
         {
             type: frm.method,
@@ -335,7 +348,7 @@ function CreateNews(frm, caller) {
                     ]
                 ).draw(false);
 
-                $('form[action="/News/CreateNews"]')[0].reset();
+                frm.reset();
                 CKEDITOR.instances.ckeditor1.setData("");
                 $('#TopicId').val(null).trigger('change');
 
@@ -366,14 +379,21 @@ function CreateNews(frm, caller) {
 }
 
 //Xem chi tiết 1 chủ đề (phục vụ cho chỉnh sửa dữ liệu)
-function Detail(newsId) {
+function Detail(newsId, source) {
+    console.log(source);
+    
     $.ajax({
         type: "GET",
         url: "News/GetNewsById",
-        data: {Id: newsId},
+        data: {Id: newsId, source: source},
         success: function (msg) {
             $('#PartialViewNews').html(msg);
-            $('#updateNews').modal('show');
+            if(source == "system"){
+                $('#updateNewsBySystem').modal('show');
+            } else {
+                $('#updateNewsByOutsource').modal('show');
+            }
+            loadSelect2();
         },
         error: function (req, status, error) {
             toastr['error'](

@@ -1,18 +1,18 @@
-﻿@model FakeNewsFilter.ViewModel.Catalog.NewsManage.NewsCreateRequest
+﻿@model FakeNewsFilter.ViewModel.Catalog.NewsManage.NewsSystemCreateRequest
 
-<div id="createNews" class="modal fade bd-example-modal-lg show" role="dialog" tabindex="-1" style="padding-right: 15px; display: none;">
+<div id="createNewsBySystem" class="modal fade bd-example-modal-lg show" role="dialog" tabindex="-1" style="padding-right: 15px; display: none;">
          <div class="modal-dialog modal-lg">
               <div class="modal-content">
                   <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalLabel">
-                          Create News
+                      <h5 class="modal-title">
+                          Create News By System
                       </h5>
                       <button aria-label="Close" class="close" data-dismiss="modal" type="button">
                           <span aria-hidden="true"> ×</span>
                       </button>
                   </div>
                   <div class="modal-body">
-                      <form asp-action="CreateNews" asp-controller="News" method="post">
+                      <form asp-action="CreateNewsBySystem" asp-controller="News" method="post">
                           <div class="form-group">
                               <label class="form-label" for="basic-icon-default-fullname">News Title</label>
                               <input type="text" class="form-control dt-top-tag" asp-for="Title" />
@@ -28,12 +28,6 @@
                                   <div class="form-group">
                                       <label class="form-label" for="basic-icon-default-fullname">Publisher</label>
                                       <input type="text" class="form-control dt-top-tag" asp-for="Publisher" />
-                                  </div>
-                              </div>
-                              <div class="col-sm-4">
-                                  <div class="form-group">
-                                      <label class="form-label" for="basic-icon-default-fullname">DatePublished</label>
-                                      <input type="text" class="form-control dt-top-tag" asp-for="DatePublished" />
                                   </div>
                               </div>
                               <div class="col-sm-4">
@@ -73,7 +67,7 @@
                   </div>
                   <div class="modal-footer">
                       <button class="btn btn-secondary" data-dismiss="modal" type="button"> Close</button>
-                      <button class="btn btn-primary" type="button" onclick="CreateNews(document.querySelector('.modal-body > form'), event)"> Save changes</button>
+                      <button class="btn btn-primary" type="button" onclick="CreateNews(document.querySelector('#createNewsBySystem form'), event, `system`)"> Save changes</button>
                   </div>
               </div>
           </div>

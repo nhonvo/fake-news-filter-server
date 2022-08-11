@@ -29,7 +29,7 @@
                     Number of News
                 </div>
                 <div class="value">
-                    @Model.ResultObj.Count
+                    @Model?.ResultObj?.Count
                 </div>
             </a>
         </div>
@@ -39,14 +39,13 @@
 <div class="element-wrapper">
     @*Nút thêm mới 1 news*@
     <div class="element-actions">
-        <a class="btn btn-success btn-sm text-white" data-target="#createNews" data-toggle="modal">
+        <a class="btn btn-success btn-sm text-white" data-target="#@(@ViewBag.Source == "system" ? "createNewsBySystem" : "createNewsByOutsource")" data-toggle="modal">
             <i class="os-icon os-icon-ui-22"></i> <span>Add News</span>
         </a>
     </div>
     <h6 class="element-header">
         News List
     </h6>
-
 
     <div class="table-responsive">
         <table id="list_news" width="100%" class="table table-padded text-center">
@@ -102,7 +101,7 @@
                     </td>
                     <td class="row-actions">
                         <div>
-                            <a class="btn btn-link" onclick=Detail(@item.NewsId) data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+                            <a class="btn btn-link" onclick=Detail(@item.NewsId,`@ViewBag.Source`); data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
                                 <i class="os-icon os-icon-ui-49"></i>
                             </a>
 
@@ -120,7 +119,8 @@
 
 <div id="PartialViewNews"></div>
 
-@await Html.PartialAsync("Create", new NewsCreateRequest())
+@await Html.PartialAsync("CreateByOther", new NewsOutSourceCreateRequest())
+@await Html.PartialAsync("CreateBySystem", new NewsSystemCreateRequest())
 
 @section footerscripts{
     <script src="/bower_components/datatables/jquery.dataTables.min.js"></script>

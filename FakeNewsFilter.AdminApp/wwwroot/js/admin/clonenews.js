@@ -7,6 +7,7 @@
   Author URL: fb.com/buiphukhuyen
 ==========================================================================================*/
 
+let source;
 
 var select = $('.select2');
 $(document).ready(function () {
@@ -59,11 +60,10 @@ document.addEventListener('click', function (e) {
 
         $('#Description').val(`${$(cardBody).children('a').first().text()}`);
 
-        $('#OfficialRating').val(`${$(cardBody).children('h4').first().text()}`);
+        // $('#OfficialRating').val(`${$(cardBody).children('h4').first().text()}`);
         $('#Publisher').val(`${$(cardBody).children('h4').first().text()}`);
         $('#Url').attr("href", `${$(cardBody).children('a').first().attr('href')}`);
-        $('#Url').text(`${$(cardBody).children('a').first().attr('href')}`);
-
+        $('#UrlNews').val(`${$(cardBody).children('a').first().attr('href')}`);
     }
 });
 
@@ -85,16 +85,19 @@ $(window).scroll(function () {
                 }
             });
         } else if (actionControllerNameInBrowser === 'NewsApiIndex') {
+
             const pageNum = $('.pageNum').last().val();
             const page = parseInt(pageNum) + 1;
-            $.ajax({
-                type: "GET",
-                url: `NewsApiSearch/?query=${queryLoadMore}&page=${page}`,
-                success: function (data) {
-                    $('#loading').hide();
-                    parentDiv.insertAdjacentHTML('beforeend', `${data} <input type="hidden" class="pageNum" value="${page}">`);
-                }
-            });
+            console.log("page: " + page);
+                $.ajax({
+                    type: "GET",
+                    url: `NewsApiSearch/?query=${queryLoadMore}&page=${page}`,
+                    success: function (data) {
+                        $('#loading').hide();
+                        parentDiv.insertAdjacentHTML('beforeend', `${data} <input type="hidden" class="pageNum" value="${page}">`);
+                    }
+                });
+
         }
     }
 });
@@ -102,7 +105,7 @@ $(window).scroll(function () {
 //search news
 $('#searchBtn').click(function () {
     $('#loading').show();
-
+    source = "GoogleApi";
     //convert normal search input to without whitespace and lowercase
     const query = $('#searchInput').val().toLowerCase().replace(/\s/g, "");
 
@@ -123,7 +126,7 @@ $('#searchBtn').click(function () {
 
 $('#newsApiSearchBtn').click(function () {
     $('#loading').show();
-
+    source = "NewsApi";
     //convert normal search input to without whitespace and lowercase
     const query = $('#newsApiSearchInput').val().toLowerCase().replace(/\s/g, "");
 
@@ -145,25 +148,30 @@ $('#newsApiSearchBtn').click(function () {
 function CreateNews(frm, caller) {
     $('#loading').show();
 
+    console.log("Source ne" + source);
+    
     caller.preventDefault();
     var fdata = new FormData();
 
-    var Title = $(frm).find('input#Title')[0].value;
-    var Source = $(frm).find('#Url').attr('href');
+    var ImageLink = $(frm).find('input#ImageLink')[0].value;
+    fdata.append("ImageLink", ImageLink);
 
+    fdata.append("SourceCreate", source);
+    var UrlNews = $(frm).find('input#UrlNews')[0].value;
+    fdata.append("UrlNews", UrlNews);
+    var Title = $(frm).find('input#Title')[0].value;
+    var Publisher = $(frm).find('#Publisher')[0].value;
+    var DatePublished = $(frm).find('#DatePublished')[0].value;
     var officialRating = $(frm).find('#OfficialRating')[0].value;
     var languageId = $(frm).find('#LanguageId')[0].value;
     var topicIdList = $(frm).find('#TopicId').select2("val");
-    var Publisher = $(frm).find('#Publisher')[0].value;
-    var DatePublished = $(frm).find('#DatePublished')[0].value;
 
     fdata.append("Title", Title);
-    fdata.append("OfficialRating", officialRating);
-    fdata.append("Source", Source);
-    fdata.append("LanguageId", languageId);
-    topicIdList.forEach((topicId) => fdata.append("TopicId", topicId));
     fdata.append("Publisher", Publisher);
     fdata.append("DatePublished", DatePublished);
+    fdata.append("OfficialRating", officialRating);
+    fdata.append("LanguageId", languageId);
+    topicIdList.forEach((topicId) => fdata.append("TopicId", topicId));
 
     $.ajax(
         {
@@ -173,7 +181,9 @@ function CreateNews(frm, caller) {
             processData: false,
             contentType: false,
             success: function (data) {
-
+                frm.reset();
+                $('#TopicId').val(null).trigger('change');
+                $('#loading').hide();
                 toastr['success'](
                     'Create News Successfully', 'Success', {
                         closeButton: true,

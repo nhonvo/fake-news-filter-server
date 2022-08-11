@@ -33,6 +33,16 @@
                         </div>
                         <div class="col-sm-3">
                             <div class="form-group">
+                                <label class="form-label" for="source_create">Source create</label>
+                                <select type="text" class="form-control" asp-for="SourceCreate">
+                                    <option value="GoogleApi">GoogleApi</option>
+                                    <option value="NewsApi">NewsApi</option>
+                                    <option value="Oigetit">Oigetit</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
                                 <label class="form-label" for="image_link">Image link</label>
                                 <input type="text" class="form-control dt-top-tag" asp-for="ImageLink"/>
                             </div>

@@ -57,81 +57,6 @@ namespace FakeNewsFilter.AdminApp.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> NewsApiIndex()
-        {
-            //
-            var topicData = await _topicApi.GetAllTopic();
-            
-            var languageData = await _languageApi.GetLanguageInfo();
-            
-            var model = new CloneNewsVM();
-            
-            if (TempData["result"] != null)
-            {
-                ViewBag.SuccessMsg = TempData["Result"];
-            }
-            
-            if (TempData["Error"] != null)
-            {
-                ViewBag.Error = TempData["Error"];
-            }
-            
-            ViewBag.ListTopic = new SelectList(topicData.ResultObj, "TopicId", "Tag");
-            ViewBag.ListLanguage = new SelectList(languageData.ResultObj, "Id", "Name");
-            return View(model);
-        }
-
-        public async Task<IActionResult> NewsApiSearch(string query, int page = 1)
-        {
-            if (string.IsNullOrEmpty(query))
-            {
-                return new PartialViewResult
-                {
-                    ViewName = "ViewNewsApiCloneNews"
-                };
-            }
-
-            var newsApiClient = new NewsApiClient(_configuration["NewsAPIKey"]);
-
-            var articlesResponse = newsApiClient.GetEverything(new EverythingRequest
-            {
-                Q = query,
-                SortBy = SortBys.Popularity,
-                Language = Languages.EN,
-                From = new DateTime(2022, 7, 7),
-                Page = page
-            });
-
-            if (articlesResponse.Status == Statuses.Error)
-            {
-                TempData["Error"] = articlesResponse.Error.Message;
-                return RedirectToAction("NewsApiIndex");
-            }
-
-
-            var topicData = await _topicApi.GetAllTopic();
-
-            var languageData = await _languageApi.GetLanguageInfo();
-
-            var model = new CloneNewsVM();
-
-            if (TempData["result"] != null)
-            {
-                ViewBag.SuccessMsg = TempData["Result"];
-            }
-
-            if (TempData["Error"] != null)
-            {
-                ViewBag.Error = TempData["Error"];
-            }
-
-            return new PartialViewResult
-            {
-                ViewName = "ViewNewsApiCloneNews",
-                ViewData = new ViewDataDictionary<List<Article>>(ViewData, articlesResponse.Articles)
-            };
-        }
-
         public async Task<IActionResult> FactCheckSearch(string query)
         {
             if (string.IsNullOrEmpty(query))
@@ -168,6 +93,81 @@ namespace FakeNewsFilter.AdminApp.Controllers
             {
                 ViewName = "ViewFactcheckCloneNews",
                 ViewData = new ViewDataDictionary<List<ClaimViewModel>>(ViewData, data.Claims)
+            };
+        }
+
+        public async Task<IActionResult> NewsApiIndex()
+        {
+            //
+            var topicData = await _topicApi.GetAllTopic();
+
+            var languageData = await _languageApi.GetLanguageInfo();
+
+            var model = new CloneNewsVM();
+
+            if (TempData["result"] != null)
+            {
+                ViewBag.SuccessMsg = TempData["Result"];
+            }
+
+            if (TempData["Error"] != null)
+            {
+                ViewBag.Error = TempData["Error"];
+            }
+
+            ViewBag.ListTopic = new SelectList(topicData.ResultObj, "TopicId", "Tag");
+            ViewBag.ListLanguage = new SelectList(languageData.ResultObj, "Id", "Name");
+            return View(model);
+        }
+
+        public async Task<IActionResult> NewsApiSearch(string query, int page = 1)
+        {
+            if (string.IsNullOrEmpty(query))
+            {
+                return new PartialViewResult
+                {
+                    ViewName = "ViewNewsApiCloneNews"
+                };
+            }
+
+            var newsApiClient = new NewsApiClient(_configuration["NewsAPIKey"]);
+
+            var articlesResponse = newsApiClient.GetEverything(new EverythingRequest
+            {
+                Q = query,
+                SortBy = SortBys.Popularity,
+                Language = Languages.EN,
+                From = DateTime.Now.AddDays(-20),
+                Page = page
+            });
+
+            if (articlesResponse.Status == Statuses.Error)
+            {
+                TempData["Error"] = articlesResponse.Error.Message;
+                return RedirectToAction("NewsApiIndex");
+            }
+
+
+            var topicData = await _topicApi.GetAllTopic();
+
+            var languageData = await _languageApi.GetLanguageInfo();
+
+            var model = new CloneNewsVM();
+
+            if (TempData["result"] != null)
+            {
+                ViewBag.SuccessMsg = TempData["Result"];
+            }
+
+            if (TempData["Error"] != null)
+            {
+                ViewBag.Error = TempData["Error"];
+            }
+
+            return new PartialViewResult
+            {
+                ViewName = "ViewNewsApiCloneNews",
+                ViewData = new ViewDataDictionary<List<Article>>(ViewData, articlesResponse.Articles)
             };
         }
 
