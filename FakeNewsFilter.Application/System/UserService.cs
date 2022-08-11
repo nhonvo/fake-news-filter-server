@@ -24,7 +24,7 @@ using static Google.Apis.Auth.GoogleJsonWebSignature;
 using System.Net.Mail;
 using SmtpClient = System.Net.Mail.SmtpClient;
 using System.Net;
-using FakeNewsFilter.ViewModel.System.LoginSocial;
+using Microsoft.AspNetCore.Authentication.OAuth;
 
 namespace FakeNewsFilter.Application.System
 {
@@ -39,6 +39,7 @@ namespace FakeNewsFilter.Application.System
         Task<ApiResult<bool>> RoleAssign(Guid id, RoleAssignRequest request);
         Task<ApiResult<TokenResult>> SignInFacebook(string accessToken);
         Task<ApiResult<TokenResult>> SignInGoogle(string accessToken);
+        Task<ApiResult<TokenResult>> SignInApple(string accessToken);
         Task<ApiResult<ForgotPassword>> SendPasswordResetCode(string Email);
         Task<ApiResult<ForgotPassword>> ResetPassword(string email, string opt, string newPassword);
         Task<ApiResult<TokenResult>> RefreshTokenAsync(string token);
@@ -474,6 +475,7 @@ namespace FakeNewsFilter.Application.System
             return fileName;
         }
 
+        //Đăng nhập bằng Facebook
         public async Task<ApiResult<TokenResult>> SignInFacebook(string accessToken)
         {
             try
@@ -497,10 +499,10 @@ namespace FakeNewsFilter.Application.System
                 //Kiểm tra user đã liên kết với Facebook chưa
                 var checkLinked = await _signInManager.ExternalLoginSignInAsync("Facebook", userInfo.Id, false);
 
-                //Nếu đã có liên kết trước đó thì tiến hành đăng nhập luôn
+                //Nếu đã có liên kết trước đó (Email tồn tại) thì tiến hành đăng nhập luôn
                 if (checkLinked.Succeeded)
                 {
-                    var exist_user = await _userManager.FindByNameAsync(userName);
+                    var exist_user = await _userManager.FindByEmailAsync(userInfo.Email);
 
                     var avatar = _context.Media.Where(m => m.MediaId == exist_user.AvatarId).Select(m => m.PathMedia)
                         .FirstOrDefault();
@@ -513,8 +515,8 @@ namespace FakeNewsFilter.Application.System
                 {
                     var info = new ExternalLoginInfo(ClaimsPrincipal.Current, "Facebook", userInfo.Id, null);
 
-                    //Kiểm tra tồn tại Email và Username
-                    var exist_user = await _userManager.FindByNameAsync(userName);
+                    //Kiểm tra tồn tại Email
+                    var exist_user = await _userManager.FindByEmailAsync(userInfo.Email);
 
                     if (exist_user != null)
                     {
@@ -577,6 +579,7 @@ namespace FakeNewsFilter.Application.System
             }
         }
 
+        //Đăng nhập bằng Google
         public async Task<ApiResult<TokenResult>> SignInGoogle(string accessToken)
         {
             try
@@ -599,10 +602,10 @@ namespace FakeNewsFilter.Application.System
                 //Tạo FullName
                 string fullName = (payload.FamilyName + payload.GivenName).ToString();
 
-                //Nếu đã có liên kết trước đó thì tiến hành đăng nhập luôn
+                //Nếu đã có liên kết trước đó (Email) thì tiến hành đăng nhập luôn
                 if (checkLinked.Succeeded)
                 {
-                    var exist_user = await _userManager.FindByNameAsync(userName);
+                    var exist_user = await _userManager.FindByEmailAsync(payload.Email);
 
                     var avatar = _context.Media.Where(m => m.MediaId == exist_user.AvatarId).Select(m => m.PathMedia)
                         .FirstOrDefault();
@@ -616,7 +619,7 @@ namespace FakeNewsFilter.Application.System
                     var info = new ExternalLoginInfo(ClaimsPrincipal.Current, "Google", payload.Subject, null);
 
                     //Kiểm tra tồn tại Email và Username
-                    var exist_user = await _userManager.FindByNameAsync(userName);
+                    var exist_user = await _userManager.FindByEmailAsync(payload.Email);
 
                     if (exist_user != null)
                     {
@@ -680,7 +683,27 @@ namespace FakeNewsFilter.Application.System
             }
         }
 
-        public async Task<ApiResult<ForgotPassword>> SendPasswordResetCode(string email)
+        //Đăng nhập bằng Apple
+        public async Task<ApiResult<TokenResult>> SignInApple(string accessToken)
+        {
+            try
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var userToken = tokenHandler.ReadJwtToken(accessToken);
+
+                // Get the subject to use for the Name Identifier claim
+                string subject = userToken.Subject;
+
+                return new ApiSuccessResult<TokenResult>("LoginGoogleSuccessful");
+
+            }
+            catch (Exception e)
+            {
+                return new ApiErrorResult<TokenResult>(500, "ErrorSystem" + e.Message);
+            }
+        }
+
+            public async Task<ApiResult<ForgotPassword>> SendPasswordResetCode(string email)
         {
             //Get identity user details user manager
             var user = await _userManager.FindByEmailAsync(email);

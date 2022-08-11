@@ -36,7 +36,7 @@ namespace FakeNewsFilter.API.Controllers
         // POST api/values
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create([FromBody]TopicCreateRequest request)
+        public async Task<IActionResult> Create([FromForm] TopicCreateRequest request)
         {
                 try
                 {
