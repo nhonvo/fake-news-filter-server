@@ -179,7 +179,10 @@ namespace FakeNewsFilter.Application.Catalog
             {
                 try
                 {
-                    if(request.LanguageId != null)
+                    if(request.LanguageId == null)
+                    {
+                        return new ApiErrorResult<string>(404, "PleaseEnterThisField");
+                    } else
                     {
                         var language = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
 

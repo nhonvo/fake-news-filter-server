@@ -186,13 +186,46 @@
   <data name="DescriptionIsRequired" xml:space="preserve">
     <value>Mô tả là bắt buộc</value>
   </data>
-  <data name="NameIsRequired" xml:space="preserve">
-    <value>Tên là bắt buộc</value>
+  <data name="TitleIsRequired" xml:space="preserve">
+    <value>Tiêu đề là bắt buộc</value>
   </data>
   <data name="NewsContentOrSourceInvalid" xml:space="preserve">
     <value>Nội dung Tin tức Hoặc Nguồn Không hợp lệ</value>
   </data>
   <data name="ContentNewsIsNotFound" xml:space="preserve">
     <value>Không tìm thấy nội dung</value>
+  </data>
+  <data name="GetCountViewSuccessful" xml:space="preserve">
+    <value>Lấy số lượt xem tin tức thành công</value>
+  </data>
+  <data name="LanguageIdRequired" xml:space="preserve">
+    <value>LanguageId là bắt buộc</value>
+  </data>
+  <data name="LanguageIsRequired" xml:space="preserve">
+    <value>Ngôn ngữ là bắt buộc</value>
+  </data>
+  <data name="NameIsRequired" xml:space="preserve">
+    <value>Chủ đề là bắt buộc</value>
+  </data>
+  <data name="NewsIdIsRequired" xml:space="preserve">
+    <value>Id Tin tức là bắt buộc</value>
+  </data>
+  <data name="NewsNotFound" xml:space="preserve">
+    <value>Tin tức không tồn tại</value>
+  </data>
+  <data name="OfficialRatingNotFound" xml:space="preserve">
+    <value>Không tìm thấy OfficialRating</value>
+  </data>
+  <data name="SouceCreateNotFound" xml:space="preserve">
+    <value>Không thể tìm thấy nguồn tin tức</value>
+  </data>
+  <data name="SourceNameNotFound" xml:space="preserve">
+    <value>Không tìm thấy nguồn</value>
+  </data>
+  <data name="TopicNotEmpty" xml:space="preserve">
+    <value>Chủ đề không được rỗng</value>
+  </data>
+  <data name="UrlNewsIdRequired" xml:space="preserve">
+    <value>UrlNews là bắt buộc</value>
   </data>
 </root>

@@ -238,6 +238,12 @@ namespace FakeNewsFilter.API.Controllers
                 _distributedCache.SetString(cacheKey, viewCount.ToString());
                 news.ResultObj = viewCount;
             }
+            news.Message = _localizer[news.Message].Value;
+            if (news.StatusCode != 200)
+            {
+                return NotFound(news);
+            }
+
 
             return Ok(news);
         }
@@ -248,12 +254,13 @@ namespace FakeNewsFilter.API.Controllers
         {
             var content = await _newsService.GetContent(newsId);
 
-            // news.Message = _localizer[news.Message].Value;
+            content.Message = _localizer[content.Message].Value;
 
-            // if (news == null)
-            // {
-            //     return NotFound(news);
-            // }
+            if(content.StatusCode != 200)
+            {
+                return NotFound(content);
+            }
+
             return Ok(content);
         }
 
@@ -352,7 +359,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 resultToken.Message = _localizer[resultToken.Message].Value + resultToken.ResultObj;
 
-                if (resultToken.ResultObj != null)
+                if (resultToken.StatusCode != 200)
                 {
                     _logger.LogError(resultToken.Message);
                     return BadRequest(resultToken);

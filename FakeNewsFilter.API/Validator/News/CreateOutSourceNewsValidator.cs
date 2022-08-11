@@ -9,9 +9,9 @@ namespace FakeNewsFilter.API.Validator.News
     {
         public CreateOutSourceNewsValidator(IStringLocalizer<NewsController> localizer)
         {
-            RuleFor(x => x.Title).NotEmpty().WithMessage(x => localizer["NameIsRequired"]);
-            RuleFor(x => x.UrlNews).NotEmpty().WithMessage(x => localizer["UrlNewsIsRequired"]);
-            RuleFor(x => x.LanguageId).NotEmpty().WithMessage(x => localizer["LanguageIsRequired"]);
+            RuleFor(x => x.Title).NotEmpty().WithMessage(x => localizer["TitleIsRequired"]);
+            RuleFor(x => x.UrlNews).NotEmpty().WithMessage(x => localizer["UrlNewsIdRequired"]);
+            RuleFor(x => x.LanguageId).NotEmpty().WithMessage(x => localizer["LanguageIdRequired"]);
         }
     }
 }

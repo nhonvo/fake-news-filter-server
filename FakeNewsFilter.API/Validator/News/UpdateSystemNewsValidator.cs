@@ -9,7 +9,7 @@ namespace FakeNewsFilter.ViewModel.Validator.News
     {
         public UpdateSystemNewsValidator(IStringLocalizer<NewsController> localizer)
         {
-            RuleFor(x => x.Id).NotEmpty().WithMessage(x => localizer["NewsIDIsRequired"]);
+            RuleFor(x => x.Id).NotEmpty().WithMessage(x => localizer["NewsIdIsRequired"]);
         }
     }
 }

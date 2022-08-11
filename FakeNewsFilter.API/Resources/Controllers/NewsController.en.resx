@@ -180,8 +180,8 @@
   <data name="GetNewsByFollowedTopicUnsuccessful" xml:space="preserve">
     <value>Get all news by followed topic unsuccessful!</value>
   </data>
-  <data name="NameIsRequired" xml:space="preserve">
-    <value>Name is required </value>
+  <data name="TitleIsRequired" xml:space="preserve">
+    <value>Title is required </value>
   </data>
   <data name="DescriptionIsRequired" xml:space="preserve">
     <value>Description is required </value>
@@ -194,5 +194,38 @@
   </data>
   <data name="ContentNewsIsNotFound" xml:space="preserve">
     <value>Content News Is Not Found</value>
+  </data>
+  <data name="GetCountViewSuccessful" xml:space="preserve">
+    <value>Get count view successful</value>
+  </data>
+  <data name="LanguageIdRequired" xml:space="preserve">
+    <value>LanguageIdRequired</value>
+  </data>
+  <data name="LanguageIsRequired" xml:space="preserve">
+    <value>Language is required</value>
+  </data>
+  <data name="NameIsRequired" xml:space="preserve">
+    <value>Name is required</value>
+  </data>
+  <data name="NewsIdIsRequired" xml:space="preserve">
+    <value>News id is required</value>
+  </data>
+  <data name="NewsNotFound" xml:space="preserve">
+    <value>News not found</value>
+  </data>
+  <data name="OfficialRatingNotFound" xml:space="preserve">
+    <value>Official rating not found</value>
+  </data>
+  <data name="SouceCreateNotFound" xml:space="preserve">
+    <value>Souce create not found</value>
+  </data>
+  <data name="SourceNameNotFound" xml:space="preserve">
+    <value>Source name not found</value>
+  </data>
+  <data name="TopicNotEmpty" xml:space="preserve">
+    <value>Topic not empty</value>
+  </data>
+  <data name="UrlNewsIdRequired" xml:space="preserve">
+    <value>Url news is required</value>
   </data>
 </root>
