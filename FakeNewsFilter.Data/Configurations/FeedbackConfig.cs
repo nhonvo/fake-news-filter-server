@@ -10,8 +10,10 @@ namespace FakeNewsFilter.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Feedback> builder)
         {
-            
+           
             builder.ToTable("Feedback");
+
+            builder.HasOne(f => f.Media).WithOne(f => f.MediaFeedback).HasForeignKey<Feedback>(f => f.Screenshoot);
 
             builder.Property(t => t.Status).HasDefaultValue(Status.Pending);
 

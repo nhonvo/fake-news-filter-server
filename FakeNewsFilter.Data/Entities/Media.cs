@@ -31,5 +31,7 @@ namespace FakeNewsFilter.Data.Entities
         public TopicNews TopicNews { get; set; }
 
         public User User { get; set; }
+
+        public Feedback MediaFeedback { get; set; }
     }
 }

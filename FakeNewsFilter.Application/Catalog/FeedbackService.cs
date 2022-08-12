@@ -141,9 +141,9 @@ namespace FakeNewsFilter.Application.Catalog
 
                 var result = await _context.SaveChangesAsync();
 
-                if (result != 0) return new ApiSuccessResult<string>("FeedbackSuccessful");
+                if (result != 0) return new ApiSuccessResult<string>("ReportLinkSuccessful");
 
-                return new ApiErrorResult<string>(400, "FeedbackUnSuccessful", " " + result.ToString());
+                return new ApiErrorResult<string>(400, "ReportLinkUnSuccessful", " " + result.ToString());
 
             }
             catch(Exception ex)

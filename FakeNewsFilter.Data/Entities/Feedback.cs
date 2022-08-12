@@ -16,7 +16,6 @@ namespace FakeNewsFilter.Data.Entities
         public string Content { get; set; }
 
         public int? Screenshoot { get; set; }
-
         public Media Media { get; set; }
 
         public Status Status { get; set; }
