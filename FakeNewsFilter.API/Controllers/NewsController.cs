@@ -50,24 +50,24 @@ namespace FakeNewsFilter.API.Controllers
             switch (resultToken.StatusCode)
             {
                 case 200:
-                    {
-                        _logger.LogInformation(resultToken.Message);
-                        return Ok(resultToken);
-                    }
+                {
+                    _logger.LogInformation(resultToken.Message);
+                    return Ok(resultToken);
+                }
                 case 400:
-                    {
-                        _logger.LogError(resultToken.Message);
-                        return BadRequest(resultToken);
-                    }
+                {
+                    _logger.LogError(resultToken.Message);
+                    return BadRequest(resultToken);
+                }
                 case 404:
-                    {
-                        _logger.LogError(resultToken.Message);
-                        return NotFound(resultToken);
-                    }
+                {
+                    _logger.LogError(resultToken.Message);
+                    return NotFound(resultToken);
+                }
                 default:
-                    {
-                        return StatusCode(StatusCodes.Status500InternalServerError, resultToken);
-                    }
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, resultToken);
+                }
             }
         }
 
@@ -76,24 +76,24 @@ namespace FakeNewsFilter.API.Controllers
             switch (resultToken.StatusCode)
             {
                 case 200:
-                    {
-                        _logger.LogInformation(resultToken.Message);
-                        return Ok(resultToken);
-                    }
+                {
+                    _logger.LogInformation(resultToken.Message);
+                    return Ok(resultToken);
+                }
                 case 400:
-                    {
-                        _logger.LogError(resultToken.Message);
-                        return BadRequest(resultToken);
-                    }
+                {
+                    _logger.LogError(resultToken.Message);
+                    return BadRequest(resultToken);
+                }
                 case 404:
-                    {
-                        _logger.LogError(resultToken.Message);
-                        return NotFound(resultToken);
-                    }
+                {
+                    _logger.LogError(resultToken.Message);
+                    return NotFound(resultToken);
+                }
                 default:
-                    {
-                        return StatusCode(StatusCodes.Status500InternalServerError, resultToken);
-                    }
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, resultToken);
+                }
             }
         }
 
@@ -170,26 +170,7 @@ namespace FakeNewsFilter.API.Controllers
                 getNews.Message = _localizer[getNews.Message].Value;
 
                 _logger.LogInformation(createNews.Message);
-                return CreatedAtAction(nameof(GetById), new { newsId = createNews }, getNews);
-            }
-            catch (FakeNewsException e)
-            {
-                _logger.LogError(e.Message);
-                return BadRequest(e.Message);
-            }
-        }
-
-        [HttpDelete("{newsId}")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Delete(int newsId)
-        {
-            try
-            {
-                var result = await _newsService.Delete(newsId);
-
-                result.Message = _localizer[result.Message].Value + result.ResultObj;
-
-                return ResultStatusString(result);
+                return CreatedAtAction(nameof(GetById), new {newsId = createNews}, getNews);
             }
             catch (FakeNewsException e)
             {
@@ -210,15 +191,37 @@ namespace FakeNewsFilter.API.Controllers
                 news.Message = _localizer[news.Message].Value;
 
                 return ResultStatusModel(news);
-
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
-            
         }
+
+        [HttpGet("paging")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetPaging(GetManageNewsRequest request)
+        {
+            try
+            {
+                var news = await _newsService.GetNewsPaging(request);
+
+                news.Message = _localizer[news.Message].Value;
+
+                if (news.StatusCode != 200)
+                {
+                    return BadRequest(news);
+                }
+
+                return Ok(news);
+            }
+            catch (FakeNewsException e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
 
         //Lấy các tin tức dựa trên nguồn tạo (từ hệ thống/ nguồn bên ngoài)
         [HttpGet("Source")]
@@ -251,36 +254,42 @@ namespace FakeNewsFilter.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetViewCount(int newsId)
         {
-            var news = await _newsService.GetViewCount(newsId);
+            var newsApiResult = await _newsService.GetById(newsId);
 
-            if (news == null)
+            newsApiResult.Message = _localizer[newsApiResult.Message].Value;
+
+            if (newsApiResult.StatusCode != 200)
             {
-                return NotFound(news);
+                return BadRequest(newsApiResult);
             }
 
-            // news.Message = _localizer[news.Message].Value;
+            var news = newsApiResult.ResultObj;
+
             var cacheKey = "view_count_news_" + newsId;
-            var newsCached = _distributedCache.GetString(cacheKey);
+            var newsCached = await _distributedCache.GetStringAsync(cacheKey);
             if (newsCached == null)
             {
-                await _distributedCache.SetStringAsync(cacheKey, "1");
-                news.ResultObj = 1;
+                if (news.ViewCount > 0)
+                {
+                    var newViewCount = news.ViewCount + 1;
+                    await _distributedCache.SetStringAsync(cacheKey, newViewCount.ToString());
+                    news.ViewCount = newViewCount;
+                }
+                else
+                {
+                    await _distributedCache.SetStringAsync(cacheKey, "1");
+                    news.ViewCount = 1;
+                }
             }
             else
             {
                 var viewCount = Int32.Parse(newsCached);
                 viewCount++;
                 _distributedCache.SetString(cacheKey, viewCount.ToString());
-                news.ResultObj = viewCount;
-            }
-            news.Message = _localizer[news.Message].Value;
-            if (news.StatusCode != 200)
-            {
-                return NotFound(news);
+                news.ViewCount = viewCount;
             }
 
-
-            return Ok(news);
+            return Ok(newsApiResult);
         }
 
         [HttpGet("content/{newsId}")]
@@ -291,7 +300,7 @@ namespace FakeNewsFilter.API.Controllers
 
             content.Message = _localizer[content.Message].Value;
 
-            if(content.StatusCode != 200)
+            if (content.StatusCode != 200)
             {
                 return NotFound(content);
             }
@@ -311,7 +320,7 @@ namespace FakeNewsFilter.API.Controllers
             return ResultStatusModel(newsintopics);
         }
 
-       
+
         [HttpGet("FollowedTopic")]
         public async Task<IActionResult> GetNewsByFollowedTopic(Guid userId)
         {
@@ -458,6 +467,25 @@ namespace FakeNewsFilter.API.Controllers
                 resultToken.Message = _localizer[resultToken.Message].Value + resultToken.ResultObj;
 
                 return ResultStatusString(resultToken);
+            }
+            catch (FakeNewsException e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpDelete("{newsId}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(int newsId)
+        {
+            try
+            {
+                var result = await _newsService.Delete(newsId);
+
+                result.Message = _localizer[result.Message].Value + result.ResultObj;
+
+                return ResultStatusString(result);
             }
             catch (FakeNewsException e)
             {
