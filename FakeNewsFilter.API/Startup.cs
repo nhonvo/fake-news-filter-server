@@ -215,9 +215,9 @@ namespace FakeNewsFilter
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
-                //app.UseStatusCodePagesWithReExecute("/errors/{0}");
-                //app.UseMiddleware<MiddlewareExtentions>();
+                //app.UseDeveloperExceptionPage();
+                app.UseStatusCodePagesWithReExecute("/errors/{0}");
+                app.UseMiddleware<MiddlewareExtentions>();
             }
             else
             {

@@ -5,7 +5,9 @@ using FakeNewsFilter.Application.Catalog;
 using FakeNewsFilter.Data.EF;
 using FakeNewsFilter.Utilities.Exceptions;
 using FakeNewsFilter.ViewModel.Catalog.Version;
+using FakeNewsFilter.ViewModel.Common;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
@@ -29,6 +31,31 @@ namespace FakeNewsFilter.API.Controllers
             _localizer = localizer;
             _logger = logger;
         }
+        IActionResult ResultStatusString(ApiResult<string> resultToken)
+        {
+            switch (resultToken.StatusCode)
+            {
+                case 200:
+                    {
+                        _logger.LogInformation(resultToken.Message);
+                        return Ok(resultToken);
+                    }
+                case 400:
+                    {
+                        _logger.LogError(resultToken.Message);
+                        return BadRequest(resultToken);
+                    }
+                case 404:
+                    {
+                        _logger.LogError(resultToken.Message);
+                        return NotFound(resultToken);
+                    }
+                default:
+                    {
+                        return StatusCode(StatusCodes.Status500InternalServerError, resultToken);
+                    }
+            }
+        }
 
         // POST api/values
         [HttpPost]
@@ -42,13 +69,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 resultToken.Message = _localizer[resultToken.Message].Value + resultToken.ResultObj;
 
-                if (resultToken.StatusCode != 200)
-                {
-                    _logger.LogError(resultToken.Message);
-                    return BadRequest(resultToken);
-                }
-                _logger.LogInformation(resultToken.Message);
-                return Ok(resultToken);
+                return ResultStatusString(resultToken);
 
             }
             catch (FakeNewsException e)

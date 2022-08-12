@@ -4,6 +4,7 @@ using FakeNewsFilter.ViewModel.Catalog.Story;
 using FakeNewsFilter.ViewModel.Common;
 using FakeNewsFilter.ViewModel.Validator.Story;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
@@ -26,6 +27,32 @@ namespace FakeNewsFilter.API.Controllers
             _IStoryService = IStoryService;
             _localizer = localizer;
            _logger = logger;
+        }
+
+        IActionResult ResultStatusString(ApiResult<string> resultToken)
+        {
+            switch (resultToken.StatusCode)
+            {
+                case 200:
+                    {
+                        _logger.LogInformation(resultToken.Message);
+                        return Ok(resultToken);
+                    }
+                case 400:
+                    {
+                        _logger.LogError(resultToken.Message);
+                        return BadRequest(resultToken);
+                    }
+                case 404:
+                    {
+                        _logger.LogError(resultToken.Message);
+                        return NotFound(resultToken);
+                    }
+                default:
+                    {
+                        return StatusCode(StatusCodes.Status500InternalServerError, resultToken);
+                    }
+            }
         }
 
         [HttpPost]
@@ -53,14 +80,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 resultToken.Message = _localizer[resultToken.Message].Value + resultToken.ResultObj;
 
-                if (resultToken.StatusCode != 200)
-                {
-                    _logger.LogError(resultToken.Message);
-                    return BadRequest(resultToken);
-                }
-
-                _logger.LogInformation(resultToken.Message);
-                return Ok(resultToken);
+                return ResultStatusString(resultToken);
             }
             catch (FakeNewsException e)
             {
@@ -84,15 +104,9 @@ namespace FakeNewsFilter.API.Controllers
 
                 var result = await _IStoryService.Update(request);
 
-                result.Message = _localizer[result.Message].Value + result.ResultObj; 
+                result.Message = _localizer[result.Message].Value + result.ResultObj;
 
-                if (result.ResultObj != null)
-                {
-                    _logger.LogError(result.Message);
-                    return BadRequest(result);
-                }
-                _logger.LogInformation(result.Message);
-                return Ok(result);
+                return ResultStatusString(result);
             }
             catch (FakeNewsException e)
             {
@@ -117,13 +131,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 result.Message = _localizer[result.Message].Value + result.ResultObj;
 
-                if (result.ResultObj != null)
-                {
-                    _logger.LogError(result.Message);
-                    return BadRequest(result);
-                }
-                _logger.LogInformation(result.Message);
-                return Ok(result);
+                return ResultStatusString(result);
             }
             catch (FakeNewsException e)
             {
@@ -143,13 +151,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 result.Message = _localizer[result.Message].Value + result.ResultObj;
 
-                if (result.StatusCode != 200)
-                {
-                    _logger.LogError(result.Message);
-                    return BadRequest(result);
-                }
-                _logger.LogInformation(result.Message);
-                return Ok(result);
+                return ResultStatusString(result);
             }
             catch (FakeNewsException e)
             {
