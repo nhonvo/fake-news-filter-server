@@ -20,6 +20,7 @@
     <None Remove="Catalog\Version\" />
     <None Remove="Catalog\NewsManage\System\" />
     <None Remove="Catalog\NewsManage\SouceOthers\" />
+    <None Remove="Catalog\Feedback\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,5 +44,6 @@
     <Folder Include="Catalog\Version\" />
     <Folder Include="Catalog\NewsManage\System\" />
     <Folder Include="Catalog\NewsManage\OutSouce\" />
+    <Folder Include="Catalog\Feedback\" />
   </ItemGroup>
 </Project>

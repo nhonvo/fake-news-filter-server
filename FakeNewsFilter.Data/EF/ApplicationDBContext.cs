@@ -47,7 +47,7 @@ namespace FakeNewsFilter.Data.EF
 
         public DbSet<Version> Version { get; set; }
 
-
+        public DbSet<Feedback> Feedback { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -71,6 +71,7 @@ namespace FakeNewsFilter.Data.EF
             modelBuilder.ApplyConfiguration(new NewsCommunityConfig());
             modelBuilder.ApplyConfiguration(new RefreshTokenConfig());
             modelBuilder.ApplyConfiguration(new VersionConfig());
+            modelBuilder.ApplyConfiguration(new FeedbackConfig());
 
             modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("UserClaims");
             modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("UserLogin").HasKey(l => new { l.LoginProvider, l.ProviderKey, l.UserId });

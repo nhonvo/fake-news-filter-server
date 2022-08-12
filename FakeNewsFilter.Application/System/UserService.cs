@@ -25,6 +25,8 @@ using System.Net.Mail;
 using SmtpClient = System.Net.Mail.SmtpClient;
 using System.Net;
 using Microsoft.AspNetCore.Authentication.OAuth;
+using static Google.Apis.Auth.JsonWebSignature;
+using Payload = Google.Apis.Auth.GoogleJsonWebSignature.Payload;
 
 namespace FakeNewsFilter.Application.System
 {
@@ -39,7 +41,7 @@ namespace FakeNewsFilter.Application.System
         Task<ApiResult<bool>> RoleAssign(Guid id, RoleAssignRequest request);
         Task<ApiResult<TokenResult>> SignInFacebook(string accessToken);
         Task<ApiResult<TokenResult>> SignInGoogle(string accessToken);
-        Task<ApiResult<TokenResult>> SignInApple(string accessToken);
+        Task<ApiResult<TokenResult>> SignInApple(string fullName, string identityToken);
         Task<ApiResult<ForgotPassword>> SendPasswordResetCode(string Email);
         Task<ApiResult<ForgotPassword>> ResetPassword(string email, string opt, string newPassword);
         Task<ApiResult<TokenResult>> RefreshTokenAsync(string token);
@@ -596,7 +598,7 @@ namespace FakeNewsFilter.Application.System
                 //Kiểm tra user đã liên kết với Google chưa
                 var checkLinked = await _signInManager.ExternalLoginSignInAsync("Google", payload.Subject, false);
 
-                //Cắt Email thành UsernName
+                //Cắt Email thành UserName
                 string userName = (payload.Email).Split('@')[0];
 
                 //Tạo FullName
@@ -614,7 +616,7 @@ namespace FakeNewsFilter.Application.System
 
                     return new ApiSuccessResult<TokenResult>("LoginGoogleSuccessful", tokenResult);
                 }
-                else //Chưa được liên kết với Facebook
+                else //Chưa được liên kết với Google
                 {
                     var info = new ExternalLoginInfo(ClaimsPrincipal.Current, "Google", payload.Subject, null);
 
@@ -684,17 +686,105 @@ namespace FakeNewsFilter.Application.System
         }
 
         //Đăng nhập bằng Apple
-        public async Task<ApiResult<TokenResult>> SignInApple(string accessToken)
+        public async Task<ApiResult<TokenResult>> SignInApple(string fullName, string identityToken)
         {
             try
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
-                var userToken = tokenHandler.ReadJwtToken(accessToken);
+                var payload = tokenHandler.ReadJwtToken(identityToken);
 
-                // Get the subject to use for the Name Identifier claim
-                string subject = userToken.Subject;
+                if (payload == null)
+                {
+                    return new ApiErrorResult<TokenResult>(404, "InvalidAppleToken");
+                }
 
-                return new ApiSuccessResult<TokenResult>("LoginGoogleSuccessful");
+                //Kiểm tra user đã liên kết với Google chưa
+                var checkLinked = await _signInManager.ExternalLoginSignInAsync("Apple", payload.Subject, false);
+
+                //Cắt Email thành UserName
+                string email = payload.Payload.SingleOrDefault(x => x.Key == "email").Value.ToString();
+
+                if(email == null)
+                {
+                    return new ApiErrorResult<TokenResult>(404, "EmailIsRequired");
+                }
+
+                string userName = email.Split('@')[0];
+
+                //Nếu đã có liên kết trước đó (Email) thì tiến hành đăng nhập luôn
+                if (checkLinked.Succeeded)
+                {
+                    var exist_user = await _userManager.FindByEmailAsync(email);
+
+                    var avatar = _context.Media.Where(m => m.MediaId == exist_user.AvatarId).Select(m => m.PathMedia)
+                        .FirstOrDefault();
+
+                    var tokenResult = await GenerateUserTokenAsync(exist_user, avatar);
+
+                    return new ApiSuccessResult<TokenResult>("LoginAppleSuccessful", tokenResult);
+                }
+                else //Chưa được liên kết với Apple
+                {
+                    var info = new ExternalLoginInfo(ClaimsPrincipal.Current, "Apple", payload.Subject, null);
+
+                    //Kiểm tra tồn tại Email và Username
+                    var exist_user = await _userManager.FindByEmailAsync(email);
+
+                    if (exist_user != null)
+                    {
+                        //Gán tài khoản Apple vào tài khoản đã có sẵn
+                        var result = await _userManager.AddLoginAsync(exist_user, info);
+
+                        if (result.Succeeded)
+                        {
+                            var avatar = _context.Media.Where(m => m.MediaId == exist_user.AvatarId)
+                                .Select(m => m.PathMedia).FirstOrDefault();
+
+                            var tokenResult = await GenerateUserTokenAsync(exist_user, avatar);
+
+                            return new ApiSuccessResult<TokenResult>("LinkedAppleSuccessful", tokenResult);
+                        }
+                        else
+                        {
+                            return new ApiErrorResult<TokenResult>(400, "ErrorLinkedApple");
+                        }
+                    }
+                    else //Tài khoản đăng nhập lần đầu
+                    {
+                        var indentityuser = new User
+                        {
+                            Id = Guid.NewGuid(),
+                            Email = email,
+                            UserName = userName,
+                            Name = fullName
+                        };
+
+                        var result = await _userManager.CreateAsync(indentityuser);
+
+                        if (result.Succeeded)
+                        {
+                            result = await _userManager.AddLoginAsync(indentityuser, info);
+
+                            if (!result.Succeeded)
+                            {
+                                return new ApiErrorResult<TokenResult>(400, "ErrorLinkedApple");
+                            }
+
+                            var roles = await _userManager.AddToRoleAsync(indentityuser, "Subscriber");
+
+
+                            var tokenResult = await GenerateUserTokenAsync(exist_user, null);
+
+                            return new ApiSuccessResult<TokenResult>("LoginAppleSuccessful", tokenResult);
+                        }
+                        else
+                        {
+                            List<IdentityError> errorList = result.Errors.ToList();
+                            var errors = string.Join(", ", errorList.Select(e => e.Description));
+                            return new ApiErrorResult<TokenResult>(400, "RegisterAppleUnsuccessful " + errors);
+                        }
+                    }
+                }
 
             }
             catch (Exception e)

@@ -313,6 +313,32 @@ namespace FakeNewsFilter.API.Controllers
                 _logger.LogError(e.Message);
                 return BadRequest(e.Message);
             }
+        }
+
+        [HttpPost("SignInApple")]
+        [AllowAnonymous]
+        public async Task<IActionResult> SignInApple([FromBody] LoginSocialRequest request)
+        {
+            try
+            {
+                var authReponse = await _userService.SignInApple(request.FullName, request.AccessToken);
+
+                authReponse.Message = _localizer[authReponse.Message].Value;
+
+                if (string.IsNullOrEmpty(authReponse.ResultObj?.Token))
+                {
+                    _logger.LogError(authReponse.Message);
+                    return BadRequest(authReponse);
+                }
+
+                _logger.LogInformation(authReponse.Message);
+                return Ok(authReponse);
+            }
+            catch (FakeNewsException e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest(e.Message);
+            }
 
 
         }
