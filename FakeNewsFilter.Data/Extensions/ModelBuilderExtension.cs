@@ -248,7 +248,49 @@ namespace FakeNewsFilter.Data.Extensions
                    LanguageId = "vi",
                    Description = " Phóng sự đời sống thường nhật của người dân.",
                    Timestamp = DateTime.Now
-               }
+               },
+                new TopicNews()
+                {
+                    TopicId = 15,
+                    Label = "normal",
+                    Tag = "Technology",
+                    ThumbTopic = 23,
+                    LanguageId = "en",
+                    Description = "View the latest technology headlines, gadget and smartphone trends, and insights from tech industry leaders.",
+                    Timestamp = DateTime.Now
+
+                },
+                new TopicNews()
+                {
+                    TopicId = 16,
+                    Label = "normal",
+                    Tag = "Sports",
+                    ThumbTopic = 24,
+                    LanguageId = "en",
+                    Description = "News, results and comments on sport tournaments in worldwide. Football, martial arts, chess, tennis, esport and others.",
+                    Timestamp = DateTime.Now
+
+                },
+                new TopicNews()
+                {
+                    TopicId = 17,
+                    Label = "normal",
+                    Tag = "Health",
+                    ThumbTopic = 25,
+                    LanguageId = "en",
+                    Description = "View the latest health news and explore articles on fitness, diet, nutrition, parenting, relationships, medicine, diseases and healthy living.",
+                    Timestamp = DateTime.Now
+                },
+                new TopicNews()
+                {
+                    TopicId = 18,
+                    Label = "normal",
+                    Tag = "Entertainment",
+                    ThumbTopic = 26,
+                    LanguageId = "en",
+                    Description = "View entertainment news and videos for the latest movie, music, TV and celebrity headlines.",
+                    Timestamp = DateTime.Now
+                }
                );
 
             modelBuilder.Entity<Media>().HasData(
@@ -404,6 +446,34 @@ namespace FakeNewsFilter.Data.Extensions
                     MediaId = 22,
                     Type = Enums.MediaType.Image,
                     PathMedia = "newsid9.jpg",
+                    DateCreated = DateTime.Now,
+                },
+                new Media
+                {
+                    MediaId = 23,
+                    Type = Enums.MediaType.Image,
+                    PathMedia = "technology.jpeg",
+                    DateCreated = DateTime.Now,
+                },
+                new Media
+                {
+                    MediaId = 24,
+                    Type = Enums.MediaType.Image,
+                    PathMedia = "sports.jpeg",
+                    DateCreated = DateTime.Now,
+                },
+                new Media
+                {
+                    MediaId = 25,
+                    Type = Enums.MediaType.Image,
+                    PathMedia = "health.jpeg",
+                    DateCreated = DateTime.Now,
+                },
+                new Media
+                {
+                    MediaId = 26,
+                    Type = Enums.MediaType.Image,
+                    PathMedia = "entertainment.jpeg",
                     DateCreated = DateTime.Now,
                 }
            );
