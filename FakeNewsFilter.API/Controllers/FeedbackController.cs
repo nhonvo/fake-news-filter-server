@@ -89,11 +89,6 @@ namespace FakeNewsFilter.API.Controllers
                 return BadRequest(e.Message);
             }
         }
-
-        public IActionResult Index()
-        {
-            return View();
-        }
     }
 }
 
