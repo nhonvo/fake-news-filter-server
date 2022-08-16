@@ -190,13 +190,14 @@ namespace FakeNewsFilter
                 // quickest way to create a job with single trigger is to use ScheduleJob
                 // (requires version 3.2)
                 q.ScheduleJob<NewsController>(trigger => trigger
-                    .StartAt(DateBuilder.EvenSecondDate(DateTimeOffset.UtcNow.AddSeconds(1)))
-                    .WithSimpleSchedule(x => x.WithIntervalInSeconds(60).RepeatForever())
+                    .StartNow()
+                    .WithSimpleSchedule(x => x.WithIntervalInSeconds(60)
+                    .RepeatForever())
                     .WithDescription("Trigger to update view count of news")
                 );
 
                 q.ScheduleJob<VoteController>(trigger => trigger
-                    .StartAt(DateBuilder.EvenSecondDate(DateTimeOffset.UtcNow.AddSeconds(10)))
+                    .StartNow()
                     .WithSimpleSchedule(x => x.WithIntervalInSeconds(60).RepeatForever())
                     .WithDescription("Trigger to update rate of news")
                 );

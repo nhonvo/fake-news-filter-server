@@ -34,7 +34,7 @@
         </PackageReference>
         <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="6.0.0" />
-        <PackageReference Include="NLog.Extensions.Logging" Version="5.0.1" />
+        <PackageReference Include="NLog.Extensions.Logging" Version="5.0.2" />
         <PackageReference Include="Quartz.AspNetCore" Version="3.4.0" />
         <PackageReference Include="Quartz.Extensions.Microsoft.DependencyInjection" Version="0.0.3" />
         <PackageReference Include="Quartz.Plugins.TimeZoneConverter" Version="3.4.0" />
