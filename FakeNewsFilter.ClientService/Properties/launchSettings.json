@@ -3,10 +3,10 @@
     "FakeNewsFilter.ClientService": {
       "commandName": "Project",
       "launchBrowser": true,
+      "applicationUrl": "https://localhost:49838;http://localhost:49839",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "https://localhost:49838;http://localhost:49839"
+      }
     }
   }
 }

@@ -265,7 +265,7 @@ namespace FakeNewsFilter.API.Controllers
 
             var news = newsApiResult.ResultObj;
 
-            var cacheKey = "view_count_news_" + newsId;
+            var cacheKey = "viewcountnews_" + newsId;
             var newsCached = await _distributedCache.GetStringAsync(cacheKey);
             if (newsCached == null)
             {
@@ -430,7 +430,7 @@ namespace FakeNewsFilter.API.Controllers
             }
         }
 
-        public Dictionary<int, int> GetKeysAndValuesInRedisCache()
+        public Dictionary<int, int> GetKeysAndValuesInRedisCache(string preKey)
         {
             var dict = new Dictionary<int, int>();
             string connectionString = _configuration["Redis:ConnectionString"];
@@ -439,12 +439,15 @@ namespace FakeNewsFilter.API.Controllers
 
             foreach (var key in keys)
             {
-                //get newsId from key
                 var keySplit = key.ToString().Split('_');
-                var newsId = Int32.Parse(keySplit[^1]);
 
-                var value = _distributedCache.GetString(key);
-                dict.Add(newsId, Int32.Parse(value));
+                if (keySplit[0].Equals(preKey))
+                {
+                    var newsId = Int32.Parse(keySplit[^1]);
+
+                    var value = _distributedCache.GetString(key);
+                    dict.Add(newsId, Int32.Parse(value));
+                }  
             }
 
             return dict;
@@ -452,7 +455,7 @@ namespace FakeNewsFilter.API.Controllers
 
         public async Task Execute(IJobExecutionContext context)
         {
-            var newsViewCountDict = GetKeysAndValuesInRedisCache();
+            var newsViewCountDict = GetKeysAndValuesInRedisCache("viewcountnews");
             await _newsService.UpdateViewCount(newsViewCountDict);
         }
 

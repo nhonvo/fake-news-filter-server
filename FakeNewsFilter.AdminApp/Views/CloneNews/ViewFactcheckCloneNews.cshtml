@@ -8,18 +8,32 @@
             <div class="element-box">
                 <div class="card-body" id="card-body-@guid">
                     <h3 class="card-title">Claim by @Model[i].Claimant</h3>
-
-                    <p class="card-title">@Model[i].Text</p>
-
+                    
+                    <h4 id="news-title" class="card-title">@Model[i].Text</h4>
+                    
                     @foreach (var claimReview in @Model[i].ClaimReview)
                     {
-                        <label>Publisher: </label><h4 class="card-text">@claimReview.Publisher.Name </h4>
+                        <div id="news-publisher">
+                           <p>From</p><h5>@claimReview.Publisher.Name</h5>
+                        </div>
                         <h3>
                             Rating: @claimReview.TextualRating
                         </h3>
-                        <a href="@claimReview.Url" class="card-text">Title: @claimReview.Title</a>
+                        <div>
+                            <a id="news-url" href="@claimReview.Url" class="card-text"></a>
+                        </div>
+                        <div id="news-imageLink">
+                            <img src="https://miro.medium.com/max/1200/0*EjJQZPatjW6QFjsn.gif" class="img-fluid"/>
+                        </div>
                     }
-
+                    @* <div id="news-description"> *@
+                    @*     <label>Description: </label> *@
+                    @*     <p class="card-text">@news.Description</p> *@
+                    @* </div> *@
+                    @* *@
+                    @* <div id="news-datePublish"> *@
+                    @*     <p class="card-text">Published at: @news.PubDate </p> *@
+                    @* </div> *@
                     <div class="card-title">
                         <a id="@guid" class="btn add-new btn-rounded btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg" href="#">Clone</a>
                         @* <button id="@guid" class="btn add-new btn-rounded btn-primary" tabindex="0" aria-controls="list_news" type="button" data-toggle="modal" data-target=".bd-example-modal-lg"><span>Clone</span></button> *@

@@ -55,15 +55,13 @@ document.addEventListener('click', function (e) {
     if (e.target && e.target.classList.contains("add-new")) {
 
         const cardBody = e.target.closest(`#card-body-${e.target.id}`);
-
-        $('#Title').val(`${$(cardBody).children('p').first().text()}`);
-
-        $('#Description').val(`${$(cardBody).children('a').first().text()}`);
-
-        // $('#OfficialRating').val(`${$(cardBody).children('h4').first().text()}`);
-        $('#Publisher').val(`${$(cardBody).children('h4').first().text()}`);
-        $('#Url').attr("href", `${$(cardBody).children('a').first().attr('href')}`);
-        $('#UrlNews').val(`${$(cardBody).children('a').first().attr('href')}`);
+        console.log(cardBody);
+        $('#Title').val(`${$(cardBody).find('#news-title').text()}`);
+        $('#Description').val(`${$(cardBody).find('#news-description p').text()}`);
+        $('#ImageLink').val(`${$(cardBody).find('#news-imageLink img').attr('src')}`);
+        $('#Publisher').val(`${$(cardBody).find('#news-publisher h5').text()}`);
+        $('#Url').attr("href", `${$(cardBody).find('#news-url').attr('href')}`);
+        $('#UrlNews').val(`${$(cardBody).find('#news-url').attr('href')}`);
     }
 });
 
@@ -88,7 +86,7 @@ $(window).scroll(function () {
 
             const pageNum = $('.pageNum').last().val();
             const page = parseInt(pageNum) + 1;
-            console.log("page: " + page);
+
                 $.ajax({
                     type: "GET",
                     url: `NewsApiSearch/?query=${queryLoadMore}&page=${page}`,
@@ -98,19 +96,31 @@ $(window).scroll(function () {
                     }
                 });
 
+        } else if (actionControllerNameInBrowser === 'OigetitIndex') {
+            const pageNum = $('.pageNum').last().val();
+            const page = parseInt(pageNum) + 1;
+
+            $.ajax({
+                type: "GET",
+                url: `OigetitSearch/?query=${queryLoadMore}&page=${page}`,
+                success: function (data) {
+                    $('#loading').hide();
+                    parentDiv.insertAdjacentHTML('beforeend', `${data} <input type="hidden" class="pageNum" value="${page}">`);
+                }
+            });
         }
     }
 });
 
 //search news
-$('#searchBtn').click(function () {
+$('#factCheckSearchBtn').click(function () {
     $('#loading').show();
     source = "GoogleApi";
     //convert normal search input to without whitespace and lowercase
-    const query = $('#searchInput').val().toLowerCase().replace(/\s/g, "");
+    const query = $('#factCheckSearchInput').val().toLowerCase().replace(/\s/g, "");
 
     //assign id querySeach's input equals id searchInput's input (temporary variable)
-    queryLoadMore = $('#querySearch').val(`${$('#searchInput').val()}`).val();
+    queryLoadMore = $('#factCheckQuerySearch').val(`${$('#factCheckSearchInput').val()}`).val();
 
     //clear all previous data
     parentDiv.innerHTML = "";
@@ -145,6 +155,41 @@ $('#newsApiSearchBtn').click(function () {
     });
 })
 
+$('#oigetitSearchBtn').click(function () {
+    $('#loading').show();
+    source = "Oigetit";
+    //convert normal search input to without whitespace and lowercase
+    const query = $('#oigetitSearchInput').val().toLowerCase().replace(/\s/g, "");
+
+    //assign id querySeach's input equals id searchInput's input (temporary variable)
+    queryLoadMore = $('#oigetitQuerySearch').val(`${$('#oigetitSearchInput').val()}`).val();
+
+    //clear all previous data
+    parentDiv.innerHTML = "";
+    $.ajax({
+        type: "GET",
+        url: `OigetitSearch/?query=${query}`,
+        success: function (data) {
+            $('#loading').hide();
+            parentDiv.insertAdjacentHTML('beforeend', `${data} <input type="hidden" class="pageNum" value="1">`);
+        }
+    });
+})
+
+function GetOigetitCategoryNews(categoryId){
+    //clear all previous data
+    source = "Oigetit";
+    parentDiv.innerHTML = "";
+    $.ajax({
+        type: "GET",
+        url: `GetOigetitCategory/?categoryId=${categoryId}`,
+        success: function (data) {
+            $('#loading').hide();
+            parentDiv.insertAdjacentHTML('beforeend', data);
+        }
+    });
+}
+
 function CreateNews(frm, caller) {
     $('#loading').show();
 
@@ -161,14 +206,14 @@ function CreateNews(frm, caller) {
     fdata.append("UrlNews", UrlNews);
     var Title = $(frm).find('input#Title')[0].value;
     var Publisher = $(frm).find('#Publisher')[0].value;
-    var DatePublished = $(frm).find('#DatePublished')[0].value;
+    // var DatePublished = $(frm).find('#DatePublished')[0].value;
     var officialRating = $(frm).find('#OfficialRating')[0].value;
     var languageId = $(frm).find('#LanguageId')[0].value;
     var topicIdList = $(frm).find('#TopicId').select2("val");
 
     fdata.append("Title", Title);
     fdata.append("Publisher", Publisher);
-    fdata.append("DatePublished", DatePublished);
+    // fdata.append("DatePublished", DatePublished);
     fdata.append("OfficialRating", officialRating);
     fdata.append("LanguageId", languageId);
     topicIdList.forEach((topicId) => fdata.append("TopicId", topicId));
