@@ -8,7 +8,7 @@ namespace FakeNewsFilter.ViewModel.Catalog.NewsManage
     public class NewsSystemCreateRequest
     {
         public string Title { get; set; }
-
+        public string Description { get; set; }
         public string OfficialRating { get; set; }
 
         public string Content { get; set; }
