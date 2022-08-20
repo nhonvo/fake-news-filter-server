@@ -87,9 +87,9 @@
                     </div>
                 </div>
             </div>
-            @* <div id="loading"> *@
-            @*     <img id="loading-image" src="/img/ajax-loader.gif" alt="Loading..." /> *@
-            @* </div> *@
+            <div id="loading" class="hidden">
+                <img id="loading-image" src="/img/ajax-loader.gif" alt="Loading..." />
+            </div>
             <partial name="CreateNews" model="@Model?.NewsCreateRequest" />
         </section>
     </div>

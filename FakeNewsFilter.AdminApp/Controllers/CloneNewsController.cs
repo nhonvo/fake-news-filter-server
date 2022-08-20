@@ -257,7 +257,28 @@ namespace FakeNewsFilter.AdminApp.Controllers
                 ViewData = new ViewDataDictionary<OigetitNewsViewModel>(ViewData, model)
             };
         }
+        
+        public async Task<IActionResult> GetOigetitNewsDescription(string newsId)
+        {
+            var data = await _cloneNewsApi.GetOigetitNewsDesc(newsId);
 
+            var topicData = await _topicApi.GetAllTopic();
+
+            var languageData = await _languageApi.GetLanguageInfo();
+            
+            if (TempData["result"] != null)
+            {
+                ViewBag.SuccessMsg = TempData["Result"];
+            }
+
+            if (TempData["Error"] != null)
+            {
+                ViewBag.Error = TempData["Error"];
+            }
+
+            return Json(data);
+        }
+        
         public async Task<IActionResult> LoadMore(string nextPageToken, string query)
         {
             if (string.IsNullOrEmpty(nextPageToken) || string.IsNullOrEmpty(query))

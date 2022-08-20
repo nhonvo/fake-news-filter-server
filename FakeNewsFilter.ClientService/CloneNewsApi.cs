@@ -9,6 +9,7 @@ using FakeNewsFilter.Utilities.Exceptions;
 using FakeNewsFilter.ViewModel.Catalog;
 using FakeNewsFilter.ViewModel.Catalog.Claims;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace FakeNewsFilter.AdminApp.Services
 {
@@ -18,6 +19,7 @@ namespace FakeNewsFilter.AdminApp.Services
         Task<GetClaimsRequest> LoadMore(string nextPageToken, string query);
         Task<OigetitNewsViewModel> SearchOigetitNews(string query, int page);
         Task<List<OigetitNews>> GetOigetitCategoryNews(int categoryId);
+        Task<string> GetOigetitNewsDesc(string newsId);
     }
 
     public class CloneNewsApi : ICloneNewsApi
@@ -143,12 +145,12 @@ namespace FakeNewsFilter.AdminApp.Services
                 HttpClient httpClient = new HttpClient();
                 HttpRequestMessage request = new HttpRequestMessage();
 
-                request.RequestUri = new Uri("https://api.oigetit.com:8081/V2/GetCategoryNews/EN/" +categoryId);
+                request.RequestUri = new Uri("https://api.oigetit.com:8081/V2/GetCategoryNews/EN/" + categoryId);
 
                 request.Method = HttpMethod.Get;
 
                 HttpResponseMessage response = await httpClient.SendAsync(request);
-                
+
                 var body = await response.Content.ReadAsStringAsync();
                 var statusCode = response.StatusCode;
 
@@ -164,6 +166,36 @@ namespace FakeNewsFilter.AdminApp.Services
             {
                 return new List<OigetitNews>(new OigetitNews[]
                     {new OigetitNews {Title = "Error System: " + e.Message}});
+            }
+        }
+
+        public async Task<string> GetOigetitNewsDesc(string newsId)
+        {
+            try
+            {
+                HttpClient httpClient = new HttpClient();
+                HttpRequestMessage request = new HttpRequestMessage();
+
+                request.RequestUri = new Uri("https://api.oigetit.com:8081/V2/GetArticle/" + newsId);
+                request.Method = HttpMethod.Get;
+
+                HttpResponseMessage response = await httpClient.SendAsync(request);
+
+                var body = await response.Content.ReadAsStringAsync();
+                var statusCode = response.StatusCode;
+
+                JObject result = JObject.Parse(body);
+
+                if (statusCode == HttpStatusCode.OK)
+                {
+                    return result["Description"]!.ToString();
+                }
+
+                return "An error has occurred while trying to get the news description";
+            }
+            catch (FakeNewsException e)
+            {
+                return "An error has occurred while trying to get the news description";
             }
         }
     }
