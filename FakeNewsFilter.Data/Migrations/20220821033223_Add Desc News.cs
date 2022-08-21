@@ -269,17 +269,6 @@ namespace FakeNewsFilter.Data.Migrations
                 column: "DateCreated",
                 value: new DateTime(2022, 8, 21, 10, 32, 22, 627, DateTimeKind.Local).AddTicks(2670));
 
-            migrationBuilder.InsertData(
-                table: "Media",
-                columns: new[] { "MediaId", "Caption", "DateCreated", "Duration", "FileSize", "PathMedia", "SortOrder", "Type" },
-                values: new object[,]
-                {
-                    { 23, null, new DateTime(2022, 8, 21, 10, 32, 22, 627, DateTimeKind.Local).AddTicks(2670), 0, 0L, "technology.jpeg", 0, 1 },
-                    { 24, null, new DateTime(2022, 8, 21, 10, 32, 22, 627, DateTimeKind.Local).AddTicks(2670), 0, 0L, "sports.jpeg", 0, 1 },
-                    { 25, null, new DateTime(2022, 8, 21, 10, 32, 22, 627, DateTimeKind.Local).AddTicks(2670), 0, 0L, "health.jpeg", 0, 1 },
-                    { 26, null, new DateTime(2022, 8, 21, 10, 32, 22, 627, DateTimeKind.Local).AddTicks(2670), 0, 0L, "entertainment.jpeg", 0, 1 }
-                });
-
             migrationBuilder.UpdateData(
                 table: "News",
                 keyColumn: "NewsId",
@@ -643,17 +632,6 @@ namespace FakeNewsFilter.Data.Migrations
                 keyValue: new Guid("69db714f-9576-45ba-b5b7-f00649be04de"),
                 columns: new[] { "ConcurrencyStamp", "PasswordHash" },
                 values: new object[] { "47397b5f-7128-4c32-9cf0-f6f030af2b8b", "AQAAAAEAACcQAAAAEINhHQrhuPTArG1/JbPOqSWssJpBE6gWSO9IYfk1nfnyLJ5SAz/0CLxU10+ZDBP4Sw==" });
-
-            migrationBuilder.InsertData(
-                table: "TopicNews",
-                columns: new[] { "TopicId", "Description", "Label", "LanguageId", "Tag", "ThumbTopic", "Timestamp", "UserId" },
-                values: new object[,]
-                {
-                    { 15, "View the latest technology headlines, gadget and smartphone trends, and insights from tech industry leaders.", "normal", "en", "Technology", 23, new DateTime(2022, 8, 21, 10, 32, 22, 627, DateTimeKind.Local).AddTicks(2610), null },
-                    { 16, "News, results and comments on sport tournaments in worldwide. Football, martial arts, chess, tennis, esport and others.", "normal", "en", "Sports", 24, new DateTime(2022, 8, 21, 10, 32, 22, 627, DateTimeKind.Local).AddTicks(2610), null },
-                    { 17, "View the latest health news and explore articles on fitness, diet, nutrition, parenting, relationships, medicine, diseases and healthy living.", "normal", "en", "Health", 25, new DateTime(2022, 8, 21, 10, 32, 22, 627, DateTimeKind.Local).AddTicks(2620), null },
-                    { 18, "View entertainment news and videos for the latest movie, music, TV and celebrity headlines.", "normal", "en", "Entertainment", 26, new DateTime(2022, 8, 21, 10, 32, 22, 627, DateTimeKind.Local).AddTicks(2620), null }
-                });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
