@@ -198,7 +198,8 @@ namespace FakeNewsFilter
 
                 q.ScheduleJob<VoteController>(trigger => trigger
                     .StartNow()
-                    .WithSimpleSchedule(x => x.WithIntervalInSeconds(60).RepeatForever())
+                    .WithSimpleSchedule(x => x.WithIntervalInSeconds(60)
+                    .RepeatForever())
                     .WithDescription("Trigger to update rate of news")
                 );
             });

@@ -13,53 +13,30 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace FakeNewsFilter.API.Controllers
 {
     [Route("api/[controller]")]
     [Authorize]
-    public class TopicController : ControllerBase
+    public class TopicController : ReturnStatus
     {
         private readonly IStringLocalizer<TopicController> _localizer;
         private readonly TopicService _topicService;
         private readonly ILogger<TopicController> _logger;
         private readonly ApplicationDBContext _context;
 
-        public TopicController(ApplicationDBContext context, TopicService topicService, IStringLocalizer<TopicController> localizer, ILogger<TopicController> logger)
+        public TopicController(ApplicationDBContext context,
+            TopicService topicService,
+            IStringLocalizer<TopicController> localizer,
+            ILogger<TopicController> logger)
+            : base(logger)
         {
             _context = context;
             _topicService = topicService;
             _localizer = localizer;
             _logger = logger;
         }
-        IActionResult ResultStatusString(ApiResult<string> resultToken)
-        {
-            switch (resultToken.StatusCode)
-            {
-                case 200:
-                    {
-                        _logger.LogInformation(resultToken.Message);
-                        return Ok(resultToken);
-                    }
-                case 400:
-                    {
-                        _logger.LogError(resultToken.Message);
-                        return BadRequest(resultToken);
-                    }
-                case 404:
-                    {
-                        _logger.LogError(resultToken.Message);
-                        return NotFound(resultToken);
-                    }
-                default:
-                    {
-                        return StatusCode(StatusCodes.Status500InternalServerError, resultToken);
-                    }
-            }
-        }
 
-        // POST api/values
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromForm] TopicCreateRequest request)
@@ -85,7 +62,7 @@ namespace FakeNewsFilter.API.Controllers
 
                     resultToken.Message = _localizer[resultToken.Message].Value + resultToken.ResultObj;
 
-                return ResultStatusString(resultToken);
+                return ReturnWithModel(resultToken);
 
                 }
                 catch (FakeNewsException e)
@@ -188,7 +165,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 result.Message = _localizer[result.Message].Value + result.ResultObj;
 
-                return ResultStatusString(result);
+                return ReturnWithModel(result);
             }
             catch (FakeNewsException e)
             {
@@ -225,7 +202,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 result.Message = _localizer[result.Message].Value + result.ResultObj;
 
-                return ResultStatusString(result);
+                return ReturnWithModel(result);
             }
             catch (FakeNewsException e)
             {
@@ -245,7 +222,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 result.Message = _localizer[result.Message].Value + result.ResultObj;
 
-                return ResultStatusString(result);
+                return ReturnWithModel(result);
             }
             catch (FakeNewsException e)
             {

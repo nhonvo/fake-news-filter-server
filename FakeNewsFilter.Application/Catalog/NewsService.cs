@@ -27,15 +27,15 @@ public interface INewsService
     Task<ApiResult<int>> GetViewCount(int NewsId);
     Task<ApiResult<List<NewsViewModel>>> GetNewsInTopic(int topicId);
     Task<ApiResult<List<NewsViewModel>>> GetNewsByFollowedTopic(List<int> topicList, Guid userId);
-    Task<ApiResult<string>> CreateBySystem(NewsSystemCreateRequest request);
-    Task<ApiResult<string>> CreateByOther(NewsOutSourceCreateRequest request);
+    Task<ApiResult<NewsViewModel>> CreateBySystem(NewsSystemCreateRequest request);
+    Task<ApiResult<NewsViewModel>> CreateByOther(NewsOutSourceCreateRequest request);
     Task<ApiResult<string>> Delete(int NewsId);
     Task<ApiResult<NewsViewModel>> GetById(int newsId);
     Task<ApiResult<NewsSystemViewModel>> GetContent(int newsId);
-    Task<ApiResult<string>> UpdateBySystem(NewsSystemUpdateRequest request);
-    Task<ApiResult<string>> UpdateByOutSource(NewsOutSourceUpdateRequest request);
-    Task<ApiResult<string>> Archive(int Id);
-    Task<ApiResult<string>> UpdateLink(int newsId, string newLink);
+    Task<ApiResult<NewsViewModel>> UpdateBySystem(NewsSystemUpdateRequest request);
+    Task<ApiResult<NewsViewModel>> UpdateByOutSource(NewsOutSourceUpdateRequest request);
+    Task<ApiResult<NewsViewModel>> Archive(int Id);
+    Task<ApiResult<NewsViewModel>> UpdateLink(int newsId, string newLink);
     Task<ApiResult<bool>> UpdateViewCount(Dictionary<int, int> newsViewCountDict);
 }
 
@@ -589,7 +589,7 @@ public class NewsService : INewsService
     }
 
     //Tạo mới 1 tin tức (từ hệ thống tạo)
-    public async Task<ApiResult<string>> CreateBySystem(NewsSystemCreateRequest request)
+    public async Task<ApiResult<NewsViewModel>> CreateBySystem(NewsSystemCreateRequest request)
     {
         using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
 
@@ -598,16 +598,16 @@ public class NewsService : INewsService
                 //Kiểm tra ngôn ngữ có tồn tại
                 var language = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
 
-                if (language == null) return new ApiErrorResult<string>(404, "LanguageNotFound");
+                if (language == null) return new ApiErrorResult<NewsViewModel>(404, "LanguageNotFound");
 
                 //Kiểm tra chủ đề có tồn tại
                 if (request.TopicId == null)
-                    return new ApiErrorResult<string>(404, "TopicNotFound");
+                    return new ApiErrorResult<NewsViewModel>(404, "TopicNotFound");
                 foreach (var item in request.TopicId)
                 {
                     var topic = await _context.TopicNews.FirstOrDefaultAsync(t => t.TopicId == item);
                     if (topic == null)
-                        return new ApiErrorResult<string>(404, "TopicNotFound");
+                        return new ApiErrorResult<NewsViewModel>(404, "TopicNotFound");
                 }
 
                 LabelNews label_enum;
@@ -658,7 +658,7 @@ public class NewsService : INewsService
 
                             if (checkExtension == false)
                             {
-                                return new ApiErrorResult<string>(400, "FileImageInvalid");
+                                return new ApiErrorResult<NewsViewModel>(400, "FileImageInvalid");
                             }
 
                             detail_news.Media = new Media
@@ -689,25 +689,28 @@ public class NewsService : INewsService
                         {
                             transaction.Rollback();
                             await _storageService.DeleteFileAsync(detail_news.Media.PathMedia);
-                            return new ApiErrorResult<string>(400, "CreateNewsUnsuccessful");
+                            return new ApiErrorResult<NewsViewModel>(400, "CreateNewsUnsuccessful");
                         }
 
                         transaction.Commit();
-                        return new ApiSuccessResult<string>("CreateNewsSuccessful", news.NewsId.ToString());
+
+                        var newsmodel = await GetById(news.NewsId);
+
+                        return new ApiSuccessResult<NewsViewModel>("CreateNewsSuccessful", newsmodel.ResultObj);
                     }
                 }
 
-                return new ApiErrorResult<string>(404, "OfficialRatingNotFound");
+                return new ApiErrorResult<NewsViewModel>(404, "OfficialRatingNotFound");
             }
             catch (DbUpdateException ex)
             {
                 transaction.Rollback();
-                return new ApiErrorResult<string>(500, ex.Message);
+                return new ApiErrorResult<NewsViewModel>(500, ex.Message);
             }
     }
 
     //Tạo mới 1 tin tức (từ nguồn bên ngoài
-    public async Task<ApiResult<string>> CreateByOther(NewsOutSourceCreateRequest request)
+    public async Task<ApiResult<NewsViewModel>> CreateByOther(NewsOutSourceCreateRequest request)
     {
         using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
 
@@ -716,16 +719,16 @@ public class NewsService : INewsService
                 //Kiểm tra ngôn ngữ có tồn tại
                 var language = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
 
-                if (language == null) return new ApiErrorResult<string>(404, "LanguageNotFound");
+                if (language == null) return new ApiErrorResult<NewsViewModel>(404, "LanguageNotFound");
 
                 //Kiểm tra chủ đề có tồn tại
                 if (request.TopicId == null)
-                    return new ApiErrorResult<string>(404, "TopicNotFound");
+                    return new ApiErrorResult<NewsViewModel>(404, "TopicNotFound");
                 foreach (var item in request.TopicId)
                 {
                     var topic = await _context.TopicNews.FirstOrDefaultAsync(t => t.TopicId == item);
                     if (topic == null)
-                        return new ApiErrorResult<string>(404, "TopicNotFound");
+                        return new ApiErrorResult<NewsViewModel>(404, "TopicNotFound");
                 }
 
                 LabelNews label_enum;
@@ -776,24 +779,27 @@ public class NewsService : INewsService
                             if (res == 0)
                             {
                                 transaction.Rollback();
-                                return new ApiErrorResult<string>(400, "CreateNewsUnsuccessful");
+                                return new ApiErrorResult<NewsViewModel>(400, "CreateNewsUnsuccessful");
                             }
 
                             transaction.Commit();
-                            return new ApiSuccessResult<string>("CreateNewsSuccessful", news.NewsId.ToString());
+
+                            var newsmodel = await GetById(news.NewsId);
+
+                            return new ApiSuccessResult<NewsViewModel>("CreateNewsSuccessful", newsmodel.ResultObj);
                         }
 
-                        return new ApiErrorResult<string>(404, "SouceCreateNotFound");
+                        return new ApiErrorResult<NewsViewModel>(404, "SouceCreateNotFound");
                     }
                 }
 
 
-                return new ApiErrorResult<string>(404, "OfficalRatingNotFound");
+                return new ApiErrorResult<NewsViewModel>(404, "OfficalRatingNotFound");
             }
             catch (DbUpdateException ex)
             {
                 transaction.Rollback();
-                return new ApiErrorResult<string>(500, ex.Message);
+                return new ApiErrorResult<NewsViewModel>(500, ex.Message);
             }
     }
 
@@ -838,7 +844,7 @@ public class NewsService : INewsService
 
 
     //Cập nhật tin tức (trừ Vote) bởi các nguồn ngoài
-    public async Task<ApiResult<string>> UpdateByOutSource(NewsOutSourceUpdateRequest request)
+    public async Task<ApiResult<NewsViewModel>> UpdateByOutSource(NewsOutSourceUpdateRequest request)
     {
         using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
         {
@@ -848,12 +854,12 @@ public class NewsService : INewsService
                 var news_update = await NewsCommon.CheckExistNews(_context, request.Id);
 
                 if (news_update == null)
-                    return new ApiErrorResult<string>(404, "CannontFindANewsWithId");
+                    return new ApiErrorResult<NewsViewModel>(404, "CannontFindANewsWithId");
 
                 //Trường hợp tin lấy từ nguồn ngoài (Không phải từ hệ thống tạo)
                 if (news_update.DetailNews != null)
                 {
-                    return new ApiErrorResult<string>(400, "NewsCreateBySystem");
+                    return new ApiErrorResult<NewsViewModel>(400, "NewsCreateBySystem");
                 }
                 else
                 {
@@ -876,13 +882,13 @@ public class NewsService : INewsService
                         }
                         else
                         {
-                            return new ApiErrorResult<string>(404, "OfficalRatingNotFound");
+                            return new ApiErrorResult<NewsViewModel>(404, "OfficalRatingNotFound");
                         }
                     }
 
                     if (request.TopicId == null)
                     {
-                        return new ApiErrorResult<string>(404, "TopicNotEmpty");
+                        return new ApiErrorResult<NewsViewModel>(404, "TopicNotEmpty");
                     }
                     //Tìm các Topic của News đó
 
@@ -898,7 +904,7 @@ public class NewsService : INewsService
                         {
                             var topic = await _context.TopicNews.FirstOrDefaultAsync(t => t.TopicId == item);
                             if (topic == null)
-                                return new ApiErrorResult<string>(404, "CannontFindATopicWithId");
+                                return new ApiErrorResult<NewsViewModel>(404, "CannontFindATopicWithId");
                         }
 
                         //Xóa tất cả tin tức trong newsInTopics đã yêu cầu. 
@@ -924,23 +930,26 @@ public class NewsService : INewsService
                     if (res == 0)
                     {
                         transaction.Rollback();
-                        return new ApiErrorResult<string>(400, "UpdateNewsUnsuccessful");
+                        return new ApiErrorResult<NewsViewModel>(400, "UpdateNewsUnsuccessful");
                     }
 
                     transaction.Commit();
-                    return new ApiSuccessResult<string>("UpdateNewsSuccessful", " " + news_update.NewsId.ToString());
+
+                    var newsmodel = await GetById(news_update.NewsId);
+
+                    return new ApiSuccessResult<NewsViewModel>("UpdateNewsSuccessful", newsmodel.ResultObj);
                 }
             }
             catch (DbUpdateException ex)
             {
                 transaction.Rollback();
-                return new ApiErrorResult<string>(500, ex.Message);
+                return new ApiErrorResult<NewsViewModel>(500, ex.Message);
             }
         }
     }
 
     //Cập nhật tin tức (trừ Vote) bởi hệ thống
-    public async Task<ApiResult<string>> UpdateBySystem(NewsSystemUpdateRequest request)
+    public async Task<ApiResult<NewsViewModel>> UpdateBySystem(NewsSystemUpdateRequest request)
     {
         using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
         {
@@ -950,12 +959,12 @@ public class NewsService : INewsService
                 var news_update = await NewsCommon.CheckExistNews(_context, request.Id);
 
                 if (news_update == null)
-                    return new ApiErrorResult<string>(404, "CannontFindANewsWithId");
+                    return new ApiErrorResult<NewsViewModel>(404, "CannontFindANewsWithId");
 
                 //Trường hợp tin tức không được tạo từ hệ thống
                 if (news_update.DetailNews == null)
                 {
-                    return new ApiErrorResult<string>(400, "NewsCreateBySourceOther");
+                    return new ApiErrorResult<NewsViewModel>(400, "NewsCreateBySourceOther");
                 }
 
                 var dnews = news_update.DetailNews;
@@ -977,7 +986,7 @@ public class NewsService : INewsService
 
                         if (checkExtension == false)
                         {
-                            return new ApiErrorResult<string>(400, "FileImageInvalid");
+                            return new ApiErrorResult<NewsViewModel>(400, "FileImageInvalid");
                         }
 
                         dnews.Media = new Media
@@ -1023,13 +1032,13 @@ public class NewsService : INewsService
                     }
                     else
                     {
-                        return new ApiErrorResult<string>(404, "OfficalRatingNotFound");
+                        return new ApiErrorResult<NewsViewModel>(404, "OfficalRatingNotFound");
                     }
                 }
 
                 if (request.TopicId == null)
                 {
-                    return new ApiErrorResult<string>(404, "TopicNotEmpty");
+                    return new ApiErrorResult<NewsViewModel>(404, "TopicNotEmpty");
                 }
 
                 //Tìm các Topic của News đó
@@ -1045,7 +1054,7 @@ public class NewsService : INewsService
                     {
                         var topic = await _context.TopicNews.FirstOrDefaultAsync(t => t.TopicId == item);
                         if (topic == null)
-                            return new ApiErrorResult<string>(404, "CannontFindATopicWithId", " " + request.TopicId);
+                            return new ApiErrorResult<NewsViewModel>(404, "CannontFindATopic");
                     }
 
                     //Xóa tất cả tin tức trong newsInTopics đã yêu cầu. 
@@ -1069,41 +1078,48 @@ public class NewsService : INewsService
                 if (res == 0)
                 {
                     transaction.Rollback();
-                    return new ApiErrorResult<string>(400, "UpdateNewsUnsuccessful");
+                    return new ApiErrorResult<NewsViewModel>(400, "UpdateNewsUnsuccessful");
                 }
 
                 transaction.Commit();
-                return new ApiSuccessResult<string>("UpdateNewsSuccessful", " " + news_update.NewsId.ToString());
+
+                var newsmodel = await GetById(news_update.NewsId);
+
+                return new ApiSuccessResult<NewsViewModel>("UpdateNewsSuccessful", newsmodel.ResultObj);
             }
             catch (DbUpdateException ex)
             {
                 transaction.Rollback();
-                return new ApiErrorResult<string>(500, ex.Message);
+                return new ApiErrorResult<NewsViewModel>(500, ex.Message);
             }
         }
     }
 
 
     //Cập nhật đường dẫn tin tức
-    public async Task<ApiResult<string>> UpdateLink(int newsId, string newLink)
+    public async Task<ApiResult<NewsViewModel>> UpdateLink(int newsId, string newLink)
     {
         try
         {
             var news_update = await NewsCommon.CheckExistNews(_context, newsId);
 
             if (news_update == null)
-                return new ApiErrorResult<string>(404, "CannontFindANewsWithId", " " + newsId.ToString());
+                return new ApiErrorResult<NewsViewModel>(404, "CannontFindANews");
 
             news_update.UrlNews = newLink;
 
             var result = await _context.SaveChangesAsync();
-            if (result == 0) return new ApiErrorResult<string>(400, "UpdateLinkNewsUnsuccessful");
 
-            return new ApiSuccessResult<string>("UpdateLinkNewsSuccessful", newLink);
+            if (result == 0)
+                return new ApiErrorResult<NewsViewModel>(400, "UpdateLinkNewsUnsuccessful");
+
+            var newsmodel = await GetById(news_update.NewsId);
+
+            return new ApiSuccessResult<NewsViewModel>("UpdateLinkNewsSuccessful", newsmodel.ResultObj);
         }
         catch (Exception ex)
         {
-            return new ApiErrorResult<string>(500, ex.Message);
+            return new ApiErrorResult<NewsViewModel>(500, ex.Message);
         }
     }
 
@@ -1116,25 +1132,27 @@ public class NewsService : INewsService
         return fileName;
     }
 
-    public async Task<ApiResult<string>> Archive(int Id)
+    public async Task<ApiResult<NewsViewModel>> Archive(int Id)
     {
         try
         {
             var news = await NewsCommon.CheckExistNews(_context, Id);
 
             if (news == null)
-                return new ApiErrorResult<string>(404, "CannontFindCommentWithId", " " + Id);
+                return new ApiErrorResult<NewsViewModel>(404, "CannontFindComment");
 
             news.Status = Status.Archive;
 
             var result = await _context.SaveChangesAsync();
-            if (result == 0) return new ApiErrorResult<string>(400, "UpdateLinkNewsUnsuccessful");
+            if (result == 0) return new ApiErrorResult<NewsViewModel>(400, "UpdateLinkNewsUnsuccessful");
 
-            return new ApiSuccessResult<string>("UpdateLinkNewsSuccessful");
+            var newsmodel = await GetById(news.NewsId);
+
+            return new ApiSuccessResult<NewsViewModel>("UpdateLinkNewsSuccessful", newsmodel.ResultObj);
         }
         catch (Exception ex)
         {
-            return new ApiErrorResult<string>(500, ex.Message);
+            return new ApiErrorResult<NewsViewModel>(500, ex.Message);
         }
     }
 
