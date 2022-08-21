@@ -82,7 +82,7 @@ namespace FakeNewsFilter.UserApp
             services.AddTransient<LanguageApi>();
             services.AddTransient<NewsApi>();
             services.AddTransient<NotificationApi>();
-            services.AddTransient<FactCheckApi>();
+            services.AddTransient<CloneNewsApi>();
 
             //Razor complilation Runtime 
             IMvcBuilder builder = services.AddRazorPages();

@@ -50,7 +50,7 @@ namespace FakeNewsFilter.WebApp
             services.AddTransient<LanguageApi>();
             services.AddTransient<NewsApi>();
             services.AddTransient<NotificationApi>();
-            services.AddTransient<FactCheckApi>();
+            services.AddTransient<CloneNewsApi>();
 
             //Authen
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -72,16 +72,8 @@ namespace FakeNewsFilter.WebApp
 
             //Razor complilation Runtime 
             IMvcBuilder builder = services.AddRazorPages();
-            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
-            #if DEBUG
-                        if (environment == Environments.Development)
-                        {
-                            builder.AddRazorRuntimeCompilation();
-                        }
-#endif
-
-            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

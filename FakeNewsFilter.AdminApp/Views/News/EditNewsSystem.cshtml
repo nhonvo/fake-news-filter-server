@@ -4,6 +4,11 @@
     ViewData["Title"] = "Update News";
 }
 
+@section headerscripts{
+    <link href="/bower_components/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <script src="https://momentjs.com/downloads/moment.js"></script>
+}
+
 <div id="updateNewsBySystem" class="modal fade bd-example-modal-lg show" role="dialog" tabindex="-1" aria-hidden="true" style="display: none;">
     <form asp-action="UpdateNewsBySystem" asp-controller="News" method="post" enctype="multipart/form-data">
         @Html.AntiForgeryToken()
@@ -34,7 +39,11 @@
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <label for="official-rating" class="form-label">Official Rating</label>
-                                <input type="text" asp-for="OfficialRating" class="form-control border-start-0" placeholder="Official Rating"/>
+                                <select type="text" class="form-control" asp-for="OfficialRating">
+                                    <option value="undefined">Undefined</option>
+                                    <option value="real">Real</option>
+                                    <option value="fake">Fake</option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-sm-3">
@@ -54,10 +63,14 @@
                         <label for="content" class="form-label">Content</label>
                         <textarea id="ckeditor1" typeof="text" class="form-control border-start-0" asp-for="Content"> </textarea>
                     </div>
+                    <div class="form-group">
+                        <label for="content" class="form-label">Description</label>
+                        <textarea typeof="text" class="form-control border-start-0" asp-for="Description"> </textarea>
+                    </div>
                     <input id="newsId" type="hidden" asp-for="Id" class="form-control border-start-0">
                     <div class="modal-footer">
                         <button class="btn btn-danger" data-dismiss="modal" type="button">Close</button>
-                        <button class="btn btn-success" type="submit" onclick="EditNews(this.parentElement.parentElement, event)">Save change</button>
+                        <button class="btn btn-success" type="submit">Save change</button>
                     </div>
                 </div>
 
@@ -65,3 +78,11 @@
         </div>
     </form>
 </div>
+
+@section footerscripts{
+    <script src="/bower_components/datatables/jquery.dataTables.min.js"></script>
+    <script src="/bower_components/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="/bower_components/bootstrap/js/dist/modal.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/31.0.0/classic/ckeditor.js"></script>
+    <script src="/js/admin/editnews.js"></script>
+}

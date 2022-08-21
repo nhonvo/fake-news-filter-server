@@ -61,6 +61,13 @@ namespace FakeNewsFilter.AdminApp.Controllers
 
             return View(data.Result);
         }
+        
+        [HttpGet]
+        public async Task<IActionResult> GetJsonNewsById(int newsId)
+        {
+            var data = await _newsApi.GetById(newsId);
+            return Json(data);
+        }
 
         [HttpGet]
         public async Task<IActionResult> GetNewsById(int Id, string source)
@@ -82,6 +89,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
                 {
                     Id = model.ResultObj.NewsId,
                     Title = model.ResultObj.Title,
+                    Description = model.ResultObj.Description,
                     Content = model.ResultObj.Content,
                     LanguageId = model.ResultObj.LanguageId,
                     Publisher = model.ResultObj.Publisher,
@@ -97,6 +105,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
                 {
                     Id = model.ResultObj.NewsId,
                     Title = model.ResultObj.Title,
+                    Description = model.ResultObj.Description,
                     LanguageId = model.ResultObj.LanguageId,
                     Publisher = model.ResultObj.Publisher,
                     TopicId = model.ResultObj.TopicId,

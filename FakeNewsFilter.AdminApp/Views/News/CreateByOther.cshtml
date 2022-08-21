@@ -21,7 +21,11 @@
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <label class="form-label" for="basic-icon-default-fullname">Official Rating</label>
-                                <input type="text" class="form-control dt-top-tag" asp-for="OfficialRating"/>
+                                <select type="text" class="form-control" asp-for="OfficialRating">
+                                    <option value="undefined">Undefined</option>
+                                    <option value="real">Real</option>
+                                    <option value="fake">Fake</option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-sm-3">
@@ -68,7 +72,14 @@
                             </div>
                         </div>
                     </div>
-
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="form-label" for="basic-icon-default-fullname">Description</label>
+                                <textarea class="form-control dt-top-tag" asp-for="Description"></textarea>
+                            </div>
+                        </div>
+                    </div>
                     @* <div class="form-group"> *@
                     @*     <label class="form-label" for="basic-icon-default-fullname">Content</label> *@
                     @*     <textarea id="ckeditor1" type="text" rows="5" class="form-control dt-top-tag" asp-for="Content"></textarea> *@

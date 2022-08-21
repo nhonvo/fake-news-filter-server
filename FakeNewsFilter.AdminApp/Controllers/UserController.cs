@@ -32,7 +32,7 @@ namespace FakeNewsFilter.WebApp.Controllers
         {
             if (TempData["result"] != null)
             {
-                ViewBag.SuccessMsg = TempData["Result"];
+                ViewBag.SuccessMsg = TempData["OigetitNews"];
             }
             if (TempData["Error"] != null)
             {
@@ -65,7 +65,7 @@ namespace FakeNewsFilter.WebApp.Controllers
 
             if(result.StatusCode == 200)
             {
-                TempData["Result"] = $"Create User {request.UserName} successful!";
+                TempData["OigetitNews"] = $"Create User {request.UserName} successful!";
 
                 return RedirectToAction("Index");
             }

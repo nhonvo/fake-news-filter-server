@@ -10,6 +10,8 @@ namespace FakeNewsFilter.Data.Entities
         public int NewsId { get; set; }
 
         public string Title { get; set; }
+        
+        public string Description { get; set; }
 
         public LabelNews OfficialRating { get; set; }
 

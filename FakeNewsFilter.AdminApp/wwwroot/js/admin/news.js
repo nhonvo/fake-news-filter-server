@@ -308,15 +308,17 @@ function CreateNews(frm, caller, source) {
 
     }
     var Title = $(frm).find('input#Title')[0].value;
+    var Description = $(frm).find('textarea#Description')[0].value;
     var Publisher = $(frm).find('#Publisher')[0].value;
-    var DatePublished = $(frm).find('#DatePublished')[0].value;
+    // var DatePublished = $(frm).find('#DatePublished')[0].value;
     var officialRating = $(frm).find('#OfficialRating')[0].value;
     var languageId = $(frm).find('#LanguageId')[0].value;
     var topicIdList = $(frm).find('#TopicId').select2("val");
 
     fdata.append("Title", Title);
+    fdata.append("Description", Description);
     fdata.append("Publisher", Publisher);
-    fdata.append("DatePublished", DatePublished);
+    // fdata.append("DatePublished", DatePublished);
     fdata.append("OfficialRating", officialRating);
     fdata.append("LanguageId", languageId);
     topicIdList.forEach((topicId) => fdata.append("TopicId", topicId));
@@ -380,7 +382,28 @@ function CreateNews(frm, caller, source) {
 
 //Xem chi tiết 1 chủ đề (phục vụ cho chỉnh sửa dữ liệu)
 function Detail(newsId, source) {
-    console.log(source);
+    // const select = $('.select2');
+    // select.each(function () {
+    //     var $this = $(this);
+    //     $this.wrap('<div class="position-relative"></div>');
+    //     $this.select2({
+    //         dropdownAutoWidth: true,
+    //         width: '100%',
+    //         dropdownParent: $this.parent()
+    //     });
+    // });
+    //
+    // //populate topic to edit news view
+    // $.ajax({
+    //     type: 'GET',
+    //     url: "/News/GetJsonNewsById?newsId=" + newsId,
+    //     dataType: 'json',
+    // }).then(function (data) {
+    //     console.log(data);
+    //     var result = data.resultObj.topicInfo.map(x => x.topicId);
+    //     console.log(result);
+    //     select.val(result).trigger('change');
+    // });
     
     $.ajax({
         type: "GET",

@@ -88,6 +88,7 @@ public class NewsService : INewsService
                         {
                             NewsId = x.NewsId,
                             Title = x.Title,
+                            Description = x.Description,
                             TopicInfo = x.NewsInTopics
                                 .Select(o => new TopicInfo {TopicId = o.TopicId, TopicName = o.TopicNews.Tag}).ToList(),
                             OfficialRating = x.OfficialRating.ToString(),
@@ -118,6 +119,7 @@ public class NewsService : INewsService
                         {
                             NewsId = x.NewsId,
                             Title = x.Title,
+                            Description = x.Description,
                             TopicInfo = x.NewsInTopics
                                 .Select(o => new TopicInfo {TopicId = o.TopicId, TopicName = o.TopicNews.Tag}).ToList(),
                             OfficialRating = x.OfficialRating.ToString(),
@@ -145,6 +147,7 @@ public class NewsService : INewsService
                         {
                             NewsId = x.NewsId,
                             Title = x.Title,
+                            Description = x.Description,
                             TopicInfo = x.NewsInTopics
                                 .Select(o => new TopicInfo {TopicId = o.TopicId, TopicName = o.TopicNews.Tag}).ToList(),
                             OfficialRating = x.OfficialRating.ToString(),
@@ -199,6 +202,7 @@ public class NewsService : INewsService
                     {
                         NewsId = x.NewsId,
                         Title = x.Title,
+                        Description = x.Description,
                         TopicInfo = x.NewsInTopics
                             .Select(o => new TopicInfo {TopicId = o.TopicId, TopicName = o.TopicNews.Tag}).ToList(),
                         OfficialRating = x.OfficialRating.ToString(),
@@ -231,6 +235,7 @@ public class NewsService : INewsService
                     {
                         NewsId = x.NewsId,
                         Title = x.Title,
+                        Description = x.Description,
                         TopicInfo = x.NewsInTopics
                             .Select(o => new TopicInfo {TopicId = o.TopicId, TopicName = o.TopicNews.Tag}).ToList(),
                         OfficialRating = x.OfficialRating.ToString(),
@@ -285,6 +290,7 @@ public class NewsService : INewsService
                 {
                     NewsId = n.NewsId,
                     Title = n.Title,
+                    Description = n.Description,
                     TopicInfo = n.NewsInTopics
                         .Select(o => new TopicInfo {TopicId = o.TopicId, TopicName = o.TopicNews.Tag}).ToList(),
                     OfficialRating = n.OfficialRating.ToString(),
@@ -321,6 +327,7 @@ public class NewsService : INewsService
                 {
                     NewsId = x.NewsId,
                     Title = x.Title,
+                    Description = x.Description,
                     TopicInfo = x.TopicInfo,
                     OfficialRating = x.OfficialRating,
                     SocialBeliefs = x.SocialBeliefs,
@@ -395,6 +402,7 @@ public class NewsService : INewsService
                 {
                     NewsId = news.NewsId,
                     Title = news.Title,
+                    Description = news.Description,
                     OfficialRating = news.OfficialRating.ToString(),
                     Publisher = news.Publisher,
                     ViewCount = news.ViewCount,
@@ -458,6 +466,7 @@ public class NewsService : INewsService
                 {
                     NewsId = news.NewsId,
                     Title = news.Title,
+                    Description = news.Description,
                     Content = news.DetailNews.Content,
                     OfficialRating = news.OfficialRating.ToString(),
                     Publisher = news.Publisher,
@@ -496,6 +505,7 @@ public class NewsService : INewsService
                 {
                     NewsId = x.NewsId,
                     Title = x.Title,
+                    Description = x.Description,
                     TopicInfo = x.NewsInTopics.Select(o => new TopicInfo
                             {TopicId = o.TopicId, TopicName = o.TopicNews.Tag})
                         .ToList(),
@@ -545,6 +555,7 @@ public class NewsService : INewsService
                 {
                     NewsId = x.n.NewsId,
                     Title = x.n.Title,
+                    Description = x.n.Description,
                     OfficialRating = x.n.OfficialRating.ToString(),
                     Publisher = x.n.Publisher,
                     Status = x.n.Status,
@@ -617,6 +628,7 @@ public class NewsService : INewsService
                         var news = new News
                         {
                             Title = request.Title,
+                            Description = request.Description,
                             OfficialRating = label_enum,
                             DatePublished = request.DatePublished ?? DateTime.Now,
                             Publisher = request.Publisher,
@@ -737,6 +749,7 @@ public class NewsService : INewsService
                             var news = new News
                             {
                                 Title = request.Title,
+                                Description = request.Description,
                                 UrlNews = request.UrlNews,
                                 ImageLink = request.ImageLink,
                                 OfficialRating = label_enum,
@@ -845,6 +858,7 @@ public class NewsService : INewsService
                 else
                 {
                     news_update.Title = request.Title ?? news_update.Title;
+                    news_update.Description = request.Description ?? news_update.Description;
                     news_update.LanguageId = request.LanguageId ?? news_update.LanguageId;
                     news_update.ImageLink = request.ImageLink ?? news_update.ImageLink;
                     news_update.UrlNews = request.UrlNews ?? news_update.UrlNews;
@@ -993,6 +1007,7 @@ public class NewsService : INewsService
 
                 //Cập nhật các thông tin chính sau
                 news_update.Title = request.Title ?? news_update.Title;
+                news_update.Description = request.Description ?? news_update.Description;
                 news_update.LanguageId = request.LanguageId ?? news_update.LanguageId;
                 news_update.Publisher = request.Publisher ?? news_update.Publisher;
                 news_update.LanguageId = request.LanguageId ?? news_update.LanguageId;

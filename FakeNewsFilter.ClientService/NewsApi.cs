@@ -99,6 +99,8 @@ namespace FakeNewsFilter.AdminApp.Services
             requestContent.Add(
                 new StringContent(string.IsNullOrEmpty(request.Content) ? "" : request.Content.ToString()), "Content");
             requestContent.Add(
+                new StringContent(string.IsNullOrEmpty(request.Description) ? "" : request.Description.ToString()), "Description");
+            requestContent.Add(
                 new StringContent(string.IsNullOrEmpty(request.LanguageId) ? "" : request.LanguageId.ToString()),
                 "LanguageId");
             requestContent.Add(
@@ -140,6 +142,8 @@ namespace FakeNewsFilter.AdminApp.Services
 
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Title) ? "" : request.Title.ToString()),
                 "Title");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Description) ? "" : request.Description.ToString()),
+                "Description");
             requestContent.Add(
                 new StringContent(string.IsNullOrEmpty(request.OfficialRating)
                     ? ""
@@ -227,6 +231,8 @@ namespace FakeNewsFilter.AdminApp.Services
                 new StringContent(string.IsNullOrEmpty(request.Id.ToString()) ? "" : request.Id.ToString()), "Id");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Title) ? "" : request.Title.ToString()),
                 "Title");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Description) ? "" : request.Description.ToString()),
+                "Description");
             requestContent.Add(
                 new StringContent(string.IsNullOrEmpty(request.OfficialRating)
                     ? ""
@@ -273,6 +279,8 @@ namespace FakeNewsFilter.AdminApp.Services
                 new StringContent(string.IsNullOrEmpty(request.Id.ToString()) ? "" : request.Id.ToString()), "Id");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Title) ? "" : request.Title.ToString()),
                 "Title");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Description) ? "" : request.Description.ToString()),
+                "Description");
             requestContent.Add(
                 new StringContent(string.IsNullOrEmpty(request.OfficialRating)
                     ? ""

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Principal;
 using FakeNewsFilter.Data.Enums;
 using FakeNewsFilter.ViewModel.Catalog.TopicNews;
 
@@ -12,6 +13,8 @@ public class NewsSystemViewModel
     public int NewsId { get; set; }
 
     public string Title { get; set; }
+
+    public string Description { get; set; }
     
     public string Content { get; set; }
 

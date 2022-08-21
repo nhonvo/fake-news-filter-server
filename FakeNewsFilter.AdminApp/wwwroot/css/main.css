@@ -28946,6 +28946,9 @@ Contents:
   z-index: 100;
 }
 
+.hidden {
+  display: none !important;
+}
 
 /* #12. Screen Height >= 700px */
 @media (min-height: 700px) and (min-width: 768px) {
