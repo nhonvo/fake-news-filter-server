@@ -288,12 +288,12 @@ $(function () {
 });
 
 function CreateNews(frm, caller, source) {
-    
+
     $('#loading').show();
     caller.preventDefault();
     var fdata = new FormData();
-    
-    if(source == "system"){
+
+    if (source == "system") {
         var content = CKEDITOR.instances.ckeditor1.getData();
         fdata.append("Content", content);
         var thumbNews = $(frm).find('input:file[name="ThumbNews"]')[0]?.files[0];
@@ -382,41 +382,25 @@ function CreateNews(frm, caller, source) {
 
 //Xem chi tiết 1 chủ đề (phục vụ cho chỉnh sửa dữ liệu)
 function Detail(newsId, source) {
-    // const select = $('.select2');
-    // select.each(function () {
-    //     var $this = $(this);
-    //     $this.wrap('<div class="position-relative"></div>');
-    //     $this.select2({
-    //         dropdownAutoWidth: true,
-    //         width: '100%',
-    //         dropdownParent: $this.parent()
-    //     });
-    // });
-    //
-    // //populate topic to edit news view
-    // $.ajax({
-    //     type: 'GET',
-    //     url: "/News/GetJsonNewsById?newsId=" + newsId,
-    //     dataType: 'json',
-    // }).then(function (data) {
-    //     console.log(data);
-    //     var result = data.resultObj.topicInfo.map(x => x.topicId);
-    //     console.log(result);
-    //     select.val(result).trigger('change');
-    // });
-    
     $.ajax({
         type: "GET",
         url: "News/GetNewsById",
         data: {Id: newsId, source: source},
         success: function (msg) {
             $('#PartialViewNews').html(msg);
-            if(source == "system"){
+            if (source == "system") {
                 $('#updateNewsBySystem').modal('show');
             } else {
                 $('#updateNewsByOutsource').modal('show');
             }
             loadSelect2();
+            //populate list topic in news to modal select2
+            var listInput = $('.news-in-topic-list-id');
+            var listTopicId = listInput.map(function () {
+                return $(this).val();
+            }).get();
+                var select = listInput.parent().find('select');
+                select.val(listTopicId).trigger('change');
         },
         error: function (req, status, error) {
             toastr['error'](
