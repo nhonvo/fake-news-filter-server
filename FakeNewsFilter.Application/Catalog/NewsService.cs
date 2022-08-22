@@ -88,6 +88,7 @@ public class NewsService : INewsService
                         {
                             NewsId = x.NewsId,
                             Title = x.Title,
+                            Content = x.DetailNews != null ? x.DetailNews.Content : "",
                             Description = x.Description,
                             TopicInfo = x.NewsInTopics
                                 .Select(o => new TopicInfo {TopicId = o.TopicId, TopicName = o.TopicNews.Tag}).ToList(),
@@ -119,6 +120,7 @@ public class NewsService : INewsService
                         {
                             NewsId = x.NewsId,
                             Title = x.Title,
+                            Content = x.DetailNews != null ? x.DetailNews.Content : "",
                             Description = x.Description,
                             TopicInfo = x.NewsInTopics
                                 .Select(o => new TopicInfo {TopicId = o.TopicId, TopicName = o.TopicNews.Tag}).ToList(),
@@ -147,6 +149,7 @@ public class NewsService : INewsService
                         {
                             NewsId = x.NewsId,
                             Title = x.Title,
+                            Content = x.DetailNews != null ? x.DetailNews.Content : "",
                             Description = x.Description,
                             TopicInfo = x.NewsInTopics
                                 .Select(o => new TopicInfo {TopicId = o.TopicId, TopicName = o.TopicNews.Tag}).ToList(),
@@ -202,6 +205,7 @@ public class NewsService : INewsService
                     {
                         NewsId = x.NewsId,
                         Title = x.Title,
+                        Content = x.DetailNews != null ? x.DetailNews.Content : "",
                         Description = x.Description,
                         TopicInfo = x.NewsInTopics
                             .Select(o => new TopicInfo {TopicId = o.TopicId, TopicName = o.TopicNews.Tag}).ToList(),
@@ -235,6 +239,7 @@ public class NewsService : INewsService
                     {
                         NewsId = x.NewsId,
                         Title = x.Title,
+                        Content = x.DetailNews != null ? x.DetailNews.Content : "",
                         Description = x.Description,
                         TopicInfo = x.NewsInTopics
                             .Select(o => new TopicInfo {TopicId = o.TopicId, TopicName = o.TopicNews.Tag}).ToList(),
@@ -290,6 +295,7 @@ public class NewsService : INewsService
                 {
                     NewsId = n.NewsId,
                     Title = n.Title,
+                    Content = n.DetailNews != null ? n.DetailNews.Content : "",
                     Description = n.Description,
                     TopicInfo = n.NewsInTopics
                         .Select(o => new TopicInfo {TopicId = o.TopicId, TopicName = o.TopicNews.Tag}).ToList(),
@@ -327,6 +333,7 @@ public class NewsService : INewsService
                 {
                     NewsId = x.NewsId,
                     Title = x.Title,
+                    Content = x.Content ?? "",
                     Description = x.Description,
                     TopicInfo = x.TopicInfo,
                     OfficialRating = x.OfficialRating,
@@ -392,11 +399,6 @@ public class NewsService : INewsService
 
             if (news != null)
             {
-                string content = null;
-                if (news.DetailNews != null)
-                {
-                    content = news.DetailNews.Content;
-                }
                 var topic = news.NewsInTopics.Select(o => new TopicInfo
                 {
                     TopicId = o.TopicId,
@@ -407,11 +409,11 @@ public class NewsService : INewsService
                 {
                     NewsId = news.NewsId,
                     Title = news.Title,
+                    Content = news.DetailNews != null ? news.DetailNews.Content : "",
                     Description = news.Description,
                     OfficialRating = news.OfficialRating.ToString(),
                     Publisher = news.Publisher,
                     ViewCount = news.ViewCount,
-                    Content = content,
                     SocialBeliefs = news.SocialBeliefs,
                     SourceCreate = news.SourceCreate.ToString(),
                     ThumbNews = string.IsNullOrEmpty(news.ImageLink)
@@ -511,6 +513,7 @@ public class NewsService : INewsService
                 {
                     NewsId = x.NewsId,
                     Title = x.Title,
+                    Content = x.DetailNews != null ? x.DetailNews.Content : "",
                     Description = x.Description,
                     TopicInfo = x.NewsInTopics.Select(o => new TopicInfo
                             {TopicId = o.TopicId, TopicName = o.TopicNews.Tag})
@@ -561,6 +564,7 @@ public class NewsService : INewsService
                 {
                     NewsId = x.n.NewsId,
                     Title = x.n.Title,
+                    Content = x.n.DetailNews != null ? x.n.DetailNews.Content : "",
                     Description = x.n.Description,
                     OfficialRating = x.n.OfficialRating.ToString(),
                     Publisher = x.n.Publisher,
