@@ -18,70 +18,18 @@ namespace FakeNewsFilter.API.Controllers
 
     [ApiController]
     [Authorize]
-    public class CommentController : Controller
+    public class CommentController : ReturnStatus
     {
         private readonly ICommentService _ICommentService;
         private readonly IStringLocalizer<CommentController> _localizer;
         private readonly ILogger<CommentController> _logger;
-        public CommentController(ICommentService ICommentService, IStringLocalizer<CommentController> localizer, ILogger<CommentController> logger)
+        public CommentController(ICommentService ICommentService, IStringLocalizer<CommentController> localizer, ILogger<CommentController> logger) : base(logger)
         {
             _ICommentService = ICommentService;
             _localizer = localizer;
             _logger = logger;
         }
 
-
-        IActionResult ResultStatusString(ApiResult<string> resultToken)
-        {
-            switch (resultToken.StatusCode)
-            {
-                case 200:
-                    {
-                        _logger.LogInformation(resultToken.Message);
-                        return Ok(resultToken);
-                    }
-                case 400:
-                    {
-                        _logger.LogError(resultToken.Message);
-                        return BadRequest(resultToken);
-                    }
-                case 404:
-                    {
-                        _logger.LogError(resultToken.Message);
-                        return NotFound(resultToken);
-                    }
-                default:
-                    {
-                        return StatusCode(StatusCodes.Status500InternalServerError, resultToken);
-                    }
-            }
-        }
-
-        IActionResult ResultStatusModel(ApiResult<List<CommentViewModel>> resultToken)
-        {
-            switch (resultToken.StatusCode)
-            {
-                case 200:
-                    {
-                        _logger.LogInformation(resultToken.Message);
-                        return Ok(resultToken);
-                    }
-                case 400:
-                    {
-                        _logger.LogError(resultToken.Message);
-                        return BadRequest(resultToken);
-                    }
-                case 404:
-                    {
-                        _logger.LogError(resultToken.Message);
-                        return NotFound(resultToken);
-                    }
-                default:
-                    {
-                        return StatusCode(StatusCodes.Status500InternalServerError, resultToken);
-                    }
-            }
-        }
         [HttpPost]
 
         public async Task<IActionResult> Create([FromBody] CommentCreateRequest request)
@@ -96,7 +44,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 result.Message = _localizer[result.Message].Value + result.ResultObj;
 
-                return ResultStatusString(result);
+                return ReturnWithModel(result);
             }
             catch (FakeNewsException e)
             {
@@ -114,8 +62,8 @@ namespace FakeNewsFilter.API.Controllers
             var comments = await _ICommentService.GetCommentByNewsId(newsId);
 
             comments.Message = _localizer[comments.Message].Value;
-            
-            return ResultStatusModel(comments);
+
+            return ReturnWithListModel(comments);
         }
 
         [HttpDelete]
@@ -127,7 +75,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 result.Message = _localizer[result.Message].Value + result.ResultObj;
 
-                return ResultStatusString(result);
+                return ReturnWithModel(result);
             }
             catch (FakeNewsException e)
             {
@@ -137,7 +85,7 @@ namespace FakeNewsFilter.API.Controllers
 
         }
 
-        [HttpPut]
+        [HttpPut("Update")]
         public async Task<IActionResult> Update([FromBody] CommentUpdateRequest request)
         {
             try
@@ -151,7 +99,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 result.Message = _localizer[result.Message].Value + result.ResultObj;
 
-                return ResultStatusString(result);
+                return ReturnWithModel(result);
             }
             catch (FakeNewsException e)
             {
@@ -175,7 +123,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 result.Message = _localizer[result.Message].Value + result.ResultObj;
 
-                return ResultStatusString(result);
+                return ReturnWithModel(result);
             }
             catch (FakeNewsException e)
             {

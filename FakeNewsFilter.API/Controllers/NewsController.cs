@@ -401,13 +401,13 @@ namespace FakeNewsFilter.API.Controllers
             await _newsService.UpdateViewCount(newsViewCountDict);
         }
 
-        [HttpPut("Archive")]
+        [HttpPut("Archive/{newsId}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Archive(int request)
+        public async Task<IActionResult> Archive(int newsId)
         {
             try
             {
-                var resultToken = await _newsService.Archive(request);
+                var resultToken = await _newsService.Archive(newsId);
 
                 resultToken.Message = _localizer[resultToken.Message].Value;
 

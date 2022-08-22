@@ -16,11 +16,11 @@ namespace FakeNewsFilter.Application.Catalog;
 
 public interface ICommentService
 {
-    Task<ApiResult<string>> Create(CommentCreateRequest request);
+    Task<ApiResult<List<CommentViewModel>>> Create(CommentCreateRequest request);
     Task<ApiResult<string>> Delete(int commentId, Guid userId);
     Task<ApiResult<List<CommentViewModel>>> GetCommentByNewsId(int NewsId);
-    Task<ApiResult<string>> Update(CommentUpdateRequest request);
-    Task<ApiResult<string>> Archive (CommentUpdateRequest request);
+    Task<ApiResult<List<CommentViewModel>>> Update(CommentUpdateRequest request);
+    Task<ApiResult<List<CommentViewModel>>> Archive (CommentUpdateRequest request);
 }
 
 public class CommentService : ICommentService
@@ -37,15 +37,15 @@ public class CommentService : ICommentService
     }
 
     //Tạo bình luận
-    public async Task<ApiResult<string>> Create(CommentCreateRequest request)
+    public async Task<ApiResult<List<CommentViewModel>>> Create(CommentCreateRequest request)
     {
         var user = await UserCommon.CheckExistUser(_context, request.UserId);
         if (user == null)
-            return new ApiErrorResult<string>(404, "UserIsNotExist"," " + request.UserId.ToString());
+            return new ApiErrorResult<List<CommentViewModel>>(404, "UserIsNotExist");
 
         var news = await NewsCommon.CheckExistNews(_context, request.NewsId);
         if (news == null)
-            return new ApiErrorResult<string>(404, "NewsIsNotExist", " " + request.NewsId);
+            return new ApiErrorResult<List<CommentViewModel>>(404, "NewsIsNotExist");
 
         Comment comment = null;
 
@@ -79,11 +79,11 @@ public class CommentService : ICommentService
         _context.Comment.Add(comment);
 
         var result = await _context.SaveChangesAsync();
-
+        var cmtModel = await GetCommentByNewsId(comment.CommentId);
         if (result != 0)
-            return new ApiSuccessResult<string>("CreateCommentSuccessful", " " + comment.CommentId.ToString());
+            return new ApiSuccessResult<List<CommentViewModel>>("CreateCommentSuccessful", cmtModel.ResultObj);
 
-        return new ApiErrorResult<string>(400, "CreateCommentUnsuccessful");
+        return new ApiErrorResult<List<CommentViewModel>>(400, "CreateCommentUnsuccessful", cmtModel.ResultObj);
     }
 
     //Lấy tất cả các bình luận của tin tức đó
@@ -144,35 +144,37 @@ public class CommentService : ICommentService
     }
 
     //Cập nhật bình luận
-    public async Task<ApiResult<string>> Update(CommentUpdateRequest request)
+    public async Task<ApiResult<List<CommentViewModel>>> Update(CommentUpdateRequest request)
     {
         var comment = await CommentCommon.CheckExistComment(_context, request.CommentId);
         if (comment == null)
-            return new ApiErrorResult<string>(404,"CommentNotFound", " " + request.CommentId);
+            return new ApiErrorResult<List<CommentViewModel>>(404,"CommentNotFound");
 
         comment.Content = request.Content;
         comment.Timestamp = DateTime.Now;
 
         _context.Comment.Update(comment);
         var result = await _context.SaveChangesAsync();
+        var cmtModel = await GetCommentByNewsId(comment.CommentId);
         if (result == 0)
-            return new ApiErrorResult<string>(400, "UpdateCommentUnsuccessful", " " + result);
+            return new ApiErrorResult<List<CommentViewModel>>(400, "UpdateCommentUnsuccessful", cmtModel.ResultObj);
 
-        return new ApiSuccessResult<string>("UpdateCommentSuccessful", " " + comment.CommentId.ToString());
+        return new ApiSuccessResult<List<CommentViewModel>>("UpdateCommentSuccessful", cmtModel.ResultObj);
     }
 
-    public async Task<ApiResult<string>> Archive(CommentUpdateRequest request)
+    public async Task<ApiResult<List<CommentViewModel>>> Archive(CommentUpdateRequest request)
     {
         var cmt_update = await CommentCommon.CheckExistComment(_context, request.CommentId);
 
         if (cmt_update == null)
-            return new ApiErrorResult<string>(404, "CannontFindCommentWithId", " " + request.CommentId.ToString());
+            return new ApiErrorResult<List<CommentViewModel>>(404, "CannontFindCommentWithId");
 
         cmt_update.Status = Status.Archive;
-
+        var cmtModel = await GetCommentByNewsId(cmt_update.CommentId);
         var result = await _context.SaveChangesAsync();
-        if (result == 0) return new ApiErrorResult<string>(400, "UpdateLinkNewsUnsuccessful");
 
-        return new ApiSuccessResult<string>("UpdateLinkNewsSuccessful");
+        if (result == 0) return new ApiErrorResult<List<CommentViewModel>>(400, "UpdateLinkNewsUnsuccessful", cmtModel.ResultObj);
+
+        return new ApiSuccessResult<List<CommentViewModel>>("UpdateLinkNewsSuccessful", cmtModel.ResultObj);
     }
 }

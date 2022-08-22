@@ -83,11 +83,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 topics.Message = _localizer[topics.Message].Value;
 
-                if (topics.StatusCode != 200)
-                {
-                    return BadRequest(topics);
-                }
-                return Ok(topics);
+                return ReturnWithListModel(topics);
             }
             catch (FakeNewsException e)
             {
@@ -106,11 +102,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 topics.Message = _localizer[topics.Message].Value;
 
-                if (topics.StatusCode != 200)
-                {
-                    return BadRequest(topics);
-                }
-                return Ok(topics);
+                return ReturnWithModel(topics);
             }
             catch (FakeNewsException e)
             {
@@ -129,7 +121,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 topic.Message = _localizer[topic.Message].Value;
 
-                return Ok(topic);
+                return ReturnWithModel(topic);
             }
             catch (FakeNewsException e)
             {

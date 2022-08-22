@@ -392,6 +392,11 @@ public class NewsService : INewsService
 
             if (news != null)
             {
+                string content = null;
+                if (news.DetailNews != null)
+                {
+                    content = news.DetailNews.Content;
+                }
                 var topic = news.NewsInTopics.Select(o => new TopicInfo
                 {
                     TopicId = o.TopicId,
@@ -406,6 +411,7 @@ public class NewsService : INewsService
                     OfficialRating = news.OfficialRating.ToString(),
                     Publisher = news.Publisher,
                     ViewCount = news.ViewCount,
+                    Content = content,
                     SocialBeliefs = news.SocialBeliefs,
                     SourceCreate = news.SourceCreate.ToString(),
                     ThumbNews = string.IsNullOrEmpty(news.ImageLink)
