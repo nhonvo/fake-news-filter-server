@@ -10,7 +10,7 @@
                     <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true"> ×</span></button>
                 </div>
                 <div class="modal-body">
-                    <form asp-action="Create" asp-controller="Topic" method="post">
+                    <form asp-action="CreateNewTopic" asp-controller="Topic" method="post">
                         <div class="form-group">
                             <label class="form-label" for="basic-icon-default-fullname">Tag</label>
                             <input type="text" class="form-control dt-top-tag" asp-for="Tag" />
@@ -38,7 +38,7 @@
                             <div style="text-align: center">
                                 <img class="topic-thumb rounded me-2 my-25 cursor-pointer" height="100">
                                 <div class="col-12 mt-1">
-                                    <label class="btn btn-primary me-75 mb-0 waves-effect waves-float waves-light">
+                                    <label for="ThumbTopic" class="btn btn-primary me-75 mb-0 waves-effect waves-float waves-light">
                                         <span class="d-none d-sm-block">Choose Image</span>
                                         <input asp-for="ThumbTopic" class="createThumbTopic form-control" type="file" hidden="" accept="image/png, image/jpeg, image/jpg">
                                         <span class="d-block d-sm-none">

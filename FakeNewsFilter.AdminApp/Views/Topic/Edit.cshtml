@@ -1,7 +1,7 @@
 ﻿@model FakeNewsFilter.ViewModel.Catalog.TopicNews.TopicInfoVM
 
 <div id="updateTopic" class="modal fade bd-example-modal-lg show" role="dialog" tabindex="-1" aria-hidden="true" style="display: none;">
-    <form method="post" asp-controller="Topic" asp-action="Edit" id="updateTopic">
+    <form method="post" asp-controller="Topic" asp-action="EditTopic" id="updateTopic">
         @Html.AntiForgeryToken()
         <div class="modal-dialog modal-lg">>
             <div class="modal-content">
@@ -21,7 +21,6 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit me-0"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                             </span>
                         </div>
-
                         <div class="row">
                             <div class="col-sm-4">
                                 <div class="form-group">
@@ -63,22 +62,15 @@
                                 </div>
                             </div>
                         </div>
-
                         <input type="hidden" asp-for="TopicId" />
-                        
                     </div>
                 </div>
 
                 <div class="modal-footer">
                     <button class="btn btn-danger" data-dismiss="modal" type="button">Close</button>
-                    <button class="btn btn-success" type="submit" onclick="EditTopic(this.parentElement.parentElement, event)">Save change</button>
+                    <button class="btn btn-success" type="submit" onclick="EditTopic(document.querySelector('#updateTopic > form'), event)">Save change</button>
                 </div>
             </div>
         </div>
     </form>
 </div>
-
-
-@section footerscripts{
-    <script src="/js/admin/edittopic.js"></script>
-}

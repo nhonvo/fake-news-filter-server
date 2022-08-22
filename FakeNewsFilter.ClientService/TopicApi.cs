@@ -19,13 +19,15 @@ namespace FakeNewsFilter.AdminApp.Services
 
         Task<ApiResult<PagedResult<TopicInfoVM>>> GetTopicPaging(GetTopicNewsRequest request);
 
-        Task<ApiResult<string>> CreateTopic(TopicCreateRequest request);
+        Task<ApiResult<TopicInfoVM>> CreateTopic(TopicCreateRequest request);
 
         Task<ApiResult<TopicInfoVM>> GetById(int Id);
 
         Task<ApiResult<string>> UpdateTopic(TopicUpdateRequest request);
 
         Task<ApiResult<string>> Delete(int topicId);
+        Task<ApiResult<string>> Archive(int topicId);
+
     }
 
     public class TopicApi : BaseApiClient, ITopicApi
@@ -70,7 +72,7 @@ namespace FakeNewsFilter.AdminApp.Services
         }
 
 
-        public async Task<ApiResult<string>> CreateTopic(TopicCreateRequest request)
+        public async Task<ApiResult<TopicInfoVM>> CreateTopic(TopicCreateRequest request)
         {
             var client = _httpClientFactory.CreateClient();
 
@@ -105,9 +107,9 @@ namespace FakeNewsFilter.AdminApp.Services
 
             if (response.IsSuccessStatusCode)
 
-                return new ApiSuccessResult<string>("Create Topic Successfully");
+                return JsonConvert.DeserializeObject<ApiSuccessResult<TopicInfoVM>>(result);
 
-            return  new ApiErrorResult<string>(400, "Create Topic Unsuccessfully");
+            return JsonConvert.DeserializeObject<ApiErrorResult<TopicInfoVM>>(result);
         }
 
         public async Task<ApiResult<TopicInfoVM>> GetById(int Id)
@@ -173,6 +175,21 @@ namespace FakeNewsFilter.AdminApp.Services
                 return new ApiSuccessResult<string>("Delete Topic Successfully");
 
             return  new ApiErrorResult<string>(400, "Delete Topic Unsuccessfully");
+        }
+        public async Task<ApiResult<string>> Archive(int topicId)
+        {
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+            var response = await client.PutAsync($"/api/topic/archive/" + topicId, null);
+            var body = await response.Content.ReadAsStringAsync();
+            
+            if (response.IsSuccessStatusCode)
+
+                return new ApiSuccessResult<string>("Archive Topic Successfully");
+
+            return  new ApiErrorResult<string>(400, "Archive Topic Unsuccessfully");
         }
     }
 }

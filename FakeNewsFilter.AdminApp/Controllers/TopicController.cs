@@ -71,7 +71,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(TopicCreateRequest request)
+        public async Task<IActionResult> CreateNewTopic(TopicCreateRequest request)
         {
             //true if any property is null
             bool allPropertiesNull = request.GetType()
@@ -96,19 +96,19 @@ namespace FakeNewsFilter.AdminApp.Controllers
             {
                 TempData["Result"] = $"Create User {request.Tag} successful!";
 
-                return RedirectToAction("Index");
+                return Json(result);
             }
 
             TempData["Error"] = result.Message;
 
-            return RedirectToAction("Index");
+            throw new Exception("Cannot create new topic");
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(TopicUpdateRequest request)
+        public async Task<IActionResult> EditTopic(TopicUpdateRequest request)
         {
             if (!ModelState.IsValid)
-                return View();
+                return View("Edit");
 
             var result = await _topicApi.UpdateTopic(request);
 
@@ -120,11 +120,11 @@ namespace FakeNewsFilter.AdminApp.Controllers
 
             ModelState.AddModelError("", result.Message);
 
-            return View();
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(int topicId)
+        public async Task<IActionResult> Archive(int topicId)
         {
             if (!ModelState.IsValid)
             {
@@ -132,15 +132,15 @@ namespace FakeNewsFilter.AdminApp.Controllers
                 return RedirectToAction("Index");
             }
 
-            var result = await _topicApi.Delete(topicId);
+            var result = await _topicApi.Archive(topicId);
             if (result.StatusCode == 200)
             {
                 TempData["result"] = $"Delete Topic successful!";
-                return Json("done");
+                return RedirectToAction("Index");
             }
 
             ModelState.AddModelError("", result.Message);
-            return Json("error");
+            return RedirectToAction("Index");
         }
     }
 }

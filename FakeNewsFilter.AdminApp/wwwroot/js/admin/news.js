@@ -417,11 +417,19 @@ function Detail(newsId, source) {
 }
 
 function DeleteData(newsId) {
-    if (confirm("Are you sure want to delele this news?")) {
-        Delete(newsId);
+    if (confirm("Are you sure want to archive this news?")) {
+        Archive(newsId);
     } else {
         return false;
     }
+}
+
+function Archive(newsId){
+    var url = "/News/Archive";
+    $.post(url, {newsId: newsId}, function (data) {
+        console.log(data);
+        location.reload();
+    });
 }
 
 function Delete(newsId) {

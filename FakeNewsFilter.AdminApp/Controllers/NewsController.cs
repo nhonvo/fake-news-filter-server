@@ -179,21 +179,6 @@ namespace FakeNewsFilter.AdminApp.Controllers
             }
         }
 
-        // [HttpGet]
-        // [Breadcrumb("Edit News", FromController = typeof(NewsController), FromPage = typeof(Index))]
-        // public async Task<IActionResult> Edit(int Id)
-        // {
-        //     var result = await _newsApi.GetById(Id);
-        //
-        //     var topicData = await _topicApi.GetAllTopic();
-        //     var languageData = await _languageApi.GetLanguageInfo();
-        //
-        //     ViewBag.ListTopic = new SelectList(topicData.ResultObj, "TopicId", "Tag");
-        //     ViewBag.ListLanguage = new SelectList(languageData.ResultObj, "Id", "Name");
-        //
-        //     return View("Edit");
-        // }
-
         [HttpPost]
         public async Task<IActionResult> UpdateNewsBySystem(NewsSystemUpdateRequest request)
         {
@@ -246,6 +231,27 @@ namespace FakeNewsFilter.AdminApp.Controllers
             if (result.StatusCode == 200)
             {
                 TempData["result"] = $"Delete news successful!";
+                return Json("done");
+            }
+
+            ModelState.AddModelError("", result.Message);
+            return Json("error");
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> Archive(int newsId)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.ModelState = ModelState;
+                return RedirectToAction("Index");
+            }
+
+            var result = await _newsApi.Archive(newsId);
+
+            if (result.StatusCode == 200)
+            {
+                TempData["result"] = $"Archive news successful!";
                 return Json("done");
             }
 
