@@ -61,13 +61,6 @@ namespace FakeNewsFilter.AdminApp.Controllers
 
             return View(data.Result);
         }
-        
-        [HttpGet]
-        public async Task<IActionResult> GetJsonNewsById(int newsId)
-        {
-            var data = await _newsApi.GetById(newsId);
-            return Json(data);
-        }
 
         [HttpGet]
         public async Task<IActionResult> GetNewsById(int Id, string source)
@@ -81,6 +74,8 @@ namespace FakeNewsFilter.AdminApp.Controllers
             ViewBag.ListTopic = new SelectList(topicData.ResultObj, "TopicId", "Tag");
 
             ViewBag.ListLanguage = new SelectList(languageData.ResultObj, "Id", "Name");
+
+            ViewBag.ListNewsInTopicId = model.ResultObj.TopicInfo.Select(x => x.TopicId).ToList();
 
             if (source == "system")
             {
@@ -113,7 +108,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
                     UrlNews = model.ResultObj.UrlNews,
                     DatePublished = model.ResultObj.DatePublished,
                 };
-                
+
                 return PartialView("EditNewsOutsource", modelUpdate);
             }
         }
@@ -203,38 +198,38 @@ namespace FakeNewsFilter.AdminApp.Controllers
         public async Task<IActionResult> UpdateNewsBySystem(NewsSystemUpdateRequest request)
         {
             if (!ModelState.IsValid)
-                return RedirectToAction("Index", new { source = "system" });
+                return RedirectToAction("Index", new {source = "system"});
 
             var result = await _newsApi.UpdateBySystem(request);
 
             if (result.StatusCode == 200)
             {
                 TempData["result"] = $"Update news {request.Id} successful!";
-                return RedirectToAction("Index", new { source = "system" });
+                return RedirectToAction("Index", new {source = "system"});
             }
 
             ModelState.AddModelError("", result.Message);
 
-            return RedirectToAction("Index", new { source = "system" });
+            return RedirectToAction("Index", new {source = "system"});
         }
 
         [HttpPost]
         public async Task<IActionResult> UpdateNewsByOutSource(NewsOutSourceUpdateRequest request)
         {
             if (!ModelState.IsValid)
-                return RedirectToAction("Index", new { source = "outsource" });
+                return RedirectToAction("Index", new {source = "outsource"});
 
             var result = await _newsApi.UpdateByOutSource(request);
 
             if (result.StatusCode == 200)
             {
                 TempData["result"] = $"Update news {request.Id} successful!";
-                return RedirectToAction("Index", new { source = "outsource" });
+                return RedirectToAction("Index", new {source = "outsource"});
             }
 
             ModelState.AddModelError("", result.Message);
 
-            return RedirectToAction("Index", new { source = "outsource" });
+            return RedirectToAction("Index", new {source = "outsource"});
         }
 
         [HttpPost]

@@ -22,14 +22,14 @@ namespace FakeNewsFilter.Application.Catalog
 
         Task<ApiResult<PagedResult<TopicInfoVM>>> GetTopicPaging(GetTopicNewsRequest request);
 
-        Task<ApiResult<string>> Create(TopicCreateRequest request);
+        Task<ApiResult<TopicInfoVM>> Create(TopicCreateRequest request);
 
         Task<ApiResult<TopicInfoVM>> GetTopicById(int Id);
 
-        Task<ApiResult<string>> Delete(int TopicId);
+        Task<ApiResult<String>> Delete(int TopicId);
 
-        Task<ApiResult<string>> Update(TopicUpdateRequest request);
-        Task<ApiResult<string>> Archive(TopicUpdateRequest request);
+        Task<ApiResult<TopicInfoVM>> Update(TopicUpdateRequest request);
+        Task<ApiResult<TopicInfoVM>> Archive(TopicUpdateRequest request);
     }
 
     public class TopicService : ITopicService
@@ -173,7 +173,7 @@ namespace FakeNewsFilter.Application.Catalog
         }
 
         //Tạo chủ đề mới
-        public async Task<ApiResult<string>> Create(TopicCreateRequest request)
+        public async Task<ApiResult<TopicInfoVM>> Create(TopicCreateRequest request)
         {
             using (var transaction = _context.Database.BeginTransaction())
             {
@@ -181,14 +181,14 @@ namespace FakeNewsFilter.Application.Catalog
                 {
                     if(request.LanguageId == null)
                     {
-                        return new ApiErrorResult<string>(404, "PleaseEnterThisField");
+                        return new ApiErrorResult<TopicInfoVM>(404, "PleaseEnterThisField");
                     } else
                     {
                         var language = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
 
                         if (language == null)
                         {
-                            return new ApiErrorResult<string>(404, "LanguageNotFound");
+                            return new ApiErrorResult<TopicInfoVM>(404, "LanguageNotFound");
                         }
                     }
                     
@@ -220,39 +220,40 @@ namespace FakeNewsFilter.Application.Catalog
 
                     var result = await _context.SaveChangesAsync();
 
+                    var getTopic = await GetTopicById(topic.TopicId);
                     if (result > 0)
                     {
                         transaction.Commit();
-                        return new ApiSuccessResult<string>("CreateTopicSuccessful", " " + topic.TopicId.ToString());
+                        return new ApiSuccessResult<TopicInfoVM>("CreateTopicSuccessful", getTopic.ResultObj);
                     }
 
                     transaction.Rollback();
-                    return new ApiErrorResult<string>(400, "CreateUnsuccessful", " " + result.ToString());
+                    return new ApiErrorResult<TopicInfoVM>(400, "CreateUnsuccessful");
                 }
                 catch (Exception ex)
                 {
                     transaction.Rollback();
-                    return new ApiErrorResult<string>(500, ex.Message);
+                    return new ApiErrorResult<TopicInfoVM>(500, ex.Message);
                 }
             }
 
         }
 
         //Cập nhật Topic
-        public async Task<ApiResult<string>> Update(TopicUpdateRequest request)
+        public async Task<ApiResult<TopicInfoVM>> Update(TopicUpdateRequest request)
         {
             try
             {
                 var topic = await TopicCommon.CheckExistTopic(_context, request.TopicId);
                 if (topic == null)
                 {
-                    return new ApiErrorResult<string>(404, "TopicNotFound");
+                    return new ApiErrorResult<TopicInfoVM>(404, "TopicNotFound");
                 }
 
                 var language = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
                 if (language == null)
                 {
-                    return new ApiErrorResult<string>(404, "LanguageNotFound");
+                    return new ApiErrorResult<TopicInfoVM>(404, "LanguageNotFound");
                 }
                 
                 topic.Label = request.Label ?? topic.Label;
@@ -297,16 +298,17 @@ namespace FakeNewsFilter.Application.Catalog
 
                 var result = await _context.SaveChangesAsync();
 
+                var updateModel = await GetTopicById(topic.TopicId);
                 if (result > 0)
                 {
-                    return new ApiSuccessResult<string>("UpdateTopicSuccessful", " " + topic.TopicId.ToString());
+                    return new ApiSuccessResult<TopicInfoVM>("UpdateTopicSuccessful", updateModel.ResultObj);
                 }
 
-                return new ApiErrorResult<string>(400, "UpdateUnsuccessful", " " + result.ToString());
+                return new ApiErrorResult<TopicInfoVM>(400, "UpdateUnsuccessful");
             }
             catch(Exception ex)
             {
-                return new ApiErrorResult<string>(500, ex.Message);
+                return new ApiErrorResult<TopicInfoVM>(500, ex.Message);
             }
             
         }
@@ -353,13 +355,13 @@ namespace FakeNewsFilter.Application.Catalog
         }
 
         //Xoá Topic
-        public async Task<ApiResult<string>> Delete(int topicId)
+        public async Task<ApiResult<String>> Delete(int topicId)
         {
             try
             {
                 var topic = await TopicCommon.CheckExistTopic(_context, topicId);
 
-                if (topic == null) return new ApiSuccessResult<string>($"CannotFindTopicWithId"," " + topicId.ToString());
+                if (topic == null) return new ApiSuccessResult<String>($"CannotFindTopicWithId"," " + topicId.ToString());
 
                 if(topic.ThumbTopic != null)
                 {
@@ -379,39 +381,40 @@ namespace FakeNewsFilter.Application.Catalog
 
                 if (result > 0)
                 {
-                    return new ApiSuccessResult<string>("DeleteTopicSuccessful", " " + topic.TopicId.ToString());
+                    return new ApiSuccessResult<String>("DeleteTopicSuccessful", " " + topic.TopicId.ToString());
                 }
 
-                return new ApiErrorResult<string>(400, "DeleteUnsuccessful", " " + result);
+                return new ApiErrorResult<String>(400, "DeleteUnsuccessful", " " + result);
             }
 
             catch(Exception ex)
             {
-                return new ApiErrorResult<string>(500, ex.Message);
+                return new ApiErrorResult<String>(500, ex.Message);
             }
         }
 
-        public async Task<ApiResult<string>> Archive(TopicUpdateRequest request)
+        public async Task<ApiResult<TopicInfoVM>> Archive(TopicUpdateRequest request)
         {
             try
             {
                 var topic = await TopicCommon.CheckExistTopic(_context, request.TopicId);
 
                 if (topic == null)
-                    return new ApiErrorResult<string>(404, "CannontFindTopicWithId", " " + request.TopicId);
+                    return new ApiErrorResult<TopicInfoVM>(404, "CannontFindTopicWithId");
 
                 topic.Status = Status.Archive;
 
                 var result = await _context.SaveChangesAsync();
 
+                var topicModel = await GetTopicById(topic.TopicId);
                 if (result == 0)
-                    return new ApiErrorResult<string>(400, "ArchiveTopicUnsuccessful");
+                    return new ApiErrorResult<TopicInfoVM>(400, "ArchiveTopicUnsuccessful", topicModel.ResultObj);
 
-                return new ApiSuccessResult<string>("ArchiveTopicSuccessful");
+                return new ApiSuccessResult<TopicInfoVM>("ArchiveTopicSuccessful");
             }
             catch(Exception ex)
             {
-                return new ApiErrorResult<string>(500, ex.Message);
+                return new ApiErrorResult<TopicInfoVM>(500, ex.Message);
             }
             
         }

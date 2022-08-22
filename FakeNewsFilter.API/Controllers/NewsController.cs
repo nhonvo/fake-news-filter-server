@@ -17,12 +17,14 @@ using Quartz;
 using StackExchange.Redis;
 using FakeNewsFilter.API.Validator.News;
 using Microsoft.AspNetCore.Http;
+using Google.Apis.Http;
+using System.Configuration;
 
 namespace FakeNewsFilter.API.Controllers
 {
     [Route("api/[controller]")]
     [Authorize]
-    public class NewsController : ControllerBase, IJob
+    public class NewsController : ReturnStatus, IJob
     {
         private readonly IDistributedCache _distributedCache;
         private readonly INewsService _newsService;
@@ -34,7 +36,7 @@ namespace FakeNewsFilter.API.Controllers
 
         public NewsController(IDistributedCache distributedCache, INewsService newsService,
             IFollowService followService, IStringLocalizer<NewsController> localizer, ILogger<NewsController> logger,
-            IConnectionMultiplexer redis, IConfiguration configuration)
+            IConnectionMultiplexer redis, IConfiguration configuration ) : base(logger)
         {
             _distributedCache = distributedCache;
             _newsService = newsService;
@@ -45,57 +47,6 @@ namespace FakeNewsFilter.API.Controllers
             _redis = redis;
         }
 
-        IActionResult ResultStatusString(ApiResult<string> resultToken)
-        {
-            switch (resultToken.StatusCode)
-            {
-                case 200:
-                {
-                    _logger.LogInformation(resultToken.Message);
-                    return Ok(resultToken);
-                }
-                case 400:
-                {
-                    _logger.LogError(resultToken.Message);
-                    return BadRequest(resultToken);
-                }
-                case 404:
-                {
-                    _logger.LogError(resultToken.Message);
-                    return NotFound(resultToken);
-                }
-                default:
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError, resultToken);
-                }
-            }
-        }
-
-        IActionResult ResultStatusModel(ApiResult<List<NewsViewModel>> resultToken)
-        {
-            switch (resultToken.StatusCode)
-            {
-                case 200:
-                {
-                    _logger.LogInformation(resultToken.Message);
-                    return Ok(resultToken);
-                }
-                case 400:
-                {
-                    _logger.LogError(resultToken.Message);
-                    return BadRequest(resultToken);
-                }
-                case 404:
-                {
-                    _logger.LogError(resultToken.Message);
-                    return NotFound(resultToken);
-                }
-                default:
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError, resultToken);
-                }
-            }
-        }
 
         [HttpPost("CreateBySystem")]
         [Authorize(Roles = "Admin")]
@@ -120,16 +71,11 @@ namespace FakeNewsFilter.API.Controllers
 
                 var createNews = await _newsService.CreateBySystem(request);
 
-                createNews.Message = _localizer[createNews.Message].Value + createNews.ResultObj;
-
-                return ResultStatusString(createNews);
-
-                var getNews = await _newsService.GetById(Int32.Parse(createNews.ResultObj));
-
-                getNews.Message = _localizer[getNews.Message].Value;
+                createNews.Message = _localizer[createNews.Message].Value;
 
                 _logger.LogInformation(createNews.Message);
-                return CreatedAtAction(nameof(GetById), new {newsId = createNews}, getNews);
+
+                return ReturnWithModel(createNews);
             }
             catch (FakeNewsException e)
             {
@@ -161,16 +107,12 @@ namespace FakeNewsFilter.API.Controllers
 
                 var createNews = await _newsService.CreateByOther(request);
 
-                createNews.Message = _localizer[createNews.Message].Value + createNews.ResultObj;
+                createNews.Message = _localizer[createNews.Message].Value;
 
-                return ResultStatusString(createNews);
-
-                var getNews = await _newsService.GetById(Int32.Parse(createNews.ResultObj));
-
-                getNews.Message = _localizer[getNews.Message].Value;
 
                 _logger.LogInformation(createNews.Message);
-                return CreatedAtAction(nameof(GetById), new {newsId = createNews}, getNews);
+
+                return ReturnWithModel(createNews);
             }
             catch (FakeNewsException e)
             {
@@ -190,7 +132,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 news.Message = _localizer[news.Message].Value;
 
-                return ResultStatusModel(news);
+                return ReturnWithListModel(news);
             }
             catch (Exception ex)
             {
@@ -227,11 +169,11 @@ namespace FakeNewsFilter.API.Controllers
         [HttpGet("Source")]
         public async Task<IActionResult> GetNewsBySource(string source)
         {
-            var topics = await _newsService.GetBySouce(source);
+            var news = await _newsService.GetBySouce(source);
 
-            topics.Message = _localizer[topics.Message].Value;
+            news.Message = _localizer[news.Message].Value;
 
-            return ResultStatusModel(topics);
+            return ReturnWithListModel(news);
         }
 
         [HttpGet("{newsId}")]
@@ -317,7 +259,7 @@ namespace FakeNewsFilter.API.Controllers
 
             newsintopics.Message = _localizer[newsintopics.Message].Value;
 
-            return ResultStatusModel(newsintopics);
+            return ReturnWithListModel(newsintopics);
         }
 
 
@@ -335,7 +277,7 @@ namespace FakeNewsFilter.API.Controllers
 
             newsList.Message = _localizer[newsList.Message].Value;
 
-            return ResultStatusModel(newsList);
+            return ReturnWithListModel(newsList);
         }
 
         [HttpPut("UpdateBySystem")]
@@ -361,9 +303,9 @@ namespace FakeNewsFilter.API.Controllers
 
                 var resultToken = await _newsService.UpdateBySystem(request);
 
-                resultToken.Message = _localizer[resultToken.Message].Value + resultToken.ResultObj;
+                resultToken.Message = _localizer[resultToken.Message].Value;
 
-                return ResultStatusString(resultToken);
+                return ReturnWithModel(resultToken);
             }
             catch (FakeNewsException e)
             {
@@ -395,9 +337,9 @@ namespace FakeNewsFilter.API.Controllers
 
                 var resultToken = await _newsService.UpdateByOutSource(request);
 
-                resultToken.Message = _localizer[resultToken.Message].Value + resultToken.ResultObj;
+                resultToken.Message = _localizer[resultToken.Message].Value;
 
-                return ResultStatusString(resultToken);
+                return ReturnWithModel(resultToken);
             }
             catch (FakeNewsException e)
             {
@@ -419,9 +361,9 @@ namespace FakeNewsFilter.API.Controllers
 
                 var result = await _newsService.UpdateLink(newsId, newLink);
 
-                result.Message = _localizer[result.Message].Value + result.ResultObj;
+                result.Message = _localizer[result.Message].Value;
 
-                return ResultStatusString(result);
+                return ReturnWithModel(result);
             }
             catch (FakeNewsException e)
             {
@@ -459,17 +401,17 @@ namespace FakeNewsFilter.API.Controllers
             await _newsService.UpdateViewCount(newsViewCountDict);
         }
 
-        [HttpPut("Archive")]
+        [HttpPut("Archive/{newsId}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Archive(int request)
+        public async Task<IActionResult> Archive(int newsId)
         {
             try
             {
-                var resultToken = await _newsService.Archive(request);
+                var resultToken = await _newsService.Archive(newsId);
 
-                resultToken.Message = _localizer[resultToken.Message].Value + resultToken.ResultObj;
+                resultToken.Message = _localizer[resultToken.Message].Value;
 
-                return ResultStatusString(resultToken);
+                return ReturnWithModel(resultToken);
             }
             catch (FakeNewsException e)
             {
@@ -478,23 +420,23 @@ namespace FakeNewsFilter.API.Controllers
             }
         }
 
-        [HttpDelete("{newsId}")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Delete(int newsId)
-        {
-            try
-            {
-                var result = await _newsService.Delete(newsId);
+        //[HttpDelete("{newsId}")]
+        //[Authorize(Roles = "Admin")]
+        //public async Task<IActionResult> Delete(int newsId)
+        //{
+        //    try
+        //    {
+        //        var result = await _newsService.Delete(newsId);
 
-                result.Message = _localizer[result.Message].Value + result.ResultObj;
+        //        result.Message = _localizer[result.Message].Value + result.ResultObj;
 
-                return ResultStatusString(result);
-            }
-            catch (FakeNewsException e)
-            {
-                _logger.LogError(e.Message);
-                return BadRequest(e.Message);
-            }
-        }
+        //        return ResultStatusString(result);
+        //    }
+        //    catch (FakeNewsException e)
+        //    {
+        //        _logger.LogError(e.Message);
+        //        return BadRequest(e.Message);
+        //    }
+        //}
     }
 }

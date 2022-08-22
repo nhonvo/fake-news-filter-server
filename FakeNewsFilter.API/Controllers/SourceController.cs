@@ -14,42 +14,18 @@ namespace FakeNewsFilter.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class SourceController : ControllerBase
+    public class SourceController : ReturnStatus
     {
         private readonly IScourceService _IScourceStoryService;
         private readonly IStringLocalizer<SourceController> _localizer;
         private readonly ILogger<SourceController> _logger;
-        public SourceController(IScourceService IScourceStoryService, IStringLocalizer<SourceController> localizer, ILogger<SourceController> logger)
+        public SourceController(IScourceService IScourceStoryService, IStringLocalizer<SourceController> localizer, ILogger<SourceController> logger) : base(logger)
         {
             _IScourceStoryService = IScourceStoryService;
             _localizer = localizer;
             _logger = logger;
         }
-        IActionResult ResultStatusString(ApiResult<string> resultToken)
-        {
-            switch (resultToken.StatusCode)
-            {
-                case 200:
-                    {
-                        _logger.LogInformation(resultToken.Message);
-                        return Ok(resultToken);
-                    }
-                case 400:
-                    {
-                        _logger.LogError(resultToken.Message);
-                        return BadRequest(resultToken);
-                    }
-                case 404:
-                    {
-                        _logger.LogError(resultToken.Message);
-                        return NotFound(resultToken);
-                    }
-                default:
-                    {
-                        return StatusCode(StatusCodes.Status500InternalServerError, resultToken);
-                    }
-            }
-        }
+        
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
@@ -65,7 +41,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 result.Message = _localizer[result.Message].Value + result.ResultObj;
 
-                return ResultStatusString(result);
+                return ReturnWithModel(result);
             }
             catch (FakeNewsException e)
             {
@@ -75,7 +51,7 @@ namespace FakeNewsFilter.API.Controllers
 
         }
 
-        [HttpPut]
+        [HttpPut("Update")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update([FromBody] SourceUpdateRequest request)
         {
@@ -90,7 +66,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 result.Message = _localizer[result.Message].Value + result.ResultObj;
 
-                return ResultStatusString(result);
+                return ReturnWithModel(result);
             }
             catch (FakeNewsException e)
             {
@@ -115,7 +91,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 result.Message = _localizer[result.Message].Value + result.ResultObj;
 
-                return ResultStatusString(result);
+                return ReturnWithModel(result);
             }
             catch (FakeNewsException e)
             {
@@ -129,11 +105,11 @@ namespace FakeNewsFilter.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Get(string languageId)
         {
-            var topics = await _IScourceStoryService.GetAll(languageId);
+            var result = await _IScourceStoryService.GetAll(languageId);
 
-            topics.Message = _localizer[topics.Message].Value;
+            result.Message = _localizer[result.Message].Value;
 
-            return Ok(topics);
+            return ReturnWithListModel(result);
         }
 
         [HttpDelete("{SourceId}")]
@@ -146,7 +122,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 result.Message = _localizer[result.Message].Value + result.ResultObj;
 
-                return ResultStatusString(result);
+                return ReturnWithModel(result);
             }
             catch (FakeNewsException e)
             {
@@ -160,15 +136,11 @@ namespace FakeNewsFilter.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetById(int sourceid)
         {
-            var news = await _IScourceStoryService.GetoneStory(sourceid);
+            var result = await _IScourceStoryService.GetoneStory(sourceid);
 
-            news.Message = _localizer[news.Message].Value;
+            result.Message = _localizer[result.Message].Value;
 
-            if (news == null)
-            {
-                return NotFound(news);
-            }
-            return Ok(news);
+            return ReturnWithModel(result);
         }
     }
 }

@@ -22,12 +22,12 @@ namespace FakeNewsFilter.Application.Catalog
 {
     public interface INewsCommunityService
     {
-        Task<ApiResult<string>> Create(NewsCommunityCreateRequest request);
+        Task<ApiResult<NewsCommunityViewModel>> Create(NewsCommunityCreateRequest request);
         Task<ApiResult<NewsCommunityViewModel>> GetById(int newsCommunityId);
         Task<ApiResult<string>> Delete(int NewsCommunityId);
-        Task<ApiResult<string>> Update(NewsCommunityUpdateRequest request);
-        Task<ApiResult<string>> Archive(NewsCommunityUpdateRequest request);
-        Task<ApiResult<string>> UpdateLink(int newsCommunityId, string newLink);
+        Task<ApiResult<NewsCommunityViewModel>> Update(NewsCommunityUpdateRequest request);
+        Task<ApiResult<NewsCommunityViewModel>> Archive(int newsCommunityId);
+        Task<ApiResult<NewsCommunityViewModel>> UpdateLink(int newsCommunityId, string newLink);
         Task<ApiResult<List<NewsCommunityViewModel>>> GetAll(string languageId);
         Task<ApiResult<List<NewsCommunityViewModel>>> GetNewsByUserId(Guid userId);
     }
@@ -55,7 +55,7 @@ namespace FakeNewsFilter.Application.Catalog
 
 
         //Tạo mới 1 tin tức
-        public async Task<ApiResult<string>> Create(NewsCommunityCreateRequest request)
+        public async Task<ApiResult<NewsCommunityViewModel>> Create(NewsCommunityCreateRequest request)
         {
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
 
@@ -66,11 +66,11 @@ namespace FakeNewsFilter.Application.Catalog
                     {
                         var language = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
                         if (language == null)
-                            return new ApiErrorResult<string>(404, "LanguageNotFound", " " + request.LanguageId);
+                            return new ApiErrorResult<NewsCommunityViewModel>(404, "LanguageNotFound");
                     }
 
                     var user = await UserCommon.CheckExistUser(_context, request.UserId);
-                    if (user == null) return new ApiErrorResult<string>(404, "UserNotFound", " " + request.UserId);
+                    if (user == null) return new ApiErrorResult<NewsCommunityViewModel>(404, "UserNotFound");
 
                     var newsCommunity = new NewsCommunity
                     {
@@ -103,16 +103,17 @@ namespace FakeNewsFilter.Application.Catalog
                     {
                         transaction.Rollback();
                         await _storageService.DeleteFileAsync(newsCommunity.Media.PathMedia);
-                        return new ApiErrorResult<string>(400, "CreateNewsUnsuccessful");
+                        return new ApiErrorResult<NewsCommunityViewModel>(400, "CreateNewsUnsuccessful");
                     }
 
                     transaction.Commit();
-                    return new ApiSuccessResult<string>("CreateNewsSuccessful", newsCommunity.NewsCommunityId.ToString());
+                    var newsModel = await GetById(newsCommunity.NewsCommunityId);
+                    return new ApiSuccessResult<NewsCommunityViewModel>("CreateNewsSuccessful", newsModel.ResultObj);
                 }
                 catch (DbUpdateException ex)
                 {
                     transaction.Rollback();
-                    return new ApiErrorResult<string>(500, ex.Message);
+                    return new ApiErrorResult<NewsCommunityViewModel>(500, ex.Message);
                 }
         }
 
@@ -182,7 +183,7 @@ namespace FakeNewsFilter.Application.Catalog
         }
 
         //Cập nhật tin tức
-        public async Task<ApiResult<string>> Update(NewsCommunityUpdateRequest request)
+        public async Task<ApiResult<NewsCommunityViewModel>> Update(NewsCommunityUpdateRequest request)
         {
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
             {
@@ -191,7 +192,7 @@ namespace FakeNewsFilter.Application.Catalog
                     var news_update = await NewscommunityCommon.CheckExistNews(_context, request.NewsCommunityId);
 
                     if (news_update == null)
-                        return new ApiErrorResult<string>(404, "CannontFindANewsWithId", " " + request.NewsCommunityId);
+                        return new ApiErrorResult<NewsCommunityViewModel>(404, "CannontFindANewsWithId");
 
                     news_update.Title = request.Title ?? news_update.Title;
                     news_update.Content = request.Content ?? news_update.Content;
@@ -235,16 +236,17 @@ namespace FakeNewsFilter.Application.Catalog
                     if (result == 0)
                     {
                         transaction.Rollback();
-                        return new ApiErrorResult<string>(400, "UpdateNewsUnsuccessful"," " + result);
+                        return new ApiErrorResult<NewsCommunityViewModel>(400, "UpdateNewsUnsuccessful");
                     }
 
                     transaction.Commit();
-                    return new ApiSuccessResult<string>("UpdateNewsSuccessful", " " + news_update.NewsCommunityId.ToString());
+                    var newsModel = await GetById(news_update.NewsCommunityId);
+                    return new ApiSuccessResult<NewsCommunityViewModel>("UpdateNewsSuccessful", newsModel.ResultObj);
                 }
                 catch (DbUpdateException ex)
                 {
                     transaction.Rollback();
-                    return new ApiErrorResult<string>(500, ex.Message);
+                    return new ApiErrorResult<NewsCommunityViewModel>(500, ex.Message);
                 }
             }
         }
@@ -330,19 +332,19 @@ namespace FakeNewsFilter.Application.Catalog
             }
         }
         //Cập nhật đường dẫn tin tức
-        public async Task<ApiResult<string>> UpdateLink(int newsCommunityId, string newLink)
+        public async Task<ApiResult<NewsCommunityViewModel>> UpdateLink(int newsCommunityId, string newLink)
         {
             var news_update = await NewscommunityCommon.CheckExistNews(_context, newsCommunityId);
 
             if (news_update == null)
-                return new ApiErrorResult<string>(404, "CannontFindANewsWithId", " " + newsCommunityId.ToString());
+                return new ApiErrorResult<NewsCommunityViewModel>(404, "CannontFindANewsWithId");
 
             news_update.Content = newLink;
 
             var result = await _context.SaveChangesAsync();
-            if (result == 0) return new ApiErrorResult<string>(400, "UpdateLinkNewsUnsuccessful");
-
-            return new ApiSuccessResult<string>("UpdateLinkNewsSuccessful", newLink);
+            if (result == 0) return new ApiErrorResult<NewsCommunityViewModel>(400, "UpdateLinkNewsUnsuccessful");
+            var newsModel = await GetById(news_update.NewsCommunityId);
+            return new ApiSuccessResult<NewsCommunityViewModel>("UpdateLinkNewsSuccessful", newsModel.ResultObj);
         }
 
         private async Task<string> SaveFile(IFormFile file)
@@ -353,19 +355,20 @@ namespace FakeNewsFilter.Application.Catalog
             return fileName;
         }
 
-        public async Task<ApiResult<string>> Archive(NewsCommunityUpdateRequest request)
+        public async Task<ApiResult<NewsCommunityViewModel>> Archive(int newsCommunityId)
         {
-            var news_community = await NewscommunityCommon.CheckExistNews(_context, request.NewsCommunityId);
+            var news_community = await NewscommunityCommon.CheckExistNews(_context, newsCommunityId);
 
             if (news_community == null)
-                return new ApiErrorResult<string>(404, "CannontFindCommentWithId", " " + request.NewsCommunityId);
+                return new ApiErrorResult<NewsCommunityViewModel>(404, "CannontFindCommentWithId");
 
             news_community.Status = Status.Archive;
 
             var result = await _context.SaveChangesAsync();
-            if (result == 0) return new ApiErrorResult<string>(400, "UpdateLinkNewsUnsuccessful");
+            var newsModel = await GetById(news_community.NewsCommunityId);
+            if (result == 0) return new ApiErrorResult<NewsCommunityViewModel>(400, "UpdateLinkNewsUnsuccessful");
 
-            return new ApiSuccessResult<string>("UpdateLinkNewsSuccessful");
+            return new ApiSuccessResult<NewsCommunityViewModel>("UpdateLinkNewsSuccessful", newsModel.ResultObj);
         }
     }
 }
