@@ -169,30 +169,13 @@ namespace FakeNewsFilter.API.Controllers
 
         [HttpPut("Archive/{topicId}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Archive([FromRoute] int topicId, [FromForm] TopicUpdateRequest request)
+        public async Task<IActionResult> Archive(int topicId)
         {
             try
             {
-                UpdateRequestTopicValidator validator = new UpdateRequestTopicValidator(_localizer);
+                var result = await _topicService.Archive(topicId);
 
-                List<string> ValidationMessages = new List<string>();
-
-                var validationResult = validator.Validate(request);
-
-                if (!validationResult.IsValid)
-                {
-                    string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
-
-                    var resultupdate = new ApiErrorResult<bool>(400, errors);
-
-                    return BadRequest(resultupdate);
-                }
-
-                request.TopicId = topicId;
-
-                var result = await _topicService.Archive(request);
-
-                result.Message = _localizer[result.Message].Value + result.ResultObj;
+                result.Message = _localizer[result.Message].Value;
 
                 return ReturnWithModel(result);
             }

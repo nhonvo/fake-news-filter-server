@@ -29,7 +29,7 @@ namespace FakeNewsFilter.Application.Catalog
         Task<ApiResult<String>> Delete(int TopicId);
 
         Task<ApiResult<TopicInfoVM>> Update(TopicUpdateRequest request);
-        Task<ApiResult<TopicInfoVM>> Archive(TopicUpdateRequest request);
+        Task<ApiResult<TopicInfoVM>> Archive(int topicId);
     }
 
     public class TopicService : ITopicService
@@ -393,11 +393,11 @@ namespace FakeNewsFilter.Application.Catalog
             }
         }
 
-        public async Task<ApiResult<TopicInfoVM>> Archive(TopicUpdateRequest request)
+        public async Task<ApiResult<TopicInfoVM>> Archive(int topicId)
         {
             try
             {
-                var topic = await TopicCommon.CheckExistTopic(_context, request.TopicId);
+                var topic = await TopicCommon.CheckExistTopic(_context, topicId);
 
                 if (topic == null)
                     return new ApiErrorResult<TopicInfoVM>(404, "CannontFindTopicWithId");
