@@ -17,43 +17,19 @@ namespace FakeNewsFilter.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class StoryController : ControllerBase
+    public class StoryController : ReturnStatus
     {
         private readonly IStoryService _IStoryService;
         private readonly IStringLocalizer<StoryController> _localizer;
         private readonly ILogger<StoryController> _logger;
-        public StoryController(IStoryService IStoryService, IStringLocalizer<StoryController> localizer, ILogger<StoryController> logger)
+        public StoryController(IStoryService IStoryService, IStringLocalizer<StoryController> localizer, ILogger<StoryController> logger) : base(logger)
         {
             _IStoryService = IStoryService;
             _localizer = localizer;
            _logger = logger;
         }
 
-        IActionResult ResultStatusString(ApiResult<string> resultToken)
-        {
-            switch (resultToken.StatusCode)
-            {
-                case 200:
-                    {
-                        _logger.LogInformation(resultToken.Message);
-                        return Ok(resultToken);
-                    }
-                case 400:
-                    {
-                        _logger.LogError(resultToken.Message);
-                        return BadRequest(resultToken);
-                    }
-                case 404:
-                    {
-                        _logger.LogError(resultToken.Message);
-                        return NotFound(resultToken);
-                    }
-                default:
-                    {
-                        return StatusCode(StatusCodes.Status500InternalServerError, resultToken);
-                    }
-            }
-        }
+       
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
@@ -80,7 +56,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 resultToken.Message = _localizer[resultToken.Message].Value + resultToken.ResultObj;
 
-                return ResultStatusString(resultToken);
+                return ReturnWithModel(resultToken);
             }
             catch (FakeNewsException e)
             {
@@ -91,7 +67,7 @@ namespace FakeNewsFilter.API.Controllers
 
         }
 
-        [HttpPut]
+        [HttpPut("Update")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update([FromForm] StoryUpdateRequest request)
         {
@@ -106,7 +82,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 result.Message = _localizer[result.Message].Value + result.ResultObj;
 
-                return ResultStatusString(result);
+                return ReturnWithModel(result);
             }
             catch (FakeNewsException e)
             {
@@ -131,7 +107,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 result.Message = _localizer[result.Message].Value + result.ResultObj;
 
-                return ResultStatusString(result);
+                return ReturnWithModel(result);
             }
             catch (FakeNewsException e)
             {
@@ -151,7 +127,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 result.Message = _localizer[result.Message].Value + result.ResultObj;
 
-                return ResultStatusString(result);
+                return ReturnWithModel(result);
             }
             catch (FakeNewsException e)
             {
@@ -169,7 +145,7 @@ namespace FakeNewsFilter.API.Controllers
 
             story.Message = _localizer[story.Message].Value;
 
-            return Ok(story);
+            return ReturnWithModel(story);
         }
 
         [HttpGet]
@@ -180,7 +156,7 @@ namespace FakeNewsFilter.API.Controllers
 
             story.Message = _localizer[story.Message].Value;
 
-            return Ok(story);
+            return ReturnWithListModel(story);
         }
     }
 }

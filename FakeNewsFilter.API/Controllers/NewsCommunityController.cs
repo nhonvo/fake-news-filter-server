@@ -17,70 +17,20 @@ namespace FakeNewsFilter.API.Controllers
 {
     [Route("api/[controller]")]
     [Authorize]
-    public class NewsCommunityController : ControllerBase
+    public class NewsCommunityController : ReturnStatus
     {
         private readonly INewsCommunityService _NewsCommunityService;
         private readonly IStringLocalizer<NewsCommunityController> _localizer;
         private readonly IFollowService _followService;
         private readonly ILogger<NewsCommunityController> _logger;
-        public NewsCommunityController(INewsCommunityService NewsCommunityService, IFollowService followService, IStringLocalizer<NewsCommunityController> localizer, ILogger<NewsCommunityController> logger)
+        public NewsCommunityController(INewsCommunityService NewsCommunityService, IFollowService followService, IStringLocalizer<NewsCommunityController> localizer, ILogger<NewsCommunityController> logger) : base(logger)
         {
             _NewsCommunityService = NewsCommunityService;
             _followService = followService;
             _localizer = localizer;
             _logger = logger;
         }
-        IActionResult ResultStatusString(ApiResult<string> resultToken)
-        {
-            switch (resultToken.StatusCode)
-            {
-                case 200:
-                    {
-                        _logger.LogInformation(resultToken.Message);
-                        return Ok(resultToken);
-                    }
-                case 400:
-                    {
-                        _logger.LogError(resultToken.Message);
-                        return BadRequest(resultToken);
-                    }
-                case 404:
-                    {
-                        _logger.LogError(resultToken.Message);
-                        return NotFound(resultToken);
-                    }
-                default:
-                    {
-                        return StatusCode(StatusCodes.Status500InternalServerError, resultToken);
-                    }
-            }
-        }
-
-        IActionResult ResultStatusModel(ApiResult<List<NewsCommunityViewModel>> resultToken)
-        {
-            switch (resultToken.StatusCode)
-            {
-                case 200:
-                    {
-                        _logger.LogInformation(resultToken.Message);
-                        return Ok(resultToken);
-                    }
-                case 400:
-                    {
-                        _logger.LogError(resultToken.Message);
-                        return BadRequest(resultToken);
-                    }
-                case 404:
-                    {
-                        _logger.LogError(resultToken.Message);
-                        return NotFound(resultToken);
-                    }
-                default:
-                    {
-                        return StatusCode(StatusCodes.Status500InternalServerError, resultToken);
-                    }
-            }
-        }
+        
         [HttpPost]
         public async Task<IActionResult> Create([FromForm] NewsCommunityCreateRequest request)
         {
@@ -105,9 +55,9 @@ namespace FakeNewsFilter.API.Controllers
 
                 createNews.Message = _localizer[createNews.Message].Value + createNews.ResultObj;
 
-                return ResultStatusString(createNews);
+                return ReturnWithModel(createNews);
 
-                var getNews = await _NewsCommunityService.GetById(Int32.Parse(createNews.ResultObj));
+                var getNews = await _NewsCommunityService.GetById(Int32.Parse(createNews.ResultObj.ToString()));
 
                 getNews.Message = _localizer[getNews.Message].Value;
 
@@ -146,7 +96,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 result.Message = _localizer[result.Message].Value + result.ResultObj;
 
-                return ResultStatusString(result);
+                return ReturnWithModel(result);
             }
             catch (FakeNewsException e)
             {
@@ -156,7 +106,7 @@ namespace FakeNewsFilter.API.Controllers
 
         }
 
-        [HttpPut]
+        [HttpPut("Update")]
         public async Task<IActionResult> Update([FromForm] NewsCommunityUpdateRequest request)
         {
             try
@@ -180,7 +130,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 resultToken.Message = _localizer[resultToken.Message].Value + resultToken.ResultObj;
 
-                return ResultStatusString(resultToken);
+                return ReturnWithModel(resultToken);
             }
             catch (FakeNewsException e)
             {
@@ -203,7 +153,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 result.Message = _localizer[result.Message].Value + result.ResultObj;
 
-                return ResultStatusString(result);
+                return ReturnWithModel(result);
             }
             catch (FakeNewsException e)
             {
@@ -222,7 +172,7 @@ namespace FakeNewsFilter.API.Controllers
 
             topics.Message = _localizer[topics.Message].Value;
 
-            return ResultStatusModel(topics); 
+            return ReturnWithListModel(topics); 
         }
 
         [HttpGet("User")]
@@ -233,35 +183,20 @@ namespace FakeNewsFilter.API.Controllers
 
             newsintopics.Message = _localizer[newsintopics.Message].Value;
 
-            return ResultStatusModel(newsintopics);
+            return ReturnWithListModel(newsintopics);
         }
 
-
+        
         [HttpPut]
-        public async Task<IActionResult> Archive([FromForm] NewsCommunityUpdateRequest request)
+        public async Task<IActionResult> Archive(int id)
         {
             try
             {
-                UpdateRequestNewsCommunityValidator validator = new UpdateRequestNewsCommunityValidator(_localizer);
+                var resultToken = await _NewsCommunityService.Archive(id);
 
-                List<string> ValidationMessages = new List<string>();
+                resultToken.Message = _localizer[resultToken.Message].Value;
 
-                var validationResult = validator.Validate(request);
-
-                if (!validationResult.IsValid)
-                {
-                    string errors = string.Join(" ", validationResult.Errors.Select(x => x.ToString()).ToArray());
-
-                    var result = new ApiErrorResult<bool>(400, errors);
-
-                    return BadRequest(result);
-                }
-
-                var resultToken = await _NewsCommunityService.Archive(request);
-
-                resultToken.Message = _localizer[resultToken.Message].Value + resultToken.ResultObj;
-
-                return ResultStatusString(resultToken);
+                return ReturnWithModel(resultToken);
             }
             catch (FakeNewsException e)
             {
