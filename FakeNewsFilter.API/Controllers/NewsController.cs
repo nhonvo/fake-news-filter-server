@@ -407,11 +407,11 @@ namespace FakeNewsFilter.API.Controllers
         {
             try
             {
-                var resultToken = await _newsService.Archive(newsId);
+                var result = await _newsService.Archive(newsId);
 
-                resultToken.Message = _localizer[resultToken.Message].Value;
+                result.Message = _localizer[result.Message].Value;
 
-                return ReturnWithModel(resultToken);
+                return ReturnWithModel(result);
             }
             catch (FakeNewsException e)
             {
