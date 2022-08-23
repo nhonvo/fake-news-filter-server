@@ -85,7 +85,7 @@ namespace FakeNewsFilter.Application.Catalog
                         Caption = "Screenshoot Feedback",
                         DateCreated = DateTime.Now,
                         FileSize = request.ScreenShoot.Length,
-                        PathMedia = await SaveFile(request.ScreenShoot),
+                        PathMedia =  SaveFile(request.ScreenShoot),
                         Type = MediaType.Image,
                         SortOrder = 1
                     };
@@ -157,11 +157,11 @@ namespace FakeNewsFilter.Application.Catalog
             throw new NotImplementedException();
         }
 
-        private async Task<string> SaveFile(IFormFile file)
+        private string SaveFile(IFormFile file)
         {
             var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
             var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
-            await _storageService.SaveFileAsync(file.OpenReadStream(), fileName);
+            _storageService.SaveFile(file.OpenReadStream(), fileName);
             return fileName;
         }
 

@@ -21,12 +21,12 @@ namespace FakeNewsFilter.API.Controllers
     public class TopicController : ReturnStatus
     {
         private readonly IStringLocalizer<TopicController> _localizer;
-        private readonly TopicService _topicService;
+        private readonly ITopicService _topicService;
         private readonly ILogger<TopicController> _logger;
         private readonly ApplicationDBContext _context;
 
         public TopicController(ApplicationDBContext context,
-            TopicService topicService,
+            ITopicService topicService,
             IStringLocalizer<TopicController> localizer,
             ILogger<TopicController> logger)
             : base(logger)

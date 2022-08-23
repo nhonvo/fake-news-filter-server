@@ -15,6 +15,7 @@ var statusObj = {
     2: {title: 'Inactive', class: 'status-pill yellow'}
 };
 
+
 $(document).ready(function () {
     //Hiển thị database table js
     table = $('#list_topic').dataTable({
@@ -25,34 +26,22 @@ $(document).ready(function () {
         ],
     });
 
+    const   imageTopic_create = $('#create-topic-thumb'),
+            btnCreateTopicPicture = $('.btncreate-topic');
+
+    // Thay đổi hình ảnh của chủ đề
+    $(btnCreateTopicPicture).on('change', function (e) {
+        var reader = new FileReader(),
+            files = e.target.files;
+        reader.onload = function () {
+            if (imageTopic_create.length) {
+                imageTopic_create.attr('src', reader.result);
+            }
+        };
+        reader.readAsDataURL(files[0]);
+    });
 });
 
-$(function () {
-
-    // var changePicture_create = $('#ThumbTopic'),
-    //     userAvatar_create = $('.topic-thumb'),
-    //     changePicture_edit = $('.editThumbTopic'),
-    //     userAvatar_edit = $('.topic-thumb-edit')
-
-
-    var changePicture = $('#ThumbTopic'),
-        userAvatar = $('.topic-thumb');
-
-    // Thay đổi hình ảnh
-
-    if (changePicture.length) {
-        $(changePicture).on('change', function (e) {
-            var reader = new FileReader(),
-                files = e.target.files;
-            reader.onload = function () {
-                if (userAvatar.length) {
-                    userAvatar.attr('src', reader.result);
-                }
-            };
-            reader.readAsDataURL(files[0]);
-        });
-    }
-});
 
 
 //Xem chi tiết 1 chủ đề (phục vụ cho chỉnh sửa dữ liệu)

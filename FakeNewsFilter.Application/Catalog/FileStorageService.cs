@@ -8,43 +8,49 @@ namespace FakeNewsFilter.Application.Common
 {
     public interface IFileStorageService
     {
-        Task DeleteFileAsync(string fileName);
+        void DeleteFile(string fileName);
 
         string GetFileUrl(string fileName);
 
         string GetNewsUrl(string alias);
 
-        Task SaveFileAsync(Stream mediaBinaryStream, string fileName);
+        void SaveFile(Stream mediaBinaryStream, string fileName);
     }
 
     public class FileStorageService : IFileStorageService
     {
         public static string USER_CONTENT_FOLDER_NAME { get; set; } = "images";
 
-        private readonly string _userContentFolder;
+        private  string _userContentFolder;
 
         private readonly IHttpContextAccessor _httpContextAccessor;
 
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
         public FileStorageService(IWebHostEnvironment webHostEnvironment, IHttpContextAccessor httpContextAccessor)
         {
-            _userContentFolder = Path.Combine(webHostEnvironment.WebRootPath, USER_CONTENT_FOLDER_NAME);
+            _webHostEnvironment = webHostEnvironment;
             _httpContextAccessor = httpContextAccessor;
-    }
+        }
 
-        public async Task DeleteFileAsync(string fileName)
+        public void DeleteFile(string fileName)
         {
+            _userContentFolder = Path.Combine(_webHostEnvironment.WebRootPath, USER_CONTENT_FOLDER_NAME);
+
             var filePath = Path.Combine(_userContentFolder, fileName);
             if (File.Exists(filePath))
             {
-                await Task.Run(() => File.Delete(filePath));
+                Task.Run(() => File.Delete(filePath));
             }
         }
         
-        public async Task SaveFileAsync(Stream mediaBinaryStream, string fileName)
+        public void SaveFile(Stream mediaBinaryStream, string fileName)
         {
+            _userContentFolder = Path.Combine(_webHostEnvironment.WebRootPath, USER_CONTENT_FOLDER_NAME);
+
             var filePath = Path.Combine(_userContentFolder, fileName);
             using var output = new FileStream(filePath, FileMode.Create);
-            await mediaBinaryStream.CopyToAsync(output);
+            mediaBinaryStream.CopyTo(output);
         }
 
         //Hàm lấy ra URL hình ảnh (trường hợp ảnh được tạo bởi hệ thống)

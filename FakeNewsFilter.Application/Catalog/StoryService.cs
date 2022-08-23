@@ -96,7 +96,7 @@ namespace FakeNewsFilter.Application.Catalog
             var storyModel = await GetOneStory(story.StoryId);
             if (result == 0)
             {
-                await _storageService.DeleteFileAsync(story.Media.PathMedia);
+                 _storageService.DeleteFile(story.Media.PathMedia);
                 return new ApiErrorResult<StoryViewModel>(400, "CreateStoryUnsuccessful", storyModel.ResultObj);
             }
             
@@ -168,7 +168,7 @@ namespace FakeNewsFilter.Application.Catalog
                 {
                     if (thumb.PathMedia != null)
                     {
-                        await _storageService.DeleteFileAsync(thumb.PathMedia);
+                         _storageService.DeleteFile(thumb.PathMedia);
                     }
                     thumb.FileSize = request.ThumbStory.Length;
                     thumb.PathMedia = await SaveFile(request.ThumbStory);
@@ -203,7 +203,7 @@ namespace FakeNewsFilter.Application.Catalog
                 if (media != null)
                 {
                     if (media.PathMedia != null)
-                        await _storageService.DeleteFileAsync(media.PathMedia);
+                         _storageService.DeleteFile(media.PathMedia);
                     _context.Media.Remove(media);
                 }
 
@@ -282,7 +282,7 @@ namespace FakeNewsFilter.Application.Catalog
             //đặt tên lại cho file ảnh đó
             var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
             
-            await _storageService.SaveFileAsync(file.OpenReadStream(), fileName);
+             _storageService.SaveFile(file.OpenReadStream(), fileName);
             return fileName;
         }
 

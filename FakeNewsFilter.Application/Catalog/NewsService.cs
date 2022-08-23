@@ -698,7 +698,7 @@ public class NewsService : INewsService
                         if (res == 0)
                         {
                             transaction.Rollback();
-                            await _storageService.DeleteFileAsync(detail_news.Media.PathMedia);
+                             _storageService.DeleteFile(detail_news.Media.PathMedia);
                             return new ApiErrorResult<NewsViewModel>(400, "CreateNewsUnsuccessful");
                         }
 
@@ -833,7 +833,7 @@ public class NewsService : INewsService
 
                 if (media != null && media.PathMedia != null)
                 {
-                    await _storageService.DeleteFileAsync(media.PathMedia);
+                     _storageService.DeleteFile(media.PathMedia);
                     _context.Media.Remove(media);
                 }
             }
@@ -1011,7 +1011,7 @@ public class NewsService : INewsService
                     }
                     else
                     {
-                        if (thumb.PathMedia != null) await _storageService.DeleteFileAsync(thumb.PathMedia);
+                        if (thumb.PathMedia != null)  _storageService.DeleteFile(thumb.PathMedia);
                         thumb.FileSize = request.ThumbNews.Length;
                         thumb.PathMedia = await SaveFile(request.ThumbNews);
 
@@ -1138,7 +1138,7 @@ public class NewsService : INewsService
     {
         var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
         var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
-        await _storageService.SaveFileAsync(file.OpenReadStream(), fileName);
+         _storageService.SaveFile(file.OpenReadStream(), fileName);
         return fileName;
     }
 

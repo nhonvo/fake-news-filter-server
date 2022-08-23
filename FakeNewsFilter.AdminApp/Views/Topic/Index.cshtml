@@ -137,7 +137,7 @@
                         </td>
                         <td class="row-actions">
                             <div>
-                                <a class="btn btn-link" onclick=Detail(@item.TopicId) data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+                                <a class="btn btn-link" id="btnDetailTopic" onclick=Detail(@item.TopicId) data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
                                     <i class="os-icon os-icon-ui-49"></i>
                                 </a>
 
@@ -165,8 +165,6 @@
 @await Html.PartialAsync("Create", new TopicCreateRequest())
 
 @section footerscripts{
-    <script src="/bower_components/datatables/jquery.dataTables.min.js"></script>
-    <script src="/bower_components/datatables/dataTables.bootstrap4.min.js"></script>
     <script src="/bower_components/bootstrap/js/dist/modal.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/31.0.0/classic/ckeditor.js"></script>
     <script src="/js/admin/topic.js"></script>

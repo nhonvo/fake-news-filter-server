@@ -335,7 +335,7 @@ namespace FakeNewsFilter.Application.System
                             Caption = "Avatar User",
                             DateCreated = DateTime.Now,
                             FileSize = request.MediaFile.Length,
-                            PathMedia = await this.SaveFile(request.MediaFile),
+                            PathMedia =  this.SaveFile(request.MediaFile),
                             Type = MediaType.Image,
                             SortOrder = 1
                         };
@@ -345,11 +345,11 @@ namespace FakeNewsFilter.Application.System
                         //Cập nhật Avatar
                         if (thumb.PathMedia != null)
                         {
-                            await _storageService.DeleteFileAsync(thumb.PathMedia);
+                             _storageService.DeleteFile(thumb.PathMedia);
                         }
 
                         thumb.FileSize = request.MediaFile.Length;
-                        thumb.PathMedia = await SaveFile(request.MediaFile);
+                        thumb.PathMedia =  SaveFile(request.MediaFile);
 
                         _context.Media.Update(thumb);
                     }
@@ -417,7 +417,7 @@ namespace FakeNewsFilter.Application.System
                 if (avatar != null)
                 {
                     if (avatar.PathMedia != null)
-                        await _storageService.DeleteFileAsync(avatar.PathMedia);
+                         _storageService.DeleteFile(avatar.PathMedia);
                     _context.Media.Remove(avatar);
                 }
 
@@ -469,11 +469,11 @@ namespace FakeNewsFilter.Application.System
         }
 
         //Lưu ảnh
-        private async Task<string> SaveFile(IFormFile file)
+        private string SaveFile(IFormFile file)
         {
             var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
             var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
-            await _storageService.SaveFileAsync(file.OpenReadStream(), fileName);
+            _storageService.SaveFile(file.OpenReadStream(), fileName);
             return fileName;
         }
 
