@@ -19,6 +19,7 @@ var statusObj = {
 $(document).ready(function () {
     //Hiển thị database table js
     table = $('#list_topic').dataTable({
+        "pageLength": 25,
         columnDefs: [
             {
                 orderable: true, targets: '_all'
