@@ -311,6 +311,7 @@ function CreateNews(frm, caller) {
     var UrlNews = $(frm).find('input#UrlNews')[0].value;
     fdata.append("UrlNews", UrlNews);
     var Title = $(frm).find('input#Title')[0].value;
+    var Description = $(frm).find('input#Description')[0].value;
     var Publisher = $(frm).find('#Publisher')[0].value;
     // var DatePublished = $(frm).find('#DatePublished')[0].value;
     var officialRating = $(frm).find('#OfficialRating')[0].value;
@@ -319,6 +320,7 @@ function CreateNews(frm, caller) {
 
     fdata.append("Title", Title);
     fdata.append("Publisher", Publisher);
+    fdata.append("Description", Description);
     // fdata.append("DatePublished", DatePublished);
     fdata.append("OfficialRating", officialRating);
     fdata.append("LanguageId", languageId);
