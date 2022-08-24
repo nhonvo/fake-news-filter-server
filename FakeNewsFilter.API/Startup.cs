@@ -80,8 +80,8 @@ namespace FakeNewsFilter
             services.AddHttpClient();
 
             //Declare DI
-            services.AddTransient<FileStorageService>();
-            services.AddTransient<TopicService>();
+ 
+            
             services.AddTransient<FacebookAuthService>();
             services.AddTransient<UserManager<User>, UserManager<User>>();
             services.AddTransient<SignInManager<User>, SignInManager<User>>();
@@ -94,6 +94,7 @@ namespace FakeNewsFilter
             services.AddTransient<IStoryService, StoryService>();
             services.AddTransient<SlugHelper>();
             services.AddTransient<IExtraFeaturesService, ExtraFeaturesService>();
+            services.AddTransient<ITopicService, TopicService>();
             services.AddTransient<INewsService, NewsService>();
             services.AddTransient<IVoteService, VoteService>();
             services.AddTransient<VersionService>();
@@ -102,7 +103,7 @@ namespace FakeNewsFilter
                 ConnectionMultiplexer.Connect(Configuration["Redis:ConnectionString"]));
             services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<INewsCommunityService, NewsCommunityService>();
-
+            services.AddTransient<FileStorageService>();
             //Fluent Validation
             //User
             services.AddControllers().AddFluentValidation(fv =>

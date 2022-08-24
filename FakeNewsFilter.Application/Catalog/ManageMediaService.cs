@@ -36,7 +36,7 @@ namespace FakeNewsFilter.Application.Catalog
                 throw new FakeNewsException($"CannotFindMediaWithId {mediaId}");
 
             if (media.PathMedia != null)
-                await _storageService.DeleteFileAsync(media.PathMedia);
+                 _storageService.DeleteFile(media.PathMedia);
 
             _context.Media.Remove(media);
 
@@ -51,7 +51,7 @@ namespace FakeNewsFilter.Application.Catalog
 
             if (request.MediaFile != null)
             {
-                media.PathMedia = await this.SaveFile(request.MediaFile);
+                media.PathMedia = this.SaveFile(request.MediaFile);
                 media.FileSize = request.MediaFile.Length;
             }
 
@@ -60,11 +60,11 @@ namespace FakeNewsFilter.Application.Catalog
             return await _context.SaveChangesAsync();
         }
 
-        private async Task<string> SaveFile(IFormFile file)
+        private string SaveFile(IFormFile file)
         {
             var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
             var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
-            await _storageService.SaveFileAsync(file.OpenReadStream(), fileName);
+             _storageService.SaveFile(file.OpenReadStream(), fileName);
             return fileName;
         }
     }

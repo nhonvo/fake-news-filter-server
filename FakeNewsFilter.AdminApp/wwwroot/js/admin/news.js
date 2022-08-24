@@ -32,196 +32,13 @@ function loadSelect2() {
 $(document).ready(function () {
     loadSelect2();
     table = $('#list_news').dataTable({
+        "pageLength": 100,
         columnDefs: [
             {
                 orderable: true, targets: '_all'
             }
         ],
     });
-
-    //
-    // $('#loading').hide();
-    //
-    // var select = $('.select2');
-    //
-    // select.each(function () {
-    //     var $this = $(this);
-    //     $this.wrap('<div class="position-relative"></div>');
-    //     $this.select2({
-    //         dropdownAutoWidth: true,
-    //         width: '100%',
-    //         dropdownParent: $this.parent()
-    //     });
-    // });
-    //
-    // $("#list_news").DataTable({
-    //     ajax: {
-    //         url: "/News/GetNews",
-    //         type: "get",
-    //         contentType: "application/json",
-    //         dataType: "json",
-    //         data: function (data) {
-    //             // return JSON.stringify(data);
-    //         }
-    //     },
-    //
-    //     // <th>ID</th>
-    //     // <th>News</th>
-    //     // <th>Lang</th>
-    //     // <th>SyncTime</th>
-    //     // <th>Status</th>
-    //     // <th>Actions</th>
-    //
-    //     columns: [
-    //         {"data": 'newsId'},
-    //         {"data": 'title'},
-    //         {"data": 'languageId'},
-    //         {"data": 'timestamp'},
-    //         {"data": 'status'},
-    //         {"data": ''}
-    //     ],
-    //     columnDefs: [
-    //         {
-    //             //Lấy ảnh cờ của ngôn ngữ
-    //             targets: 2,
-    //             render: function (data, type, full, meta) {
-    //                 var $lang = full['languageId'];
-    //                 return (
-    //                     '<div><img alt="" src="/img/flags-icons/' + $lang + '.png" width="25px"><span hidden>' + $lang + '</span></div>'
-    //                 );
-    //             }
-    //         },
-    //         {
-    //             //Đồng bộ thời gian thực (Sử dụng MommentJS)
-    //             targets: 3,
-    //             render: function (data, type, full, meta) {
-    //                 var $time = full['timestamp'];
-    //                 return moment($time).fromNow();
-    //             }
-    //         },
-    //         {
-    //             //Trạng thái của tin tức (Active/InActive/Archive)
-    //             targets: 4,
-    //             orderable: false,
-    //             render: function (data, type, full, meta) {
-    //                 var $status = full['status'];
-    //                 return (
-    //                     '<div class="' + statusObj[$status].class + '" data-title="' + statusObj[$status].title + '" data-bs-toggle="tooltip" title="' + statusObj[$status].title + '"> <span hidden>' + statusObj[$status].title + '</span></div>'
-    //                 );
-    //             }
-    //         },
-    //         {
-    //             //Các nút Actions
-    //             targets: 5,
-    //             orderable: false,
-    //             render: function (data, type, full, meta) {
-    //                 var $newsId = full['newsId'];
-    //                 return (
-    //                     '<div class="row-actions text-center">' +
-    //                     '<a href="/News/Edit/' + $newsId + '" data-bs-toggle="tooltip" data-bs-placement="top" title = "Edit"> <i class="os-icon os-icon-ui-49"></i> </a>' +
-    //                     '<a class="danger" onclick=DeleteData("' + $newsId + '"); data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"> <i class="os-icon os-icon-ui-15"></i> </a>' +
-    //                     '</div>'
-    //                 );
-    //             }
-    //         }
-    //     ],
-    //     dom:
-    //         '<"d-flex justify-content-between align-items-center header-actions mx-1 row mt-75"' +
-    //         '<"col-sm-12 col-md-4 col-lg-6" l>' +
-    //         '<"col-sm-12 col-md-8 col-lg-6 ps-xl-75 ps-0"<"dt-action-buttons text-xl-end text-lg-start text-md-end text-start d-flex align-items-center justify-content-md-end align-items-center flex-sm-nowrap flex-wrap me-1"<"me-1"f>B>>' +
-    //         '>t' +
-    //         '<"d-flex justify-content-between mx-2 row mb-1"' +
-    //         '<"col-sm-12 col-md-6"i>' +
-    //         '<"col-sm-12 col-md-6"p>' +
-    //         '>',
-    //     buttons: [
-    //         {
-    //             text: 'Add News',
-    //             className: 'add-new btn btn-rounded btn-primary',
-    //             attr: {
-    //                 'data-toggle': 'modal',
-    //                 'data-target': '.bd-example-modal-lg'
-    //             },
-    //             init: function (api, node, config) {
-    //                 $(node).removeClass('btn-secondary');
-    //             }
-    //         }
-    //     ],
-    //     language: {
-    //         paginate: {
-    //             //Thay đổi nút Next/Previous
-    //             previous: '<',
-    //             next: '>'
-    //         }
-    //     },
-    //     //Thiết lập Tooltip
-    //     drawCallback: function () {
-    //         $(document).find('[data-bs-toggle="tooltip"]').tooltip();
-    //     },
-    //
-    //     initComplete: function () {
-    //         //API lọc ngôn ngữ tin tức
-    //         this.api()
-    //             .columns(2)
-    //             .every(function () {
-    //                 var column = this;
-    //                 var select = $(
-    //                     '<select id="FilterNewsLanguage" class="form-control form-control-sm rounded bright"><option value=""> Select Language </option></select>'
-    //                 )
-    //                     .appendTo('.news_language')
-    //                     .on('change', function () {
-    //                         var val = $.fn.dataTable.util.escapeRegex($(this).val());
-    //                         column.search(val ? '^' + val + '$' : '', true, false).draw();
-    //                     });
-    //
-    //                 column
-    //                     .data()
-    //                     .unique()
-    //                     .sort()
-    //                     .each(function (d, j) {
-    //                         select.append(
-    //                             '<option value="' +
-    //                             d +
-    //                             '" class="text-capitalize">' +
-    //                             d +
-    //                             '</option>'
-    //                         );
-    //                     });
-    //
-    //             });
-    //         //API lọc trạng thái tin tức
-    //         this.api()
-    //             .columns(4)
-    //             .every(function () {
-    //
-    //                 var column = this;
-    //                 var select = $(
-    //                     '<select id="FilterNewsStatus" class="form-control form-control-sm rounded bright"><option value=""> Select Status </option></select>'
-    //                 )
-    //                     .appendTo('.news_status')
-    //                     .on('change', function () {
-    //                         var val = $.fn.dataTable.util.escapeRegex($(this).val());
-    //                         column.search(val ? '^' + val + '$' : '', true, false).draw();
-    //                     });
-    //
-    //                 column
-    //                     .data()
-    //                     .unique()
-    //                     .sort()
-    //                     .each(function (d, j) {
-    //                         select.append(
-    //                             '<option value="' +
-    //                             statusObj[d].title +
-    //                             '" class="text-capitalize">' +
-    //                             statusObj[d].title +
-    //                             '</option>'
-    //                         );
-    //                     });
-    //
-    //             });
-    //     },
-    //
-    // });
 });
 
 $(function () {
@@ -417,11 +234,19 @@ function Detail(newsId, source) {
 }
 
 function DeleteData(newsId) {
-    if (confirm("Are you sure want to delele this news?")) {
-        Delete(newsId);
+    if (confirm("Are you sure want to archive this news?")) {
+        Archive(newsId);
     } else {
         return false;
     }
+}
+
+function Archive(newsId){
+    var url = "/News/Archive";
+    $.post(url, {newsId: newsId}, function (data) {
+        console.log(data);
+        location.reload();
+    });
 }
 
 function Delete(newsId) {

@@ -31,6 +31,7 @@ namespace FakeNewsFilter.AdminApp.Services
         Task<ApiResult<NewsInfoVM>> GetById(int Id);
 
         Task<ApiResult<string>> Delete(int newsId);
+        Task<ApiResult<string>> Archive(int newsId);
     }
 
     public class NewsApi : BaseApiClient, INewsApi
@@ -329,6 +330,21 @@ namespace FakeNewsFilter.AdminApp.Services
                 return new ApiSuccessResult<string>("Delete News Successfully");
 
             return new ApiErrorResult<string>(400, "Delete News Unsuccessfully");
+        }
+
+        public async Task<ApiResult<string>> Archive(int newsId)
+        {
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+            var response = await client.PutAsync($"/api/News/Archive/" + newsId, null);
+            var body = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+
+                return new ApiSuccessResult<string>("Archive News Successfully");
+
+            return new ApiErrorResult<string>(400, "Archive News Unsuccessfully");
         }
     }
 }

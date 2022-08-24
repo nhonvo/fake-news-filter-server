@@ -36,7 +36,7 @@ namespace FakeNewsFilter.Application.Catalog
     {
         private readonly ApplicationDBContext _context;
 
-        private FileStorageService _storageService;
+        private readonly FileStorageService _storageService;
 
         public TopicService(ApplicationDBContext context, FileStorageService storageService)
         {
@@ -210,7 +210,7 @@ namespace FakeNewsFilter.Application.Catalog
                             Caption = "Thumbnail Topic",
                             DateCreated = DateTime.Now,
                             FileSize = request.ThumbTopic.Length,
-                            PathMedia = await this.SaveFile(request.ThumbTopic),
+                            PathMedia =  this.SaveFileOriginal(request.ThumbTopic),
                             Type = MediaType.Image,
                             SortOrder = 1
                         };
@@ -275,7 +275,7 @@ namespace FakeNewsFilter.Application.Catalog
                             Caption = "Thumbnail Topic",
                             DateCreated = DateTime.Now,
                             FileSize = request.ThumbImage.Length,
-                            PathMedia = await this.SaveFile(request.ThumbImage),
+                            PathMedia =  this.SaveFileOriginal(request.ThumbImage),
                             Type = MediaType.Image,
                             SortOrder = 1
                         };
@@ -285,10 +285,10 @@ namespace FakeNewsFilter.Application.Catalog
                     {
                         if (thumb.PathMedia != null)
                         {
-                            await _storageService.DeleteFileAsync(thumb.PathMedia);
+                             _storageService.DeleteFile(thumb.PathMedia);
                         }
                         thumb.FileSize = request.ThumbImage.Length;
-                        thumb.PathMedia = await SaveFile(request.ThumbImage);
+                        thumb.PathMedia = SaveFileOriginal(request.ThumbImage);
 
                         thumb.Type = MediaType.Image;
 
@@ -313,12 +313,11 @@ namespace FakeNewsFilter.Application.Catalog
             
         }
 
-        private async Task<string> SaveFile(IFormFile file)
+        private string SaveFileOriginal(IFormFile file)
         {
             var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
-            await _storageService.SaveFileAsync(file.OpenReadStream(), fileName);
-            return fileName;
+            _storageService.SaveFile(file.OpenReadStream(), originalFileName);
+            return originalFileName;
         }
 
         //Lấy thông tin chi tiết 1 Topic
@@ -370,7 +369,7 @@ namespace FakeNewsFilter.Application.Catalog
                     if (media != null)
                     {
                         if (media.PathMedia != null)
-                            await _storageService.DeleteFileAsync(media.PathMedia);
+                             _storageService.DeleteFile(media.PathMedia);
                         _context.Media.Remove(media);
                     }
                 }

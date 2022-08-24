@@ -1,7 +1,7 @@
 ﻿@model FakeNewsFilter.ViewModel.Catalog.TopicNews.TopicInfoVM
 
 <div id="updateTopic" class="modal fade bd-example-modal-lg show" role="dialog" tabindex="-1" aria-hidden="true" style="display: none;">
-    <form method="post" asp-controller="Topic" asp-action="Edit" id="updateTopic">
+    <form method="post" asp-controller="Topic" asp-action="EditTopic" id="updateTopic">
         @Html.AntiForgeryToken()
         <div class="modal-dialog modal-lg">>
             <div class="modal-content">
@@ -13,15 +13,7 @@
                 </div>
 
                 <div class="modal-body">
-                    <div class="panel-body">
-                        <div class="form-group" hidden>
-                            <span class="d-none d-sm-block">Change</span>
-                            <input asp-for="ThumbImage" class="form-control" type="file" hidden="" accept="image/png, image/jpeg, image/jpg">
-                            <span class="d-block d-sm-none">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit me-0"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-                            </span>
-                        </div>
-
+                    <div class="panel-body">    
                         <div class="row">
                             <div class="col-sm-4">
                                 <div class="form-group">
@@ -51,34 +43,20 @@
 
                         <div class="form-group">
                             <div style="text-align: center">
-                                <img src="@Model.ThumbImage" class="topic-thumb-edit rounded me-2 my-25 cursor-pointer" height="90" width="90">
-                                <div class="col-12 mt-1">
-                                    <label class="btn btn-primary me-75 mb-0 waves-effect waves-float waves-light" for="ThumbTopic">
-                                        <span class="d-none d-sm-block">Choose Image</span>
-                                        <input asp-for="ThumbImage" class="editThumbTopic form-control" type="file" hidden="" accept="image/png, image/jpeg, image/jpg">
-                                        <span class="d-block d-sm-none">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit me-0"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-                                        </span>
-                                    </label>
-                                </div>
+                                <img id="topic-thumb-edit" src="@Model.ThumbImage" class="rounded me-2 my-25 cursor-pointer" width="250">
+                                
                             </div>
                         </div>
-
-                        <input type="hidden" asp-for="TopicId" />
                         
+                        <input type="hidden" asp-for="TopicId" />
                     </div>
                 </div>
 
                 <div class="modal-footer">
                     <button class="btn btn-danger" data-dismiss="modal" type="button">Close</button>
-                    <button class="btn btn-success" type="submit" onclick="EditTopic(this.parentElement.parentElement, event)">Save change</button>
+                    <button class="btn btn-success" type="submit" onclick="EditTopic(document.querySelector('#updateTopic > form'), event)">Save change</button>
                 </div>
             </div>
         </div>
     </form>
 </div>
-
-
-@section footerscripts{
-    <script src="/js/admin/edittopic.js"></script>
-}

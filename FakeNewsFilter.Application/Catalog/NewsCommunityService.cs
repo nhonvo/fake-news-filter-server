@@ -91,7 +91,7 @@ namespace FakeNewsFilter.Application.Catalog
                         {
                             DateCreated = DateTime.Now,
                             FileSize = request.ThumbNews.Length,
-                            PathMedia = await SaveFile(request.ThumbNews),
+                            PathMedia = SaveFile(request.ThumbNews),
                             Type = checkExtension ? MediaType.Image : MediaType.Video,
                             Caption = "Thumb News " + (checkExtension ? "Image" : "Video")
                         };
@@ -102,7 +102,7 @@ namespace FakeNewsFilter.Application.Catalog
                     if (result == 0)
                     {
                         transaction.Rollback();
-                        await _storageService.DeleteFileAsync(newsCommunity.Media.PathMedia);
+                         _storageService.DeleteFile(newsCommunity.Media.PathMedia);
                         return new ApiErrorResult<NewsCommunityViewModel>(400, "CreateNewsUnsuccessful");
                     }
 
@@ -170,7 +170,7 @@ namespace FakeNewsFilter.Application.Catalog
 
                 if (media != null && media.PathMedia != null)
                 {
-                    await _storageService.DeleteFileAsync(media.PathMedia);
+                     _storageService.DeleteFile(media.PathMedia);
                     _context.Media.Remove(media);
                 }
             }
@@ -213,16 +213,16 @@ namespace FakeNewsFilter.Application.Catalog
                                 Caption = "Thumbnail Topic",
                                 DateCreated = DateTime.Now,
                                 FileSize = request.ThumbNews.Length,
-                                PathMedia = await SaveFile(request.ThumbNews),
+                                PathMedia =  SaveFile(request.ThumbNews),
                                 Type = MediaType.Image,
                                 SortOrder = 1
                             };
                         }
                         else
                         {
-                            if (thumb.PathMedia != null) await _storageService.DeleteFileAsync(thumb.PathMedia);
+                            if (thumb.PathMedia != null)  _storageService.DeleteFile(thumb.PathMedia);
                             thumb.FileSize = request.ThumbNews.Length;
-                            thumb.PathMedia = await SaveFile(request.ThumbNews);
+                            thumb.PathMedia =  SaveFile(request.ThumbNews);
 
                             thumb.Type = MediaType.Image;
 
@@ -347,11 +347,11 @@ namespace FakeNewsFilter.Application.Catalog
             return new ApiSuccessResult<NewsCommunityViewModel>("UpdateLinkNewsSuccessful", newsModel.ResultObj);
         }
 
-        private async Task<string> SaveFile(IFormFile file)
+        private string SaveFile(IFormFile file)
         {
             var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
             var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
-            await _storageService.SaveFileAsync(file.OpenReadStream(), fileName);
+             _storageService.SaveFile(file.OpenReadStream(), fileName);
             return fileName;
         }
 
