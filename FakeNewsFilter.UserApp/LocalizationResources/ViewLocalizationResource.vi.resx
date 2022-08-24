@@ -398,7 +398,7 @@
     <comment>Home/Index</comment>
   </data>
   <data name="Makes finding news quick and easy" xml:space="preserve">
-    <value>Makes finding news quick and easy</value>
+    <value>Giúp tìm kiếm tin tức nhanh chóng và dễ dàng</value>
     <comment>Home/Index</comment>
   </data>
   <data name="Multi-language system" xml:space="preserve">
@@ -735,5 +735,28 @@
   <data name="When you log in, you will see the system icon and say hello" xml:space="preserve">
     <value>Khi đăng nhập vào sẽ thấy icon của hệ thống và xin chào</value>
     <comment>Home/Guide</comment>
+  </data>
+  <data name="formregister" xml:space="preserve">
+    <value>&lt;div class="input-box mt-30"&gt;
+                                            &lt;input type="text" placeholder="Email của bạn" /&gt;
+                                            &lt;button style="white-space: nowrap;" localize-content&gt;Register&lt;/button&gt;
+                                        &lt;/div&gt;</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="topic community" xml:space="preserve">
+    <value>&lt;i class="fas fa-bell"&gt;&lt;/i&gt;Cộng đồng</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="topic index" xml:space="preserve">
+    <value>&lt;i class="fas fa-cog"&gt;&lt;/i&gt;Chủ đề</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="topic news" xml:space="preserve">
+    <value>&lt;i class="fas fa-exclamation-triangle"&gt;&lt;/i&gt;Tin tức</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="topic setting" xml:space="preserve">
+    <value>&lt;i class="fas fa-lock"&gt;&lt;/i&gt;Cài đặt</value>
+    <comment>Home/Index</comment>
   </data>
 </root>

@@ -174,7 +174,7 @@
     <comment>Layouts/Footer +  Home/Policy</comment>
   </data>
   <data name="see more" xml:space="preserve">
-    <value>see more &lt;i class="fal fa-arrow-right"&gt;&lt;/i&gt;see more</value>
+    <value>see more &lt;i class="fal fa-arrow-right"&gt;&lt;/i&gt;</value>
     <comment>Layouts/Footer + Home/Index</comment>
   </data>
   <data name="Service" xml:space="preserve">
@@ -731,5 +731,28 @@
   <data name="When you log in, you will see the system icon and say hello" xml:space="preserve">
     <value>When you log in, you will see the system icon and say hello</value>
     <comment>Home/Guide</comment>
+  </data>
+  <data name="formregister" xml:space="preserve">
+    <value>&lt;div class="input-box mt-30"&gt;
+                                            &lt;input type="text" placeholder="Your email" /&gt;
+                                            &lt;button style="white-space: nowrap;" localize-content&gt;Register&lt;/button&gt;
+                                        &lt;/div&gt;</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="topic community" xml:space="preserve">
+    <value>&lt;i class="fas fa-bell"&gt;&lt;/i&gt;Community</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="topic index" xml:space="preserve">
+    <value>&lt;i class="fas fa-cog"&gt;&lt;/i&gt;Topic</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="topic news" xml:space="preserve">
+    <value>&lt;i class="fas fa-exclamation-triangle"&gt;&lt;/i&gt;News</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="topic setting" xml:space="preserve">
+    <value>&lt;i class="fas fa-lock"&gt;&lt;/i&gt;Setting</value>
+    <comment>Home/Index</comment>
   </data>
 </root>
