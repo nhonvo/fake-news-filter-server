@@ -15,9 +15,12 @@
 </div>
 <div class="logged-user-info-w">
     <div class="logged-user-name">
-       @Model.FullName
+        @Model.FullName
     </div>
     <div class="logged-user-role">
-        @Model.Role
+        @foreach (var role in @Model.Roles)
+        {
+            @role
+        }
     </div>
 </div>

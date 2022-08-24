@@ -190,30 +190,30 @@ $(document).ready(function () {
             }
         },
         // For responsive popup
-        responsive: {
-            details: {
-                display: $.fn.dataTable.Responsive.display.modal({
-                    header: function (row) {
-                        var data = row.data();
-                        return 'Details of ' + data['full_name'];
-                    }
-                }),
-                type: 'column',
-                renderer: $.fn.dataTable.Responsive.renderer.tableAll({
-                    tableClass: 'table',
-                    columnDefs: [
-                        {
-                            targets: 2,
-                            visible: false
-                        },
-                        {
-                            targets: 3,
-                            visible: false
-                        }
-                    ]
-                })
-            }
-        },
+        // responsive: {
+        //     details: {
+        //         display: $.fn.dataTable.Responsive.display.modal({
+        //             header: function (row) {
+        //                 var data = row.data();
+        //                 return 'Details of ' + data['full_name'];
+        //             }
+        //         }),
+        //         type: 'column',
+        //         renderer: $.fn.dataTable.Responsive.renderer.tableAll({
+        //             tableClass: 'table',
+        //             columnDefs: [
+        //                 {
+        //                     targets: 2,
+        //                     visible: false
+        //                 },
+        //                 {
+        //                     targets: 3,
+        //                     visible: false
+        //                 }
+        //             ]
+        //         })
+        //     }
+        // },
         //Tooltip
         drawCallback: function () {
             $(document).find('[data-bs-toggle="tooltip"]').tooltip();
