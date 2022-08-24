@@ -27,6 +27,8 @@ using System.Net;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using static Google.Apis.Auth.JsonWebSignature;
 using Payload = Google.Apis.Auth.GoogleJsonWebSignature.Payload;
+using NewsAPI.Constants;
+using FakeNewsFilter.ViewModel.Catalog.TopicNews;
 
 namespace FakeNewsFilter.Application.System
 {
@@ -273,38 +275,37 @@ namespace FakeNewsFilter.Application.System
         {
             try
             {
-                var query = _userManager.Users;
+                var userlist = await _userManager.Users.Include(x=>x.UserRoles).ToListAsync();
 
-                var userList = await (from x in query
-                    select new
-                    {
-                        UserId = x.Id,
-                        Email = x.Email,
-                        FullName = x.Name,
-                        Status = x.Status,
-                        UserName = x.UserName,
-                        Avatar = _context.Media.Where(m => m.MediaId == x.AvatarId).Select(m => m.PathMedia)
-                            .FirstOrDefault(),
-                        RoleNames = (from userRole in x.UserRoles
+
+                var query = userlist.Select(u => new
+                {
+                    users = u,
+                    role = (from userRole in u.UserRoles
                             join role in _roleManager.Roles
                                 on userRole.RoleId
                                 equals role.Id
-                            select role.Name).ToList()
-                    }).Select(
-                    p => new UserViewModel
-                    {
-                        UserId = p.UserId,
-                        Email = p.Email,
-                        FullName = p.FullName,
-                        Status = p.Status,
-                        UserName = p.UserName,
-                        Avatar = p.Avatar,
-                        Roles = p.RoleNames
-                    }
-                ).ToListAsync();
+                            select role.Name).ToList(),
+                   avatar = _context.Media.Where(m => m.MediaId == u.AvatarId).Select(m => m.PathMedia).FirstOrDefault(),
+                }).ToList();
 
+                var data = query
+                   .Select(p => new UserViewModel()
+                   {
+                       UserId = p.users.Id,
+                       Email = p.users.Email,
+                       FullName = p.users.Name,
+                       Status = p.users.Status,
+                       UserName = p.users.UserName,
+                       noNewsVoted = _context.Vote.Count(i => i.UserId == p.users.Id),
+                       noNewsContributed = _context.NewsCommunity.Count(i => i.UserId == p.users.Id),
+                       Avatar = !string.IsNullOrEmpty(p.avatar)
+                                ? _storageService.GetFileUrl(p.avatar)
+                                : p.avatar,
+                       Roles = p.role
+                   }).ToList();
 
-                return new ApiSuccessResult<List<UserViewModel>>("LoadingListUsersSuccessful", userList);
+                return new ApiSuccessResult<List<UserViewModel>>("LoadingListUsersSuccessful", data);
             }
             catch (FakeNewsException e)
             {
