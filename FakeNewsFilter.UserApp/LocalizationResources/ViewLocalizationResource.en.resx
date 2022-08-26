@@ -174,7 +174,7 @@
     <comment>Layouts/Footer +  Home/Policy</comment>
   </data>
   <data name="see more" xml:space="preserve">
-    <value>see more &lt;i class="fal fa-arrow-right"&gt;&lt;/i&gt;</value>
+    <value>See more &lt;i class="fal fa-arrow-right"&gt;&lt;/i&gt;</value>
     <comment>Layouts/Footer + Home/Index</comment>
   </data>
   <data name="Service" xml:space="preserve">
@@ -366,7 +366,7 @@
     <comment>Home/Index</comment>
   </data>
   <data name="flexible" xml:space="preserve">
-    <value>flexible</value>
+    <value>Flexible</value>
     <comment>Home/Index</comment>
   </data>
   <data name="Founding member" xml:space="preserve">

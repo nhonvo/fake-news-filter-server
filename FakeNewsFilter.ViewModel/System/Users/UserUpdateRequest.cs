@@ -13,7 +13,6 @@ namespace FakeNewsFilter.ViewModel.System.Users
 
         public string Email { get; set; }
 
-
         public string Avatar { get; set; }
 
         public IFormFile MediaFile { get; set; }
