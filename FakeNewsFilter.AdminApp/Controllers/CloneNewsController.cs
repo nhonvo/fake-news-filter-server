@@ -177,6 +177,8 @@ namespace FakeNewsFilter.AdminApp.Controllers
 
             var languageData = await _languageApi.GetLanguageInfo();
 
+            var oigetitData = await _cloneNewsApi.GetBreakingOigetitNews("VI");
+            
             var model = new CloneNewsVM();
 
             if (TempData["result"] != null)
@@ -191,6 +193,8 @@ namespace FakeNewsFilter.AdminApp.Controllers
 
             ViewBag.ListTopic = new SelectList(topicData.ResultObj, "TopicId", "Tag");
             ViewBag.ListLanguage = new SelectList(languageData.ResultObj, "Id", "Name");
+
+            model.OigetitNewsViewModel = new OigetitNewsViewModel() {result = oigetitData};
 
             return View(model);
         }
@@ -237,7 +241,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
             var topicData = await _topicApi.GetAllTopic();
 
             var languageData = await _languageApi.GetLanguageInfo();
-            
+
             if (TempData["result"] != null)
             {
                 ViewBag.SuccessMsg = TempData["Result"];
@@ -257,7 +261,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
                 ViewData = new ViewDataDictionary<OigetitNewsViewModel>(ViewData, model)
             };
         }
-        
+
         public async Task<IActionResult> GetOigetitNewsDescription(string newsId)
         {
             var data = await _cloneNewsApi.GetOigetitNewsDesc(newsId);
@@ -265,7 +269,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
             var topicData = await _topicApi.GetAllTopic();
 
             var languageData = await _languageApi.GetLanguageInfo();
-            
+
             if (TempData["result"] != null)
             {
                 ViewBag.SuccessMsg = TempData["Result"];
@@ -278,7 +282,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
 
             return Json(data);
         }
-        
+
         public async Task<IActionResult> LoadMore(string nextPageToken, string query)
         {
             if (string.IsNullOrEmpty(nextPageToken) || string.IsNullOrEmpty(query))

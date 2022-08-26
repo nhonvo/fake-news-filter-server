@@ -17,6 +17,7 @@ namespace FakeNewsFilter.AdminApp.Services
     {
         Task<GetClaimsRequest> Search(string query);
         Task<GetClaimsRequest> LoadMore(string nextPageToken, string query);
+        Task<List<OigetitNews>> GetBreakingOigetitNews(string languages);
         Task<OigetitNewsViewModel> SearchOigetitNews(string query, int page);
         Task<List<OigetitNews>> GetOigetitCategoryNews(int categoryId);
         Task<string> GetOigetitNewsDesc(string newsId);
@@ -137,7 +138,36 @@ namespace FakeNewsFilter.AdminApp.Services
                 return new OigetitNewsViewModel("Error System: " + e.Message);
             }
         }
+        public async Task<List<OigetitNews>> GetBreakingOigetitNews(string language)
+        {
+            try
+            {
+                HttpClient httpClient = new HttpClient();
+                HttpRequestMessage request = new HttpRequestMessage();
 
+                request.RequestUri = new Uri("https://api.oigetit.com:8081/V2/GetBreakingNews/" + language);
+
+                request.Method = HttpMethod.Get;
+
+                HttpResponseMessage response = await httpClient.SendAsync(request);
+
+                var body = await response.Content.ReadAsStringAsync();
+                var statusCode = response.StatusCode;
+
+
+                if (statusCode == HttpStatusCode.OK)
+                {
+                    return JsonConvert.DeserializeObject<List<OigetitNews>>(body);
+                }
+
+                return JsonConvert.DeserializeObject<List<OigetitNews>>(body);
+            }
+            catch (FakeNewsException e)
+            {
+                return new List<OigetitNews>(new OigetitNews[]
+                    {new OigetitNews {Title = "Error System: " + e.Message}});
+            }
+        }
         public async Task<List<OigetitNews>> GetOigetitCategoryNews(int categoryId)
         {
             try
