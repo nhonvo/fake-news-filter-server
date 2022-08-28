@@ -7,7 +7,7 @@
 <section class="app-user-edit">
     <div class="card">
         <div class="card-body">
-            <ul class="nav nav-pills" role="tablist">
+            @*<ul class="nav nav-pills" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link d-flex align-items-center active" id="information-tab" data-bs-toggle="tab" href="#information" aria-controls="account" role="tab" aria-selected="true">
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><span class="d-none d-sm-block">Information</span>
@@ -23,7 +23,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-share-2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg><span class="d-none d-sm-block">Social</span>
                     </a>
                 </li>
-            </ul>
+            </ul>*@
             <div class="tab-content">
                 <!-- Account Tab starts -->
                 <partial name="EditInfo" model="@Model.EditUser" />
@@ -34,7 +34,7 @@
                 <!-- Social Tab starts -->
                 <div class="tab-pane" id="social" aria-labelledby="social-tab" role="tabpanel">
                     <!-- users edit social form start -->
-                    <form>
+                    @*<form>
                         <div class="row">
                             <div class="col-lg-4 col-md-6 mb-1">
                                 <label class="form-label" for="twitter-input">Twitter</label>
@@ -96,7 +96,7 @@
                                 <button type="reset" class="btn btn-outline-secondary waves-effect">Reset</button>
                             </div>
                         </div>
-                    </form>
+                    </form>*@
                     <!-- users edit social form ends -->
                 </div>
                 <!-- Social Tab ends -->
