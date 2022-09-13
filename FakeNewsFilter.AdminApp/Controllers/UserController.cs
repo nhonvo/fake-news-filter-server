@@ -28,29 +28,21 @@ namespace FakeNewsFilter.WebApp.Controllers
         }
 
         [Breadcrumb("User Manager")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var data = await _userApi.GetUsers();
+
             if (TempData["result"] != null)
             {
-                ViewBag.SuccessMsg = TempData["OigetitNews"];
+                ViewBag.SuccessMsg = TempData["Result"];
             }
             if (TempData["Error"] != null)
             {
                 ViewBag.Error = TempData["Error"];
             }
-            return View();
+            return View(data);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetUsers()
-        {
-            var data = await _userApi.GetUsers();
-
-            return Json(new
-            {
-                data = data.ResultObj
-            });
-        }
 
         [HttpPost]
         public async Task<IActionResult> Create(RegisterRequest request)

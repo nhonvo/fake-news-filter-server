@@ -16,17 +16,18 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Slugify;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace FakeNewsFilter.Application.Catalog;
 
 public interface INewsService
 {
-    Task<ApiResult<List<NewsViewModel>>> GetAll(string languageId, string filter);
-    Task<ApiResult<List<NewsViewModel>>> GetBySouce(string source_name);
+    Task<ApiResult<PagedResult<NewsViewModel>>> GetAll(GetManageNewsRequest request);
+    Task<ApiResult<PagedResult<NewsViewModel>>> GetBySouce(GetManageNewsRequest request);
     Task<ApiResult<PagedResult<NewsViewModel>>> GetNewsPaging(GetManageNewsRequest request);
     Task<ApiResult<int>> GetViewCount(int NewsId);
-    Task<ApiResult<List<NewsViewModel>>> GetNewsInTopic(int topicId);
-    Task<ApiResult<List<NewsViewModel>>> GetNewsByFollowedTopic(List<int> topicList, Guid userId);
+    Task<ApiResult<PagedResult<NewsViewModel>>> GetNewsInTopic(GetNewsInTopicRequest request);
+    Task<ApiResult<PagedResult<NewsViewModel>>> GetNewsByFollowedTopic(GetNewsFollowedRequest request);
     Task<ApiResult<NewsViewModel>> CreateBySystem(NewsSystemCreateRequest request);
     Task<ApiResult<NewsViewModel>> CreateByOther(NewsOutSourceCreateRequest request);
     Task<ApiResult<string>> Delete(int NewsId);
@@ -49,6 +50,7 @@ public class NewsService : INewsService
     private readonly FileStorageService _storageService;
 
     private SlugHelper _slugHelper;
+    private object query;
 
     public NewsService(ApplicationDBContext context, FileStorageService storageService, IMapper mapper,
         SlugHelper slugHelper)
@@ -61,28 +63,29 @@ public class NewsService : INewsService
     }
 
     //Lấy tất cả các tin tức (với Filter là lọc tin giả hay tin thật hoặc tin tạo ra từ hệ thống hoặc nguồn bên ngoài)
-    public async Task<ApiResult<List<NewsViewModel>>> GetAll(string languageId, string label_news_filter)
+    public async Task<ApiResult<PagedResult<NewsViewModel>>> GetAll(GetManageNewsRequest request)
     {
         try
         {
-            if (languageId != null)
+            //1. Lọc dữ liệu
+            if (request.LanguageId != null)
             {
-                var language = await LanguageCommon.CheckExistLanguage(_context, languageId);
+                var language = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
 
                 if (language == null)
-                    return new ApiErrorResult<List<NewsViewModel>>(404, "LanguageNotFound");
+                    return new ApiErrorResult<PagedResult<NewsViewModel>>(404, "LanguageNotFound");
             }
 
             var newsList = new List<NewsViewModel>();
 
             LabelNews enum_label;
 
-            if (string.IsNullOrEmpty(label_news_filter))
+            if (string.IsNullOrEmpty(request.Keyword))
             {
                 //Nếu bộ lọc là null
                 newsList = await _context.News
                     .Include(x => x.DetailNews)
-                    .Where(n => !string.IsNullOrEmpty(languageId) ? n.LanguageId == languageId : true)
+                    .Where(n => !string.IsNullOrEmpty(request.LanguageId) ? n.LanguageId == request.LanguageId : true)
                     .Select(x =>
                         new NewsViewModel
                         {
@@ -109,9 +112,9 @@ public class NewsService : INewsService
                         }
                     ).ToListAsync();
             }
-            else if (Enum.TryParse<LabelNews>(label_news_filter, out enum_label))
+            else if (Enum.TryParse<LabelNews>(request.Keyword, out enum_label))
             {
-                if (string.IsNullOrEmpty(languageId))
+                if (string.IsNullOrEmpty(request.LanguageId))
                 {
                     //Nếu lọc nhãn tin (thật, giả) mà không quan tâm đến ngôn ngữ tin đó
                     newsList = await _context.News
@@ -144,7 +147,7 @@ public class NewsService : INewsService
                 {
                     //Nếu bộ lọc không rỗng và languageId không rỗng
                     newsList = await _context.News
-                        .Where(n => n.OfficialRating.Equals(enum_label) && n.LanguageId == languageId)
+                        .Where(n => n.OfficialRating.Equals(enum_label) && n.LanguageId == request.LanguageId)
                         .Select(x => new NewsViewModel
                         {
                             NewsId = x.NewsId,
@@ -171,33 +174,73 @@ public class NewsService : INewsService
                 }
             }
             else
-                return new ApiErrorResult<List<NewsViewModel>>(404, "OfficalRatingNotFound");
+                return new ApiErrorResult<PagedResult<NewsViewModel>>(404, "OfficalRatingNotFound");
 
-            if (newsList.Count > 0)
-                return new ApiSuccessResult<List<NewsViewModel>>("GetAllNewsSuccessful", newsList);
+            //2. Phân trang
+            int totalRow = newsList.Count();
+
+            //Trường hợp không nhận Pagging thì lấy toàn bộ dữ liệu
+            int pageIndex = request.PageIndex == 0 ? 1 : request.PageIndex;
+
+            int pageSize = request.PageSize == 0 ? totalRow : request.PageSize;
+
+            var data = newsList.Skip((pageIndex - 1) * pageSize)
+                .Take(pageSize)
+                .Select(x => new NewsViewModel
+                {
+                    NewsId = x.NewsId,
+                    Title = x.Title,
+                    Content = x.Content ?? "",
+                    Description = x.Description,
+                    TopicInfo = x.TopicInfo,
+                    OfficialRating = x.OfficialRating,
+                    SocialBeliefs = x.SocialBeliefs,
+                    ViewCount = x.ViewCount,
+                    Publisher = x.Publisher,
+                    SourceCreate = x.SourceCreate,
+                    Status = x.Status,
+                    ThumbNews = x.ThumbNews,
+                    UrlNews = x.UrlNews,
+                    LanguageId = x.LanguageId,
+                    Timestamp = x.Timestamp
+                }).ToList();
+
+            //4. Hiển thị kết quả
+            var pagedResult = new PagedResult<NewsViewModel>()
+            {
+                TotalRecords = totalRow,
+                PageSize = pageSize,
+                PageIndex = pageIndex,
+                Items = data
+            };
+
+            if (pagedResult != null)
+                return new ApiSuccessResult<PagedResult<NewsViewModel>>("GetAllNewsSuccessful", pagedResult);
             else
-                return new ApiErrorResult<List<NewsViewModel>>(400, "GetAllNewsUnSuccessful");
+                return new ApiErrorResult<PagedResult<NewsViewModel>>(400, "GetAllNewsUnSuccessful");
         }
         catch (Exception ex)
         {
-            return new ApiErrorResult<List<NewsViewModel>>(500, ex.Message);
+            return new ApiErrorResult<PagedResult<NewsViewModel>>(500, ex.Message);
         }
     }
 
     //Lấy các tin tức dựa trên nguồn tạo (từ hệ thống/ nguồn bên ngoài)
-    public async Task<ApiResult<List<NewsViewModel>>> GetBySouce(string source_name)
+    public async Task<ApiResult<PagedResult<NewsViewModel>>> GetBySouce(GetManageNewsRequest request)
     {
         try
         {
-            if (string.IsNullOrEmpty(source_name))
+            //Keyword = SourceName
+            if (string.IsNullOrEmpty(request.Keyword))
             {
-                return new ApiErrorResult<List<NewsViewModel>>(400, "SourceNameNotFound");
+                return new ApiErrorResult<PagedResult<NewsViewModel>>(400, "SourceNameNotFound");
             }
 
             var newsList = new List<NewsViewModel>();
 
-            if (source_name.ToUpper() == "SYSTEM") //Lấy các tin được tạo từ hệ thống
+            if (request.Keyword.ToUpper() == "SYSTEM") //Lấy các tin được tạo từ hệ thống
             {
+                
                 newsList = await _context.News
                     .Include(i => i.DetailNews)
                     .Where(n => n.DetailNews != null)
@@ -225,13 +268,53 @@ public class NewsService : INewsService
                         Timestamp = x.Timestamp
                     }).ToListAsync();
 
-                if (newsList.Count > 0)
-                    return new ApiSuccessResult<List<NewsViewModel>>("GetAllNewsSuccessful", newsList);
+                //Phân trang
+                int totalRow = newsList.Count();
+
+                //Trường hợp không nhận Pagging thì lấy toàn bộ dữ liệu
+                int pageIndex = request.PageIndex == 0 ? 1 : request.PageIndex;
+
+                int pageSize = request.PageSize == 0 ? totalRow : request.PageSize;
+
+                var data = newsList.Skip((pageIndex - 1) * pageSize)
+                  .Take(pageSize)
+                  .Select(x => new NewsViewModel
+                  {
+                      NewsId = x.NewsId,
+                      Title = x.Title,
+                      Content = x.Content ?? "",
+                      Description = x.Description,
+                      TopicInfo = x.TopicInfo,
+                      OfficialRating = x.OfficialRating,
+                      SocialBeliefs = x.SocialBeliefs,
+                      ViewCount = x.ViewCount,
+                      Publisher = x.Publisher,
+                      SourceCreate = x.SourceCreate,
+                      Status = x.Status,
+                      ThumbNews = x.ThumbNews,
+                      UrlNews = x.UrlNews,
+                      LanguageId = x.LanguageId,
+                      Timestamp = x.Timestamp
+                  }).ToList();
+
+                //Hiển thị kết quả
+                var pagedResult = new PagedResult<NewsViewModel>()
+                {
+                    TotalRecords = totalRow,
+                    PageSize = pageSize,
+                    PageIndex = pageIndex,
+                    Items = data
+                };
+
+
+                if (pagedResult != null)
+                    return new ApiSuccessResult<PagedResult<NewsViewModel>>("GetAllNewsSuccessful", pagedResult);
                 else
-                    return new ApiErrorResult<List<NewsViewModel>>(400, "GetAllNewsUnSuccessful");
+                    return new ApiErrorResult<PagedResult<NewsViewModel>>(400, "GetAllNewsUnSuccessful");
             }
-            else if (source_name.ToUpper() == "OUTSOURCE") //Lấy các tin được tạo từ nguồn ngoài
+            else if (request.Keyword.ToUpper() == "OUTSOURCE") //Lấy các tin được tạo từ nguồn ngoài
             {
+                
                 newsList = await _context.News
                     .Include(i => i.DetailNews)
                     .Where(n => n.DetailNews == null)
@@ -259,19 +342,58 @@ public class NewsService : INewsService
                         Timestamp = x.Timestamp
                     }).ToListAsync();
 
-                if (newsList.Count > 0)
-                    return new ApiSuccessResult<List<NewsViewModel>>("GetAllNewsSuccessful", newsList);
+                //Phân trang
+                int totalRow = newsList.Count();
+
+
+                //Trường hợp không nhận Pagging thì lấy toàn bộ dữ liệu
+                int pageIndex = request.PageIndex == 0 ? 1 : request.PageIndex;
+
+                int pageSize = request.PageSize == 0 ? totalRow : request.PageSize;
+
+                var data = newsList.Skip((pageIndex - 1) * pageSize)
+                  .Take(pageSize)
+                  .Select(x => new NewsViewModel
+                  {
+                      NewsId = x.NewsId,
+                      Title = x.Title,
+                      Content = x.Content ?? "",
+                      Description = x.Description,
+                      TopicInfo = x.TopicInfo,
+                      OfficialRating = x.OfficialRating,
+                      SocialBeliefs = x.SocialBeliefs,
+                      ViewCount = x.ViewCount,
+                      Publisher = x.Publisher,
+                      SourceCreate = x.SourceCreate,
+                      Status = x.Status,
+                      ThumbNews = x.ThumbNews,
+                      UrlNews = x.UrlNews,
+                      LanguageId = x.LanguageId,
+                      Timestamp = x.Timestamp
+                  }).ToList();
+
+                //Hiển thị kết quả
+                var pagedResult = new PagedResult<NewsViewModel>()
+                {
+                    TotalRecords = totalRow,
+                    PageSize = pageSize,
+                    PageIndex = pageIndex,
+                    Items = data
+                };
+
+                if (pagedResult != null)
+                    return new ApiSuccessResult<PagedResult<NewsViewModel>>("GetAllNewsSuccessful", pagedResult);
                 else
-                    return new ApiErrorResult<List<NewsViewModel>>(400, "GetAllNewsUnSuccessful");
+                    return new ApiErrorResult<PagedResult<NewsViewModel>>(400, "GetAllNewsUnSuccessful");
             }
             else
             {
-                return new ApiErrorResult<List<NewsViewModel>>(400, "GetAllNewsUnSuccessful");
+                return new ApiErrorResult<PagedResult<NewsViewModel>>(400, "GetAllNewsUnSuccessful");
             }
         }
         catch (Exception ex)
         {
-            return new ApiErrorResult<List<NewsViewModel>>(500, ex.Message);
+            return new ApiErrorResult<PagedResult<NewsViewModel>>(500, ex.Message);
         }
     }
 
@@ -327,8 +449,13 @@ public class NewsService : INewsService
             //3. Phân trang
             int totalRow = await query.CountAsync();
 
-            var data = await query.Skip((request.PageIndex - 1) * request.PageSize)
-                .Take(request.PageSize)
+            //Trường hợp không nhận Pagging thì lấy toàn bộ dữ liệu
+            int pageIndex = request.PageIndex == 0 ? 1 : request.PageIndex;
+
+            int pageSize = request.PageSize == 0 ? totalRow : request.PageSize;
+
+            var data = await query.Skip((pageIndex - 1) * pageSize)
+                .Take(pageSize)
                 .Select(x => new NewsViewModel
                 {
                     NewsId = x.NewsId,
@@ -352,8 +479,8 @@ public class NewsService : INewsService
             var pagedResult = new PagedResult<NewsViewModel>()
             {
                 TotalRecords = totalRow,
-                PageSize = request.PageSize,
-                PageIndex = request.PageIndex,
+                PageSize = pageSize,
+                PageIndex = pageIndex,
                 Items = data
             };
 
@@ -497,18 +624,19 @@ public class NewsService : INewsService
     }
 
     //Lấy tin tức theo chủ đề mà người dùng theo dõi
-    public async Task<ApiResult<List<NewsViewModel>>> GetNewsByFollowedTopic(List<int> topicList, Guid userId)
+    public async Task<ApiResult<PagedResult<NewsViewModel>>> GetNewsByFollowedTopic(GetNewsFollowedRequest request)
     {
         try
         {
+            //1. Chạy câu truy vấn 
             var newsVotedByUserId =
-                await _context.Vote.Where(x => x.UserId == userId).Select(x => x.NewsId).ToListAsync();
+                await _context.Vote.Where(x => x.UserId == request.userId).Select(x => x.NewsId).ToListAsync();
 
-            var newsList = await _context.News
+            var query = await _context.News
                 .Include(i => i.DetailNews)
                 .Where(n =>
                     !newsVotedByUserId.Contains(n.NewsId) &&
-                    topicList.Contains(n.NewsInTopics.FirstOrDefault().TopicId))
+                    request.topicList.Contains(n.NewsInTopics.FirstOrDefault().TopicId))
                 .Select(x => new NewsViewModel
                 {
                     NewsId = x.NewsId,
@@ -534,32 +662,80 @@ public class NewsService : INewsService
                     Timestamp = x.Timestamp
                 }).ToListAsync();
 
+            //2. Phân trang
+            int totalRow = query.Count;
 
-            if (newsList == null)
-                return new ApiErrorResult<List<NewsViewModel>>(400, "GetNewsByFollowedTopicUnsuccessful");
+            //Trường hợp không nhận Pagging thì lấy toàn bộ dữ liệu
+            int pageIndex = request.PageIndex == 0 ? 1 : request.PageIndex;
 
-            return new ApiSuccessResult<List<NewsViewModel>>("GetNewsByFollowedTopicSuccessful", newsList);
+            int pageSize = request.PageSize == 0 ? totalRow : request.PageSize;
+
+
+            var data = query.Skip((pageIndex - 1) * pageSize)
+                .Take(pageSize)
+                .Select(x => new NewsViewModel
+                {
+                    NewsId = x.NewsId,
+                    Title = x.Title,
+                    Content = x.Content ?? "",
+                    Description = x.Description,
+                    TopicInfo = x.TopicInfo,
+                    OfficialRating = x.OfficialRating,
+                    SocialBeliefs = x.SocialBeliefs,
+                    ViewCount = x.ViewCount,
+                    Publisher = x.Publisher,
+                    SourceCreate = x.SourceCreate,
+                    Status = x.Status,
+                    ThumbNews = x.ThumbNews,
+                    UrlNews = x.UrlNews,
+                    LanguageId = x.LanguageId,
+                    Timestamp = x.Timestamp
+                }).ToList();
+
+            //3. Hiển thị kết quả
+            var pagedResult = new PagedResult<NewsViewModel>()
+            {
+                TotalRecords = totalRow,
+                PageSize = pageSize,
+                PageIndex = pageIndex,
+                Items = data
+            };
+
+            if (query == null)
+                return new ApiErrorResult<PagedResult<NewsViewModel>>(400, "GetNewsByFollowedTopicUnsuccessful");
+
+            return new ApiSuccessResult<PagedResult<NewsViewModel>>("GetNewsByFollowedTopicSuccessful", pagedResult);
         }
         catch (Exception ex)
         {
-            return new ApiErrorResult<List<NewsViewModel>>(500, ex.Message);
+            return new ApiErrorResult<PagedResult<NewsViewModel>>(500, ex.Message);
         }
     }
 
 
     //Lấy tất cả các tin tức có trong chủ đề
-    public async Task<ApiResult<List<NewsViewModel>>> GetNewsInTopic(int topicId)
+    public async Task<ApiResult<PagedResult<NewsViewModel>>> GetNewsInTopic(GetNewsInTopicRequest request)
     {
         try
         {
+            //1. Truy vấn
             var query = from n in _context.News
                 join nit in _context.NewsInTopics on n.NewsId equals nit.NewsId
                 join c in _context.TopicNews on nit.TopicId equals c.TopicId
                 select new {n, nit, c};
 
-            query = query.Where(t => topicId == t.nit.TopicId);
+            query = query.Where(t => request.topicId == t.nit.TopicId);
 
-            var data = await query
+            //2. Phân trang
+            int totalRow = await query.CountAsync();
+
+            //Trường hợp không nhận Pagging thì lấy toàn bộ dữ liệu
+            int pageIndex = request.PageIndex == 0 ? 1 : request.PageIndex;
+
+            int pageSize = request.PageSize == 0 ? totalRow : request.PageSize;
+
+            var data = await query.Skip((pageIndex - 1) * pageSize)
+                .Take(pageSize)
                 .Select(x => new NewsViewModel
                 {
                     NewsId = x.n.NewsId,
@@ -585,16 +761,25 @@ public class NewsService : INewsService
                     Timestamp = x.n.Timestamp
                 }).ToListAsync();
 
-            if (data == null) return new ApiErrorResult<List<NewsViewModel>>(400, "GetAllNewsInTopicUnsuccessful");
+            //3. Hiển thị kết quả
+            var pagedResult = new PagedResult<NewsViewModel>()
+            {
+                TotalRecords = totalRow,
+                PageSize = pageSize,
+                PageIndex = pageIndex,
+                Items = data
+            };
+
+            if (data == null) return new ApiErrorResult<PagedResult<NewsViewModel>>(400, "GetAllNewsInTopicUnsuccessful");
 
             if (data.Count == 0)
-                return new ApiErrorResult<List<NewsViewModel>>(404, "DoNotHaveNewsInTopic");
+                return new ApiErrorResult<PagedResult<NewsViewModel>>(404, "DoNotHaveNewsInTopic");
 
-            return new ApiSuccessResult<List<NewsViewModel>>("GetAllNewsInTopicSuccessful", data);
+            return new ApiSuccessResult<PagedResult<NewsViewModel>>("GetAllNewsInTopicSuccessful", pagedResult);
         }
         catch (Exception ex)
         {
-            return new ApiErrorResult<List<NewsViewModel>>(404, ex.Message);
+            return new ApiErrorResult<PagedResult<NewsViewModel>>(404, ex.Message);
         }
     }
 
