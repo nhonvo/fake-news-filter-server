@@ -3,24 +3,24 @@
     <div class="tab-pane active" id="information" aria-labelledby="information-tab" role="tabpanel">
         <!-- users edit start -->
         <form class="row g-3" asp-action="Edit" asp-controller="User" method="post" enctype="multipart/form-data">
-            <div class="d-flex mb-2">
-                <img src="http://localhost:5001/images/avatars/@Model.Avatar" alt="users avatar" class="user-avatar users-avatar-shadow rounded me-2 my-25 cursor-pointer" height="90" width="90">
-                <div class="mt-50">
+            <div class="d-flex mb-2" style="width: 100%">
+                <div class="mt-50" >
+                    <img src=@Model.Avatar alt="users avatar" class="user-avatar users-avatar-shadow rounded me-2 my-25 cursor-pointer" height="90" width="90">
                     <h4>@Model.Name</h4>
                     <div class="col-12 d-flex mt-1 px-0">
                         <label class="btn btn-primary me-75 mb-0 waves-effect waves-float waves-light" for="MediaFile">
-                            <span class="d-none d-sm-block">Change</span>
+                            <span class="d-none d-sm-block">Change avatar</span>
                             <input asp-for="MediaFile" class="form-control" type="file" hidden="" accept="image/png, image/jpeg, image/jpg">
-                            <span class="d-block d-sm-none">
+                            @*<span class="d-block d-sm-none">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit me-0"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-                            </span>
+                            </span>*@
                         </label>
-                        <button class="btn btn-outline-secondary d-block d-sm-none">
+                        @*<button class="btn btn-outline-secondary d-block d-sm-none">
                             <i class="me-0" data-feather="trash-2"></i>
                         </button>
                         <button class="btn btn-outline-secondary d-block d-sm-none waves-effect">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 me-0"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                        </button>
+                        </button>*@
                     </div>
                 </div>
             </div>

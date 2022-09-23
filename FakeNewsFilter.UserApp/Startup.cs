@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using LazZiya.ExpressLocalization;
 using System.Globalization;
 using FakeNewsFilter.UserApp.LocalizationResources;
+using FakeNewsFilter.UserApp.Services;
 using Microsoft.AspNetCore.Localization;
 using FluentValidation.AspNetCore;
 
@@ -81,6 +82,7 @@ namespace FakeNewsFilter.UserApp
             services.AddTransient<TopicApi>();
             services.AddTransient<LanguageApi>();
             services.AddTransient<NewsApi>();
+            services.AddTransient<NewsApiDeprecated>();
             services.AddTransient<NotificationApi>();
             services.AddTransient<CloneNewsApi>();
 

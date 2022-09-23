@@ -17,7 +17,7 @@ namespace FakeNewsFilter.AdminApp.Services
 {
     public interface INewsApi
     {
-        Task<ApiResult<List<NewsViewModel>>> GetNewsBySouce(string source_name);
+        Task<ApiResult<NewsPagingResponse>> GetNewsBySouce(string source_name);
         Task<ApiResult<List<NewsViewModel>>> GetNewsByTopic(int topicId);
 
         Task<ApiResult<NewsViewModel>> CreateBySystem(NewsSystemCreateRequest request);
@@ -53,9 +53,9 @@ namespace FakeNewsFilter.AdminApp.Services
 
 
         //Lấy danh sách tin tức
-        public async Task<ApiResult<List<NewsViewModel>>> GetNewsBySouce(string source_name)
+        public async Task<ApiResult<NewsPagingResponse>> GetNewsBySouce(string source_name)
         {
-            var data = await GetAsync<ApiResult<List<NewsViewModel>>>($"/api/news/source?source={source_name}");
+            var data = await GetAsync<ApiResult<NewsPagingResponse>>($"/api/news/source?keyword={source_name}");
 
             return data;
         }

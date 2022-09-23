@@ -10,26 +10,9 @@
 
 //Load Datatable List Users
 $(document).ready(function () {
-    var dtUserTable = $('.user-list-table'),
-        newUserSidebar = $('.new-user-modal'),
-        newUserForm = $('.add-new-user'),
-        statusObj = {
-            0: { title: 'Pending', class: 'badge-light-warning' },
-            1: { title: 'Active', class: 'badge-light-success' },
-            2: { title: 'Inactive', class: 'badge-light-secondary' }
-        };
-
+    
     $("#list_users").DataTable({        
-        ajax: {
-            url: "/User/GetUsers",
-            type: "get",
-            contentType: "application/json",
-            dataType: "json",
-            data: function (data) {
-                return JSON.stringify(data);
-            }
-        },
-       
+        "pageLength": 25,
         columns: [
             { "data": 'userId' },
             { "data": 'fullName' },
@@ -46,53 +29,6 @@ $(document).ready(function () {
                 visible: false,
                 responsivePriority: 2,
                 targets: 0
-            },
-            {
-                // User full name and username
-                targets: 1,
-                responsivePriority: 4,
-                render: function (data, type, full, meta) {
-                    var $name = full['fullName'],
-                        $uname = full['userName'],
-                        $image = full['avatar'],
-                        $assetPath = "http://localhost:5001/";
-                    if ($image) {
-                        // For Avatar image
-                        var $output =
-                            '<img src="' + $assetPath + 'images/avatars/' + $image + '" alt="Avatar" height="32" width="32">';
-                    } else {
-                        // For Avatar badge
-                        var stateNum = Math.floor(Math.random() * 6) + 1;
-                        var states = ['success', 'danger', 'warning', 'info', 'dark', 'primary', 'secondary'];
-                        var $state = states[stateNum],
-                            $name = full['fullName'],
-                            $initials = $name.match(/\b\w/g) || [];
-                        $initials = (($initials.shift() || '') + ($initials.pop() || '')).toUpperCase();
-                        $output = '<span class="avatar-content">' + $initials + '</span>';
-                    }
-                    var colorClass = $image === '' ? ' bg-light-' + $state + ' ' : '';
-                    // Creates full output for row
-                    var $row_output =
-                        '<div class="d-flex justify-content-left align-items-center">' +
-                        '<div class="avatar-wrapper">' +
-                        '<div class="avatar ' +
-                        colorClass +
-                        ' me-1">' +
-                        $output +
-                        '</div>' +
-                        '</div>' +
-                        '<div class="d-flex flex-column">' +
-                        '<a href="' +
-                        '" class="user_name text-truncate"><span class="fw-bold">' +
-                        $name +
-                        '</span></a>' +
-                        '<small class="emp_post text-muted">&#x00040;' +
-                        $uname +
-                        '</small>' +
-                        '</div>' +
-                        '</div>';
-                    return $row_output;
-                }
             },
             {
                 // User Role
@@ -129,28 +65,7 @@ $(document).ready(function () {
                     );
                 }
             },
-            {
-                // Actions
-                targets: -1,
-                orderable: false,
-                render: function (data, type, full, meta) {
-                    var $userid = full['userId'];
-                    return (
-                    '<div class="d-flex align-items-center col-actions">' +
-                        '<a class="me-1" href="/User/Edit/' + $userid+ ' "data-bs-toggle="tooltip" data-bs-placement="top" title = "Edit" > ' +
-                        feather.icons['edit'].toSvg({ class: 'font-medium-1 text-warning' }) +
-                        '</a>' +
-                        '<a class="me-1" onclick=DeleteData("' + $userid +'"); data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">' +
-                        feather.icons['trash'].toSvg({ class: 'font-medium-1 text-danger' }) +
-                        '</a>' +
-                        '<a class="me-1" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="View">' +
-                        feather.icons['eye'].toSvg({ class: 'font-medium-1' }) +
-                        '</a>'
-                        +
-                   '</div>'
-                    );
-                }
-            }
+           
 
         ],
         dom:
@@ -189,31 +104,7 @@ $(document).ready(function () {
                 next: '&nbsp;'
             }
         },
-        // For responsive popup
-        // responsive: {
-        //     details: {
-        //         display: $.fn.dataTable.Responsive.display.modal({
-        //             header: function (row) {
-        //                 var data = row.data();
-        //                 return 'Details of ' + data['full_name'];
-        //             }
-        //         }),
-        //         type: 'column',
-        //         renderer: $.fn.dataTable.Responsive.renderer.tableAll({
-        //             tableClass: 'table',
-        //             columnDefs: [
-        //                 {
-        //                     targets: 2,
-        //                     visible: false
-        //                 },
-        //                 {
-        //                     targets: 3,
-        //                     visible: false
-        //                 }
-        //             ]
-        //         })
-        //     }
-        // },
+        
         //Tooltip
         drawCallback: function () {
             $(document).find('[data-bs-toggle="tooltip"]').tooltip();

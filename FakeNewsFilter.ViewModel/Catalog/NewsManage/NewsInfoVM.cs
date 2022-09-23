@@ -32,5 +32,6 @@ namespace FakeNewsFilter.ViewModel.Catalog.NewsManage
         public List<int> TopicId { get; set; }
 
         public List<TopicInfo> TopicInfo { get; set; }
+        
     }
 }

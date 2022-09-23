@@ -32,8 +32,8 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="basic-icon-default-post">Description</label>
-                        <textarea data-length="200" type="text" asp-for="Description" class="form-control char-textarea active" rows="3"></textarea>
-                        <small class="textarea-counter-value float-end" style="background-color: rgb(115, 103, 240);"><span class="char-count">0</span> / 200 </small>
+                        <textarea data-length="200" type="text" asp-for="Description" class="form-control char-textarea active" rows="3" id="field" onkeyup="countChar(this)"></textarea>
+                        <small class="textarea-counter-value float-end" style="background-color: rgb(115, 103, 240);"><span class="char-count"  id="charNum">200</span></small>
                     </div>
                     <div class="form-group">
                         <div style="text-align: center">
@@ -59,3 +59,13 @@
         </div>
     </div>
 </div>
+<script>
+    function countChar(val) {
+  var len = val.value.length;
+  if (len >= 500) {
+    val.value = val.value.substring(0, 500);
+  } else {
+    $('#charNum').text(200 - len);
+  }
+};
+</script>

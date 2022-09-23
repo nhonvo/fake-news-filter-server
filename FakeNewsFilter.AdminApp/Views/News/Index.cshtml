@@ -2,7 +2,7 @@
 @using FakeNewsFilter.ViewModel.Catalog.NewsManage;
 @using FakeNewsFilter.Data.Enums
 
-@model ApiResult<List<NewsViewModel>>
+@model List<NewsViewModel>
 
 @{
     ViewData["Title"] = "News List - Fake News Filter";
@@ -28,7 +28,7 @@
                     Number of News
                 </div>
                 <div class="value">
-                    @Model?.ResultObj?.Count
+                    @Model?.Count
                 </div>
             </a>
         </div>
@@ -59,7 +59,7 @@
             </tr>
             </thead>
             <tbody>
-            @foreach (var item in Model.ResultObj)
+            @foreach (var item in Model)
             {
                 <tr>
                     <td>

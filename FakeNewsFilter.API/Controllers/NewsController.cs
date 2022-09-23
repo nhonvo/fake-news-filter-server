@@ -124,15 +124,15 @@ namespace FakeNewsFilter.API.Controllers
         // GET: api/news
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetNews(string languageId, string filter)
+        public async Task<IActionResult> GetNews(GetManageNewsRequest request)
         {
             try
             {
-                var news = await _newsService.GetAll(languageId, filter);
+                var news = await _newsService.GetAll(request);
 
                 news.Message = _localizer[news.Message].Value;
 
-                return ReturnWithListModel(news);
+                return ReturnWithPagedModel(news);
             }
             catch (Exception ex)
             {
@@ -167,13 +167,13 @@ namespace FakeNewsFilter.API.Controllers
 
         //Lấy các tin tức dựa trên nguồn tạo (từ hệ thống/ nguồn bên ngoài)
         [HttpGet("Source")]
-        public async Task<IActionResult> GetNewsBySource(string source)
+        public async Task<IActionResult> GetNewsBySource(GetManageNewsRequest request)
         {
-            var news = await _newsService.GetBySouce(source);
+            var news = await _newsService.GetBySouce(request);
 
             news.Message = _localizer[news.Message].Value;
 
-            return ReturnWithListModel(news);
+            return ReturnWithPagedModel(news);
         }
 
         [HttpGet("{newsId}")]
@@ -253,31 +253,39 @@ namespace FakeNewsFilter.API.Controllers
         // GET: api/news/topic
         [HttpGet("Topic")]
         [AllowAnonymous]
-        public async Task<IActionResult> GetNewsInTopic([FromQuery] int topicId)
+        public async Task<IActionResult> GetNewsInTopic(GetNewsInTopicRequest request)
         {
-            var newsintopics = await _newsService.GetNewsInTopic(topicId);
+            var newsintopics = await _newsService.GetNewsInTopic(request);
 
             newsintopics.Message = _localizer[newsintopics.Message].Value;
 
-            return ReturnWithListModel(newsintopics);
+            return ReturnWithPagedModel(newsintopics);
         }
 
 
         [HttpGet("FollowedTopic")]
-        public async Task<IActionResult> GetNewsByFollowedTopic(Guid userId)
+        public async Task<IActionResult> GetNewsByFollowedTopic(GetNewsFollowedRequest request)
         {
-            var topics = await _followService.GetFollowTopicByUser(userId);
+            var topics = await _followService.GetFollowTopicByUser(request.userId);
 
             if (topics.StatusCode != 200)
             {
                 return NotFound(topics);
             }
 
-            var newsList = await _newsService.GetNewsByFollowedTopic(topics.ResultObj, userId);
+            var _request = new GetNewsFollowedRequest
+            {
+                topicList = topics.ResultObj,
+                userId = request.userId,
+                PageIndex = request.PageIndex,
+                PageSize = request.PageSize
+            };
+
+            var newsList = await _newsService.GetNewsByFollowedTopic(_request);
 
             newsList.Message = _localizer[newsList.Message].Value;
 
-            return ReturnWithListModel(newsList);
+            return ReturnWithPagedModel(newsList);
         }
 
         [HttpPut("UpdateBySystem")]

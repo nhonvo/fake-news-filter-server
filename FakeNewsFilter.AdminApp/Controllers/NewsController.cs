@@ -34,7 +34,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
             var languageId = HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
 
             var data = _newsApi.GetNewsBySouce(source);
-
+            
             var topicData = await _topicApi.GetAllTopic();
 
             var languageData = await _languageApi.GetLanguageInfo();
@@ -59,7 +59,7 @@ namespace FakeNewsFilter.AdminApp.Controllers
                 ViewBag.Error = TempData["Error"];
             }
 
-            return View(data.Result);
+            return View(data.Result.ResultObj.Items);
         }
 
         [HttpGet]
