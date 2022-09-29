@@ -35,6 +35,15 @@
 	.mb-md-30{margin-bottom:30px!important;}
 	.loop-list-style-1 .post-thumb.post-thumb-big img{width:150px;height:150px;}
 	.single-sidebar-share {display: none;}
+	.header-style-2 .header-bottom {
+        border: none;
+        position: fixed;
+        width: 100%;
+        top: 0;
+    }
+    main {
+        margin-top: 100px;
+    }
 }
 
 /* small mobile :768px. */

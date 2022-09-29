@@ -37,5 +37,8 @@ public class NewsController : Controller
         
         return View("NewsByTopic", data.ResultObj);
     }
-    
+    public IActionResult Index()
+    {
+        return View();
+    }
 }

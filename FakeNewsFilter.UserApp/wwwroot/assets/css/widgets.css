@@ -141,7 +141,7 @@ nav.tab-nav .nav-tabs{border:none;}
 .post-format-icon{width:25px;height:25px;display:inline-block;background:#ecf0f3;line-height:30px;text-align:center;border-radius:5px;font-size:15px;color:#91a2ae;}
 
 /*Videos*/
-.video-area{background-image:url(../imgs/bg-20.html);background-repeat:no-repeat;background-color:#021228;background-position:left center;color:#8b8cb3;}
+.video-area{background-image:url(../imgs/bg-20.png);background-repeat:no-repeat;background-color:#021228;background-position:left center;color:#8b8cb3;}
 .video-area .letter-background,
 .footer-area .letter-background{color:rgba(255,255,255,0.2);}
 .play_btn a{color:#212d45;width:70px;height:70px;display:inline-block;border-radius:50%;text-align:center;line-height:70px;font-size:29px;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:9;background:rgba(255,255,255,1);display:block;}

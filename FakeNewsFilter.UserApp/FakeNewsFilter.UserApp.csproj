@@ -35,4 +35,41 @@
     <ItemGroup>
       <Content Remove="wwwroot\intro\images\logo.png" />
     </ItemGroup>
+    <ItemGroup>
+      <None Include="wwwroot\assets\css\vendor\fonts\fa-brands-400.svg" />
+      <None Include="wwwroot\assets\css\vendor\fonts\fa-brands-400.woff2" />
+      <None Include="wwwroot\assets\css\vendor\fonts\fa-regular-400.svg" />
+      <None Include="wwwroot\assets\css\vendor\fonts\fa-regular-400.woff2" />
+      <None Include="wwwroot\assets\css\vendor\fonts\fa-solid-900.svg" />
+      <None Include="wwwroot\assets\css\vendor\fonts\fa-solid-900.woff2" />
+      <None Include="wwwroot\assets\css\vendor\fonts\Flaticon.svg" />
+      <None Include="wwwroot\assets\css\vendor\fonts\Flaticon.woff2" />
+      <None Include="wwwroot\assets\css\vendor\fonts\MaterialIcons-Regular.svg" />
+      <None Include="wwwroot\assets\css\vendor\fonts\MaterialIcons-Regular.woff2" />
+      <None Include="wwwroot\assets\css\vendor\fonts\themify.svg" />
+      <None Include="wwwroot\assets\css\vendor\fonts\weathericons-regular-webfont.svg" />
+      <None Include="wwwroot\assets\imgs\favicon.svg" />
+      <None Include="wwwroot\assets\imgs\loading.svg" />
+      <None Include="wwwroot\assets\imgs\logo.svg" />
+      <None Include="wwwroot\assets\js\main.js" />
+      <None Include="wwwroot\assets\js\vendor\animated.headline.js" />
+      <None Include="wwwroot\assets\js\vendor\bootstrap.min.js" />
+      <None Include="wwwroot\assets\js\vendor\jquery-3.6.0.min.js" />
+      <None Include="wwwroot\assets\js\vendor\jquery.counterup.min.js" />
+      <None Include="wwwroot\assets\js\vendor\jquery.magnific-popup.js" />
+      <None Include="wwwroot\assets\js\vendor\jquery.nice-select.min.js" />
+      <None Include="wwwroot\assets\js\vendor\jquery.scrollUp.min.js" />
+      <None Include="wwwroot\assets\js\vendor\jquery.slicknav.js" />
+      <None Include="wwwroot\assets\js\vendor\jquery.sticky.js" />
+      <None Include="wwwroot\assets\js\vendor\jquery.theia.sticky.js" />
+      <None Include="wwwroot\assets\js\vendor\jquery.ticker.js" />
+      <None Include="wwwroot\assets\js\vendor\jquery.vticker-min.js" />
+      <None Include="wwwroot\assets\js\vendor\modernizr-3.6.0.min.js" />
+      <None Include="wwwroot\assets\js\vendor\owl.carousel.min.js" />
+      <None Include="wwwroot\assets\js\vendor\perfect-scrollbar.js" />
+      <None Include="wwwroot\assets\js\vendor\popper.min.js" />
+      <None Include="wwwroot\assets\js\vendor\slick.min.js" />
+      <None Include="wwwroot\assets\js\vendor\waypoints.min.js" />
+      <None Include="wwwroot\assets\js\vendor\wow.min.js" />
+    </ItemGroup>
 </Project>
