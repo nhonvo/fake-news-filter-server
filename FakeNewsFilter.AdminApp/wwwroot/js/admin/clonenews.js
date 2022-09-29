@@ -10,6 +10,18 @@
 let source;
 const actionControllerNameInBrowser = $(window.location.pathname.split('/')).get(-1);
 
+//SourceCreate based on action controller name in browser's url
+switch (actionControllerNameInBrowser) {
+    case "GoogleFactCheckIndex":
+        source = "GoogleApi";
+        break;
+    case "NewsApiIndex":
+        source = "NewsApi";
+        break;
+    case "OigetitIndex":
+        source = "Oigetit";
+}
+
 function loading() {
     $('#loading').removeClass('hidden');
 }
