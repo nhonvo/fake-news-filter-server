@@ -875,7 +875,8 @@ public class NewsService : INewsService
                             _context.NewsInTopics.Add(new NewsInTopics
                             {
                                 NewsId = news.NewsId,
-                                TopicId = topicId
+                                TopicId = topicId,
+                                Timestamp = DateTime.Now
                             });
 
                         var res = await _context.SaveChangesAsync();
@@ -966,7 +967,8 @@ public class NewsService : INewsService
                                 _context.NewsInTopics.Add(new NewsInTopics
                                 {
                                     NewsId = news.NewsId,
-                                    TopicId = topicId
+                                    TopicId = topicId,
+                                    Timestamp = DateTime.Now
                                 });
 
                             var res = await _context.SaveChangesAsync();
@@ -1112,7 +1114,8 @@ public class NewsService : INewsService
                             var newsUpdate = new NewsInTopics
                             {
                                 NewsId = request.Id,
-                                TopicId = item
+                                TopicId = item,
+                                Timestamp = DateTime.Now
                             };
 
                             _context.NewsInTopics.Add(newsUpdate);
@@ -1262,7 +1265,8 @@ public class NewsService : INewsService
                         var newsUpdate = new NewsInTopics
                         {
                             NewsId = request.Id,
-                            TopicId = item
+                            TopicId = item,
+                            Timestamp = DateTime.Now
                         };
 
                         _context.NewsInTopics.Add(newsUpdate);
