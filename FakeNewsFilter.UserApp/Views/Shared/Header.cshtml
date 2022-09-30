@@ -11,12 +11,12 @@
                 <div class="col-lg-2 col-md-3">
                     <div class="header-logo d-none d-lg-block">
                         <a asp-action="index" asp-controller="HomePage" localize-content>
-                            <img class="logo-img d-inline" src="~/assets/logo/logo_OWL_NoText-05.svg" alt="owl-trust-logo"width="70px">
+                            <img class="logo-img d-inline" src="~/assets/logo/logo_OWL_NoText-05.svg" alt="owl-trust-logo" width="70px">
                         </a>
                     </div>
                     <div class="logo-tablet d-md-inline d-lg-none d-none">
                         <a asp-action="index" asp-controller="HomePage" localize-content>
-                            <img class="logo-img d-inline" src="~/assets/logo/logo_OWL_NoText-05.svg" alt="owl-trust-logo"width="70px">
+                            <img class="logo-img d-inline" src="~/assets/logo/logo_OWL_NoText-05.svg" alt="owl-trust-logo" width="70px">
                         </a>
                     </div>
                     <div class="logo-mobile d-block d-md-none">
@@ -30,41 +30,24 @@
                     <div class="main-nav text-left float-lg-left float-md-right">
                         <ul class="mobi-menu d-none menu-3-columns" id="navigation">
                             <li class="cat-item cat-item-2"><a href="#">Global Economy</a></li>
-                            <li class="cat-item cat-item-3"><a href="#">Environment</a></li>
-                            <li class="cat-item cat-item-4"><a href="#">Religion</a></li>
-                            <li class="cat-item cat-item-5"><a href="#">Fashion</a></li>
-                            <li class="cat-item cat-item-6"><a href="#">Terrorism</a></li>
-                            <li class="cat-item cat-item-7"><a href="#">Conflicts</a></li>
-                            <li class="cat-item cat-item-2"><a href="#">Scandals</a></li>
-                            <li class="cat-item cat-item-2"><a href="#">Executive</a></li>
-                            <li class="cat-item cat-item-2"><a href="#">Foreign policy</a></li>
-                            <li class="cat-item cat-item-2"><a href="#">Healthy Living</a></li>
-                            <li class="cat-item cat-item-3"><a href="#">Medical Research</a></li>
-                            <li class="cat-item cat-item-4"><a href="#">Children’s Health</a></li>
-                            <li class="cat-item cat-item-5"><a href="#">Around the World</a></li>
-                            <li class="cat-item cat-item-6"><a href="#">Ad Choices</a></li>
-                            <li class="cat-item cat-item-7"><a href="#">Mental Health</a></li>
-                            <li class="cat-item cat-item-2"><a href="#">Media Relations</a></li>
+                           
                         </ul>
                         <nav>
                             <ul class="main-menu d-none d-lg-inline">
-                                <li class="menu-item-has-children">
-                                    <a asp-action="index" asp-controller="HomePage" localize-content>
-                                        <span class="mr-15">
-                                            <ion-icon name="home-outline"></ion-icon>
-                                        </span>Home
-                                    </a>
-                                   @* <ul class="sub-menu text-muted font-small">
-                                        <li><a href="index.html">Home default</a></li>
-                                        <li><a href="home-2.html">Homepage 2</a></li>
-                                        <li><a href="home-3.html">Homepage 3</a></li>
-                                    </ul>*@
-                                </li>
                                 <li class="mega-menu-item">
                                     <a asp-action="index" asp-controller="HomePage" localize-content>
                                         <span class="mr-15">
+                                            <ion-icon name="home-outline"></ion-icon>
+                                        </span> <span localize-content>Home</span>
+                                    </a>
+
+                                </li>
+                                <li class="mega-menu-item">
+                                    <a asp-action="index" asp-controller="HomePage">
+                                        <span class="mr-15">
                                             <ion-icon name="desktop-outline"></ion-icon>
-                                        </span>Category
+                                        </span>
+                                        <span localize-content>Category</span>
                                     </a>
                                     <div class="sub-mega-menu sub-menu-list row text-muted font-small">
                                         <ul class="col-md-2">
@@ -98,10 +81,10 @@
                                     </div>
                                 </li>
                                 <li class="mega-menu-item">
-                                    <a asp-action="index" asp-controller="HomePage" localize-content>
+                                    <a asp-action="index" asp-controller="HomePage">
                                         <span class="mr-15">
                                             <ion-icon name="megaphone-outline"></ion-icon>
-                                        </span>Topic
+                                        </span> <span localize-content>Topic</span>
                                     </a>
                                     <div class="sub-mega-menu">
                                         <div class="nav flex-column nav-pills" role="tablist">
@@ -370,45 +353,53 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <a asp-action="AboutUs" asp-controller="HomePage" localize-content>
+                                    <a asp-action="AboutUs" asp-controller="HomePage">
                                         <span class="mr-15">
                                             <ion-icon name="film-outline"></ion-icon>
-                                        </span>About us
+                                        </span>
+                                        <span localize-content>About us</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a asp-action="Contact" asp-controller="HomePage" localize-content>
+                                    <a asp-action="Contact" asp-controller="HomePage">
                                         <span class="mr-15">
                                             <ion-icon name="mail-unread-outline"></ion-icon>
-                                        </span>Contact
+                                        </span> <span localize-content>Contact</span>
                                     </a>
                                 </li>
+                               
                             </ul>
-                            <div class="d-inline ml-50 tools-icon">
+
+                            <div class="d-inline ml-50 tools-icon" style="font-family:nunito">
                                 <a class="red-tooltip text-danger" asp-action="Index" asp-controller="HomePage" localize-content data-toggle="tooltip" data-placement="top" title="" data-original-title="Hot Topics">
-                                    <ion-icon name="flame-outline"></ion-icon>
+                                    <ion-icon name="flame-outline"></ion-icon> 
+                                    <a asp-action="Register" asp-controller="User" localize-content>Register</a>
                                 </a>
+
                                 <a class="red-tooltip text-primary" asp-action="Index" asp-controller="HomePage" localize-content data-toggle="tooltip" data-placement="top" title="" data-original-title="Trending">
                                     <ion-icon name="flash-outline"></ion-icon>
+                                    <a asp-action="Index" asp-controller="User" localize-content>Log in</a>
                                 </a>
                                 <a class="red-tooltip text-success" asp-action="Index" asp-controller="HomePage" localize-content data-toggle="tooltip" data-placement="top" title="" data-original-title="Notifications">
                                     <ion-icon name="notifications-outline"></ion-icon>
                                     <span class="notification bg-success">5</span>
                                 </a>
                             </div>
+
                         </nav>
                     </div>
-                    <!-- Search -->
-                    <form action="#" method="get" class="search-form d-lg-inline float-right position-relative mr-30 d-none">
-                        <input type="text" class="search_field" placeholder="Search" value="" name="s">
-                        <span class="search-icon"><i class="ti-search mr-5"></i></span>
-                    </form>
                     <!-- Off canvas -->
                     <div class="off-canvas-toggle-cover">
                         <div class="off-canvas-toggle hidden d-inline-block ml-15" id="off-canvas-toggle">
-                            <ion-icon name="grid-outline"></ion-icon>
+                            <ion-icon name="grid-outline"></ion-icon> 
                         </div>
                     </div>
+                    @*<!-- Search -->
+                    <form action="#" method="get" class="search-form d-lg-inline float-right position-relative mr-30 d-none">
+                        <input type="text" class="search_field" placeholder="Search" value="" name="s">
+                        <span class="search-icon"><i class="ti-search mr-5"></i></span>
+                    </form>*@
+                   
                 </div>
             </div>
         </div>

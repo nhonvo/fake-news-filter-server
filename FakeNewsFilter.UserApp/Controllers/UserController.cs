@@ -8,5 +8,13 @@ namespace FakeNewsFilter.UserApp.Controllers
         {
             return View();
         }
+        public IActionResult Register()
+        {
+            return View();
+        }
+        public IActionResult ForgetPassword()
+        {
+            return View();
+        }
     }
 }
