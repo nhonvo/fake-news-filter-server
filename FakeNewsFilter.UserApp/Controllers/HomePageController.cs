@@ -24,12 +24,9 @@ namespace FakeNewsFilter.UserApp.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> IndexAsync()
         {
-            // code getall api in newapiDeprecated the datatype return 
-            // follow news admin api
-
-            //var objNews = await _newsApiDeprecated.GetAll();
+           
             var objNews = await _newsApiDeprecated.GetAll();
-            return View(objNews);
+            return View(objNews.ResultObj.Items);
         }
         public IActionResult AboutUs()
         {
