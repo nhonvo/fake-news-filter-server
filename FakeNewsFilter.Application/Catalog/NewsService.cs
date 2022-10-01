@@ -16,7 +16,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Slugify;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace FakeNewsFilter.Application.Catalog;
 
@@ -184,7 +183,7 @@ public class NewsService : INewsService
 
             int pageSize = request.PageSize == 0 ? totalRow : request.PageSize;
 
-            var data = newsList.Skip((pageIndex - 1) * pageSize)
+            var data = newsList.OrderByDescending(n => n.Timestamp).Skip((pageIndex - 1) * pageSize)
                 .Take(pageSize)
                 .Select(x => new NewsViewModel
                 {
@@ -413,6 +412,7 @@ public class NewsService : INewsService
 
             var query = from n in _context.News
                 where (string.IsNullOrEmpty(request.LanguageId) || n.LanguageId == request.LanguageId)
+                orderby n.Timestamp descending
                 select new
                 {
                     NewsId = n.NewsId,
@@ -637,6 +637,7 @@ public class NewsService : INewsService
                 .Where(n =>
                     !newsVotedByUserId.Contains(n.NewsId) &&
                     request.topicList.Contains(n.NewsInTopics.FirstOrDefault().TopicId))
+                .OrderByDescending(n => n.Timestamp)
                 .Select(x => new NewsViewModel
                 {
                     NewsId = x.NewsId,
@@ -724,7 +725,7 @@ public class NewsService : INewsService
                 join c in _context.TopicNews on nit.TopicId equals c.TopicId
                 select new {n, nit, c};
 
-            query = query.Where(t => request.topicId == t.nit.TopicId);
+            query = query.Where(t => request.topicId == t.nit.TopicId).OrderByDescending(t => t.n.Timestamp);
 
             //2. Phân trang
             int totalRow = await query.CountAsync();
