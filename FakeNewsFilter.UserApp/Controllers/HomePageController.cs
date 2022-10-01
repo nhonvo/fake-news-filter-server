@@ -22,10 +22,14 @@ namespace FakeNewsFilter.UserApp.Controllers
         // GET: api/news
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Index(GetManageNewsRequest request)
+        public async Task<IActionResult> IndexAsync()
         {
-            // research code api get all new for user
-            return View();
+            // code getall api in newapiDeprecated the datatype return 
+            // follow news admin api
+
+            //var objNews = await _newsApiDeprecated.GetAll();
+            var objNews = await _newsApiDeprecated.GetAll();
+            return View(objNews);
         }
         public IActionResult AboutUs()
         {
