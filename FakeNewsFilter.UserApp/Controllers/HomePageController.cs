@@ -19,7 +19,7 @@ namespace FakeNewsFilter.UserApp.Controllers
         {
             _newsApiDeprecated = newsApiDeprecated;
         }
-        // GET: api/news
+        // GET: api/newsm
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> IndexAsync()
@@ -29,7 +29,8 @@ namespace FakeNewsFilter.UserApp.Controllers
 
             //var objNews = await _newsApiDeprecated.GetAll();
             var objNews = await _newsApiDeprecated.GetAll();
-            return View(objNews);
+
+            return View(objNews.ResultObj.Items);
         }
         public IActionResult AboutUs()
         {

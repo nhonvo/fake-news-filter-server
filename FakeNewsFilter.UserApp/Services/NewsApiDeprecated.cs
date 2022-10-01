@@ -14,7 +14,7 @@ namespace FakeNewsFilter.UserApp.Services;
 
 public interface INewsApi
 {
-    Task<ApiResult<List<NewsViewModel>>?> GetAll();
+    Task<ApiResult<NewsPagingResponse>?> GetAll();
     Task<ApiResult<NewsViewModel>?> GetById(int id);
     Task<ApiResult<NewsSystemViewModel>?> GetContent(int id);
 }
@@ -33,7 +33,7 @@ public class NewsApiDeprecated : INewsApi
         _configuration = configuration;
         _httpContextAccessor = httpContextAccessor;
     }
-    public async Task<ApiResult<List<NewsViewModel>>?> GetAll()
+    public async Task<ApiResult<NewsPagingResponse>?> GetAll()
     {
         var client = _httpClientFactory.CreateClient();
         client.BaseAddress = new Uri(_configuration["BaseAddress"]);
@@ -46,9 +46,9 @@ public class NewsApiDeprecated : INewsApi
         var body = await response.Content.ReadAsStringAsync();
 
         if (response.IsSuccessStatusCode)
-            return JsonConvert.DeserializeObject<ApiSuccessResult<List<NewsViewModel>>>(body);
+            return JsonConvert.DeserializeObject<ApiSuccessResult<NewsPagingResponse>>(body);
 
-        return JsonConvert.DeserializeObject<ApiErrorResult<List<NewsViewModel>>>(body);
+        return JsonConvert.DeserializeObject<ApiErrorResult<NewsPagingResponse>>(body);
     }
 
 
