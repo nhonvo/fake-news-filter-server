@@ -2,13 +2,14 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace FakeNewsFilter.UserApp.Views.Shared.Components.SideBar
+namespace FakeNewsFilter.UserApp.Views.Shared.Components.WeatherComponent
 {
-    public class SideBarComponent : ViewComponent
+    public class WeatherComponent: ViewComponent
     {
+
         private readonly TopicApi _topicApi;
 
-        public SideBarComponent(TopicApi topicApi)
+        public WeatherComponent(TopicApi topicApi)
         {
             _topicApi = topicApi;
         }

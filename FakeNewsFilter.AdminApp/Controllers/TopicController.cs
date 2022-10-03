@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FakeNewsFilter.AdminApp.Services;
+using FakeNewsFilter.ClientService;
 using FakeNewsFilter.Utilities.Constants;
 using FakeNewsFilter.ViewModel.Catalog.TopicNews;
 using Microsoft.AspNetCore.Authorization;

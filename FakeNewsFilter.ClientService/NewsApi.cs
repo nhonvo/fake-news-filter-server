@@ -13,10 +13,11 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 
-namespace FakeNewsFilter.AdminApp.Services
+namespace FakeNewsFilter.ClientService
 {
     public interface INewsApi
     {
+        Task<ApiResult<NewsPagingResponse>?> GetAll();
         Task<ApiResult<NewsPagingResponse>> GetNewsBySouce(string source_name);
         Task<ApiResult<List<NewsViewModel>>> GetNewsByTopic(int topicId);
 
@@ -51,7 +52,23 @@ namespace FakeNewsFilter.AdminApp.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
+        public async Task<ApiResult<NewsPagingResponse>?> GetAll()
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
 
+            var sessions = _httpContextAccessor.HttpContext?.Session.GetString("Token");
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+
+            var response = await client.GetAsync($"/api/News");
+            var body = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<NewsPagingResponse>>(body);
+
+            return JsonConvert.DeserializeObject<ApiErrorResult<NewsPagingResponse>>(body);
+        }
         //Lấy danh sách tin tức
         public async Task<ApiResult<NewsPagingResponse>> GetNewsBySouce(string source_name)
         {

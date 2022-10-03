@@ -11,7 +11,7 @@ using FakeNewsFilter.ViewModel.Catalog.Claims;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace FakeNewsFilter.AdminApp.Services
+namespace FakeNewsFilter.ClientService
 {
     public interface ICloneNewsApi
     {

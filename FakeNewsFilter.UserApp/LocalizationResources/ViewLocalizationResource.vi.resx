@@ -759,4 +759,8 @@
     <value>&lt;i class="fas fa-lock"&gt;&lt;/i&gt;Cài đặt</value>
     <comment>Home/Index</comment>
   </data>
+  <data name="Categories" xml:space="preserve">
+    <value>Thể Loại</value>
+    <comment>Homepage/index</comment>
+  </data>
 </root>

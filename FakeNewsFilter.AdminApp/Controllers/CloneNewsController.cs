@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using FakeNewsFilter.AdminApp.Services;
+using FakeNewsFilter.ClientService;
 using FakeNewsFilter.ViewModel.Catalog;
 using FakeNewsFilter.ViewModel.Catalog.Claims;
 using FakeNewsFilter.ViewModel.Catalog.Claims.ClaimCreateNewsVM;

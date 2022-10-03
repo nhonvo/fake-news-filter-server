@@ -1,5 +1,5 @@
-﻿using FakeNewsFilter.AdminApp.Services;
-using FakeNewsFilter.Application.Catalog;
+﻿using FakeNewsFilter.Application.Catalog;
+using FakeNewsFilter.ClientService;
 using FakeNewsFilter.UserApp.Services;
 using FakeNewsFilter.ViewModel.Catalog.NewsManage;
 using Microsoft.AspNetCore.Authorization;
@@ -13,20 +13,15 @@ namespace FakeNewsFilter.UserApp.Controllers
 {
     public class HomePageController : Controller
     {
-        private readonly NewsApiDeprecated _newsApiDeprecated;
+       
 
-        public HomePageController(NewsApiDeprecated newsApiDeprecated)
+        public HomePageController()
         {
-            _newsApiDeprecated = newsApiDeprecated;
         }
-        // GET: api/news
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> IndexAsync()
+        
+        public IActionResult Index()
         {
-           
-            var objNews = await _newsApiDeprecated.GetAll();
-            return View(objNews.ResultObj.Items);
+            return View();
         }
         public IActionResult AboutUs()
         {
