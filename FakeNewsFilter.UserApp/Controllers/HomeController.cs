@@ -1,11 +1,11 @@
 ﻿using System.Diagnostics;
-using FakeNewsFilter.AdminApp.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using FakeNewsFilter.UserApp.Models;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Http;
 using System;
+using FakeNewsFilter.ClientService;
 
 namespace FakeNewsFilter.UserApp.Controllers
 {

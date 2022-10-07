@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using FakeNewsFilter.AdminApp.Controllers;
-using FakeNewsFilter.AdminApp.Services;
+using FakeNewsFilter.ClientServices;
 using FakeNewsFilter.ViewModel.Common;
 using FakeNewsFilter.ViewModel.System.Roles;
 using FakeNewsFilter.ViewModel.System.Users;
-using FakeNewsFilter.WebApp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartBreadcrumbs.Attributes;

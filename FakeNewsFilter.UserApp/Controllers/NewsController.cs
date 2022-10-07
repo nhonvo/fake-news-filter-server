@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using FakeNewsFilter.AdminApp.Services;
+using FakeNewsFilter.ClientService;
 using FakeNewsFilter.UserApp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,13 +9,10 @@ namespace FakeNewsFilter.UserApp.Controllers;
 
 public class NewsController : Controller
 {
-    private readonly NewsApiDeprecated _newsApi;
-    private readonly NewsApi _newsApiAdmin;
-
-    public NewsController(NewsApiDeprecated newsApi, NewsApi newsApiAdmin)
+    private readonly NewsApi _newsApi;
+    public NewsController(NewsApi newsApi)
     {
         _newsApi = newsApi;
-        _newsApiAdmin = newsApiAdmin;
     }
     
     [Route("news/{alias}-{Id:int}")]
@@ -23,7 +20,7 @@ public class NewsController : Controller
     public async Task<IActionResult> GetNewsById(int Id)
     {
     
-        var data = await _newsApi.GetContent(Id);
+        var data = await _newsApi.GetById(Id);
         
         return View("Details", data.ResultObj);
     }
@@ -33,9 +30,12 @@ public class NewsController : Controller
     public async Task<IActionResult> GetNewsByTopic(int topicId)
     {
     
-        var data = await _newsApiAdmin.GetNewsByTopic(topicId);
+        var data = await _newsApi.GetNewsByTopic(topicId);
         
         return View("NewsByTopic", data.ResultObj);
     }
-    
+    public IActionResult Index()
+    {
+        return View();
+    }
 }

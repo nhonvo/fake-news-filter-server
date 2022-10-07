@@ -1,317 +1,511 @@
-@model FakeNewsFilter.ViewModel.Catalog.NewsManage.NewsSystemViewModel
+@model FakeNewsFilter.ViewModel.Catalog.NewsManage.NewsInfoVM
 
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<!DOCTYPE html>
-<html lang="en">
-
-<!-- Basic -->
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-<!-- Mobile Metas -->
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-<!-- Site Metas -->
-<title>@($"Hello {this.Model.NewsId}")</title>
-<meta name="keywords" content="">
-<meta name="description" content="">
-<meta name="author" content="">
-
-<!-- Site Icons -->
-<link rel="shortcut icon" href="/assets2/img/favicon.ico" type="image/x-icon"/>
-<link rel="apple-touch-icon" href="/assets2/img/apple-touch-icon.png">
-
-<!-- Design fonts -->
-<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
-
-<!-- Bootstrap core CSS -->
-<link href="/assets2/css/bootstrap.css" rel="stylesheet">
-
-<!-- FontAwesome Icons core CSS -->
-<link href="/assets2/css/font-awesome.min.css" rel="stylesheet">
-
-<!-- Custom styles for this template -->
-<link href="/assets2/css/style.css" rel="stylesheet">
-
-<!-- Responsive styles for this template -->
-<link href="/assets2/css/responsive.css" rel="stylesheet">
-
-<!-- Colors for this template -->
-<link href="/assets2/css/colors.css" rel="stylesheet">
-
-<!-- Version Tech CSS for this template -->
-<link href="/assets2/css/version/tech.css" rel="stylesheet">
-<body>
-
-<div id="wrapper">
-<section class="section single-wrapper">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="page-wrapper">
-                    <div class="blog-title-area text-center">
-                        @foreach (var topic in @Model.TopicInfo)
-                        {
-                            <span class="color-orange">
-                                <a href="#" title="">@topic.TopicName</a>
-                            </span>
-                        }
-
-                        <h3>@Model.Title</h3>
-
-                        <div class="blog-meta big-meta">
-                            <small>
-                                <a href="#" title="">@Model.Timestamp.ToString("dd/MM/yyyy hh:mm:ss")</a>
-                            </small>
-                            <small>
-                                <a href="#" title="">@Model.Publisher</a>
-                            </small>
-                            <small>
-                                <a href="#" title=""><i class="fa fa-eye"></i> 2344</a>
-                            </small>
-                        </div><!-- end meta -->
-
-                        <div class="post-sharing">
-                            <ul class="list-inline">
-                                <li>
-                                    <a href="#" class="fb-button btn btn-primary">
-                                        <i class="fa fa-facebook"></i> <span class="down-mobile">Share on Facebook</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="tw-button btn btn-primary">
-                                        <i class="fa fa-twitter"></i> <span class="down-mobile">Tweet on Twitter</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="gp-button btn btn-primary">
-                                        <i class="fa fa-google-plus"></i>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div><!-- end post-sharing -->
-                    </div><!-- end title -->
-
-                    <div class="single-post-media">
-                        <img src="/assets2/img/tech_menu_08.jpg" alt="" class="img-fluid">
-                    </div><!-- end media -->
-
-                    <div class="blog-content">
-                        <div class="pp">
-                            @Model.Content
-                        </div>
-                    </div><!-- end content -->
-
-                    <div class="blog-title-area">
-                        <div class="tag-cloud-single">
-                            <span>Tags</span>
-                            <small>
-                                <a href="#" title="">lifestyle</a>
-                            </small>
-                            <small>
-                                <a href="#" title="">colorful</a>
-                            </small>
-                            <small>
-                                <a href="#" title="">trending</a>
-                            </small>
-                            <small>
-                                <a href="#" title="">another tag</a>
-                            </small>
-                        </div><!-- end meta -->
-
-                        <div class="post-sharing">
-                            <ul class="list-inline">
-                                <li>
-                                    <a href="#" class="fb-button btn btn-primary">
-                                        <i class="fa fa-facebook"></i> <span class="down-mobile">Share on Facebook</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="tw-button btn btn-primary">
-                                        <i class="fa fa-twitter"></i> <span class="down-mobile">Tweet on Twitter</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="gp-button btn btn-primary">
-                                        <i class="fa fa-google-plus"></i>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div><!-- end post-sharing -->
-                    </div><!-- end title -->
-
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="banner-spot clearfix">
-                                <div class="banner-img">
-                                    <img src="/assets2/img/banner_01.jpg" alt="" class="img-fluid">
-                                </div><!-- end banner-img -->
-                            </div><!-- end banner -->
-                        </div><!-- end col -->
-                    </div><!-- end row -->
-
-                    <hr class="invis1">
-
-                    <hr class="invis1">
-
-                    <div class="custombox authorbox clearfix">
-                        <h4 class="small-title">About author</h4>
-                        <div class="row">
-                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-                                <img src="/assets2/img/author.jpg" alt="" class="img-fluid rounded-circle">
-                            </div><!-- end col -->
-
-                            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
-                                <h4>
-                                    <a href="#">Jessica</a>
-                                </h4>
-                                <p>Quisque sed tristique felis. Lorem <a href="#">visit my website</a> amet, consectetur adipiscing elit. Phasellus quis mi auctor, tincidunt nisl eget, finibus odio. Duis tempus elit quis risus congue feugiat. Thanks for stop Tech Blog!</p>
-
-                                <div class="topsocial">
-                                    <a href="#" data-toggle="tooltip" data-placement="bottom" title="Facebook">
-                                        <i class="fa fa-facebook"></i>
-                                    </a>
-                                    <a href="#" data-toggle="tooltip" data-placement="bottom" title="Youtube">
-                                        <i class="fa fa-youtube"></i>
-                                    </a>
-                                    <a href="#" data-toggle="tooltip" data-placement="bottom" title="Pinterest">
-                                        <i class="fa fa-pinterest"></i>
-                                    </a>
-                                    <a href="#" data-toggle="tooltip" data-placement="bottom" title="Twitter">
-                                        <i class="fa fa-twitter"></i>
-                                    </a>
-                                    <a href="#" data-toggle="tooltip" data-placement="bottom" title="Instagram">
-                                        <i class="fa fa-instagram"></i>
-                                    </a>
-                                    <a href="#" data-toggle="tooltip" data-placement="bottom" title="Website">
-                                        <i class="fa fa-link"></i>
-                                    </a>
-                                </div><!-- end social -->
-
-                            </div><!-- end col -->
-                        </div><!-- end row -->
-                    </div><!-- end author-box -->
-
-                    <hr class="invis1">
-                </div><!-- end page-wrapper -->
-            </div><!-- end col -->
-        </div><!-- end row -->
-    </div><!-- end container -->
-</section>
-
-<footer class="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-7">
-                <div class="widget">
-                    <div class="footer-text text-left">
-                        <a href="index.html">
-                            <img src="/assets2/img/version/tech-footer-logo.png" alt="" class="img-fluid">
-                        </a>
-                        <p>Tech Blog is a technology blog, we sharing marketing, news and gadget articles.</p>
-                        <div class="social">
-                            <a href="#" data-toggle="tooltip" data-placement="bottom" title="Facebook">
-                                <i class="fa fa-facebook"></i>
-                            </a>
-                            <a href="#" data-toggle="tooltip" data-placement="bottom" title="Twitter">
-                                <i class="fa fa-twitter"></i>
-                            </a>
-                            <a href="#" data-toggle="tooltip" data-placement="bottom" title="Instagram">
-                                <i class="fa fa-instagram"></i>
-                            </a>
-                            <a href="#" data-toggle="tooltip" data-placement="bottom" title="Google Plus">
-                                <i class="fa fa-google-plus"></i>
-                            </a>
-                            <a href="#" data-toggle="tooltip" data-placement="bottom" title="Pinterest">
-                                <i class="fa fa-pinterest"></i>
-                            </a>
-                        </div>
-
-                        <hr class="invis">
-
-                        <div class="newsletter-widget text-left">
-                            <form class="form-inline">
-                                <input type="text" class="form-control" placeholder="Enter your email address">
-                                <button type="submit" class="btn btn-primary">SUBMIT</button>
-                            </form>
-                        </div><!-- end newsletter -->
-                    </div><!-- end footer-text -->
-                </div><!-- end widget -->
-            </div><!-- end col -->
-
-            <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-                <div class="widget">
-                    <h2 class="widget-title">Popular Categories</h2>
-                    <div class="link-widget">
-                        <ul>
-                            <li>
-                                <a href="#">Marketing <span>(21)</span></a>
-                            </li>
-                            <li>
-                                <a href="#">SEO Service <span>(15)</span></a>
-                            </li>
-                            <li>
-                                <a href="#">Digital Agency <span>(31)</span></a>
-                            </li>
-                            <li>
-                                <a href="#">Make Money <span>(22)</span></a>
-                            </li>
-                            <li>
-                                <a href="#">Blogging <span>(66)</span></a>
-                            </li>
-                        </ul>
-                    </div><!-- end link-widget -->
-                </div><!-- end widget -->
-            </div><!-- end col -->
-
-            <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
-                <div class="widget">
-                    <h2 class="widget-title">Copyrights</h2>
-                    <div class="link-widget">
-                        <ul>
-                            <li>
-                                <a href="#">About us</a>
-                            </li>
-                            <li>
-                                <a href="#">Advertising</a>
-                            </li>
-                            <li>
-                                <a href="#">Write for us</a>
-                            </li>
-                            <li>
-                                <a href="#">Trademark</a>
-                            </li>
-                            <li>
-                                <a href="#">License & Help</a>
-                            </li>
-                        </ul>
-                    </div><!-- end link-widget -->
-                </div><!-- end widget -->
-            </div><!-- end col -->
-        </div>
-
-        <div class="row">
-            <div class="col-md-12 text-center">
-                <br>
-                <div class="copyright"><a href="http://html.design">&copy; Fake News Filter</a>.</div>
+<div class="entry-header entry-header-3 mb-50 mt-50 text-center text-white">
+    <div class="thumb-overlay img-hover-slide border-radius-5 position-relative" style="background-image: url(@Model.ImageLink)">
+        <div class="position-midded">
+            <div class="entry-meta meta-0 font-small mb-30">
+                @foreach (var topic in @Model.TopicInfo)
+                {
+                    <a href="category.html"><span class="post-cat bg-warning color-white">@topic.TopicName</span></a>
+                }
+            </div>
+            <h1 class="post-title mb-30 text-white">
+                @Model.Title
+            </h1>
+            <div class="entry-meta meta-1 font-x-small color-grey text-uppercase text-white">
+                <span class="post-by text-white">By <a class="text-white" href="author.html">@Model.Publisher</a></span>
+                <span class="post-on text-white">@Model.DatePublished</span>
+                <span class="time-reading text-white">"not code yet" time to read</span>
+                <p class="font-x-small mt-10 text-white">
+                    <span class="hit-count"><i class="ti-comment mr-5"></i>"not code yet" comments</span>
+                    <span class="hit-count"><i class="ti-heart mr-5"></i>"not code yet" likes</span>
+                    <span class="hit-count"><i class="ti-star mr-5"></i>"not code yet" point trust</span>
+                </p>
             </div>
         </div>
-    </div><!-- end container -->
-</footer><!-- end footer -->
-
-<div class="dmtop">Scroll to Top</div>
-
-</div><!-- end wrapper -->
-
-<!-- Core JavaScript
-================================================== -->
-<script src="/assets2/js/jquery.min.js"></script>
-<script src="/assets2/js/tether.min.js"></script>
-<script src="/assets2/js/bootstrap.min.js"></script>
-<script src="/assets2/js/custom.js"></script>
-
-</body>
-</html>
+    </div>
+</div>
+<!--end entry header-->
+<div class="row mb-50">
+    <div class="col-lg-2 d-none d-lg-block"></div>
+    <div class="col-lg-8 col-md-12">
+        <div class="single-social-share single-sidebar-share mt-30">
+            <ul>
+                <li><a class="social-icon facebook-icon text-xs-center" target="_blank" href="#"><i class="ti-facebook"></i></a></li>
+                <li><a class="social-icon twitter-icon text-xs-center" target="_blank" href="#"><i class="ti-twitter-alt"></i></a></li>
+                <li><a class="social-icon pinterest-icon text-xs-center" target="_blank" href="#"><i class="ti-pinterest"></i></a></li>
+                <li><a class="social-icon instagram-icon text-xs-center" target="_blank" href="#"><i class="ti-instagram"></i></a></li>
+                <li><a class="social-icon linkedin-icon text-xs-center" target="_blank" href="#"><i class="ti-linkedin"></i></a></li>
+                <li><a class="social-icon email-icon text-xs-center" target="_blank" href="#"><i class="ti-email"></i></a></li>
+            </ul>
+        </div>
+        <div class="single-excerpt">
+            <p class="font-large">@Model.Description</p>
+        </div>
+        <div class="entry-main-content">
+            @Model.Content
+        </div>
+        <div class="entry-bottom mt-50 mb-30">
+            <div class="font-weight-500 entry-meta meta-1 font-x-small color-grey">
+                <span class="update-on"><i class="ti ti-reload mr-5"></i>Updated @Model.DatePublished</span>
+                <span class="hit-count"><i class="ti-comment mr-5"></i>"not code yet" comments</span>
+                <span class="hit-count"><i class="ti-heart mr-5"></i>"not code yet" likes</span>
+                <span class="hit-count"><i class="ti-star mr-5"></i>"not code yet" point trust</span>
+            </div>
+            <div class="overflow-hidden mt-30">
+                <div class="tags float-left text-muted mb-md-30">
+                    <span class="font-small mr-10"><i class="fa fa-tag mr-5"></i>Tags: </span>
+                    @foreach (var topic in @Model.TopicInfo)
+                    {
+                        <a href="category.html" rel="tag">@topic.TopicName</a>
+                    }
+                </div>
+                <div class="single-social-share float-right">
+                    <ul class="d-inline-block list-inline">
+                        <li class="list-inline-item"><span class="font-small text-muted"><i class="ti-sharethis mr-5"></i>Share: </span></li>
+                        <li class="list-inline-item"><a class="social-icon facebook-icon text-xs-center" target="_blank" href="#"><i class="ti-facebook"></i></a></li>
+                        <li class="list-inline-item"><a class="social-icon twitter-icon text-xs-center" target="_blank" href="#"><i class="ti-twitter-alt"></i></a></li>
+                        <li class="list-inline-item"><a class="social-icon pinterest-icon text-xs-center" target="_blank" href="#"><i class="ti-pinterest"></i></a></li>
+                        <li class="list-inline-item"><a class="social-icon instagram-icon text-xs-center" target="_blank" href="#"><i class="ti-instagram"></i></a></li>
+                        <li class="list-inline-item"><a class="social-icon linkedin-icon text-xs-center" target="_blank" href="#"><i class="ti-linkedin"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--author box-->
+        <div class="author-bio border-radius-10 bg-white p-30 mb-40">
+            <div class="author-image mb-30">
+                <a href="author.html"><img src="~/assets/imgs/authors/author.png" alt="" class="avatar"></a>
+            </div>
+            <div class="author-info">
+                <h3><span class="vcard author"><span class="fn"><a href="author.html" title="Posts by Robert" rel="author">@Model.Publisher</a></span></span></h3>
+                <h5 class="text-muted">
+                    <span class="mr-15">"not code yet" ranking author</span>
+                    <i class="ti-star"></i>
+                    <i class="ti-star"></i>
+                    <i class="ti-star"></i>
+                    <i class="ti-star"></i>
+                    <i class="ti-star"></i>
+                </h5>
+                <div class="author-description">"not code yet" author description</div>
+                <a href="author.html" class="author-bio-link text-muted">View all posts</a>
+                <div class="author-social">
+                    <ul class="author-social-icons">
+                        <li class="author-social-link-facebook"><a href="#" target="_blank"><i class="ti-facebook"></i></a></li>
+                        <li class="author-social-link-twitter"><a href="#" target="_blank"><i class="ti-twitter-alt"></i></a></li>
+                        <li class="author-social-link-pinterest"><a href="#" target="_blank"><i class="ti-pinterest"></i></a></li>
+                        <li class="author-social-link-instagram"><a href="#" target="_blank"><i class="ti-instagram"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--related posts-->
+        <div class="related-posts">
+            <h3 class="mb-30">Related posts</h3>
+            <div class="row">
+                <article class="col-lg-4">
+                    <div class="background-white border-radius-10 p-10 mb-30">
+                        <div class="post-thumb d-flex mb-15 border-radius-15 img-hover-scale">
+                            <a href="single.html">
+                                <img class="border-radius-15" src="~/assets/imgs/news-2.jpg" alt="">
+                            </a>
+                        </div>
+                        <div class="pl-10 pr-10">
+                            <div class="entry-meta mb-15 mt-10">
+                                <a class="entry-meta meta-2" href="category.html"><span class="post-in text-primary font-x-small">Politic</span></a>
+                            </div>
+                            <h5 class="post-title mb-15">
+                                <span class="post-format-icon">
+                                    <ion-icon name="image-outline" role="img" class="md hydrated" aria-label="image outline"></ion-icon>
+                                </span>
+                                <a href="single.html">The litigants on the screen are not actors</a>
+                            </h5>
+                            <div class="entry-meta meta-1 font-x-small color-grey float-left text-uppercase mb-10">
+                                <span class="post-by">By <a href="author.html">John Nathan</a></span>
+                                <span class="post-on">8m ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+                <article class="col-lg-4">
+                    <div class="background-white border-radius-10 p-10 mb-30">
+                        <div class="post-thumb d-flex mb-15 border-radius-15 img-hover-scale">
+                            <a href="single.html">
+                                <img class="border-radius-15" src="~/assets/imgs/news-5.jpg" alt="">
+                            </a>
+                        </div>
+                        <div class="pl-10 pr-10">
+                            <div class="entry-meta mb-15 mt-10">
+                                <a class="entry-meta meta-2" href="category.html"><span class="post-in text-success font-x-small">Tech</span></a>
+                            </div>
+                            <h5 class="post-title mb-15">
+                                <span class="post-format-icon">
+                                    <ion-icon name="headset-outline" role="img" class="md hydrated" aria-label="headset outline"></ion-icon>
+                                </span>
+                                <a href="single.html">Essential Qualities of Highly Successful Music</a>
+                            </h5>
+                            <div class="entry-meta meta-1 font-x-small color-grey float-left text-uppercase mb-10">
+                                <span class="post-by">By <a href="author.html">K. Steven</a></span>
+                                <span class="post-on">24m ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+                <article class="col-lg-4">
+                    <div class="background-white border-radius-10 p-10">
+                        <div class="post-thumb d-flex mb-15 border-radius-15 img-hover-scale">
+                            <a href="single.html">
+                                <img class="border-radius-15" src="~/assets/imgs/news-7.jpg" alt="">
+                            </a>
+                        </div>
+                        <div class="pl-10 pr-10">
+                            <div class="entry-meta mb-15 mt-10">
+                                <a class="entry-meta meta-2" href="category.html"><span class="post-in text-danger font-x-small">Global</span></a>
+                            </div>
+                            <h5 class="post-title mb-15">
+                                <a href="single.html">Essential Qualities of Highly Successful Music</a>
+                            </h5>
+                            <div class="entry-meta meta-1 font-x-small color-grey float-left text-uppercase mb-10">
+                                <span class="post-by">By <a href="author.html">K. Jonh</a></span>
+                                <span class="post-on">24m ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+        <!--Comments-->
+        <div class="comments-area">
+            <h3 class="mb-30">03 Comments</h3>
+            <div class="comment-list">
+                <div class="single-comment justify-content-between d-flex">
+                    <div class="user justify-content-between d-flex">
+                        <div class="thumb">
+                            <img src="~/assets/imgs/authors/author-2.png" alt="">
+                        </div>
+                        <div class="desc">
+                            <p class="comment">
+                                Every secret of a writer’s soul, every experience of his life, every quality of his mind, is written large in his works. Start writing, no matter what. The water does not flow until the faucet is turned on.
+                            </p>
+                            <div class="d-flex justify-content-between">
+                                <div class="d-flex align-items-center">
+                                    <h5>
+                                        <a href="#">Alice Rose</a>
+                                    </h5>
+                                    <p class="date">December 4, 2020 at 3:12 pm </p>
+                                </div>
+                                <div class="reply-btn">
+                                    <a href="#" class="btn-reply text-uppercase">reply</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="comment-list">
+                <div class="single-comment justify-content-between d-flex">
+                    <div class="user justify-content-between d-flex">
+                        <div class="thumb">
+                            <img src="~/assets/imgs/authors/author-3.png" alt="">
+                        </div>
+                        <div class="desc">
+                            <p class="comment">
+                                You don’t start out writing good stuff. You start out writing crap and thinking it’s good stuff, and then gradually you get better at it. That’s why I say one of the most valuable traits is persistence.
+                            </p>
+                            <div class="d-flex justify-content-between">
+                                <div class="d-flex align-items-center">
+                                    <h5>
+                                        <a href="#">O.Henry</a>
+                                    </h5>
+                                    <p class="date">December 4, 2020 at 3:12 pm </p>
+                                </div>
+                                <div class="reply-btn">
+                                    <a href="#" class="btn-reply text-uppercase">reply</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="comment-list">
+                <div class="single-comment justify-content-between d-flex">
+                    <div class="user justify-content-between d-flex">
+                        <div class="thumb">
+                            <img src="~/assets/imgs/authors/author-16.png" alt="">
+                        </div>
+                        <div class="desc">
+                            <p class="comment">
+                                So read on to find some apt quotes for all writing occasions from considering to be a writer to experiencing a writers block to have already created that masterpiece yet contemplating if it’s good enough.
+                            </p>
+                            <div class="d-flex justify-content-between">
+                                <div class="d-flex align-items-center">
+                                    <h5>
+                                        <a href="#">Lima Azumi</a>
+                                    </h5>
+                                    <p class="date">December 4, 2020 at 3:12 pm </p>
+                                </div>
+                                <div class="reply-btn">
+                                    <a href="#" class="btn-reply text-uppercase">reply</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--comment form-->
+        <div class="comment-form">
+            <h3 class="mb-30">Leave a Reply</h3>
+            <form class="form-contact comment_form" action="#" id="commentForm">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <input class="form-control" name="name" id="name" type="text" placeholder="Name">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <input class="form-control" name="email" id="email" type="email" placeholder="Email">
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <input class="form-control" name="website" id="website" type="text" placeholder="Website">
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <textarea class="form-control w-100" name="comment" id="comment" cols="30" rows="9" placeholder="Write Comment"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="button button-contactForm">Post Comment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--End row-->
+<div class="row">
+    <div class="col-12 text-center mb-50">
+        <a href="#">
+            <img class="border-radius-10 d-inline" src="~/assets/imgs/ads-3.png" alt="">
+        </a>
+    </div>
+</div>
+<div class="row mb-50">
+    <div class="col-lg-3 col-md-6 col-sm-12">
+        <div class="sidebar-widget mb-md-30">
+            <div class="widget-header mb-30">
+                <h5 class="widget-title">Top <span>Trending</span></h5>
+            </div>
+            <div class="post-aside-style-2">
+                <ul class="list-post">
+                    <li class="mb-30 wow fadeIn animated">
+                        <div class="d-flex">
+                            <div class="post-thumb d-flex mr-15 border-radius-5 img-hover-scale">
+                                <a class="color-white" href="single.html">
+                                    <img src="~/assets/imgs/thumbnail-12.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="post-content media-body">
+                                <h6 class="post-title mb-10 text-limit-2-row"><a href="single.html">Marathon Runners Build Their Sport Stride by Stride</a></h6>
+                                <div class="entry-meta meta-1 font-x-small color-grey float-left text-uppercase">
+                                    <span class="post-by">By <a href="author.html">K. Marry</a></span>
+                                    <span class="post-on">4m ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="mb-30 wow fadeIn animated">
+                        <div class="d-flex">
+                            <div class="post-thumb d-flex mr-15 border-radius-5 img-hover-scale">
+                                <a class="color-white" href="single.html">
+                                    <img src="~/assets/imgs/thumbnail-13.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="post-content media-body">
+                                <h6 class="post-title mb-10 text-limit-2-row"><a href="single.html">Casa Dani, From a Michelin Chef, to Open in Manhattan West</a></h6>
+                                <div class="entry-meta meta-1 font-x-small color-grey float-left text-uppercase">
+                                    <span class="post-by">By <a href="author.html">Mr. John</a></span>
+                                    <span class="post-on">3h ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="wow fadeIn animated">
+                        <div class="d-flex">
+                            <div class="post-thumb d-flex mr-15 border-radius-5 img-hover-scale">
+                                <a class="color-white" href="single.html">
+                                    <img src="~/assets/imgs/thumbnail-15.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="post-content media-body">
+                                <h6 class="post-title mb-10 text-limit-2-row"><a href="single.html">What Will It Take to Reopen the World to Travel?</a></h6>
+                                <div class="entry-meta meta-1 font-x-small color-grey float-left text-uppercase">
+                                    <span class="post-by">By <a href="author.html">Kenedy</a></span>
+                                    <span class="post-on">4h ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-12">
+        <div class="sidebar-widget mb-md-30">
+            <div class="widget-header mb-30">
+                <h5 class="widget-title">Editor <span>Picked</span></h5>
+            </div>
+            <div class="post-aside-style-1 border-radius-10 p-20 bg-white">
+                <ul class="list-post">
+                    <li class="mb-20">
+                        <div class="d-flex">
+                            <div class="post-thumb d-flex mr-15 border-radius-5 img-hover-scale">
+                                <a class="color-white" href="single.html">
+                                    <img src="~/assets/imgs/thumbnail-4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="post-content media-body">
+                                <h6 class="post-title mb-10 text-limit-2-row"><a href="single.html">Federal arrests show no sign that antifa plotted protests</a></h6>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="mb-20">
+                        <div class="d-flex">
+                            <div class="post-thumb d-flex mr-15 border-radius-5 img-hover-scale">
+                                <a class="color-white" href="single.html">
+                                    <img src="~/assets/imgs/thumbnail-15.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="post-content media-body">
+                                <h6 class="post-title mb-10 text-limit-2-row"><a href="single.html">How line-dried laundry gets that fresh smell</a></h6>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="mb-20">
+                        <div class="d-flex">
+                            <div class="post-thumb d-flex mr-15 border-radius-5 img-hover-scale">
+                                <a class="color-white" href="single.html">
+                                    <img src="~/assets/imgs/thumbnail-16.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="post-content media-body">
+                                <h6 class="post-title mb-10 text-limit-2-row"><a href="single.html">Traveling tends to magnify all human emotions</a></h6>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="d-flex">
+                            <div class="post-thumb d-flex mr-15 border-radius-5 img-hover-scale">
+                                <a class="color-white" href="single.html">
+                                    <img src="~/assets/imgs/thumbnail-15.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="post-content media-body">
+                                <h6 class="post-title mb-10 text-limit-2-row"><a href="single.html">How line-dried laundry gets that fresh smell</a></h6>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-12">
+        <div class="sidebar-widget mb-sm-30">
+            <div class="widget-header mb-30">
+                <h5 class="widget-title">Most <span>Popular</span></h5>
+            </div>
+            <div class="post-aside-style-2">
+                <ul class="list-post">
+                    <li class="mb-30 wow fadeIn   animated" style="visibility: visible; animation-name: fadeIn;">
+                        <div class="d-flex">
+                            <div class="post-thumb d-flex mr-15 border-radius-5 img-hover-scale">
+                                <a class="color-white" href="single.html">
+                                    <img src="~/assets/imgs/thumbnail-2.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="post-content media-body">
+                                <h6 class="post-title mb-10 text-limit-2-row"><a href="single.html">Vancouver woman finds pictures and videos of herself online</a></h6>
+                                <div class="entry-meta meta-1 font-x-small color-grey float-left text-uppercase">
+                                    <span class="post-by">By <a href="author.html">K. Marry</a></span>
+                                    <span class="post-on">4m ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="mb-30 wow fadeIn   animated" style="visibility: visible; animation-name: fadeIn;">
+                        <div class="d-flex">
+                            <div class="post-thumb d-flex mr-15 border-radius-5 img-hover-scale">
+                                <a class="color-white" href="single.html">
+                                    <img src="~/assets/imgs/thumbnail-3.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="post-content media-body">
+                                <h6 class="post-title mb-10 text-limit-2-row"><a href="single.html">4 Things Emotionally Intelligent People Don’t Do</a></h6>
+                                <div class="entry-meta meta-1 font-x-small color-grey float-left text-uppercase">
+                                    <span class="post-by">By <a href="author.html">Mr. John</a></span>
+                                    <span class="post-on">3h ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="wow fadeIn animated" style="visibility: visible; animation-name: fadeIn;">
+                        <div class="d-flex">
+                            <div class="post-thumb d-flex mr-15 border-radius-5 img-hover-scale">
+                                <a class="color-white" href="single.html">
+                                    <img src="~/assets/imgs/thumbnail-5.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="post-content media-body">
+                                <h6 class="post-title mb-10 text-limit-2-row"><a href="single.html">Reflections from a Token Black Friend</a></h6>
+                                <div class="entry-meta meta-1 font-x-small color-grey float-left text-uppercase">
+                                    <span class="post-by">By <a href="author.html">Kenedy</a></span>
+                                    <span class="post-on">4h ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-12">
+        <div class="widget-header mb-30">
+            <h5 class="widget-title">Last <span>Comments</span></h5>
+        </div>
+        <div class="sidebar-widget p-20 border-radius-15 bg-white widget-latest-comments wow fadeIn  animated">
+            <div class="post-block-list post-module-6">
+                <div class="last-comment mb-20 d-flex wow fadeIn">
+                    <span class="item-count vertical-align">
+                        <a class="red-tooltip author-avatar" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Azumi - 985 posts"><img src="~/assets/imgs/authors/author-14.png" alt=""></a>
+                    </span>
+                    <div class="alith_post_title_small">
+                        <p class="font-medium mb-10"><a href="single.html">A writer is someone for whom writing is more difficult than it is for other people.</a></p>
+                        <div class="entry-meta meta-1 font-x-small color-grey float-left text-uppercase mb-10">
+                            <span class="post-by">By <a href="author.html">Azumi</a></span>
+                            <span class="post-on">4m ago</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="last-comment d-flex wow fadeIn">
+                    <span class="item-count vertical-align">
+                        <a class="red-tooltip author-avatar" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Johny - 445 posts"><img src="~/assets/imgs/authors/author-3.png" alt=""></a>
+                    </span>
+                    <div class="alith_post_title_small">
+                        <p class="font-medium mb-10"><a href="single.html">Teamwork begins by building trust. And the only way to do that is to overcome our need for invulnerability.</a></p>
+                        <div class="entry-meta meta-1 font-x-small color-grey float-left text-uppercase mb-10">
+                            <span class="post-by">By <a href="author.html">D. Johny</a></span>
+                            <span class="post-on">4m ago</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

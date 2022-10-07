@@ -4,7 +4,7 @@
  Description: Modern News & Magazine HTML Template
  Author:    alithemes.com
  Author URI:  http://alithemes.com
- Version:   1.0
+ Version:   2.1
  License:   GNU General Public License v2 or later
  License URI: http://www.gnu.org/licenses/gpl-2.0.html
 ==============================
@@ -31,7 +31,7 @@ TABLE CONTENT
 ***/
 
 /*Import google fonts */
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&amp;family=Roboto&amp;display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Roboto&display=swap');
 
 /* Import third party CSS library */
 @import url(vendor/bootstrap.min.css);
@@ -39,7 +39,7 @@ TABLE CONTENT
 @import url(vendor/ticker-style.css);
 @import url(vendor/material-icons.min.css);
 @import url(vendor/weather-icons.min.css);
-@import url(vendor/ionicons.min.html);
+@import url(vendor/ionicons.min.css);
 @import url(vendor/flaticon.css);
 @import url(vendor/slicknav.css);
 @import url(vendor/animate.min.css);

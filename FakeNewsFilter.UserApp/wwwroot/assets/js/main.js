@@ -330,16 +330,6 @@
         new WOW().init();
     };
 
-    //Disable copy/cut/paste
-    $("body").bind("cut copy paste", function (e) {
-        e.preventDefault();
-    });
-   
-    //Disable right click
-    $("body").on("contextmenu",function(e){
-        return false;
-    });
-
     //Load functions
     $(document).ready(function() {
         toolTip();
