@@ -30,6 +30,7 @@ using StackExchange.Redis;
 using Role = FakeNewsFilter.Data.Entities.Role;
 using FakeNewsFilter.Utilities.Exceptions;
 using FakeNewsFilter.API.Validator.News;
+using FakeNewsFilter.Quartz;
 
 namespace FakeNewsFilter
 {
@@ -96,6 +97,7 @@ namespace FakeNewsFilter
             services.AddTransient<IExtraFeaturesService, ExtraFeaturesService>();
             services.AddTransient<ITopicService, TopicService>();
             services.AddTransient<INewsService, NewsService>();
+            services.AddTransient<ICloneNewsService, CloneNewsService>();
             services.AddTransient<IVoteService, VoteService>();
             services.AddTransient<VersionService>();
             services.AddTransient<IFeedbackService, FeedbackService>();
@@ -202,6 +204,13 @@ namespace FakeNewsFilter
                     .WithSimpleSchedule(x => x.WithIntervalInSeconds(60)
                     .RepeatForever())
                     .WithDescription("Trigger to update rate of news")
+                );
+                
+                q.ScheduleJob<CloneNewsJob>(trigger => trigger
+                    .StartNow()
+                    .WithSimpleSchedule(x => x.WithIntervalInHours(5)
+                        .RepeatForever())
+                    .WithDescription("Trigger to clone news")
                 );
             });
 

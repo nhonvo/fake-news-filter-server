@@ -53,6 +53,8 @@ namespace FakeNewsFilter.Application.Mapping
                 .ForMember(x => x.ParentId, o => o.MapFrom(s => s.ParentId))
                 .ForMember(x => x.NewsId, o => o.MapFrom(s => s.NewsId))
                 .ForMember(x => x.Timestamp, o => o.MapFrom(s => s.Timestamp));
+
+            CreateMap<NewsOutSourceCreateRequest, News>();
         }
     }
 }

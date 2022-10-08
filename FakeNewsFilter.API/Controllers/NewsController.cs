@@ -19,6 +19,7 @@ using FakeNewsFilter.API.Validator.News;
 using Microsoft.AspNetCore.Http;
 using Google.Apis.Http;
 using System.Configuration;
+using FakeNewsFilter.Utilities.Constants;
 
 namespace FakeNewsFilter.API.Controllers
 {
@@ -30,13 +31,14 @@ namespace FakeNewsFilter.API.Controllers
         private readonly INewsService _newsService;
         private readonly IStringLocalizer<NewsController> _localizer;
         private readonly IFollowService _followService;
+        private readonly ICloneNewsService _cloneNewsService;
         private readonly ILogger<NewsController> _logger;
         private readonly IConfiguration _configuration;
         private readonly IConnectionMultiplexer _redis;
 
         public NewsController(IDistributedCache distributedCache, INewsService newsService,
             IFollowService followService, IStringLocalizer<NewsController> localizer, ILogger<NewsController> logger,
-            IConnectionMultiplexer redis, IConfiguration configuration ) : base(logger)
+            IConnectionMultiplexer redis, IConfiguration configuration, ICloneNewsService cloneNewsService) : base(logger)
         {
             _distributedCache = distributedCache;
             _newsService = newsService;
@@ -44,6 +46,7 @@ namespace FakeNewsFilter.API.Controllers
             _localizer = localizer;
             _logger = logger;
             _configuration = configuration;
+            _cloneNewsService = cloneNewsService;
             _redis = redis;
         }
 
