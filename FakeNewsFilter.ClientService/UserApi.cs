@@ -12,7 +12,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FakeNewsFilter.WebApp.Services
+namespace FakeNewsFilter.ClientServices
 {
     public interface IUserApi
     {

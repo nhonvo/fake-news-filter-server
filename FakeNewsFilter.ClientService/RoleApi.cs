@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 
-namespace FakeNewsFilter.AdminApp.Services
+namespace FakeNewsFilter.ClientServices
 {
     public interface IRoleApi
     {

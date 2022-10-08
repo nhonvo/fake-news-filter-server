@@ -2,7 +2,7 @@
 using FakeNewsFilter.Utilities.Constants;
 using Newtonsoft.Json;
 
-namespace FakeNewsFilter.AdminApp.Services
+namespace FakeNewsFilter.ClientService
 {
     public class BaseApiClient
     {

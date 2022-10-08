@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using FakeNewsFilter.AdminApp.Services;
+using FakeNewsFilter.ClientService;
 using FakeNewsFilter.ViewModel.Catalog.Notification;
 using Microsoft.AspNetCore.Mvc;
 

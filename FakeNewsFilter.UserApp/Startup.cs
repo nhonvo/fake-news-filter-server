@@ -1,5 +1,4 @@
 ﻿using System;
-using FakeNewsFilter.AdminApp.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,6 +12,7 @@ using FakeNewsFilter.UserApp.LocalizationResources;
 using FakeNewsFilter.UserApp.Services;
 using Microsoft.AspNetCore.Localization;
 using FluentValidation.AspNetCore;
+using FakeNewsFilter.ClientService;
 
 namespace FakeNewsFilter.UserApp
 {
