@@ -35,7 +35,6 @@ public class CloneNewsService : ICloneNewsService
             var statusCode = response.StatusCode;
 
             var oigetitNewsList = JsonConvert.DeserializeObject<List<OigetitNews>>(body);
-            
             var newsOutSourceCreateRequests = new List<NewsOutSourceCreateRequest>();
             foreach (var oigetitNews in oigetitNewsList)
             {
@@ -43,7 +42,7 @@ public class CloneNewsService : ICloneNewsService
 
                 var newsOutSourceCreateRequest = new NewsOutSourceCreateRequest()
                 {
-                    Title = oigetitNews.Title,
+                    Title = oigetitNews.Title.Trim(),
                     Description = oigetitDesc,
                     OfficialRating = LabelNews.undefined.ToString(),
                     UrlNews = oigetitNews.URL,
