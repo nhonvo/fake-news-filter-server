@@ -35,8 +35,11 @@ public class CloneNewsService : ICloneNewsService
             var statusCode = response.StatusCode;
 
             var oigetitNewsList = JsonConvert.DeserializeObject<List<OigetitNews>>(body);
+
+            var oigetitNewsList20 = oigetitNewsList.Take(10).ToList();
+            
             var newsOutSourceCreateRequests = new List<NewsOutSourceCreateRequest>();
-            foreach (var oigetitNews in oigetitNewsList)
+            foreach (var oigetitNews in oigetitNewsList20)
             {
                 var oigetitDesc = await GetOigetitNewsDesc(oigetitNews.ID.ToString());
 
