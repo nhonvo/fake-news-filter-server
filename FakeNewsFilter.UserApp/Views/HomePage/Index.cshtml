@@ -3,13 +3,13 @@
     @await Component.InvokeAsync("HighlightComponent")
 
     <div class="container">
-@*        <!--Ads-->
+        @*        <!--Ads-->
         <div class="row">
-            <div class="col-12 text-center mb-50">
-                <a href="#">
-                    <img class="border-radius-10 d-inline" src="~/assets/imgs/ads.jpg" alt="post-slider">
-                </a>
-            </div>
+        <div class="col-12 text-center mb-50">
+        <a href="#">
+        <img class="border-radius-10 d-inline" src="~/assets/imgs/ads.jpg" alt="post-slider">
+        </a>
+        </div>
         </div>*@
         <!--Content-->
         <div class="row">
@@ -22,10 +22,7 @@
             <div class="col-lg-10 col-md-9 order-1 order-md-2">
                 <div class="row">
                     <div class="col-lg-8 col-md-12">
-                       
-                            @await Component.InvokeAsync("LastestPostComponent")
-
-                       
+                        @await Component.InvokeAsync("LastestPostComponent")
                         <div class="sidebar-widget widget-ads mb-30 text-center">
                             <a href="~/assets/imgs/news-1.jpg">
                                 <img class="border-radius-10" src="~/assets/imgs/ads-3.png" alt="">
@@ -34,12 +31,10 @@
                         <!--Videos-->
                         <div class="sidebar-widget">
                             @await Component.InvokeAsync("VideoComponent")
-
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-12 sidebar-right">
                         @await Component.InvokeAsync("DontMissComponent")
-
                     </div>
                 </div>
                 <div class="row mb-50 mt-15">
