@@ -1,110 +1,53 @@
-﻿<!-- main content -->
-<div class="col-lg-10 col-md-9 order-1 order-md-2">
-    <div class="row">
-        <div class="col-lg-8 col-md-12">
-            <!-- Featured posts -->
-            <div class="featured-post mb-50">
-                @await Component.InvokeAsync("HighlightComponent")
+﻿        <!-- Main Wrap Start -->
+<main class="position-relative">
+    @await Component.InvokeAsync("HighlightComponent")
+
+    <div class="container">
+@*        <!--Ads-->
+        <div class="row">
+            <div class="col-12 text-center mb-50">
+                <a href="#">
+                    <img class="border-radius-10 d-inline" src="~/assets/imgs/ads.jpg" alt="post-slider">
+                </a>
             </div>
-            <!--Videos-->
-            <div class="sidebar-widget">
-                @await Component.InvokeAsync("VideoComponent")
-            </div>
-        </div>
-        <div class="col-lg-4 col-md-12 sidebar-right">
-            <!--Post aside style 1-->
-            <div class="sidebar-widget mb-30">
-                @await Component.InvokeAsync("DontMissComponent")
-            </div>
-            <!--Top authors-->
-@*            <div class="sidebar-widget mb-30">
-                <div class="widget-top-auhor border-radius-10 p-20 bg-white">
-                    <div class="widget-header widget-header-style-1 position-relative mb-15">
-                        <h5 class="widget-title pl-5">Top <span>Authors</span></h5>
-                    </div>
-                    <a class="red-tooltip active" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Emma - 1034 posts"><img src="assets/imgs/authors/author-2.png" alt=""></a>
-                    <a class="red-tooltip" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Oliver - 245 posts"><img src="assets/imgs/authors/author-3.png" alt=""></a>
-                    <a class="red-tooltip" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Sophia - 356 posts"><img src="assets/imgs/authors/author-4.png" alt=""></a>
-                    <a class="red-tooltip active" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Emili - 152 posts"><img src="assets/imgs/authors/author-5.png" alt=""></a>
-                    <a class="red-tooltip" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Harry - 245 posts"><img src="assets/imgs/authors/author-17.png" alt=""></a>
-                    <a class="red-tooltip" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Noah - 758 posts"><img src="assets/imgs/authors/author-7.png" alt=""></a>
-                    <a class="red-tooltip" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Isabella - 231 posts"><img src="assets/imgs/authors/author-8.png" alt=""></a>
-                    <a class="red-tooltip active" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Charlie - 256 posts"><img src="assets/imgs/authors/author-9.png" alt=""></a>
-                    <a class="red-tooltip" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Amelia - 652 posts"><img src="assets/imgs/authors/author-10.png" alt=""></a>
-                    <a class="red-tooltip active" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Jack - 125 posts"><img src="assets/imgs/authors/author-11.png" alt=""></a>
-                    <a class="red-tooltip" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Elizabeth - 452 posts"><img src="assets/imgs/authors/author-12.png" alt=""></a>
-                    <a class="red-tooltip" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Malcolm - 124 posts"><img src="assets/imgs/authors/author-13.png" alt=""></a>
-                    <a class="red-tooltip" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Abigail - 1245 posts"><img src="assets/imgs/authors/author-14.png" alt=""></a>
-                    <a class="red-tooltip active" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Matthew - 1325 posts"><img src="assets/imgs/authors/author-15.png" alt=""></a>
-                    <a class="red-tooltip" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Genesis - 562 posts"><img src="assets/imgs/authors/author-16.png" alt=""></a>
-                    <a class="red-tooltip active" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Charlie - 256 posts"><img src="assets/imgs/authors/author-17.png" alt=""></a>
-                    <a class="red-tooltip" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Amelia - 652 posts"><img src="assets/imgs/authors/author-18.png" alt=""></a>
-                    <a class="red-tooltip active" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Jack - 125 posts"><img src="assets/imgs/authors/author-20.png" alt=""></a>
-                </div>
-            </div>*@
-            <!--Newsletter-->
-            <div class="sidebar-widget widget_newsletter border-radius-10 p-20 bg-white mb-30">
-                <div class="widget-header widget-header-style-1 position-relative mb-15">
-                    <h5 class="widget-title">Newsletter</h5>
-                </div>
-                <div class="newsletter">
-                    <p class="font-medium">Heaven fruitful doesn't over les idays appear creeping</p>
-                    <form target="_blank" action="#" method="get" class="subscribe_form relative mail_part">
-                        <div class="form-newsletter-cover">
-                            <div class="form-newsletter position-relative">
-                                <input type="email" name="EMAIL" placeholder="Put your email here" required="">
-                                <button type="submit">
-                                    <i class="ti ti-email"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <!--Post aside style 2-->
-            <div class="sidebar-widget">
-                @await Component.InvokeAsync("TopTrendingComponent")
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12 text-center mt-50 mb-50">
-            <a href="#">
-                <img class="border-radius-10 d-inline" src="assets/imgs/ads.jpg" alt="post-slider">
-            </a>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-8 col-md-12">
-            <div class="latest-post mb-50">
-                @await Component.InvokeAsync("LastestPostComponent")
-            </div>
-            <div class="pagination-area mb-30">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-start">
-                        <li class="page-item"><a class="page-link" href="#"><i class="ti-angle-left"></i></a></li>
-                        <li class="page-item active"><a class="page-link" href="#">01</a></li>
-                        <li class="page-item"><a class="page-link" href="#">02</a></li>
-                        <li class="page-item"><a class="page-link" href="#">03</a></li>
-                        <li class="page-item"><a class="page-link" href="#">04</a></li>
-                        <li class="page-item"><a class="page-link" href="#"><i class="ti-angle-right"></i></a></li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-        <div class="col-lg-4 col-md-12 sidebar-right">
-            <div class="sidebar-widget mb-50">
-                @await Component.InvokeAsync("MostPopularComponent")
+        </div>*@
+        <!--Content-->
+        <div class="row">
+            <!-- sidebar-left -->
+            <div class="col-lg-2 col-md-3 primary-sidebar sticky-sidebar sidebar-left order-2 order-md-1">
+                @await Component.InvokeAsync("SideBarComponent")
 
             </div>
-            @*<div class="sidebar-widget p-20 border-radius-15 bg-white widget-latest-comments wow fadeIn animated">
-                @await Component.InvokeAsync("LastCommentComponent")
-            </div>*@
+            <!-- main content -->
+            <div class="col-lg-10 col-md-9 order-1 order-md-2">
+                <div class="row">
+                    <div class="col-lg-8 col-md-12">
+                       
+                            @await Component.InvokeAsync("LastestPostComponent")
+
+                       
+                        <div class="sidebar-widget widget-ads mb-30 text-center">
+                            <a href="~/assets/imgs/news-1.jpg">
+                                <img class="border-radius-10" src="~/assets/imgs/ads-3.png" alt="">
+                            </a>
+                        </div>
+                        <!--Videos-->
+                        <div class="sidebar-widget">
+                            @await Component.InvokeAsync("VideoComponent")
+
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-12 sidebar-right">
+                        @await Component.InvokeAsync("DontMissComponent")
+
+                    </div>
+                </div>
+                <div class="row mb-50 mt-15">
+                    <div class="col-md-12">
+                        @await Component.InvokeAsync("FromBlogComponent")
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="row mb-50 mt-15">
-        <div class="col-md-12">
-            @await Component.InvokeAsync("FromBlogComponent")
-        </div>
-    </div>
-</div>
+</main>

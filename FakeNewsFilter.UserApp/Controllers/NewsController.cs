@@ -15,7 +15,7 @@ public class NewsController : Controller
         _newsApi = newsApi;
     }
     
-    [Route("news/{alias}-{Id:int}")]
+    //[Route("news/{alias}-{Id:int}")]
     [AllowAnonymous]
     public async Task<IActionResult> GetNewsById(int Id)
     {

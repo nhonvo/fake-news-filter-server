@@ -1,10 +1,11 @@
-@model FakeNewsFilter.ViewModel.Catalog.NewsManage.NewsInfoVM
+@using FakeNewsFilter.ViewModel.Catalog.NewsManage
+@model NewsInfoVM
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="entry-header entry-header-3 mb-50 mt-50 text-center text-white">
-    <div class="thumb-overlay img-hover-slide border-radius-5 position-relative" style="background-image: url(@Model.ImageLink)">
+    <div class="thumb-overlay img-hover-slide border-radius-5 position-relative" style="background-image: url()">
         <div class="position-midded">
             <div class="entry-meta meta-0 font-small mb-30">
                 @foreach (var topic in @Model.TopicInfo)
@@ -78,9 +79,7 @@
         <!--author box-->
         <div class="author-bio border-radius-10 bg-white p-30 mb-40">
             <div class="author-image mb-30">
-                <a href="author.html"><img src="~/assets/imgs/authors/author.png" alt="" class="avatar"></a>
-            </div>
-            <div class="author-info">
+                <a href="author.html"><img src="~/assets/imgs/authors/author.png" alt="" class="avatar"></a>         <div class="author-info">
                 <h3><span class="vcard author"><span class="fn"><a href="author.html" title="Posts by Robert" rel="author">@Model.Publisher</a></span></span></h3>
                 <h5 class="text-muted">
                     <span class="mr-15">"not code yet" ranking author</span>
@@ -188,7 +187,7 @@
                         </div>
                         <div class="desc">
                             <p class="comment">
-                                Every secret of a writer’s soul, every experience of his life, every quality of his mind, is written large in his works. Start writing, no matter what. The water does not flow until the faucet is turned on.
+                                Every secret of a writerï¿½s soul, every experience of his life, every quality of his mind, is written large in his works. Start writing, no matter what. The water does not flow until the faucet is turned on.
                             </p>
                             <div class="d-flex justify-content-between">
                                 <div class="d-flex align-items-center">
@@ -213,7 +212,7 @@
                         </div>
                         <div class="desc">
                             <p class="comment">
-                                You don’t start out writing good stuff. You start out writing crap and thinking it’s good stuff, and then gradually you get better at it. That’s why I say one of the most valuable traits is persistence.
+                                You donï¿½t start out writing good stuff. You start out writing crap and thinking itï¿½s good stuff, and then gradually you get better at it. Thatï¿½s why I say one of the most valuable traits is persistence.
                             </p>
                             <div class="d-flex justify-content-between">
                                 <div class="d-flex align-items-center">
@@ -238,7 +237,7 @@
                         </div>
                         <div class="desc">
                             <p class="comment">
-                                So read on to find some apt quotes for all writing occasions from considering to be a writer to experiencing a writers block to have already created that masterpiece yet contemplating if it’s good enough.
+                                So read on to find some apt quotes for all writing occasions from considering to be a writer to experiencing a writers block to have already created that masterpiece yet contemplating if itï¿½s good enough.
                             </p>
                             <div class="d-flex justify-content-between">
                                 <div class="d-flex align-items-center">
@@ -447,7 +446,7 @@
                                 </a>
                             </div>
                             <div class="post-content media-body">
-                                <h6 class="post-title mb-10 text-limit-2-row"><a href="single.html">4 Things Emotionally Intelligent People Don’t Do</a></h6>
+                                <h6 class="post-title mb-10 text-limit-2-row"><a href="single.html">4 Things Emotionally Intelligent People Donï¿½t Do</a></h6>
                                 <div class="entry-meta meta-1 font-x-small color-grey float-left text-uppercase">
                                     <span class="post-by">By <a href="author.html">Mr. John</a></span>
                                     <span class="post-on">3h ago</span>
