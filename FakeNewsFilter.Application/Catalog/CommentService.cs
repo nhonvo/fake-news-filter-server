@@ -74,7 +74,7 @@ public class CommentService : ICommentService
                 UserId = request.UserId,
                 Content = request.Content,
                 Timestamp = DateTime.Now
-            };
+            };  
         }
 
         _context.Comment.Add(comment);
@@ -82,7 +82,7 @@ public class CommentService : ICommentService
         var result = await _context.SaveChangesAsync();
         var cmtModel = await GetCommentById(comment.CommentId);
         if (result != 0)
-            return new ApiSuccessResult<CommentViewModel>(201, "CreateCommentSuccessful", cmtModel.ResultObj);
+            return new ApiSuccessResult<CommentViewModel>(200, "CreateCommentSuccessful", cmtModel.ResultObj);
         return new ApiErrorResult<CommentViewModel>(400, "CreateCommentUnsuccessful", cmtModel.ResultObj);
     }
 
