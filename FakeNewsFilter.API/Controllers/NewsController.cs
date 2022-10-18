@@ -383,7 +383,7 @@ namespace FakeNewsFilter.API.Controllers
             }
         }
 
-        public Dictionary<int, int> GetKeysAndValuesInRedisCache(string preKey)
+        private Dictionary<int, int> GetKeysAndValuesInRedisCache(string preKey)
         {
             var dict = new Dictionary<int, int>();
             string connectionString = _configuration["Redis:ConnectionString"];
@@ -405,11 +405,26 @@ namespace FakeNewsFilter.API.Controllers
 
             return dict;
         }
-
+        
+        private void ClearCache()
+        {
+            string connectionString = _configuration["Redis:ConnectionString"];
+            var redisServer = _redis.GetServer(connectionString);
+            var keys = redisServer.Keys();
+            foreach (var key in keys)
+            {
+                _distributedCache.Remove(key);
+            }
+            var endpoints = _redis.GetEndPoints();
+            var server = _redis.GetServer(endpoints[0]);
+            server.FlushAllDatabases();
+        }
+        
         public async Task Execute(IJobExecutionContext context)
         {
             var newsViewCountDict = GetKeysAndValuesInRedisCache("viewcountnews");
             await _newsService.UpdateViewCount(newsViewCountDict);
+            ClearCache();
         }
 
         [HttpPut("Archive/{newsId}")]
