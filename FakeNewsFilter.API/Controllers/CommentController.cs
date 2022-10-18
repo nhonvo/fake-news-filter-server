@@ -43,7 +43,7 @@ namespace FakeNewsFilter.API.Controllers
 
                 var result = await _ICommentService.Create(request);
 
-                result.Message = _localizer[result.Message].Value + result.ResultObj;
+                result.Message = _localizer[result.Message].Value;
 
                 return ReturnWithModel(result);
             }
