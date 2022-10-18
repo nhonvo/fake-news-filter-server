@@ -15,7 +15,6 @@ using System.Threading.Tasks;
 namespace FakeNewsFilter.API.Controllers
 {
     [Route("api/[controller]")]
-
     [ApiController]
     [Authorize]
     public class CommentController : ReturnStatus
@@ -23,7 +22,9 @@ namespace FakeNewsFilter.API.Controllers
         private readonly ICommentService _ICommentService;
         private readonly IStringLocalizer<CommentController> _localizer;
         private readonly ILogger<CommentController> _logger;
-        public CommentController(ICommentService ICommentService, IStringLocalizer<CommentController> localizer, ILogger<CommentController> logger) : base(logger)
+
+        public CommentController(ICommentService ICommentService, IStringLocalizer<CommentController> localizer,
+            ILogger<CommentController> logger) : base(logger)
         {
             _ICommentService = ICommentService;
             _localizer = localizer;
@@ -31,8 +32,7 @@ namespace FakeNewsFilter.API.Controllers
         }
 
         [HttpPost]
-
-        public async Task<IActionResult> Create([FromBody] CommentCreateRequest request)
+        public async Task<IActionResult> Create(CommentCreateRequest request)
         {
             try
             {
@@ -40,6 +40,7 @@ namespace FakeNewsFilter.API.Controllers
                 {
                     return BadRequest(ModelState);
                 }
+
                 var result = await _ICommentService.Create(request);
 
                 result.Message = _localizer[result.Message].Value + result.ResultObj;
@@ -51,19 +52,28 @@ namespace FakeNewsFilter.API.Controllers
                 _logger.LogError(e.Message);
                 return BadRequest(e.Message);
             }
-
         }
 
-        [HttpGet("{newsId}")]
+        [HttpGet("news/{newsId}")]
         [AllowAnonymous]
         public async Task<IActionResult> GetCommentByNewsId(int newsId)
         {
-
             var comments = await _ICommentService.GetCommentByNewsId(newsId);
 
             comments.Message = _localizer[comments.Message].Value;
 
             return ReturnWithListModel(comments);
+        }
+
+        [HttpGet("{cmtId}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetCommentById(int cmtId)
+        {
+            var comment = await _ICommentService.GetCommentById(cmtId);
+
+            comment.Message = _localizer[comment.Message].Value;
+
+            return ReturnWithModel(comment);
         }
 
         [HttpDelete]
@@ -82,7 +92,6 @@ namespace FakeNewsFilter.API.Controllers
                 _logger.LogError(e.Message);
                 return BadRequest(e.Message);
             }
-
         }
 
         [HttpPut("Update")]
@@ -106,7 +115,6 @@ namespace FakeNewsFilter.API.Controllers
                 _logger.LogError(e.Message);
                 return BadRequest(e.Message);
             }
-
         }
 
         [HttpPut]
@@ -130,7 +138,6 @@ namespace FakeNewsFilter.API.Controllers
                 _logger.LogError(e.Message);
                 return BadRequest(e.Message);
             }
-
         }
     }
 }
