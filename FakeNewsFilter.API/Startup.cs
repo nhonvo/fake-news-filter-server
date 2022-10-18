@@ -101,11 +101,19 @@ namespace FakeNewsFilter
             services.AddTransient<IVoteService, VoteService>();
             services.AddTransient<VersionService>();
             services.AddTransient<IFeedbackService, FeedbackService>();
-            services.AddSingleton<IConnectionMultiplexer>(
-                ConnectionMultiplexer.Connect(Configuration["Redis:ConnectionString"]));
+            services.AddSingleton<IConnectionMultiplexer>(GetConnectionMultiplexer());
             services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<INewsCommunityService, NewsCommunityService>();
             services.AddTransient<FileStorageService>();
+            
+            ConnectionMultiplexer GetConnectionMultiplexer()
+            {
+                var options = ConfigurationOptions.Parse(Configuration["Redis:ConnectionString"]);
+                options.ConnectRetry = 5;
+                options.AllowAdmin = true;
+                return ConnectionMultiplexer.Connect(options);
+            }
+            
             //Fluent Validation
             //User
             services.AddControllers().AddFluentValidation(fv =>
@@ -194,14 +202,14 @@ namespace FakeNewsFilter
                 // (requires version 3.2)
                 q.ScheduleJob<NewsController>(trigger => trigger
                     .StartNow()
-                    .WithSimpleSchedule(x => x.WithIntervalInSeconds(60)
+                    .WithSimpleSchedule(x => x.WithIntervalInMinutes(5)
                     .RepeatForever())
                     .WithDescription("Trigger to update view count of news")
                 );
 
                 q.ScheduleJob<VoteController>(trigger => trigger
                     .StartNow()
-                    .WithSimpleSchedule(x => x.WithIntervalInSeconds(60)
+                    .WithSimpleSchedule(x => x.WithIntervalInHours(1)
                     .RepeatForever())
                     .WithDescription("Trigger to update rate of news")
                 );
