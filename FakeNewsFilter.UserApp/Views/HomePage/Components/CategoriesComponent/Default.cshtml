@@ -9,6 +9,6 @@
 <ul class="font-small text-muted">
     @foreach (var item in Model)
     {
-        <li class="cat-item cat-item-2"><a href="#">@item.Tag</a></li>
+        <li class="cat-item cat-item-2"><a asp-action="GetNewsByTopic" asp-controller="HomePage" asp-route-topicId="@item.TopicId">@item.Tag</a></li>
     }
 </ul>

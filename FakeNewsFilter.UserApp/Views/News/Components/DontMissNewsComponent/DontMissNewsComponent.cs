@@ -1,8 +1,9 @@
 ﻿using FakeNewsFilter.ClientService;
+using FakeNewsFilter.UserApp.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace FakeNewsFilter.UserApp.Views.News.Components.DontMissComponent
+namespace FakeNewsFilter.UserApp.Views.Home.Components.HighlightComponent
 {
     public class DontMissNewsComponent : ViewComponent
     {

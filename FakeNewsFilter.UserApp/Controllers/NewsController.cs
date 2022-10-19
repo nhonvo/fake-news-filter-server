@@ -14,28 +14,16 @@ public class NewsController : Controller
     {
         _newsApi = newsApi;
     }
-    
+
     //[Route("news/{alias}-{Id:int}")]
     [AllowAnonymous]
-    public async Task<IActionResult> GetNewsById(int Id)
+    public async Task<IActionResult> GetNewsById(int Id, string alias)
     {
-    
+
         var data = await _newsApi.GetById(Id);
-        
+
         return View("Details", data.ResultObj);
     }
-    
-    [AllowAnonymous]
-    [HttpGet]
-    public async Task<IActionResult> GetNewsByTopic(int topicId)
-    {
-    
-        var data = await _newsApi.GetNewsByTopic(topicId);
-        
-        return View("NewsByTopic", data.ResultObj);
-    }
-    public IActionResult Index()
-    {
-        return View();
-    }
+
+   
 }
