@@ -1,6 +1,6 @@
 ﻿<!-- Main Wrap Start -->
 <main class="position-relative">
-    @await Component.InvokeAsync("HighlightComponent")
+    @await Component.InvokeAsync("HighlightComponent",new{lang = "vi",index = 2, size = 8})
 
     <div class="container">
         @*        <!--Ads-->
@@ -22,7 +22,7 @@
             <div class="col-lg-10 col-md-9 order-1 order-md-2">
                 <div class="row">
                     <div class="col-lg-8 col-md-12">
-                        @await Component.InvokeAsync("LastestPostComponent")
+                        @await Component.InvokeAsync("LastestPostComponent",new{lang = "vi",index = 2, size = 8})
                         <div class="sidebar-widget widget-ads mb-30 text-center">
                             <a href="~/assets/imgs/news-1.jpg">
                                 <img class="border-radius-10" src="~/assets/imgs/ads-3.png" alt="">
@@ -30,7 +30,7 @@
                         </div>
                         <!--Videos-->
                         <div class="sidebar-widget">
-                            @await Component.InvokeAsync("VideoComponent")
+                            @await Component.InvokeAsync("VideoComponent",new{lang = "vi",index = 3, size = 4})
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-12 sidebar-right">
@@ -39,7 +39,7 @@
                 </div>
                 <div class="row mb-50 mt-15">
                     <div class="col-md-12">
-                        @await Component.InvokeAsync("FromBlogComponent")
+                        @await Component.InvokeAsync("FromBlogComponent",new{lang = "vi",index = 2, size = 8})
                     </div>
                 </div>
             </div>

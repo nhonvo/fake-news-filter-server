@@ -20,6 +20,8 @@ namespace FakeNewsFilter.ClientService
         Task<ApiResult<NewsPagingResponse>?> GetAll();
         Task<ApiResult<NewsPagingResponse>> GetNewsBySouce(string source_name);
         Task<ApiResult<NewsPagingResponse>?> GetNewsByTopic(int topicId);
+        Task<ApiResult<NewsPagingResponse>?> GetNewsPaging(string lang, int index, int size);
+
 
         Task<ApiResult<NewsViewModel>> CreateBySystem(NewsSystemCreateRequest request);
         Task<ApiResult<NewsViewModel>> CreateByOther(NewsOutSourceCreateRequest request);
@@ -94,6 +96,24 @@ namespace FakeNewsFilter.ClientService
 
             return JsonConvert.DeserializeObject<ApiErrorResult<NewsPagingResponse>>(body);
         }
+        public async Task<ApiResult<NewsPagingResponse>?> GetNewsPaging(string lang, int index, int size)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+
+            var sessions = _httpContextAccessor.HttpContext?.Session.GetString("Token");
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+
+            var response = await client.GetAsync($"/api/News?languageId={lang}&PageIndex={index}&PageSize={size}");
+            var body = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<NewsPagingResponse>>(body);
+
+            return JsonConvert.DeserializeObject<ApiErrorResult<NewsPagingResponse>>(body);
+        }
+
 
         public async Task<ApiResult<NewsViewModel>> CreateBySystem(NewsSystemCreateRequest request)
         {
