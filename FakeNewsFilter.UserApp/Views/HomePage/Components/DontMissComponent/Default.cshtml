@@ -25,12 +25,12 @@
                 <li class="mb-20">
                     <div class="d-flex">
                         <div class="post-thumb d-flex mr-15 border-radius-5 img-hover-scale">
-                            <a class="color-white" href="single.html">
+                            <a class="color-white"asp-action="GetNewsById" asp-controller="News" asp-route-id="@item.NewsId">
                                 <img src="@item.ThumbNews" alt="">
                             </a>
                         </div>
                         <div class="post-content media-body">
-                            <h6 class="post-title mb-10 text-limit-2-row"><a href="single.html">@item.Title</a></h6>
+                            <h6 class="post-title mb-10 text-limit-2-row"><aasp-action="GetNewsById" asp-controller="News" asp-route-id="@item.NewsId">@item.Title</aasp-action=></h6>
                         </div>
                     </div>
                 </li>
@@ -83,12 +83,12 @@
                 <li class="mb-30 wow fadeIn animated">
                     <div class="d-flex">
                         <div class="post-thumb d-flex mr-15 border-radius-5 img-hover-scale">
-                            <a class="color-white" href="single.html">
+                            <a class="color-white"asp-action="GetNewsById" asp-controller="News" asp-route-id="@item.NewsId">
                                 <img src="@item.ThumbNews" alt="">
                             </a>
                         </div>
                         <div class="post-content media-body">
-                            <h6 class="post-title mb-10 text-limit-2-row"><a href="single.html">@item.Title</a></h6>
+                            <h6 class="post-title mb-10 text-limit-2-row"><aasp-action="GetNewsById" asp-controller="News" asp-route-id="@item.NewsId">@item.Title</aasp-action=></h6>
                             <div class="entry-meta meta-1 font-x-small color-grey float-left text-uppercase">
                                 <span class="post-by">By <a href="author.html">K. Marry</a></span>
                                 <span class="post-on">4m ago</span>
@@ -111,12 +111,12 @@
 
             <article class="bg-white border-radius-15 mb-30 p-10 wow fadeIn animated">
                 <div class="post-thumb d-flex mb-15 border-radius-15 img-hover-scale">
-                    <a href="single.html">
+                    <aasp-action="GetNewsById" asp-controller="News" asp-route-id="@item.NewsId">
                         <img class="border-radius-15" src="@item.ThumbNews" alt="">
-                    </a>
+                    </aasp-action=>
                 </div>
                 <div class="pl-10 pr-10">
-                    <h5 class="post-title mb-15"><a href="single.html">@item.Title</a></h5>
+                    <h5 class="post-title mb-15"><aasp-action="GetNewsById" asp-controller="News" asp-route-id="@item.NewsId">@item.Title</aasp-action=></h5>
                     <div class="entry-meta meta-1 font-x-small color-grey float-left text-uppercase mb-10">
                         <span class="post-in">In <a href="category.html">Healthy</a></span>
                         <span class="post-by">By <a href="author.html">Steven</a></span>
@@ -141,7 +141,7 @@
                 <a class="red-tooltip author-avatar" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Azumi - 985 posts"><img src="@item.ThumbNews" alt=""></a>
             </span>
             <div class="alith_post_title_small">
-                <p class="font-medium mb-10"><a href="single.html">@item.Title</a></p>
+                <p class="font-medium mb-10"><aasp-action="GetNewsById" asp-controller="News" asp-route-id="@item.NewsId">@item.Title</aasp-action=></p>
                 <div class="entry-meta meta-1 font-x-small color-grey float-left text-uppercase mb-10">
                     <span class="post-by">By <a href="author.html">Azumi</a></span>
                     <span class="post-on">4m ago</span>

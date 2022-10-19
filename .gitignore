@@ -465,3 +465,4 @@ FakeNewsFilter.API/appsettings.json
 FakeNewsFilter.Data/appsettings.json
 FakeNewsFilter.UserApp/Startup.cs
 FakeNewsFilter.UserApp/appsettings.json
+.vscode/

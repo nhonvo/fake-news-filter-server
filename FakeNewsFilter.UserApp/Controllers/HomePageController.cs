@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Build.Logging;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace FakeNewsFilter.UserApp.Controllers
@@ -41,6 +43,13 @@ namespace FakeNewsFilter.UserApp.Controllers
             var data = await _newsApi.GetNewsByTopic(topicId);
 
             return View("NewsByTopic", data.ResultObj == null ? data.ResultObj : data.ResultObj.Items);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Search(String name)
+        {
+            var listNews = await _newsApi.GetAll();
+            var data = listNews.ResultObj.Items.Where(x => x.Title.Contains(name)).ToList();
+            return View("NewsByTopic", data);
         }
     }
 }
