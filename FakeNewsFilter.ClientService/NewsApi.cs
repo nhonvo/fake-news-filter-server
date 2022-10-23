@@ -32,6 +32,7 @@ namespace FakeNewsFilter.ClientService
 
 
         Task<ApiResult<NewsInfoVM>> GetById(int Id);
+        Task<ApiResult<NewsSystemViewModel>?> GetContent(int id);
 
         Task<ApiResult<string>> Delete(int newsId);
         Task<ApiResult<string>> Archive(int newsId);
@@ -249,6 +250,24 @@ namespace FakeNewsFilter.ClientService
                 return JsonConvert.DeserializeObject<ApiSuccessResult<NewsInfoVM>>(body);
 
             return JsonConvert.DeserializeObject<ApiErrorResult<NewsInfoVM>>(body);
+        }
+
+        public async Task<ApiResult<NewsSystemViewModel>?> GetContent(int id)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+
+            var sessions = _httpContextAccessor.HttpContext?.Session.GetString("Token");
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+
+            var response = await client.GetAsync($"/api/News/Content/{id}");
+            var body = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<NewsSystemViewModel>>(body);
+
+            return JsonConvert.DeserializeObject<ApiErrorResult<NewsSystemViewModel>>(body);
         }
 
         /////////////update news

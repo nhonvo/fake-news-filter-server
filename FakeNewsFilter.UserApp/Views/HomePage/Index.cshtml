@@ -3,31 +3,30 @@
     @await Component.InvokeAsync("HighlightComponent",new{lang = "vi",index = 2, size = 8})
 
     <div class="container">
-        @*        <!--Ads-->
+        <!--Ads-->
         <div class="row">
-        <div class="col-12 text-center mb-50">
-        <a href="#">
-        <img class="border-radius-10 d-inline" src="~/assets/imgs/ads.jpg" alt="post-slider">
-        </a>
+            <div class="col-12 text-center mb-50">
+                <a href="#">
+                    <img class="border-radius-10 d-inline" src="~/assets/imgs/ads.jpg" alt="post-slider">
+                </a>
+            </div>
         </div>
-        </div>*@
         <!--Content-->
         <div class="row">
             <!-- sidebar-left -->
             <div class="col-lg-2 col-md-3 primary-sidebar sticky-sidebar sidebar-left order-2 order-md-1">
                 @await Component.InvokeAsync("SideBarComponent")
-
             </div>
             <!-- main content -->
             <div class="col-lg-10 col-md-9 order-1 order-md-2">
                 <div class="row">
                     <div class="col-lg-8 col-md-12">
                         @await Component.InvokeAsync("LastestPostComponent",new{lang = "vi",index = 2, size = 8})
-                        <div class="sidebar-widget widget-ads mb-30 text-center">
-                            <a href="~/assets/imgs/news-1.jpg">
-                                <img class="border-radius-10" src="~/assets/imgs/ads-3.png" alt="">
+                        @*<div class="sidebar-widget widget-ads mb-30 text-center">
+                            <a href="#">
+                                <img class="border-radius-10" src="~/assets/imgs/ads.jpg" alt="">
                             </a>
-                        </div>
+                        </div>*@
                         <!--Videos-->
                         <div class="sidebar-widget">
                             @await Component.InvokeAsync("VideoComponent",new{lang = "vi",index = 3, size = 4})

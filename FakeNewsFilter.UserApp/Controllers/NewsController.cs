@@ -24,7 +24,7 @@ public class NewsController : Controller
     public async Task<IActionResult> GetNewsById(int Id)
     {
 
-        var data = await _newsApi.GetById(Id);
+        var data = await _newsApi.GetContent(Id);
 
         return View("Details", data.ResultObj);
     }
