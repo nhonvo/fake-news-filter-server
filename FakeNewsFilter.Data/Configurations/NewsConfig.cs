@@ -16,7 +16,7 @@ namespace FakeNewsFilter.Data.Configurations
 
             builder.Property(k => k.NewsId).UseIdentityColumn();
 
-            builder.Property(x => x.Title).IsRequired().HasMaxLength(150);
+            builder.Property(x => x.Title).IsRequired().HasMaxLength(300);
 
             builder.Property(x => x.Timestamp).HasDefaultValue(DateTime.Now);
 

@@ -9,6 +9,7 @@ using FakeNewsFilter.Data.Entities;
 using FakeNewsFilter.Data.Enums;
 using FakeNewsFilter.ViewModel.Catalog.Comment;
 using FakeNewsFilter.ViewModel.Common;
+using FakeNewsFilter.ViewModel.System.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,11 +17,12 @@ namespace FakeNewsFilter.Application.Catalog;
 
 public interface ICommentService
 {
-    Task<ApiResult<List<CommentViewModel>>> Create(CommentCreateRequest request);
+    Task<ApiResult<CommentViewModel>> Create(CommentCreateRequest request);
     Task<ApiResult<string>> Delete(int commentId, Guid userId);
     Task<ApiResult<List<CommentViewModel>>> GetCommentByNewsId(int NewsId);
+    Task<ApiResult<CommentViewModel>> GetCommentById(int commentId);
     Task<ApiResult<List<CommentViewModel>>> Update(CommentUpdateRequest request);
-    Task<ApiResult<List<CommentViewModel>>> Archive (CommentUpdateRequest request);
+    Task<ApiResult<List<CommentViewModel>>> Archive(CommentUpdateRequest request);
 }
 
 public class CommentService : ICommentService
@@ -37,22 +39,22 @@ public class CommentService : ICommentService
     }
 
     //Tạo bình luận
-    public async Task<ApiResult<List<CommentViewModel>>> Create(CommentCreateRequest request)
+    public async Task<ApiResult<CommentViewModel>> Create(CommentCreateRequest request)
     {
         var user = await UserCommon.CheckExistUser(_context, request.UserId);
         if (user == null)
-            return new ApiErrorResult<List<CommentViewModel>>(404, "UserIsNotExist");
+            return new ApiErrorResult<CommentViewModel>(404, "UserIsNotExist");
 
         var news = await NewsCommon.CheckExistNews(_context, request.NewsId);
         if (news == null)
-            return new ApiErrorResult<List<CommentViewModel>>(404, "NewsIsNotExist");
+            return new ApiErrorResult<CommentViewModel>(404, "NewsIsNotExist");
 
         Comment comment = null;
-
-        if(request.ParentId != 0)
+        
+        if (request.ParentId != 0)
         {
             var checkParentId = await _context.Comment.FirstOrDefaultAsync(x => x.CommentId == request.ParentId);
-            if(checkParentId != null)
+            if (checkParentId != null)
             {
                 comment = new Comment
                 {
@@ -63,7 +65,6 @@ public class CommentService : ICommentService
                     Timestamp = DateTime.Now
                 };
             }
-
         }
         else
         {
@@ -73,17 +74,54 @@ public class CommentService : ICommentService
                 UserId = request.UserId,
                 Content = request.Content,
                 Timestamp = DateTime.Now
-            };
+            };  
         }
 
         _context.Comment.Add(comment);
 
         var result = await _context.SaveChangesAsync();
-        var cmtModel = await GetCommentByNewsId(comment.CommentId);
+        var cmtModel = await GetCommentById(comment.CommentId);
         if (result != 0)
-            return new ApiSuccessResult<List<CommentViewModel>>("CreateCommentSuccessful", cmtModel.ResultObj);
+            return new ApiSuccessResult<CommentViewModel>(200, "CreateCommentSuccessful", cmtModel.ResultObj);
+        return new ApiErrorResult<CommentViewModel>(400, "CreateCommentUnsuccessful", cmtModel.ResultObj);
+    }
 
-        return new ApiErrorResult<List<CommentViewModel>>(400, "CreateCommentUnsuccessful", cmtModel.ResultObj);
+    public async Task<ApiResult<CommentViewModel>> GetCommentById(int commentId)
+    {
+        var cmt = await _context.Comment.FirstOrDefaultAsync(x => x.CommentId == commentId);
+
+        var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == cmt.UserId);
+        
+        if (user == null)
+            return new ApiErrorResult<CommentViewModel>(404, "UserIsNotExist");
+        
+        var userViewModel = new UserViewModel()
+        {
+            UserId = user.Id,
+            UserName = user.UserName,
+            Email = user.Email,
+            Avatar = user.Avatar?.PathMedia
+        };
+
+        if (cmt == null)
+            return new ApiErrorResult<CommentViewModel>(404, "CommentNotFound");
+        
+        var cmtViewModel = new CommentViewModel()
+        {
+            CommentId = cmt.CommentId,
+            NewsId = cmt.NewsId,
+            UserId = cmt.UserId,
+            User = userViewModel,
+            Content = cmt.Content,
+            Timestamp = cmt.Timestamp
+        };
+
+        if (cmt.ParentId != null)
+        {
+            cmtViewModel.ParentId = (int) cmt.ParentId;
+        }
+
+        return new ApiSuccessResult<CommentViewModel>("Get comment successfully", cmtViewModel);
     }
 
     //Lấy tất cả các bình luận của tin tức đó
@@ -91,19 +129,34 @@ public class CommentService : ICommentService
     {
         //Kiểm tra tin tức có tồn tại hay không
         var news = await NewsCommon.CheckExistNews(_context, newsId);
+
         if (news == null)
             return new ApiErrorResult<List<CommentViewModel>>(404, "NewsIsNotExist");
 
         var commentsList = await _context.Comment.Where(x => x.NewsId == newsId).ToListAsync();
+
         var map = new Dictionary<int, CommentViewModel>();
+
         var result = new List<CommentViewModel>();
 
         foreach (var comment in commentsList)
         {
             var commentViewModel = _mapper.Map<CommentViewModel>(comment);
 
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == comment.UserId);
+
+            var userViewModel = new UserViewModel()
+            {
+                UserId = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                Avatar = user.Avatar?.PathMedia,
+            };
+
+            commentViewModel.User = userViewModel;
+
             map.Add(comment.CommentId, commentViewModel);
-            
+
             if (comment.ParentId == null)
             {
                 result.Add(commentViewModel);
@@ -117,7 +170,7 @@ public class CommentService : ICommentService
                 parentComment.Child.Add(commentViewModel);
             }
         }
-        
+
         if (result.Count == 0) return new ApiSuccessResult<List<CommentViewModel>>("DoNotHaveGetCommentByNewsId");
         return new ApiSuccessResult<List<CommentViewModel>>("GetCommentByNewsIdSuccessful", result);
     }
@@ -127,7 +180,7 @@ public class CommentService : ICommentService
     {
         var comment = await CommentCommon.CheckExistComment(_context, commentId);
         if (comment == null)
-            return new ApiErrorResult<string>(404, "CommentNotFound"," " + commentId.ToString());
+            return new ApiErrorResult<string>(404, "CommentNotFound", " " + commentId.ToString());
 
         var userComment = await UserCommon.CheckExistUser(_context, comment.UserId);
         var userLogin = await UserCommon.CheckExistUser(_context, userId);
@@ -148,7 +201,7 @@ public class CommentService : ICommentService
     {
         var comment = await CommentCommon.CheckExistComment(_context, request.CommentId);
         if (comment == null)
-            return new ApiErrorResult<List<CommentViewModel>>(404,"CommentNotFound");
+            return new ApiErrorResult<List<CommentViewModel>>(404, "CommentNotFound");
 
         comment.Content = request.Content;
         comment.Timestamp = DateTime.Now;
@@ -173,7 +226,8 @@ public class CommentService : ICommentService
         var cmtModel = await GetCommentByNewsId(cmt_update.CommentId);
         var result = await _context.SaveChangesAsync();
 
-        if (result == 0) return new ApiErrorResult<List<CommentViewModel>>(400, "UpdateLinkNewsUnsuccessful", cmtModel.ResultObj);
+        if (result == 0)
+            return new ApiErrorResult<List<CommentViewModel>>(400, "UpdateLinkNewsUnsuccessful", cmtModel.ResultObj);
 
         return new ApiSuccessResult<List<CommentViewModel>>("UpdateLinkNewsSuccessful", cmtModel.ResultObj);
     }

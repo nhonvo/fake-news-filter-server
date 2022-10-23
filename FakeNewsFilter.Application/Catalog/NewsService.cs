@@ -1045,7 +1045,7 @@ public class NewsService : INewsService
 
                 var news = _mapper.Map<List<NewsOutSourceCreateRequest>, List<News>>(request);
 
-                _context.News.AddRange(news);
+                await _context.News.AddRangeAsync(news);
 
                 await _context.SaveChangesAsync();
 
