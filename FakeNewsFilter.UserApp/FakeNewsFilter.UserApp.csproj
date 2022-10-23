@@ -6,13 +6,17 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Views\Shared\Components\**" />
+      <Content Remove="Views\Shared\Components\**" />
+      <EmbeddedResource Remove="Views\Shared\Components\**" />
+      <None Remove="Views\Shared\Components\**" />
+    </ItemGroup>
+
+    <ItemGroup>
         <None Remove="Services\" />
         <None Remove="LazZiya.ExpressLocalization" />
         <None Remove="LazZiya.TagHelpers" />
         <None Remove="LocalizationResources\" />
-    </ItemGroup>
-    <ItemGroup>
-        <Folder Include="Views\Shared\Components\" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\FakeNewsFilter.ViewModel\FakeNewsFilter.ViewModel.csproj" />

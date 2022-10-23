@@ -1,45 +1,66 @@
-﻿<!-- Main Wrap Start -->
-<main class="position-relative">
-    @await Component.InvokeAsync("HighlightComponent",new{lang = "vi",index = 2, size = 8})
-
-    <div class="container">
-        <!--Ads-->
-        <div class="row">
-            <div class="col-12 text-center mb-50">
-                <a href="#">
-                    <img class="border-radius-10 d-inline" src="~/assets/imgs/ads.jpg" alt="post-slider">
-                </a>
+﻿<main class="position-relative">
+    <div class="archive-header text-center mb-50">
+        <div class="container">
+            <h2>
+                <span class="text-dark">Daily News</span>
+                <span class="post-count">1256 articles</span>
+            </h2>
+            <div class="breadcrumb">
+                <span class="no-arrow"><i class="ti ti-location-pin mr-5"></i>You are here:</span>
+                <a href="index.html" rel="nofollow">Home</a>
+                <span></span>
+                Owltrust
             </div>
         </div>
-        <!--Content-->
+    </div>
+    <div class="container">
         <div class="row">
             <!-- sidebar-left -->
             <div class="col-lg-2 col-md-3 primary-sidebar sticky-sidebar sidebar-left order-2 order-md-1">
+
                 @await Component.InvokeAsync("SideBarComponent")
             </div>
             <!-- main content -->
             <div class="col-lg-10 col-md-9 order-1 order-md-2">
                 <div class="row">
-                    <div class="col-lg-8 col-md-12">
-                        @await Component.InvokeAsync("LastestPostComponent",new{lang = "vi",index = 2, size = 8})
-                        @*<div class="sidebar-widget widget-ads mb-30 text-center">
+                    <div class="row post-module-1 mb-50">
+                        @await Component.InvokeAsync("HighlightComponent",new{lang = "vi",index = 1, size = 2})
+                        @await Component.InvokeAsync("FromBlogComponent",new{lang = "vi",index = 2, size = 3})
+                        @await Component.InvokeAsync("HighlightComponent",new{lang = "vi",index = 4, size = 2})
+                        @await Component.InvokeAsync("FromBlogComponent",new{lang = "vi",index = 5, size = 3})
+                        <div class="col-12 text-center mb-50">
                             <a href="#">
-                                <img class="border-radius-10" src="~/assets/imgs/ads.jpg" alt="">
+                                <img class="border-radius-10 d-inline" src="~/assets/imgs/ads.jpg" alt="post-slider">
                             </a>
-                        </div>*@
-                        <!--Videos-->
-                        <div class="sidebar-widget">
-                            @await Component.InvokeAsync("VideoComponent",new{lang = "vi",index = 3, size = 4})
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-12 sidebar-right">
-                        @await Component.InvokeAsync("DontMissComponent")
-                    </div>
                 </div>
+
                 <div class="row mb-50 mt-15">
                     <div class="col-md-12">
-                        @await Component.InvokeAsync("FromBlogComponent",new{lang = "vi",index = 2, size = 8})
+                        <div class="widget-header position-relative mb-30">
+                            <h4 class="widget-title mb-0">From <span>Blog</span></h4>
+                        </div>
+                        <div class="post-carausel-2 post-module-1 row">
+                            @await Component.InvokeAsync("DontMissComponent",new{lang = "vi",index = 6, size = 8})
+                        </div>
                     </div>
+                </div>
+                <div class="row">
+                    @await Component.InvokeAsync("LastestPostComponent",new{lang = "vi",index = 7, size = 4})
+                    @await Component.InvokeAsync("LastestPostComponent",new{lang = "vi",index = 8, size = 4})
+                </div>
+                <div class="pagination-area text-center mb-30">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-start">
+                            <li class="page-item"><a class="page-link" href="#"><i class="ti-angle-left"></i></a></li>
+                            <li class="page-item active"><a class="page-link" href="#">01</a></li>
+                            <li class="page-item"><a class="page-link" href="#">02</a></li>
+                            <li class="page-item"><a class="page-link" href="#">03</a></li>
+                            <li class="page-item"><a class="page-link" href="#">04</a></li>
+                            <li class="page-item"><a class="page-link" href="#"><i class="ti-angle-right"></i></a></li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>

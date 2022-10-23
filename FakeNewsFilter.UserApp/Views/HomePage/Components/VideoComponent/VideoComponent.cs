@@ -1,5 +1,4 @@
 ﻿using FakeNewsFilter.ClientService;
-using FakeNewsFilter.UserApp.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 

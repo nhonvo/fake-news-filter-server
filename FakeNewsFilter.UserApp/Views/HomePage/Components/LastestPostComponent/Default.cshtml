@@ -3,62 +3,33 @@
 @{
     var culture = CultureInfo.CurrentCulture.Name;
 }
-<div class="latest-post mb-50">
-    <div class="widget-header position-relative mb-30">
-        <div class="row">
-            <div class="col-7">
-                <h4 class="widget-title mb-0">Latest <span>Posts</span></h4>
-            </div>
-            <div class="col-5 text-right">
-                <h6 class="font-medium pr-15">
-                    <a class="text-muted font-small" href="#">View all</a>
-                </h6>
-            </div>
+<div class="col-lg-6 col-md-6 col-sm-12">
+    <div class="sidebar-widget">
+        <div class="post-aside-style-2">
+            <ul class="list-post">
+                @foreach (var item in Model)
+                {
+
+                    <li class="mb-30 wow fadeIn animated">
+                        <div class="d-flex">
+                            <div class="post-thumb d-flex mr-15 border-radius-5 img-hover-scale">
+                                <a class="color-white" asp-action="GetNewsById" asp-controller="News" asp-route-id="@item.NewsId">
+                                    <img src="@item.ThumbNews" alt="@item.ThumbNews">
+                                </a>
+                            </div>
+                            <div class="post-content media-body">
+                                <h6 class="post-title mb-10 text-limit-2-row"><a asp-action="GetNewsById" asp-controller="News" asp-route-id="@item.NewsId">@item.Title</a></h6>
+                                <div class="entry-meta meta-1 font-x-small color-grey float-left text-uppercase">
+                                    <span><span class="mr-5"><i class="fa fa-eye" aria-hidden="true"></i></span>@item.ViewCount</span>
+                                        <span class="ml-15"><span class="mr-5 text-muted"><i class="fa fa-comment" aria-hidden="true"></i></span>@item.OfficialRating</span>
+                                        <span class="ml-15"><span class="mr-5 text-muted"><i class="fa fa-shiled" aria-hidden="true"></i></span>@item.SocialBeliefs</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                }
+
+            </ul>
         </div>
     </div>
-    <div class="loop-list-style-1">
-        @foreach (var item in Model.Take(8))
-        {
-            <article class="p-10 background-white border-radius-10 mb-30 wow fadeIn animated">
-                <div class="d-flex">
-                    <div class="post-thumb d-flex mr-15 border-radius-15 img-hover-scale">
-                        <a class="color-white" asp-action="GetNewsById" asp-controller="News" asp-route-id="@item.NewsId">
-                            <img class="border-radius-15" src="@item.ThumbNews" alt="">
-                        </a>
-                    </div>
-                    <div class="post-content media-body">
-                        @foreach (var i in @item.TopicInfo)
-                        {
-                            <div class="entry-meta mb-15 mt-10">
-                                <a class="entry-meta meta-2" href="category.html"><span class="post-in text-danger font-x-small">@i.TopicName</span></a>
-                            </div>
-                        }
-                        <h5 class="post-title mb-15 text-limit-2-row">
-                            <span class="post-format-icon">
-                                <ion-icon name="videocam-outline"></ion-icon>
-                            </span>
-                            <a asp-action="GetNewsById" asp-controller="News" asp-route-id="@item.NewsId">@item.Title</a>
-                        </h5>
-                        <div class="entry-meta meta-1 font-x-small color-grey float-left text-uppercase">
-                            <span class="post-by"> Social Beliefs:<a href="#">@item.SocialBeliefs</a></span>
-                            <span class="post-by">By <a href="#">@item.Publisher</a></span>
-                            <span class="post-on">@item.Timestamp.ToLongDateString()</span>
-                        </div>
-                    </div>
-                </div>
-            </article>
-        }
-    </div>
-</div>
-<div class="pagination-area mb-30">
-    <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-start">
-            <li class="page-item"><a class="page-link" href="#"><i class="ti-angle-left"></i></a></li>
-            <li class="page-item active"><a class="page-link" href="#">01</a></li>
-            <li class="page-item"><a class="page-link" href="#">02</a></li>
-            <li class="page-item"><a class="page-link" href="#">03</a></li>
-            <li class="page-item"><a class="page-link" href="#">04</a></li>
-            <li class="page-item"><a class="page-link" href="#"><i class="ti-angle-right"></i></a></li>
-        </ul>
-    </nav>
 </div>

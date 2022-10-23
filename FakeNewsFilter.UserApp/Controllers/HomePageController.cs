@@ -1,6 +1,5 @@
 ﻿using FakeNewsFilter.Application.Catalog;
 using FakeNewsFilter.ClientService;
-using FakeNewsFilter.UserApp.Services;
 using FakeNewsFilter.ViewModel.Catalog.NewsManage;
 using Google.Apis.Util;
 using Microsoft.AspNetCore.Authorization;

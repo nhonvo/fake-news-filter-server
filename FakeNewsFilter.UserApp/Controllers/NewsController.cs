@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FakeNewsFilter.ClientService;
-using FakeNewsFilter.UserApp.Services;
 using FakeNewsFilter.ViewModel.Catalog.NewsManage;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
