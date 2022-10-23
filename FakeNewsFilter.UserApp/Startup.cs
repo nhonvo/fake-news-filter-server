@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -127,7 +127,7 @@ namespace FakeNewsFilter.UserApp
             {
                 endpoints.MapControllerRoute(
                      name: "default",
-                     pattern: "{culture=vi-VN}/{controller=HomePage}/{action=Index}/{id?}");
+                     pattern: "{culture=vi-VN}/{controller=Home}/{action=Index}/{id?}");
                
             });
         }
