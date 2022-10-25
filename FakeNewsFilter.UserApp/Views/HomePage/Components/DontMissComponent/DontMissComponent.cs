@@ -15,7 +15,6 @@ namespace FakeNewsFilter.UserApp.Views.Home.Components.HighlightComponent
         }
         public async Task<IViewComponentResult> InvokeAsync(string lang, int index, int size)
         {
-
             var objNews = await _newsApi.GetNewsPaging(lang, index, size);
             return View(objNews.ResultObj.Items);
         }

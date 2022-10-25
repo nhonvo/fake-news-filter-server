@@ -50,5 +50,11 @@ namespace FakeNewsFilter.UserApp.Controllers
             var data = listNews.ResultObj.Items.Where(x => x.Title.Contains(name)).ToList();
             return View("NewsByTopic", data);
         }
+        public async Task<IActionResult> TestAsync(int id)
+        {
+            var data = await _newsApi.GetById(id);
+
+            return View(data.ResultObj);
+        }
     }
 }

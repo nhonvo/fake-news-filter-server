@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using FakeNewsFilter.ViewModel.System.Users;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using FakeNewsFilter.ViewModel.System.Users;
-using Microsoft.AspNetCore.Mvc;
 
-namespace FakeNewsFilter.AdminApp.Controllers.Components
+namespace FakeNewsFilter.UserApp.Views.Shared.Components.LoginInfoComponent
 {
-    public class LoginInfo : ViewComponent
+    public class LoginInfoComponent : ViewComponent
     {
         public Task<IViewComponentResult> InvokeAsync()
         {
@@ -34,9 +34,9 @@ namespace FakeNewsFilter.AdminApp.Controllers.Components
             {
                 FullName = name.Value,
                 Avatar = avatar.Value,
-                Roles = new List<string>() {role.Value}
+                Roles = new List<string>() { role.Value }
             };
-            return Task.FromResult((IViewComponentResult) View("Default", userinfo));
+            return Task.FromResult((IViewComponentResult)View("Default", userinfo));
         }
     }
 }
