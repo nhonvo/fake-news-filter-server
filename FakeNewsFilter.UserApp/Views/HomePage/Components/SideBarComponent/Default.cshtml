@@ -1,0 +1,18 @@
+﻿@model List<FakeNewsFilter.ViewModel.Catalog.TopicNews.TopicInfoVM>
+@{
+    var culture = CultureInfo.CurrentCulture.Name;
+}
+<!-- Widget Weather -->
+<div class="sidebar-widget widget-weather border-radius-10 bg-white mb-30 mt-55">
+    @await Component.InvokeAsync("WeatherComponent")
+
+</div>
+<!-- Widget Categories -->
+<div class="sidebar-widget widget_categories_2 border-radius-10 bg-white mb-30">
+    @await Component.InvokeAsync("TopicComponent")
+</div>
+<!-- Widget Categories -->
+<div class="sidebar-widget widget_categories border-radius-10 bg-white mb-30">
+    @await Component.InvokeAsync("CategoriesComponent")
+
+</div>

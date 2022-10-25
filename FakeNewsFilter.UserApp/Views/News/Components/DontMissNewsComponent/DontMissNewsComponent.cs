@@ -1,16 +1,15 @@
 ﻿using FakeNewsFilter.ClientService;
-using FakeNewsFilter.UserApp.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace FakeNewsFilter.UserApp.Views.Home.Components.HighlightComponent
 {
-    public class TopTrendingComponent : ViewComponent
+    public class DontMissNewsComponent : ViewComponent
     {
 
         private readonly NewsApi _newsApi;
 
-        public TopTrendingComponent(NewsApi newsApi)
+        public DontMissNewsComponent(NewsApi newsApi)
         {
             _newsApi = newsApi;
         }

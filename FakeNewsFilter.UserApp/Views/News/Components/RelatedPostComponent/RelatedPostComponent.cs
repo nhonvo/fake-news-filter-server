@@ -1,16 +1,15 @@
 ﻿using FakeNewsFilter.ClientService;
-using FakeNewsFilter.UserApp.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace FakeNewsFilter.UserApp.Views.Home.Components.HighlightComponent
+namespace FakeNewsFilter.UserApp.Views.News.Components.RecentPostComponent
 {
-    public class LastCommentComponent : ViewComponent
+    public class RelatedPostComponent : ViewComponent
     {
 
         private readonly NewsApi _newsApi;
 
-        public LastCommentComponent(NewsApi newsApi)
+        public RelatedPostComponent(NewsApi newsApi)
         {
             _newsApi = newsApi;
         }

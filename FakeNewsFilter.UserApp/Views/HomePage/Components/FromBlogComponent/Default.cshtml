@@ -3,31 +3,30 @@
 @{
     var culture = CultureInfo.CurrentCulture.Name;
 }
-<div class="widget-header position-relative mb-30">
-    <h4 class="widget-title mb-0">From <span>Blog</span></h4>
-</div>
-<div class="post-carausel-2 post-module-1 row">
-    @foreach (var item in Model.Take(10))
-    {
-        <div class="col">
-            <div class="post-thumb position-relative">
-                <div class="thumb-overlay img-hover-slide border-radius-15 position-relative" style="background-image: url(@item.ThumbNews)">
-                    <a class="img-link" href="single.html"></a>
-                    <div class="post-content-overlay">
+@foreach (var item in Model)
+{
+    <article class="col-lg-4 col-md-6 col-sm-12 mb-30">
+        <div class="post-thumb position-relative p-10 bg-white border-radius-10">
+            <div class="thumb-overlay img-hover-slide border-radius-15 position-relative" style="background-image: url(@item.ThumbNews)">
+                <span class="top-right-icon background10"><i class="mdi mdi-share"></i></span>
+                <a class="img-link" asp-action="GetNewsById" asp-controller="News" asp-route-id="@item.NewsId"></a>
+                <div class="post-content-overlay">
+                    @foreach (var topic in item.TopicInfo)
+                    {
                         <div class="entry-meta meta-0 font-small mb-15">
-                            <a href="category.html"><span class="post-cat bg-success color-white">Travel</span></a>
+                            <a asp-action="GetNewsByTopic" asp-controller="HomePage" asp-route-id="@topic.TopicId"><span class="post-cat bg-success color-white">@topic.TopicName</span></a>
                         </div>
-                        <h5 class="post-title">
-                            <a class="color-white" href="single.html">@item.Title</a>
-                        </h5>
-                        <div class="entry-meta meta-1 font-x-small mt-10 pr-5 pl-5 text-muted">
-                            <span><span class="mr-5"><i class="fa fa-eye" aria-hidden="true"></i></span>5.8k</span>
-                            <span class="ml-15"><span class="mr-5 text-muted"><i class="fa fa-comment" aria-hidden="true"></i></span>2.5k</span>
-                        </div>
+                    }
+                    <h5 class="post-title">
+                        <a class="color-white" asp-action="GetNewsById" asp-controller="News" asp-route-id="@item.NewsId">@item.Title</a>
+                    </h5>
+                    <div class="entry-meta meta-1 font-x-small mt-10 pr-5 pl-5 text-muted">
+                        <span><span class="mr-5"><i class="fa fa-eye" aria-hidden="true"></i></span>@item.ViewCount</span>
+                        <span class="ml-15"><span class="mr-5 text-muted"><i class="fa fa-comment" aria-hidden="true"></i></span>@item.OfficialRating</span>
+                        <span class="ml-15"><span class="mr-5 text-muted"><i class="fa fa-shiled" aria-hidden="true"></i></span>@item.SocialBeliefs</span>
                     </div>
                 </div>
             </div>
         </div>
-
-    }
-</div>
+    </article>
+}
