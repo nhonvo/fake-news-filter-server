@@ -405,19 +405,42 @@
                                         <span localize-content>About us</span>
                                     </a>
                                 </li>
-                                <li class="menu-item-has-children">
-                                    <a href="#">
-                                        <span class="mr-15" localize-content>
-                                            <ion-icon name="home-outline"></ion-icon>
-                                        </span>Account
-                                    </a>
-                                    <ul class="sub-menu text-muted font-small">
-                                        <li><a asp-action="Index" asp-controller="User" localize-content>Log in</a></li>
-                                        <li><a asp-action="Register" asp-controller="User" localize-content>Register</a></li>
-                                    </ul>
-                                </li>
+                                @if (User.Identity.IsAuthenticated && User.IsInRole("Subscriber"))
+                                {
+                                    <li class="menu-item-has-children">
+                                        <a href="#">
+                                            <span class="mr-15" localize-content>
+                                                <ion-icon name="home-outline"></ion-icon>
+                                            </span>@User.Claims.FirstOrDefault(x => x.Type == System.Security.Claims.ClaimTypes.Name).Value
+                                        </a>
+                                        <ul class="sub-menu text-muted font-small">
+                                            <li>
+                                                <a href="#" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                                    <i class="os-icon os-icon-signs-11"></i><span>Logout</span>
+                                                </a>
+                                                <form id="logout-form" asp-action="Logout" asp-controller="User" method="POST" style="display: none;"></form>
+                                            </li>
+                                        </ul>
 
 
+                                    </li>
+                                }
+                                else
+                                {
+
+                                    <li class="menu-item-has-children">
+                                        <a href="#">
+                                            <span class="mr-15" localize-content>
+                                                <ion-icon name="home-outline"></ion-icon>
+                                            </span>Account
+                                        </a>
+                                        <ul class="sub-menu text-muted font-small">
+                                            <li><a asp-action="Index" asp-controller="User" localize-content>Log in</a></li>
+                                            <li><a asp-action="Register" asp-controller="User" localize-content>Register</a></li>
+                                        </ul>
+                                    </li>
+                                }
                             </ul>
 
                             @* <div class="d-inline ml-50 tools-icon" style="font-family:nunito">

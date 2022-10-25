@@ -118,10 +118,35 @@ namespace FakeNewsFilter.UserApp.Controllers
 
             return RedirectToAction("Index", "HomePage");
         }
+        [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterRequest request)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    ViewBag.ModelState = ModelState;
+                    return View();
+                }
+
+                var result = await _userApi.RegisterUser(request);
+
+                return RedirectToAction("Index", "HomePage");
+            }
+
+            catch (Exception ex)
+            {
+                ViewBag.Error = ex.Message.ToString();
+                return View();
+            }
+
+        }
+
         public IActionResult ForgetPassword()
         {
             return View();

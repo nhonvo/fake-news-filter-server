@@ -6,6 +6,13 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Controllers\Components\**" />
+      <Content Remove="Controllers\Components\**" />
+      <EmbeddedResource Remove="Controllers\Components\**" />
+      <None Remove="Controllers\Components\**" />
+    </ItemGroup>
+
+    <ItemGroup>
         <None Remove="Services\" />
         <None Remove="LazZiya.ExpressLocalization" />
         <None Remove="LazZiya.TagHelpers" />
@@ -104,8 +111,5 @@
       <None Include="wwwroot\assets\js\vendor\slick.min.js" />
       <None Include="wwwroot\assets\js\vendor\waypoints.min.js" />
       <None Include="wwwroot\assets\js\vendor\wow.min.js" />
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Controllers\Components\" />
     </ItemGroup>
 </Project>

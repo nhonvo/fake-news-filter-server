@@ -1,4 +1,6 @@
-﻿@{
+﻿@using FakeNewsFilter.ViewModel.System.Users
+@model RegisterRequest
+@{
     Layout = "~/Views/Shared/_LayoutAuth.cshtml";
 }
 <body class="">
@@ -10,21 +12,29 @@
             <h4 class="auth-header">
                 Create new account
             </h4>
-            <form action="">
+            <form asp-action="Register" asp-controller="User" method="post">
                 <div class="form-group">
-                    <label for=""> Email address</label><input class="form-control" placeholder="Enter email" type="email">
+                    <label asp-for="UserName"></label><input asp-for="UserName" class="form-control" placeholder="Enter user name" type="text">
+                    <div class="pre-icon os-icon os-icon-email-2-at2"></div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Name"></label><input asp-for="Name" class="form-control" placeholder="Enter name" type="text">
+                    <div class="pre-icon os-icon os-icon-email-2-at2"></div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Email"></label><input asp-for="Email" class="form-control" placeholder="Enter email" type="email">
                     <div class="pre-icon os-icon os-icon-email-2-at2"></div>
                 </div>
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for=""> Password</label><input class="form-control" placeholder="Password" type="password">
+                            <label asp-for="Password"> Password</label><input asp-for="Password" class="form-control" placeholder="Password" type="password">
                             <div class="pre-icon os-icon os-icon-fingerprint"></div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="">Confirm Password</label><input class="form-control" placeholder="Password" type="password">
+                            <label asp-for="ConfirmPassword">Confirm Password</label><input asp-for="ConfirmPassword" class="form-control" placeholder="Password" type="password">
                         </div>
                     </div>
                 </div>
