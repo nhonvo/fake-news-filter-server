@@ -87,6 +87,7 @@ namespace FakeNewsFilter.UserApp
             services.AddTransient<IUserApi, UserApi>();
             services.AddTransient<IRoleApi, RoleApi>();
 
+
             //Razor complilation Runtime 
             IMvcBuilder builder = services.AddRazorPages();
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
