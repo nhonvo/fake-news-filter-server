@@ -461,3 +461,8 @@ FakeNewsFilter.ViewModel/Catalog/Notification/CreateNotification.cs
 FakeNewsFilter.ViewModel/Catalog/Notification/CreateNotificationRequest.cs
 FakeNewsFilter.ViewModel/Catalog/Notification/GetViewNotifications.cs
 FakeNewsFilter.ViewModel/Catalog/Notification/PartialNotification.cs
+FakeNewsFilter.API/appsettings.json
+FakeNewsFilter.Data/appsettings.json
+FakeNewsFilter.UserApp/Startup.cs
+FakeNewsFilter.UserApp/appsettings.json
+.vscode/

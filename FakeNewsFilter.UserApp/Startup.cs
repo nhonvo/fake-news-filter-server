@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -80,9 +80,10 @@ namespace FakeNewsFilter.UserApp
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<TopicApi>();
+            services.AddTransient<IUserApi, UserApi>();
+            services.AddTransient<IRoleApi, RoleApi>();
             services.AddTransient<LanguageApi>();
             services.AddTransient<NewsApi>();
-            services.AddTransient<NotificationApi>();
             services.AddTransient<CloneNewsApi>();
             services.AddTransient<IUserApi, UserApi>();
             services.AddTransient<IRoleApi, RoleApi>();
@@ -130,7 +131,8 @@ namespace FakeNewsFilter.UserApp
             {
                 endpoints.MapControllerRoute(
                      name: "default",
-                     pattern: "{culture=vi-VN}/{controller=Home}/{action=Index}/{id?}");
+                     pattern: "{culture=vi-VN}/{controller=User}/{action=Login}/{id?}");
+               
             });
         }
     }

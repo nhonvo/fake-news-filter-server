@@ -22,7 +22,7 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.8" />
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.9" />
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.10" />
         <PackageReference Include="Quartz.AspNetCore" Version="3.4.0" />
         <PackageReference Include="Quartz.Extensions.Microsoft.DependencyInjection" Version="0.0.3" />
         <PackageReference Include="Quartz.Plugins.TimeZoneConverter" Version="3.4.0" />
@@ -104,5 +104,8 @@
       <None Include="wwwroot\assets\js\vendor\slick.min.js" />
       <None Include="wwwroot\assets\js\vendor\waypoints.min.js" />
       <None Include="wwwroot\assets\js\vendor\wow.min.js" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Controllers\Components\" />
     </ItemGroup>
 </Project>
