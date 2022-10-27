@@ -23,6 +23,12 @@ namespace FakeNewsFilter.UserApp.Controllers
         {
             return View();
         }
+        public IActionResult AddComponentFour()
+        {
+            Random random = new Random();
+            int rand = random.Next(1,10);
+            return ViewComponent("FourNewsComponent", new { lang = "vi", index = rand, size = 4 });
+        }
         public IActionResult AboutUs()
         {
             return View();

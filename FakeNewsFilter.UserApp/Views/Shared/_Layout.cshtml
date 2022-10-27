@@ -46,7 +46,6 @@
 
         <partial name="Header" />
 
-
         @RenderBody()
 
         <partial name="Footer" />
@@ -75,6 +74,8 @@
     <script src="~/assets/js/vendor/jquery.counterup.min.js"></script>
     <script src="~/assets/js/vendor/jquery.theia.sticky.js"></script>
     <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
+    <script src="~/assets/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+    @RenderSection("Script", required: false)
     <!-- NewsViral JS -->
     <script src="~/assets/js/main.js"></script>
 </body>

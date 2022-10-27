@@ -32,10 +32,8 @@
     <ItemGroup>
       <Content Remove="Views\Shared\Components\CategoriesComponent\Default.cshtml" />
       <Content Remove="Views\Shared\Components\CommentComponent\Default.cshtml" />
-      <Content Remove="Views\Shared\Components\SlideNewsComponent\Default.cshtml" />
-      <Content Remove="Views\Shared\Components\ThreeNewsComponent\Default.cshtml" />
-      <Content Remove="Views\Shared\Components\TwoNewsComponent\Default.cshtml" />
       <Content Remove="Views\Shared\Components\FourNewsComponent\Default.cshtml" />
+      <Content Remove="Views\Shared\Components\TwoNewsComponent\Default.cshtml" />
       <Content Remove="Views\Shared\Components\RelatedPostComponent\Default.cshtml" />
       <Content Remove="Views\Shared\Components\SideBarComponent\Default.cshtml" />
       <Content Remove="Views\Shared\Components\TopicComponent\Default.cshtml" />
@@ -58,11 +56,9 @@
       <None Include="Views\News\Details.cshtml" />
       <None Include="Views\Shared\Components\CategoriesComponent\Default.cshtml" />
       <None Include="Views\Shared\Components\CommentComponent\Default.cshtml" />
-      <None Include="Views\Shared\Components\SlideNewsComponent\Default.cshtml" />
       <None Include="Views\Shared\Components\DontMissNewsComponent\Default.cshtml" />
-      <None Include="Views\Shared\Components\ThreeNewsComponent\Default.cshtml" />
-      <None Include="Views\Shared\Components\TwoNewsComponent\Default.cshtml" />
       <None Include="Views\Shared\Components\FourNewsComponent\Default.cshtml" />
+      <None Include="Views\Shared\Components\TwoNewsComponent\Default.cshtml" />
       <None Include="Views\Shared\Components\LoginInfoComponent\Default.cshtml" />
       <None Include="Views\Shared\Components\RelatedPostComponent\Default.cshtml" />
       <None Include="Views\Shared\Components\SideBarComponent\Default.cshtml" />
@@ -113,5 +109,8 @@
       <None Include="wwwroot\assets\js\vendor\slick.min.js" />
       <None Include="wwwroot\assets\js\vendor\waypoints.min.js" />
       <None Include="wwwroot\assets\js\vendor\wow.min.js" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="wwwroot\assets\lib\" />
     </ItemGroup>
 </Project>
