@@ -6,13 +6,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Compile Remove="Controllers\Components\**" />
-      <Content Remove="Controllers\Components\**" />
-      <EmbeddedResource Remove="Controllers\Components\**" />
-      <None Remove="Controllers\Components\**" />
-    </ItemGroup>
-
-    <ItemGroup>
         <None Remove="Services\" />
         <None Remove="LazZiya.ExpressLocalization" />
         <None Remove="LazZiya.TagHelpers" />
@@ -37,23 +30,24 @@
         <PackageReference Include="LazZiya.TagHelpers" Version="6.0.2" />
     </ItemGroup>
     <ItemGroup>
+      <Content Remove="Views\Shared\Components\CategoriesComponent\Default.cshtml" />
+      <Content Remove="Views\Shared\Components\CommentComponent\Default.cshtml" />
+      <Content Remove="Views\Shared\Components\SlideNewsComponent\Default.cshtml" />
+      <Content Remove="Views\Shared\Components\ThreeNewsComponent\Default.cshtml" />
+      <Content Remove="Views\Shared\Components\TwoNewsComponent\Default.cshtml" />
+      <Content Remove="Views\Shared\Components\FourNewsComponent\Default.cshtml" />
+      <Content Remove="Views\Shared\Components\RelatedPostComponent\Default.cshtml" />
+      <Content Remove="Views\Shared\Components\SideBarComponent\Default.cshtml" />
+      <Content Remove="Views\Shared\Components\TopicComponent\Default.cshtml" />
+      <Content Remove="Views\Shared\Components\WeatherComponent\Default.cshtml" />
       <Content Remove="wwwroot\intro\images\logo.png" />
     </ItemGroup>
     <ItemGroup>
       <None Include="Views\HomePage\AboutUs.cshtml" />
-      <None Include="Views\HomePage\Components\CategoriesComponent\Default.cshtml" />
-      <None Include="Views\HomePage\Components\DontMissComponent\Default.cshtml" />
-      <None Include="Views\HomePage\Components\FromBlogComponent\Default.cshtml" />
-      <None Include="Views\HomePage\Components\HighlightComponent\Default.cshtml" />
-      <None Include="Views\HomePage\Components\LastestPostComponent\Default.cshtml" />
-      <None Include="Views\HomePage\Components\SideBarComponent\Default.cshtml" />
-      <None Include="Views\HomePage\Components\TopicComponent\Default.cshtml" />
-      <None Include="Views\HomePage\Components\VideoComponent\Default.cshtml" />
-      <None Include="Views\HomePage\Components\WeatherComponent\Default.cshtml" />
       <None Include="Views\HomePage\Contact.cshtml" />
       <None Include="Views\HomePage\Index.cshtml" />
-      <None Include="Views\HomePage\NewsByTopic.cshtml" />
-      <None Include="Views\HomePage\test.cshtml" />
+      <None Include="Views\News\NewsByTopic.cshtml" />
+      <None Include="Views\News\test.cshtml" />
       <None Include="Views\Home\Contact.cshtml" />
       <None Include="Views\Home\Dashboard.cshtml" />
       <None Include="Views\Home\Footer.cshtml" />
@@ -61,11 +55,19 @@
       <None Include="Views\Home\Header.cshtml" />
       <None Include="Views\Home\Index.cshtml" />
       <None Include="Views\Home\Privacy.cshtml" />
-      <None Include="Views\News\Components\CommentComponent\Default.cshtml" />
-      <None Include="Views\News\Components\DontMissNewsComponent\Default.cshtml" />
-      <None Include="Views\News\Components\RelatedPostComponent\Default.cshtml" />
       <None Include="Views\News\Details.cshtml" />
+      <None Include="Views\Shared\Components\CategoriesComponent\Default.cshtml" />
+      <None Include="Views\Shared\Components\CommentComponent\Default.cshtml" />
+      <None Include="Views\Shared\Components\SlideNewsComponent\Default.cshtml" />
+      <None Include="Views\Shared\Components\DontMissNewsComponent\Default.cshtml" />
+      <None Include="Views\Shared\Components\ThreeNewsComponent\Default.cshtml" />
+      <None Include="Views\Shared\Components\TwoNewsComponent\Default.cshtml" />
+      <None Include="Views\Shared\Components\FourNewsComponent\Default.cshtml" />
       <None Include="Views\Shared\Components\LoginInfoComponent\Default.cshtml" />
+      <None Include="Views\Shared\Components\RelatedPostComponent\Default.cshtml" />
+      <None Include="Views\Shared\Components\SideBarComponent\Default.cshtml" />
+      <None Include="Views\Shared\Components\TopicComponent\Default.cshtml" />
+      <None Include="Views\Shared\Components\WeatherComponent\Default.cshtml" />
       <None Include="Views\Shared\Error.cshtml" />
       <None Include="Views\Shared\Footer.cshtml" />
       <None Include="Views\Shared\Header.cshtml" />

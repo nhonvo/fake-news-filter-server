@@ -1,0 +1,17 @@
+﻿@using System.Globalization
+@model List<FakeNewsFilter.ViewModel.Catalog.TopicNews.TopicInfoVM>
+@{
+    var culture = CultureInfo.CurrentCulture.Name;
+}
+
+<div class="widget-header position-relative mb-15">
+    <h5 class="widget-title"><strong localize-content>Categories</strong></h5>
+</div>
+<ul class="font-small text-muted">
+    @foreach (var item in Model)
+    {
+        var topicUrl = "/chu-de/" + item.Tag + "-" + item.TopicId;
+
+        <li class="cat-item cat-item-2"><a href="@topicUrl">@item.Tag</a></li>
+    }
+</ul>

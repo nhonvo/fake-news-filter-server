@@ -15,11 +15,8 @@ namespace FakeNewsFilter.UserApp.Controllers
 {
     public class HomePageController : Controller
     {
-        private readonly NewsApi _newsApi;
-
-        public HomePageController(NewsApi newsAPI)
+        public HomePageController()
         {
-            _newsApi = newsAPI;
         }
 
         public IActionResult Index()
@@ -33,28 +30,6 @@ namespace FakeNewsFilter.UserApp.Controllers
         public IActionResult Contact()
         {
             return View();
-        }
-        [AllowAnonymous]
-        [HttpGet]
-        public async Task<IActionResult> GetNewsByTopic(int topicId)
-        {
-
-            var data = await _newsApi.GetNewsByTopic(topicId);
-
-            return View("NewsByTopic", data.ResultObj == null ? data.ResultObj : data.ResultObj.Items);
-        }
-        [HttpGet]
-        public async Task<IActionResult> Search(String name)
-        {
-            var listNews = await _newsApi.GetAll();
-            var data = listNews.ResultObj.Items.Where(x => x.Title.Contains(name)).ToList();
-            return View("NewsByTopic", data);
-        }
-        public async Task<IActionResult> TestAsync(int id)
-        {
-            var data = await _newsApi.GetById(id);
-
-            return View(data.ResultObj);
         }
     }
 }

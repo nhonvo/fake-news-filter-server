@@ -1,0 +1,35 @@
+﻿@using FakeNewsFilter.ViewModel.Catalog.NewsManage
+@using System.Globalization
+@model List<NewsViewModel>
+@{
+    var culture = CultureInfo.CurrentCulture.Name;
+}
+@foreach (var item in Model)
+{
+    var newUrl = "/chi-tiet/" + item.Title + "-" + item.NewsId;
+
+    <article class="col-lg-4 col-md-6 col-sm-12 mb-30">
+        <div class="post-thumb position-relative p-10 bg-white border-radius-10">
+            <div class="thumb-overlay img-hover-slide border-radius-15 position-relative" style="background-image: url(@item.ThumbNews)">
+                <span class="top-right-icon background10"><i class="mdi mdi-share"></i></span>
+                <a class="img-link" href="@newUrl"></a>
+                <div class="post-content-overlay">
+                    @foreach (var topic in item.TopicInfo)
+                    {
+                        <div class="entry-meta meta-0 font-small mb-15">
+                            <a asp-action="GetNewsByTopic" asp-controller="HomePage" asp-route-id="@topic.TopicId"><span class="post-cat bg-success color-white">@topic.TopicName</span></a>
+                        </div>
+                    }
+                    <h5 class="post-title">
+                        <a class="color-white" href="@newUrl">@item.Title</a>
+                    </h5>
+                    <div class="entry-meta meta-1 font-x-small mt-10 pr-5 pl-5 text-muted">
+                        <span><span class="mr-5"><i class="fa fa-eye" aria-hidden="true"></i></span>@item.ViewCount</span>
+                        <span class="ml-15"><span class="mr-5 text-muted"><i class="fa fa-comment" aria-hidden="true"></i></span>@item.OfficialRating</span>
+                        <span class="ml-15"><span class="mr-5 text-muted"><i class="fa fa-shiled" aria-hidden="true"></i></span>@item.SocialBeliefs</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+}

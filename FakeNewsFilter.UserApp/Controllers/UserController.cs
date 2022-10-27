@@ -136,7 +136,7 @@ namespace FakeNewsFilter.UserApp.Controllers
 
                 var result = await _userApi.RegisterUser(request);
 
-                return RedirectToAction("Index", "HomePage");
+                return RedirectToAction("Login", "User");
             }
 
             catch (Exception ex)

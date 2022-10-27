@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Localization;
 using FluentValidation.AspNetCore;
 using FakeNewsFilter.ClientService;
 using FakeNewsFilter.ClientServices;
+using Microsoft.Identity.Client;
 
 namespace FakeNewsFilter.UserApp
 {
@@ -131,9 +132,18 @@ namespace FakeNewsFilter.UserApp
             {
                 endpoints.MapControllerRoute(
                      name: "default",
-                     pattern: "{culture=vi-VN}/{controller=User}/{action=Login}/{id?}");
-               
+                     pattern: "{culture=vi-VN}/{controller=Homepage}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
+                  name: "News detail Vn",
+                  pattern: "chi-tiet/{Title}-{newId}",
+                  defaults: new { controller = "News", action = "GetNewsById" });
+
+                endpoints.MapControllerRoute(
+                  name: "Topic Vn",
+                  pattern: "chu-de/{TopicName}-{TopicId}", new { controller = "News", action = "GetNewsByTopic" });
             });
+
         }
     }
 }

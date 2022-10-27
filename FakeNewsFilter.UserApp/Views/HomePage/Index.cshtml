@@ -24,10 +24,10 @@
             <div class="col-lg-10 col-md-9 order-1 order-md-2">
                 <div class="row">
                     <div class="row post-module-1 mb-50">
-                        @await Component.InvokeAsync("HighlightComponent",new{lang = "vi",index = 1, size = 2})
-                        @await Component.InvokeAsync("FromBlogComponent",new{lang = "vi",index = 2, size = 3})
-                        @await Component.InvokeAsync("HighlightComponent",new{lang = "vi",index = 4, size = 2})
-                        @await Component.InvokeAsync("FromBlogComponent",new{lang = "vi",index = 5, size = 3})
+                        @await Component.InvokeAsync("TwoNewsComponent",new{lang = "vi",index = 1, size = 2})
+                        @await Component.InvokeAsync("ThreeNewsComponent",new{lang = "vi",index = 2, size = 3})
+                        @await Component.InvokeAsync("TwoNewsComponent",new{lang = "vi",index = 4, size = 2})
+                        @await Component.InvokeAsync("ThreeNewsComponent",new{lang = "vi",index = 5, size = 3})
                         <div class="col-12 text-center mb-50">
                             <a href="#">
                                 <img class="border-radius-10 d-inline" src="~/assets/imgs/ads.jpg" alt="post-slider">
@@ -42,13 +42,13 @@
                             <h4 class="widget-title mb-0">From <span>Blog</span></h4>
                         </div>
                         <div class="post-carausel-2 post-module-1 row">
-                            @await Component.InvokeAsync("DontMissComponent",new{lang = "vi",index = 6, size = 8})
+                            @await Component.InvokeAsync("SlideNewsComponent",new{lang = "vi",index = 6, size = 8})
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    @await Component.InvokeAsync("LastestPostComponent",new{lang = "vi",index = 7, size = 4})
-                    @await Component.InvokeAsync("LastestPostComponent",new{lang = "vi",index = 8, size = 4})
+                    @await Component.InvokeAsync("FourNewsComponent",new{lang = "vi",index = 7, size = 4})
+                    @await Component.InvokeAsync("FourNewsComponent",new{lang = "vi",index = 8, size = 4})
                 </div>
                 <div class="pagination-area text-center mb-30">
                     <nav aria-label="Page navigation example">
