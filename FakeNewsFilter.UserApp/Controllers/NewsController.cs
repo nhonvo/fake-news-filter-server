@@ -39,11 +39,9 @@ public class NewsController : Controller
         var data = listNews.ResultObj.Items.Where(x => x.Title.Contains(searchName)).ToList();
         return View("NewsByTopic", data);
     }
-    public async Task<IActionResult> TestAsync(int id)
+    public IActionResult AddComponentPopsUp(int newsId)
     {
-        var data = await _newsApi.GetById(id);
-
-        return View(data.ResultObj);
+        return ViewComponent("PopsUpNewComponent", new { id = newsId });
     }
-
+    
 }

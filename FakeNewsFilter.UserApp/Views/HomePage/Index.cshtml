@@ -2,6 +2,10 @@
 @{
     var culture = CultureInfo.CurrentCulture.Name;
 }
+<a asp-action="AddComponentPopsUp" asp-controller="News" 
+    data-ajax="true" data-ajax-update="#show-pops-up" data-ajax-mode="after"
+    data-toggle="modal" data-target="#exampleModal">Click to read!!!</a>
+
 <main class="position-relative">
     <div class="archive-header text-center mb-50">
         <div class="container">
@@ -11,7 +15,7 @@
             </h2>
             <div class="breadcrumb">
                 <span class="no-arrow"><i class="ti ti-location-pin mr-5"></i>You are here:</span>
-                <a href="index.html" rel="nofollow">Home</a>
+                <a asp-action="Index" asp-controller="HomePage" rel="nofollow">Home</a>
                 <span></span>
                 Owltrust
             </div>
@@ -39,6 +43,15 @@
         </div>
     </div>
 </main>
+
+<div id="exampleModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" id="show-pops-up">
+        </div>
+    </div>
+</div>
+
+
 
 @section Script{
 
