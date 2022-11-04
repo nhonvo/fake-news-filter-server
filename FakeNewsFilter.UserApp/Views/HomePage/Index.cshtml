@@ -2,10 +2,6 @@
 @{
     var culture = CultureInfo.CurrentCulture.Name;
 }
-<a asp-action="AddComponentPopsUp" asp-controller="News" 
-    data-ajax="true" data-ajax-update="#show-pops-up" data-ajax-mode="after"
-    data-toggle="modal" data-target="#exampleModal">Click to read!!!</a>
-
 <main class="position-relative">
     <div class="archive-header text-center mb-50">
         <div class="container">
@@ -57,7 +53,7 @@
 
     <script>
         $(window).scroll(function () {
-            if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) 
+            if ($(window).scrollTop() + $(window).height() > $(document).height() - 1000) 
             {
                 $("#dirty1").click()
             }

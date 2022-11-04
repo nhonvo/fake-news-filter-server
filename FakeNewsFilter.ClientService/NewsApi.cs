@@ -46,8 +46,9 @@ namespace FakeNewsFilter.ClientService
 
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public NewsApi(IHttpClientFactory httpClientFactory, IConfiguration configuration,
-            IHttpContextAccessor httpContextAccessor)
+        public NewsApi(IHttpClientFactory httpClientFactory,
+                       IConfiguration configuration,
+                       IHttpContextAccessor httpContextAccessor)
             : base(httpClientFactory, httpContextAccessor, configuration)
         {
             _httpClientFactory = httpClientFactory;
@@ -133,7 +134,7 @@ namespace FakeNewsFilter.ClientService
                 byte[] data;
                 using (var br = new BinaryReader(request.ThumbNews.OpenReadStream()))
                 {
-                    data = br.ReadBytes((int) request.ThumbNews.OpenReadStream().Length);
+                    data = br.ReadBytes((int)request.ThumbNews.OpenReadStream().Length);
                 }
 
                 ByteArrayContent bytes = new ByteArrayContent(data);
@@ -288,7 +289,7 @@ namespace FakeNewsFilter.ClientService
                 byte[] data;
                 using (var br = new BinaryReader(request.ThumbNews.OpenReadStream()))
                 {
-                    data = br.ReadBytes((int) request.ThumbNews.OpenReadStream().Length);
+                    data = br.ReadBytes((int)request.ThumbNews.OpenReadStream().Length);
                 }
 
                 ByteArrayContent bytes = new ByteArrayContent(data);
@@ -413,6 +414,5 @@ namespace FakeNewsFilter.ClientService
 
             return new ApiErrorResult<string>(400, "Archive News Unsuccessfully");
         }
-
     }
 }

@@ -45,7 +45,6 @@
       <None Include="Views\HomePage\Contact.cshtml" />
       <None Include="Views\HomePage\Index.cshtml" />
       <None Include="Views\News\NewsByTopic.cshtml" />
-      <None Include="Views\News\test.cshtml" />
       <None Include="Views\Home\Contact.cshtml" />
       <None Include="Views\Home\Dashboard.cshtml" />
       <None Include="Views\Home\Footer.cshtml" />

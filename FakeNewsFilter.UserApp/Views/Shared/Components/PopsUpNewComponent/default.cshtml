@@ -11,10 +11,27 @@
 </div>
 <!--Body-->
 <div class="modal-body">
-    <img src="@Model.ImageLink" alt="">
+    <p class="mb-5">@Model.Description</p>
+    <div class="d-flex text-center social w-50 mx-auto">
+        <a href="#" class="d-inline-block d-flex align-items-center mr-auto like">
+            <span class="icon-heart mr-2 icon"></span> <span>@Model.OfficialRating</span>
+        </a>
+        <a href="#" class="d-inline-block d-flex align-items-center mx-auto message">
+            <span class="icon-chat mr-2 icon"></span> <span>@Model.DatePublished</span>
+        </a>
+        <a href="#" class="d-inline-block d-flex align-items-center ml-auto add">
+            <span class="icon-add mr-2"></span> <span>@Model.Publisher</span>
+        </a>
+    </div>
 </div>
 <!--Footer-->
 <div class="modal-footer">
-    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
-    <button class="btn btn-primary">Checkout</button>
+    <form method="post" asp-action="VoteNews" asp-controller="News">
+        
+        <input for="UserId" class="form-control" placeholder="58e68982-08f1-4296-3657-08da9f5b32b9" hidden>
+        <input for="NewsId" class="form-control" placeholder="@Model.NewsId" hidden>
+
+        <button class="btn btn-primary" value="true">Upvote</button>
+        <button class="btn btn-primary" value="false">Downvote</button>
+    </form>
 </div>

@@ -87,7 +87,7 @@ namespace FakeNewsFilter.UserApp
             services.AddTransient<NewsApi>();
             services.AddTransient<CloneNewsApi>();
             services.AddTransient<IUserApi, UserApi>();
-            services.AddTransient<IRoleApi, RoleApi>();
+            services.AddTransient<VoteApi>();
 
 
 
