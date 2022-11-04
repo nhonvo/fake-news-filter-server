@@ -452,15 +452,6 @@ $RECYCLE.BIN/
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-FakeNewsFilter.AdminApp/Controllers/NotificationController.cs
-FakeNewsFilter.AdminApp/Services/NotificationApi.cs
-FakeNewsFilter.AdminApp/Views/Notification/GetNotification.cshtml
-FakeNewsFilter.AdminApp/Views/Notification/Index.cshtml
-FakeNewsFilter.AdminApp/wwwroot/js/admin/notification.js
-FakeNewsFilter.ViewModel/Catalog/Notification/CreateNotification.cs
-FakeNewsFilter.ViewModel/Catalog/Notification/CreateNotificationRequest.cs
-FakeNewsFilter.ViewModel/Catalog/Notification/GetViewNotifications.cs
-FakeNewsFilter.ViewModel/Catalog/Notification/PartialNotification.cs
 FakeNewsFilter.API/appsettings.json
 FakeNewsFilter.Data/appsettings.json
 FakeNewsFilter.UserApp/Startup.cs
