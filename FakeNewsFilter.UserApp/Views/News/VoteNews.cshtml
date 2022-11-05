@@ -1,0 +1,9 @@
+﻿@using FakeNewsFilter.ViewModel.Catalog.Vote
+@model VoteCreateRequest
+
+<form method="post" asp-action="VoteNews" asp-controller="News">
+    <input asp-for="UserId" class="form-control" placeholder="58e68982-08f1-4296-3657-08da9f5b32b9">
+    <input for="NewsId" class="form-control" placeholder="41" >
+    <button class="btn btn-primary" value="true">Upvote</button>
+    <button class="btn btn-primary" value="false">Downvote</button>
+</form>

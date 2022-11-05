@@ -24,7 +24,7 @@ public class NewsController : Controller
     [AllowAnonymous]
     public async Task<IActionResult> GetNewsById(int newId)
     {
-        var data = await _newsApi.GetContent(newId);
+        var data = await _newsApi.GetNewsById(newId);
         return View("Details", data.ResultObj);
     }
     [HttpGet]
@@ -48,9 +48,9 @@ public class NewsController : Controller
         return ViewComponent("PopsUpNewComponent", new { id = newsId });
     }
     [HttpPost]
-    public async Task<IActionResult> VoteNews(VoteCreateRequest voteCreateRequest)
+    public async Task<IActionResult> VoteNews([FromForm]VoteCreateRequest request)
     {
-        await _voteApi.CreateVote();
-        return RedirectToAction("Index", "HomePage");
+        await _voteApi.CreateVote(request);
+        return RedirectToAction("Index","HomePage");
     }
 }

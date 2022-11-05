@@ -452,8 +452,4 @@ $RECYCLE.BIN/
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-FakeNewsFilter.API/appsettings.json
-FakeNewsFilter.Data/appsettings.json
-FakeNewsFilter.UserApp/Startup.cs
-FakeNewsFilter.UserApp/appsettings.json
 .vscode/

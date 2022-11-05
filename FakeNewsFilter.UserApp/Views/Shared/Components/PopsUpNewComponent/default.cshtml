@@ -1,6 +1,8 @@
 @using FakeNewsFilter.ViewModel.Catalog.NewsManage
-@model NewsInfoVM
-
+@model NewsViewModel
+@{
+    var newsUrl = "/chi-tiet/" + @Model.Title + "-" + @Model.NewsId;
+}
 
 <!--Header-->
 <div class="modal-header">
@@ -11,27 +13,49 @@
 </div>
 <!--Body-->
 <div class="modal-body">
-    <p class="mb-5">@Model.Description</p>
-    <div class="d-flex text-center social w-50 mx-auto">
-        <a href="#" class="d-inline-block d-flex align-items-center mr-auto like">
-            <span class="icon-heart mr-2 icon"></span> <span>@Model.OfficialRating</span>
-        </a>
-        <a href="#" class="d-inline-block d-flex align-items-center mx-auto message">
-            <span class="icon-chat mr-2 icon"></span> <span>@Model.DatePublished</span>
-        </a>
-        <a href="#" class="d-inline-block d-flex align-items-center ml-auto add">
-            <span class="icon-add mr-2"></span> <span>@Model.Publisher</span>
-        </a>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 ms-auto"> <img src="@Model.ThumbNews" alt=""></div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                @Model.OfficialRating
+            </div>
+            <div class="col-sm-6">
+                @Model.Timestamp
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-9">
+                @Model.Description
+            </div>
+        </div>
     </div>
 </div>
 <!--Footer-->
 <div class="modal-footer">
-    <form method="post" asp-action="VoteNews" asp-controller="News">
-        
-        <input for="UserId" class="form-control" placeholder="58e68982-08f1-4296-3657-08da9f5b32b9" hidden>
-        <input for="NewsId" class="form-control" placeholder="@Model.NewsId" hidden>
+    <div class="row">
+        <div class="col-md-3">
+            <a href="@newsUrl">Read more ...</a>
+        </div>
+        <div class="col-md-9">
+            <form method="post" asp-action="VoteNews" asp-controller="News">
+                <div class="row">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <input name="UserId" class="form-control"
+                        value="@User.Claims.FirstOrDefault(x => x.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value">
+                    }
+                    <input name="NewsId" class="form-control" value="@Model.NewsId" hidden>
+                    <div class="col-md-5">
+                        <button class="btn btn-primary" name="isReal" value="true">Upvote</button>
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-primary" name="isReal" value="false">Downvote</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
-        <button class="btn btn-primary" value="true">Upvote</button>
-        <button class="btn btn-primary" value="false">Downvote</button>
-    </form>
 </div>

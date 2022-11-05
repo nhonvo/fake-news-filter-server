@@ -1,11 +1,12 @@
 ﻿@using FakeNewsFilter.ViewModel.Catalog.NewsManage
+@using System.Globalization
 @model List<NewsViewModel>
 @{
     var culture = CultureInfo.CurrentCulture.Name;
 }
 <h3 class="mb-30">Related posts</h3>
 <div class="row">
-    @foreach (var item in Model.Take(3))
+    @foreach (var item in   Model.Take(3))
     {
     var newUrl = "/chi-tiet/" + item.Title + "-" + item.NewsId;
 

@@ -6,6 +6,13 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Views\Topic\**" />
+      <Content Remove="Views\Topic\**" />
+      <EmbeddedResource Remove="Views\Topic\**" />
+      <None Remove="Views\Topic\**" />
+    </ItemGroup>
+
+    <ItemGroup>
         <None Remove="Services\" />
         <None Remove="LazZiya.ExpressLocalization" />
         <None Remove="LazZiya.TagHelpers" />
@@ -30,6 +37,7 @@
         <PackageReference Include="LazZiya.TagHelpers" Version="6.0.2" />
     </ItemGroup>
     <ItemGroup>
+      <Content Remove="Views\News\VoteNews.cshtml" />
       <Content Remove="Views\Shared\Components\CategoriesComponent\Default.cshtml" />
       <Content Remove="Views\Shared\Components\CommentComponent\Default.cshtml" />
       <Content Remove="Views\Shared\Components\FourNewsComponent\Default.cshtml" />
@@ -53,6 +61,7 @@
       <None Include="Views\Home\Index.cshtml" />
       <None Include="Views\Home\Privacy.cshtml" />
       <None Include="Views\News\Details.cshtml" />
+      <None Include="Views\News\VoteNews.cshtml" />
       <None Include="Views\Shared\Components\CategoriesComponent\Default.cshtml" />
       <None Include="Views\Shared\Components\CommentComponent\Default.cshtml" />
       <None Include="Views\Shared\Components\DontMissNewsComponent\Default.cshtml" />
@@ -69,7 +78,6 @@
       <None Include="Views\Shared\_Layout.cshtml" />
       <None Include="Views\Shared\_LayoutAuth.cshtml" />
       <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
-      <None Include="Views\Topic\Index.cshtml" />
       <None Include="Views\User\ForgetPassword.cshtml" />
       <None Include="Views\User\Login.cshtml" />
       <None Include="Views\User\Register.cshtml" />
@@ -111,5 +119,11 @@
     </ItemGroup>
     <ItemGroup>
       <Folder Include="wwwroot\assets\lib\" />
+    </ItemGroup>
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Views\News\VoteNews.cshtml" />
+    </ItemGroup>
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\News\VoteNews.cshtml" />
     </ItemGroup>
 </Project>

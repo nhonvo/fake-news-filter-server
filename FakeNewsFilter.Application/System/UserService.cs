@@ -98,6 +98,7 @@ namespace FakeNewsFilter.Application.System
                 new Claim(ClaimTypes.GivenName, user.Name),
                 new Claim(ClaimTypes.Role, roles == null ? "Subscriber" : string.Join(";", roles)),
                 new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));

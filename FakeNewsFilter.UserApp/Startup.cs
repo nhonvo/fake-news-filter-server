@@ -132,7 +132,7 @@ namespace FakeNewsFilter.UserApp
             {
                 endpoints.MapControllerRoute(
                      name: "default",
-                     pattern: "{culture=vi-VN}/{controller=Homepage}/{action=Index}/{id?}");
+                     pattern: "{culture=vi-VN}/{controller=Home}/{action=Index}/{id?}");
 
                 endpoints.MapControllerRoute(
                   name: "News detail Vn",

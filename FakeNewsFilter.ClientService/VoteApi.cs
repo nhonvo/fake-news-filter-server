@@ -8,7 +8,7 @@ namespace FakeNewsFilter.ClientService
 {
     public interface IVoteApi
     {
-        Task<ApiResult<string>> CreateVote();
+        Task<ApiResult<string>> CreateVote(VoteCreateRequest request);
     }
     public class VoteApi : BaseApiClient, IVoteApi
     {
@@ -27,16 +27,8 @@ namespace FakeNewsFilter.ClientService
             _httpContextAccessor = httpContextAccessor;
         }
         // create vote 
-        public async Task<ApiResult<string>> CreateVote()
+        public async Task<ApiResult<string>> CreateVote(VoteCreateRequest request)
         {
-            string tmp = "58e68982-08f1-4296-3657-08da9f5b32b9";
-            Guid userid = Guid.Parse(tmp);
-            VoteCreateRequest request = new VoteCreateRequest()
-            {
-                NewsId = 41,
-                isReal = true,
-                UserId = userid
-            };
             var json = JsonConvert.SerializeObject(request);
 
             var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
@@ -45,8 +37,10 @@ namespace FakeNewsFilter.ClientService
 
             client.BaseAddress = new Uri(_configuration["BaseAddress"]);
 
-            var sessions = _httpContextAccessor.HttpContext!.Session.GetString("Token");
-
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+            
+            // [sessions] can't get token it's null
+            
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
 
             var response = await client.PostAsync($"/api/Vote", httpContent);

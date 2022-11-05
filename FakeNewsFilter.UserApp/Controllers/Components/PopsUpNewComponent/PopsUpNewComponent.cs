@@ -1,5 +1,6 @@
 using FakeNewsFilter.ClientService;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 
 namespace FakeNewsFilter.UserApp.Views.Home.Components.HighlightComponent
@@ -15,7 +16,7 @@ namespace FakeNewsFilter.UserApp.Views.Home.Components.HighlightComponent
         }
         public async Task<IViewComponentResult> InvokeAsync(int id)
         {
-            var objNews = await _newsApi.GetById(id);
+            var objNews = await _newsApi.GetNewsById(id);
             return View(objNews.ResultObj);
         }
     }
