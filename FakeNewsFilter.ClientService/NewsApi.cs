@@ -17,19 +17,19 @@ namespace FakeNewsFilter.ClientService
 {
     public interface INewsApi
     {
+        Task<ApiResult<NewsInfoVM>> GetById(int Id);
+        Task<ApiResult<NewsViewModel>> GetNewsById(int Id);
         Task<ApiResult<NewsPagingResponse>?> GetAll();
         Task<ApiResult<NewsPagingResponse>> GetNewsBySouce(string source_name);
-        Task<ApiResult<List<NewsViewModel>>> GetNewsByTopic(int topicId);
+        Task<ApiResult<NewsPagingResponse>?> GetNewsByTopic(int topicId);
+        Task<ApiResult<NewsPagingResponse>?> GetNewsPaging(string lang, int index, int size);
+        Task<ApiResult<NewsSystemViewModel>?> GetContent(int id);
 
         Task<ApiResult<NewsViewModel>> CreateBySystem(NewsSystemCreateRequest request);
         Task<ApiResult<NewsViewModel>> CreateByOther(NewsOutSourceCreateRequest request);
 
-
         Task<ApiResult<string>> UpdateBySystem(NewsSystemUpdateRequest request);
         Task<ApiResult<string>> UpdateByOutSource(NewsOutSourceUpdateRequest request);
-
-
-        Task<ApiResult<NewsInfoVM>> GetById(int Id);
 
         Task<ApiResult<string>> Delete(int newsId);
         Task<ApiResult<string>> Archive(int newsId);
@@ -43,8 +43,9 @@ namespace FakeNewsFilter.ClientService
 
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public NewsApi(IHttpClientFactory httpClientFactory, IConfiguration configuration,
-            IHttpContextAccessor httpContextAccessor)
+        public NewsApi(IHttpClientFactory httpClientFactory,
+                       IConfiguration configuration,
+                       IHttpContextAccessor httpContextAccessor)
             : base(httpClientFactory, httpContextAccessor, configuration)
         {
             _httpClientFactory = httpClientFactory;
@@ -57,7 +58,7 @@ namespace FakeNewsFilter.ClientService
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseAddress"]);
 
-            var sessions = _httpContextAccessor.HttpContext?.Session.GetString("Token");
+            var sessions = _httpContextAccessor.HttpContext!?.Session.GetString("Token");
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
 
@@ -65,9 +66,9 @@ namespace FakeNewsFilter.ClientService
             var body = await response.Content.ReadAsStringAsync();
 
             if (response.IsSuccessStatusCode)
-                return JsonConvert.DeserializeObject<ApiSuccessResult<NewsPagingResponse>>(body);
+                return JsonConvert.DeserializeObject<ApiSuccessResult<NewsPagingResponse>>(body)!;
 
-            return JsonConvert.DeserializeObject<ApiErrorResult<NewsPagingResponse>>(body);
+            return JsonConvert.DeserializeObject<ApiErrorResult<NewsPagingResponse>>(body)!;
         }
         //Lấy danh sách tin tức
         public async Task<ApiResult<NewsPagingResponse>> GetNewsBySouce(string source_name)
@@ -77,12 +78,41 @@ namespace FakeNewsFilter.ClientService
             return data;
         }
 
-        public async Task<ApiResult<List<NewsViewModel>>> GetNewsByTopic(int topicId)
+        public async Task<ApiResult<NewsPagingResponse>?> GetNewsByTopic(int topicId)
         {
-            var data = await GetAsync<ApiResult<List<NewsViewModel>>>($"/api/News/Topic?TopicId={topicId}");
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
 
-            return data;
+            var sessions = _httpContextAccessor.HttpContext!?.Session.GetString("Token");
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+
+            var response = await client.GetAsync($"/api/News/Topic?TopicId={topicId}");
+            var body = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<NewsPagingResponse>>(body)!;
+
+            return JsonConvert.DeserializeObject<ApiErrorResult<NewsPagingResponse>>(body)!;
         }
+        public async Task<ApiResult<NewsPagingResponse>?> GetNewsPaging(string lang, int index, int size)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+
+            var sessions = _httpContextAccessor.HttpContext!?.Session.GetString("Token");
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+
+            var response = await client.GetAsync($"/api/News?languageId={lang}&PageIndex={index}&PageSize={size}");
+            var body = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<NewsPagingResponse>>(body)!;
+
+            return JsonConvert.DeserializeObject<ApiErrorResult<NewsPagingResponse>>(body)!;
+        }
+
 
         public async Task<ApiResult<NewsViewModel>> CreateBySystem(NewsSystemCreateRequest request)
         {
@@ -90,7 +120,7 @@ namespace FakeNewsFilter.ClientService
 
             client.BaseAddress = new Uri(_configuration["BaseAddress"]);
 
-            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+            var sessions = _httpContextAccessor.HttpContext!.Session.GetString("Token");
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
 
@@ -101,7 +131,7 @@ namespace FakeNewsFilter.ClientService
                 byte[] data;
                 using (var br = new BinaryReader(request.ThumbNews.OpenReadStream()))
                 {
-                    data = br.ReadBytes((int) request.ThumbNews.OpenReadStream().Length);
+                    data = br.ReadBytes((int)request.ThumbNews.OpenReadStream().Length);
                 }
 
                 ByteArrayContent bytes = new ByteArrayContent(data);
@@ -141,9 +171,9 @@ namespace FakeNewsFilter.ClientService
 
             if (response.IsSuccessStatusCode)
 
-                return JsonConvert.DeserializeObject<ApiSuccessResult<NewsViewModel>>(result);
+                return JsonConvert.DeserializeObject<ApiSuccessResult<NewsViewModel>>(result)!;
 
-            return JsonConvert.DeserializeObject<ApiErrorResult<NewsViewModel>>(result);
+            return JsonConvert.DeserializeObject<ApiErrorResult<NewsViewModel>>(result)!;
         }
 
         public async Task<ApiResult<NewsViewModel>> CreateByOther(NewsOutSourceCreateRequest request)
@@ -152,7 +182,7 @@ namespace FakeNewsFilter.ClientService
 
             client.BaseAddress = new Uri(_configuration["BaseAddress"]);
 
-            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+            var sessions = _httpContextAccessor.HttpContext!.Session.GetString("Token");
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
 
@@ -197,9 +227,9 @@ namespace FakeNewsFilter.ClientService
 
             if (response.IsSuccessStatusCode)
 
-                return JsonConvert.DeserializeObject<ApiSuccessResult<NewsViewModel>>(result);
+                return JsonConvert.DeserializeObject<ApiSuccessResult<NewsViewModel>>(result)!;
 
-            return JsonConvert.DeserializeObject<ApiErrorResult<NewsViewModel>>(result);
+            return JsonConvert.DeserializeObject<ApiErrorResult<NewsViewModel>>(result)!;
         }
 
         public async Task<ApiResult<NewsInfoVM>> GetById(int Id)
@@ -207,7 +237,7 @@ namespace FakeNewsFilter.ClientService
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseAddress"]);
 
-            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+            var sessions = _httpContextAccessor.HttpContext!.Session.GetString("Token");
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
 
@@ -215,9 +245,27 @@ namespace FakeNewsFilter.ClientService
             var body = await response.Content.ReadAsStringAsync();
 
             if (response.IsSuccessStatusCode)
-                return JsonConvert.DeserializeObject<ApiSuccessResult<NewsInfoVM>>(body);
+                return JsonConvert.DeserializeObject<ApiSuccessResult<NewsInfoVM>>(body)!;
 
-            return JsonConvert.DeserializeObject<ApiErrorResult<NewsInfoVM>>(body);
+            return JsonConvert.DeserializeObject<ApiErrorResult<NewsInfoVM>>(body)!;
+        }
+
+        public async Task<ApiResult<NewsSystemViewModel>?> GetContent(int id)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+
+            var sessions = _httpContextAccessor.HttpContext!?.Session.GetString("Token");
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+
+            var response = await client.GetAsync($"/api/News/Content/{id}");
+            var body = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<NewsSystemViewModel>>(body)!;
+
+            return JsonConvert.DeserializeObject<ApiErrorResult<NewsSystemViewModel>>(body)!;
         }
 
         /////////////update news
@@ -227,7 +275,7 @@ namespace FakeNewsFilter.ClientService
 
             client.BaseAddress = new Uri(_configuration["BaseAddress"]);
 
-            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+            var sessions = _httpContextAccessor.HttpContext!.Session.GetString("Token");
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
 
@@ -238,7 +286,7 @@ namespace FakeNewsFilter.ClientService
                 byte[] data;
                 using (var br = new BinaryReader(request.ThumbNews.OpenReadStream()))
                 {
-                    data = br.ReadBytes((int) request.ThumbNews.OpenReadStream().Length);
+                    data = br.ReadBytes((int)request.ThumbNews.OpenReadStream().Length);
                 }
 
                 ByteArrayContent bytes = new ByteArrayContent(data);
@@ -287,7 +335,7 @@ namespace FakeNewsFilter.ClientService
 
             client.BaseAddress = new Uri(_configuration["BaseAddress"]);
 
-            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+            var sessions = _httpContextAccessor.HttpContext!.Session.GetString("Token");
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
 
@@ -336,7 +384,7 @@ namespace FakeNewsFilter.ClientService
 
         public async Task<ApiResult<string>> Delete(int newsId)
         {
-            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+            var sessions = _httpContextAccessor.HttpContext!.Session.GetString("Token");
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseAddress"]);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
@@ -351,7 +399,7 @@ namespace FakeNewsFilter.ClientService
 
         public async Task<ApiResult<string>> Archive(int newsId)
         {
-            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+            var sessions = _httpContextAccessor.HttpContext!.Session.GetString("Token");
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseAddress"]);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
@@ -362,6 +410,24 @@ namespace FakeNewsFilter.ClientService
                 return new ApiSuccessResult<string>("Archive News Successfully");
 
             return new ApiErrorResult<string>(400, "Archive News Unsuccessfully");
+        }
+
+        public async Task<ApiResult<NewsViewModel>> GetNewsById(int Id)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+
+            var sessions = _httpContextAccessor.HttpContext!.Session.GetString("Token");
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+
+            var response = await client.GetAsync($"/api/News/{Id}");
+            var body = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<NewsViewModel>>(body)!;
+
+            return JsonConvert.DeserializeObject<ApiErrorResult<NewsViewModel>>(body)!;
         }
     }
 }

@@ -42,7 +42,7 @@ namespace FakeNewsFilter.ClientService
                 }
                 return JsonConvert.DeserializeObject<TResponse>(body);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return JsonConvert.DeserializeObject<TResponse>(ex.Message);
             }

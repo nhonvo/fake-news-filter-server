@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,10 +9,11 @@ using Microsoft.Extensions.Hosting;
 using LazZiya.ExpressLocalization;
 using System.Globalization;
 using FakeNewsFilter.UserApp.LocalizationResources;
-using FakeNewsFilter.UserApp.Services;
 using Microsoft.AspNetCore.Localization;
 using FluentValidation.AspNetCore;
 using FakeNewsFilter.ClientService;
+using FakeNewsFilter.ClientServices;
+using Microsoft.Identity.Client;
 
 namespace FakeNewsFilter.UserApp
 {
@@ -80,11 +81,15 @@ namespace FakeNewsFilter.UserApp
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<TopicApi>();
+            services.AddTransient<IUserApi, UserApi>();
+            services.AddTransient<IRoleApi, RoleApi>();
             services.AddTransient<LanguageApi>();
             services.AddTransient<NewsApi>();
-            services.AddTransient<NewsApiDeprecated>();
-            services.AddTransient<NotificationApi>();
             services.AddTransient<CloneNewsApi>();
+            services.AddTransient<IUserApi, UserApi>();
+            services.AddTransient<VoteApi>();
+
+
 
             //Razor complilation Runtime 
             IMvcBuilder builder = services.AddRazorPages();
@@ -128,7 +133,17 @@ namespace FakeNewsFilter.UserApp
                 endpoints.MapControllerRoute(
                      name: "default",
                      pattern: "{culture=vi-VN}/{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
+                  name: "News detail Vn",
+                  pattern: "chi-tiet/{Title}-{newId}",
+                  defaults: new { controller = "News", action = "GetNewsById" });
+
+                endpoints.MapControllerRoute(
+                  name: "Topic Vn",
+                  pattern: "chu-de/{TopicName}-{TopicId}", new { controller = "News", action = "GetNewsByTopic" });
             });
+
         }
     }
 }

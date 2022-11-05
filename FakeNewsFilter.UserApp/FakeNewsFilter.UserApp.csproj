@@ -6,13 +6,17 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Views\Topic\**" />
+      <Content Remove="Views\Topic\**" />
+      <EmbeddedResource Remove="Views\Topic\**" />
+      <None Remove="Views\Topic\**" />
+    </ItemGroup>
+
+    <ItemGroup>
         <None Remove="Services\" />
         <None Remove="LazZiya.ExpressLocalization" />
         <None Remove="LazZiya.TagHelpers" />
         <None Remove="LocalizationResources\" />
-    </ItemGroup>
-    <ItemGroup>
-        <Folder Include="Services\" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\FakeNewsFilter.ViewModel\FakeNewsFilter.ViewModel.csproj" />
@@ -25,7 +29,7 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.8" />
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.9" />
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.10" />
         <PackageReference Include="Quartz.AspNetCore" Version="3.4.0" />
         <PackageReference Include="Quartz.Extensions.Microsoft.DependencyInjection" Version="0.0.3" />
         <PackageReference Include="Quartz.Plugins.TimeZoneConverter" Version="3.4.0" />
@@ -33,9 +37,50 @@
         <PackageReference Include="LazZiya.TagHelpers" Version="6.0.2" />
     </ItemGroup>
     <ItemGroup>
+      <Content Remove="Views\News\VoteNews.cshtml" />
+      <Content Remove="Views\Shared\Components\CategoriesComponent\Default.cshtml" />
+      <Content Remove="Views\Shared\Components\CommentComponent\Default.cshtml" />
+      <Content Remove="Views\Shared\Components\FourNewsComponent\Default.cshtml" />
+      <Content Remove="Views\Shared\Components\TwoNewsComponent\Default.cshtml" />
+      <Content Remove="Views\Shared\Components\RelatedPostComponent\Default.cshtml" />
+      <Content Remove="Views\Shared\Components\SideBarComponent\Default.cshtml" />
+      <Content Remove="Views\Shared\Components\TopicComponent\Default.cshtml" />
+      <Content Remove="Views\Shared\Components\WeatherComponent\Default.cshtml" />
       <Content Remove="wwwroot\intro\images\logo.png" />
     </ItemGroup>
     <ItemGroup>
+      <None Include="Views\HomePage\AboutUs.cshtml" />
+      <None Include="Views\HomePage\Contact.cshtml" />
+      <None Include="Views\HomePage\Index.cshtml" />
+      <None Include="Views\News\NewsByTopic.cshtml" />
+      <None Include="Views\Home\Contact.cshtml" />
+      <None Include="Views\Home\Dashboard.cshtml" />
+      <None Include="Views\Home\Footer.cshtml" />
+      <None Include="Views\Home\Guide.cshtml" />
+      <None Include="Views\Home\Header.cshtml" />
+      <None Include="Views\Home\Index.cshtml" />
+      <None Include="Views\Home\Privacy.cshtml" />
+      <None Include="Views\News\Details.cshtml" />
+      <None Include="Views\News\VoteNews.cshtml" />
+      <None Include="Views\Shared\Components\CategoriesComponent\Default.cshtml" />
+      <None Include="Views\Shared\Components\CommentComponent\Default.cshtml" />
+      <None Include="Views\Shared\Components\DontMissNewsComponent\Default.cshtml" />
+      <None Include="Views\Shared\Components\FourNewsComponent\Default.cshtml" />
+      <None Include="Views\Shared\Components\TwoNewsComponent\Default.cshtml" />
+      <None Include="Views\Shared\Components\LoginInfoComponent\Default.cshtml" />
+      <None Include="Views\Shared\Components\RelatedPostComponent\Default.cshtml" />
+      <None Include="Views\Shared\Components\SideBarComponent\Default.cshtml" />
+      <None Include="Views\Shared\Components\TopicComponent\Default.cshtml" />
+      <None Include="Views\Shared\Components\WeatherComponent\Default.cshtml" />
+      <None Include="Views\Shared\Error.cshtml" />
+      <None Include="Views\Shared\Footer.cshtml" />
+      <None Include="Views\Shared\Header.cshtml" />
+      <None Include="Views\Shared\_Layout.cshtml" />
+      <None Include="Views\Shared\_LayoutAuth.cshtml" />
+      <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
+      <None Include="Views\User\ForgetPassword.cshtml" />
+      <None Include="Views\User\Login.cshtml" />
+      <None Include="Views\User\Register.cshtml" />
       <None Include="wwwroot\assets\css\vendor\fonts\fa-brands-400.svg" />
       <None Include="wwwroot\assets\css\vendor\fonts\fa-brands-400.woff2" />
       <None Include="wwwroot\assets\css\vendor\fonts\fa-regular-400.svg" />
@@ -71,5 +116,14 @@
       <None Include="wwwroot\assets\js\vendor\slick.min.js" />
       <None Include="wwwroot\assets\js\vendor\waypoints.min.js" />
       <None Include="wwwroot\assets\js\vendor\wow.min.js" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="wwwroot\assets\lib\" />
+    </ItemGroup>
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Views\News\VoteNews.cshtml" />
+    </ItemGroup>
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\News\VoteNews.cshtml" />
     </ItemGroup>
 </Project>

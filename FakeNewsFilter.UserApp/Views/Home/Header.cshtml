@@ -3,7 +3,6 @@
     var culture = CultureInfo.CurrentCulture.Name;
 }
 <div class="off_canvars_overlay">
-
 </div>
 <div class="offcanvas_menu">
     <div class="container-fluid">
@@ -19,7 +18,7 @@
                     <div id="menu" class="text-left ">
                         <ul class="offcanvas_main_menu">
                             <li class="menu-item-has-children active">
-                                <a asp-controller="Home" asp-action="Index"  localize-content>Home</a>
+                                <a asp-controller="Home" asp-action="Index" localize-content>Home</a>
                             </li>
                             <li class="menu-item-has-children active">
                                 <a asp-controller="Home" asp-action="Guide" localize-content>Guide</a>
@@ -30,7 +29,7 @@
                             <li class="menu-item-has-children active">
                                 <a asp-controller="Home" asp-action="Contact" localize-content>Contact</a>
                             </li>
-                            
+
                         </ul>
                     </div>
 
@@ -63,7 +62,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-2 col-md-4 col-sm-5 col-6 order-1 order-sm-1">
                     <div class="appie-logo-box text-center">
-                        <a asp-controller="Home" asp-action="Index" asp-route-culture="@culture" >
+                        <a asp-controller="Home" asp-action="Index" asp-route-culture="@culture">
                             <img src="~/intro/images/logo/logo_OWL_NoText-05.svg" alt="" />
                             <h7>Owl Trust</h7>
                         </a>
@@ -90,7 +89,7 @@
                 </div>
                 <div class="order-sm-3">
                     <div class="appie-btn-box text-right">
-                        <a class="main-btn m4-40" asp-action="index" asp-controller="HomePage" asp-route-culture="@culture" localize-content>Start exploring</a>
+                        <a class="main-btn m4-40" asp-action="index" asp-controller="HomePage" localize-content>Start exploring</a>
                         <div class="toggle-btn ml-30 canvas_open d-lg-none d-block">
                             <i class="fa fa-bars"></i>
                         </div>

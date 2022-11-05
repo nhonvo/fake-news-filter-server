@@ -1,21 +1,18 @@
-﻿@model List<FakeNewsFilter.ViewModel.Catalog.TopicNews.TopicInfoVM>
+﻿@using System.Globalization
+@model List<FakeNewsFilter.ViewModel.Catalog.TopicNews.TopicInfoVM>
 @{
     var culture = CultureInfo.CurrentCulture.Name;
 }
-<!-- sidebar-left -->
-<div class="col-lg-2 col-md-3 primary-sidebar sticky-sidebar sidebar-left order-2 order-md-1">
-    <!-- Widget Weather -->
-    <div class="sidebar-widget widget-weather border-radius-10 bg-white mb-30 mt-55">
-        @await Component.InvokeAsync("WeatherComponent")
+<!-- Widget Weather -->
+<div class="sidebar-widget widget-weather border-radius-10 bg-white mb-30 mt-55">
+    @await Component.InvokeAsync("WeatherComponent")
 
-    </div>
-    <!-- Widget Categories -->
-    <div class="sidebar-widget widget_categories_2 border-radius-10 bg-white mb-30">
-        @await Component.InvokeAsync("TopicComponent")
-    </div>
-    <!-- Widget Categories -->
-    <div class="sidebar-widget widget_categories border-radius-10 bg-white mb-30">
-        @await Component.InvokeAsync("CategoriesComponent")
-
-    </div>
+</div>
+<!-- Widget Categories -->
+<div class="sidebar-widget widget_categories border-radius-10 bg-white mb-30">
+    @await Component.InvokeAsync("CategoriesComponent")    
+</div>
+<!-- Widget Categories -->
+<div class="sidebar-widget widget_categories_2 border-radius-10 bg-white mb-30">
+    @await Component.InvokeAsync("TopicComponent")
 </div>

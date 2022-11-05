@@ -13,7 +13,6 @@
     <Folder Include="wwwroot\" />
     <Folder Include="Views\User\" />
     <Folder Include="Views\Login\" />
-    <Folder Include="Controllers\Components\" />
     <Folder Include="Views\Shared\Components\" />
     <Folder Include="Views\Topic\" />
     <Folder Include="Views\News\" />
