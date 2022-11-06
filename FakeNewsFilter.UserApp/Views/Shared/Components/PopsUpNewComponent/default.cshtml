@@ -43,8 +43,7 @@
                 <div class="row">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <input name="UserId" class="form-control"
-                        value="@User.Claims.FirstOrDefault(x => x.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value">
+                        <input name="UserId" class="form-control" value="@User.Claims.FirstOrDefault(x => x.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value" hidden>
                     }
                     <input name="NewsId" class="form-control" value="@Model.NewsId" hidden>
                     <div class="col-md-5">
