@@ -111,6 +111,7 @@ namespace FakeNewsFilter
                 var options = ConfigurationOptions.Parse(Configuration["Redis:ConnectionString"]);
                 options.ConnectRetry = 5;
                 options.AllowAdmin = true;
+
                 return ConnectionMultiplexer.Connect(options);
             }
             

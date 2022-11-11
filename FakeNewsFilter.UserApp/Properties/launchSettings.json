@@ -3,10 +3,10 @@
     "FakeNewsFilter.UserApp": {
       "commandName": "Project",
       "launchBrowser": true,
+      "applicationUrl": "https://localhost:8080",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "https://localhost:8080"
+      }
     },
     "WSL": {
       "commandName": "WSL2",
@@ -15,8 +15,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_URLS": "https://localhost:8080"
-      },
-      "distributionName": ""
+      }
     }
   }
 }

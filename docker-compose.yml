@@ -1,0 +1,22 @@
+version: '3.4'
+
+services:
+  fakenewsfilter.api:
+    image: ${DOCKER_REGISTRY-}fakenewsfilter
+    build:
+      context: .
+      dockerfile: FakeNewsFilter.API/Dockerfile
+
+  fakenewsfilter.adminapp:
+    image: ${DOCKER_REGISTRY-}fakenewsfilter
+    build:
+      context: .
+      dockerfile: FakeNewsFilter.AdminApp/Dockerfile
+
+
+  fakenewsfilter.userapp:
+    image: ${DOCKER_REGISTRY-}fakenewsfilter
+    build:
+      context: .
+      dockerfile: FakeNewsFilter.UserApp/Dockerfile
+
