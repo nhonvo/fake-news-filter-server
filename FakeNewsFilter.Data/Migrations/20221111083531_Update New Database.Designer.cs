@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FakeNewsFilter.Data.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20220812093459_Update New Database")]
+    [Migration("20221111083531_Update New Database")]
     partial class UpdateNewDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -70,7 +70,7 @@ namespace FakeNewsFilter.Data.Migrations
                     b.Property<DateTime>("Timestamp")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 8, 12, 16, 34, 59, 224, DateTimeKind.Local).AddTicks(9120));
+                        .HasDefaultValue(new DateTime(2022, 11, 11, 15, 35, 30, 702, DateTimeKind.Local).AddTicks(850));
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -145,7 +145,7 @@ namespace FakeNewsFilter.Data.Migrations
                     b.Property<DateTime>("Timestamp")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 8, 12, 16, 34, 59, 225, DateTimeKind.Local).AddTicks(7670));
+                        .HasDefaultValue(new DateTime(2022, 11, 11, 15, 35, 30, 703, DateTimeKind.Local).AddTicks(1570));
 
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -259,7 +259,7 @@ namespace FakeNewsFilter.Data.Migrations
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 8, 12, 16, 34, 59, 223, DateTimeKind.Local).AddTicks(4290));
+                        .HasDefaultValue(new DateTime(2022, 11, 11, 15, 35, 30, 700, DateTimeKind.Local).AddTicks(6200));
 
                     b.Property<int>("Duration")
                         .HasColumnType("int");
@@ -284,7 +284,7 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 1,
-                            DateCreated = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7340),
+                            DateCreated = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2860),
                             Duration = 0,
                             FileSize = 0L,
                             PathMedia = "covid.jpeg",
@@ -294,7 +294,7 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 2,
-                            DateCreated = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7350),
+                            DateCreated = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2860),
                             Duration = 0,
                             FileSize = 0L,
                             PathMedia = "taliban.jpeg",
@@ -304,7 +304,7 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 3,
-                            DateCreated = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7350),
+                            DateCreated = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2860),
                             Duration = 0,
                             FileSize = 0L,
                             PathMedia = "kinh-te-tg.jpeg",
@@ -314,7 +314,7 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 4,
-                            DateCreated = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7350),
+                            DateCreated = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2860),
                             Duration = 0,
                             FileSize = 0L,
                             PathMedia = "ngvietnamchau.jpeg",
@@ -324,7 +324,7 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 5,
-                            DateCreated = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7350),
+                            DateCreated = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2870),
                             Duration = 0,
                             FileSize = 0L,
                             PathMedia = "doanh-nghiep.jpeg",
@@ -334,7 +334,7 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 6,
-                            DateCreated = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7350),
+                            DateCreated = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2870),
                             Duration = 0,
                             FileSize = 0L,
                             PathMedia = "chon truong.jpeg",
@@ -344,7 +344,7 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 7,
-                            DateCreated = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7350),
+                            DateCreated = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2870),
                             Duration = 0,
                             FileSize = 0L,
                             PathMedia = "congnghegame.jpeg",
@@ -354,7 +354,7 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 8,
-                            DateCreated = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7350),
+                            DateCreated = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2870),
                             Duration = 0,
                             FileSize = 0L,
                             PathMedia = "congnghemoi.jpeg",
@@ -364,7 +364,7 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 9,
-                            DateCreated = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7350),
+                            DateCreated = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2870),
                             Duration = 0,
                             FileSize = 0L,
                             PathMedia = "phongsu.jpeg",
@@ -374,7 +374,7 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 10,
-                            DateCreated = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7360),
+                            DateCreated = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2870),
                             Duration = 0,
                             FileSize = 0L,
                             PathMedia = "giaothong.jpeg",
@@ -384,7 +384,7 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 11,
-                            DateCreated = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7360),
+                            DateCreated = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2880),
                             Duration = 0,
                             FileSize = 0L,
                             PathMedia = "chungkhoan.jpeg",
@@ -394,7 +394,7 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 12,
-                            DateCreated = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7360),
+                            DateCreated = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2880),
                             Duration = 0,
                             FileSize = 0L,
                             PathMedia = "khoahocvn.jpeg",
@@ -404,7 +404,7 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 13,
-                            DateCreated = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7360),
+                            DateCreated = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2880),
                             Duration = 0,
                             FileSize = 0L,
                             PathMedia = "the-thao1.jpeg",
@@ -414,7 +414,7 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 14,
-                            DateCreated = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7360),
+                            DateCreated = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2880),
                             Duration = 0,
                             FileSize = 0L,
                             PathMedia = "newsid1.jpg",
@@ -424,7 +424,7 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 15,
-                            DateCreated = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7360),
+                            DateCreated = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2880),
                             Duration = 0,
                             FileSize = 0L,
                             PathMedia = "newsid2.jpg",
@@ -434,7 +434,7 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 16,
-                            DateCreated = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7360),
+                            DateCreated = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2880),
                             Duration = 0,
                             FileSize = 0L,
                             PathMedia = "newsid3.jpg",
@@ -444,7 +444,7 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 17,
-                            DateCreated = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7370),
+                            DateCreated = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2890),
                             Duration = 0,
                             FileSize = 0L,
                             PathMedia = "newsid4.jpg",
@@ -454,7 +454,7 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 18,
-                            DateCreated = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7370),
+                            DateCreated = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2890),
                             Duration = 0,
                             FileSize = 0L,
                             PathMedia = "newsid5.jpg",
@@ -464,7 +464,7 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 19,
-                            DateCreated = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7370),
+                            DateCreated = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2890),
                             Duration = 0,
                             FileSize = 0L,
                             PathMedia = "newsid6.png",
@@ -474,7 +474,7 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 20,
-                            DateCreated = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7370),
+                            DateCreated = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2890),
                             Duration = 0,
                             FileSize = 0L,
                             PathMedia = "newsid7.jpg",
@@ -484,7 +484,7 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 21,
-                            DateCreated = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7370),
+                            DateCreated = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2890),
                             Duration = 0,
                             FileSize = 0L,
                             PathMedia = "newsid8.jpg",
@@ -494,10 +494,50 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             MediaId = 22,
-                            DateCreated = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7370),
+                            DateCreated = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2890),
                             Duration = 0,
                             FileSize = 0L,
                             PathMedia = "newsid9.jpg",
+                            SortOrder = 0,
+                            Type = 1
+                        },
+                        new
+                        {
+                            MediaId = 23,
+                            DateCreated = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2900),
+                            Duration = 0,
+                            FileSize = 0L,
+                            PathMedia = "technology.jpeg",
+                            SortOrder = 0,
+                            Type = 1
+                        },
+                        new
+                        {
+                            MediaId = 24,
+                            DateCreated = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2900),
+                            Duration = 0,
+                            FileSize = 0L,
+                            PathMedia = "sports.jpeg",
+                            SortOrder = 0,
+                            Type = 1
+                        },
+                        new
+                        {
+                            MediaId = 25,
+                            DateCreated = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2900),
+                            Duration = 0,
+                            FileSize = 0L,
+                            PathMedia = "health.jpeg",
+                            SortOrder = 0,
+                            Type = 1
+                        },
+                        new
+                        {
+                            MediaId = 26,
+                            DateCreated = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2900),
+                            Duration = 0,
+                            FileSize = 0L,
+                            PathMedia = "entertainment.jpeg",
                             SortOrder = 0,
                             Type = 1
                         });
@@ -513,6 +553,10 @@ namespace FakeNewsFilter.Data.Migrations
 
                     b.Property<DateTime>("DatePublished")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("ImageLink")
                         .HasColumnType("nvarchar(max)");
@@ -548,12 +592,12 @@ namespace FakeNewsFilter.Data.Migrations
                     b.Property<DateTime>("Timestamp")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 8, 12, 16, 34, 59, 222, DateTimeKind.Local).AddTicks(590));
+                        .HasDefaultValue(new DateTime(2022, 11, 11, 15, 35, 30, 698, DateTimeKind.Local).AddTicks(8020));
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<string>("UrlNews")
                         .HasColumnType("nvarchar(max)");
@@ -572,6 +616,7 @@ namespace FakeNewsFilter.Data.Migrations
                         {
                             NewsId = 1,
                             DatePublished = new DateTime(2021, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Taliban fighters in Kabul, the capital, on Sunday on a Humvee seized from Afghan forces. The speed of the Taliban’s sweep through the country startled American officials. Credit...Jim Huylebroek for The New York Times",
                             ImageLink = "https://travelweekly.co.uk/images/cmstw/original/4/e/6/4/4/easid-453165-media-id-34528.jpg",
                             LanguageId = "en",
                             OfficialRating = 0,
@@ -579,7 +624,7 @@ namespace FakeNewsFilter.Data.Migrations
                             SocialBeliefs = 0.0,
                             SourceCreate = 1,
                             Status = 0,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7390),
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2920),
                             Title = "Kabul’s Sudden Fall to Taliban Ends U.S. Era in Afghanistan",
                             UrlNews = "https://www.independent.co.uk/arts-entertainment/eurovision/the-rasmus-eurovision-2022-finland-b2077365.html",
                             ViewCount = 0
@@ -588,6 +633,7 @@ namespace FakeNewsFilter.Data.Migrations
                         {
                             NewsId = 2,
                             DatePublished = new DateTime(2021, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "The masking orders in Dallas and Bexar counties were issued after a lower court ruled last week in favor of local officials.",
                             ImageLink = "https://media.wltx.com/assets/WLTX/images/cd8afe4e-86f9-487f-b8b4-5e9313da807e/cd8afe4e-86f9-487f-b8b4-5e9313da807e_1140x641.jpg",
                             LanguageId = "en",
                             OfficialRating = 0,
@@ -595,7 +641,7 @@ namespace FakeNewsFilter.Data.Migrations
                             SocialBeliefs = 0.0,
                             SourceCreate = 1,
                             Status = 0,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7400),
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2930),
                             Title = "Texas high court blocks mask mandates in two of state's largest counties",
                             UrlNews = "https://www.wltx.com/article/sports/clemson/101-15d947ca-db30-4440-b99a-a1e5a6f4ca35",
                             ViewCount = 0
@@ -610,7 +656,7 @@ namespace FakeNewsFilter.Data.Migrations
                             SocialBeliefs = 0.0,
                             SourceCreate = 1,
                             Status = 0,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7400),
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2930),
                             Title = "Hospitalizations of Americans under 50 have reached new pandemic highs",
                             UrlNews = "https://www.wltx.com/article/sports/clemson/101-15d947ca-db30-4440-b99a-a1e5a6f4ca35",
                             ViewCount = 0
@@ -626,7 +672,7 @@ namespace FakeNewsFilter.Data.Migrations
                             SocialBeliefs = 0.0,
                             SourceCreate = 2,
                             Status = 0,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7400),
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2940),
                             Title = "Thông tin TP.HCM dùng 5 trực thăng phun khử khuẩn là sai sự thật",
                             UrlNews = "https://www.vietnamplus.vn/thong-tin-tphcm-su-dung-5-truc-thang-phun-khu-trung-la-sai-su-that/729372.vnp",
                             ViewCount = 0
@@ -642,7 +688,7 @@ namespace FakeNewsFilter.Data.Migrations
                             SocialBeliefs = 0.0,
                             SourceCreate = 2,
                             Status = 0,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7400),
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2940),
                             Title = "Mạnh tay xử lý hành vi đưa tin giả liên quan đến dịch Covid – 19",
                             UrlNews = "https://www.baobaclieu.vn/quoc-phong-an-ninh/manh-tay-xu-ly-tin-gia-tin-sai-su-that-ve-dich-covid-19-tren-mang-72306.html",
                             ViewCount = 0
@@ -658,7 +704,7 @@ namespace FakeNewsFilter.Data.Migrations
                             SocialBeliefs = 0.0,
                             SourceCreate = 2,
                             Status = 0,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7400),
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2940),
                             Title = "Thông tin nguồn nước Thánh Thiên chữa được Covid-19 là sai sự thật",
                             UrlNews = "https://nhandan.vn/factcheck/thong-tin-nguon-nuoc-thanh-thien-co-the-chua-covid-19-la-sai-su-that-696816/",
                             ViewCount = 0
@@ -674,7 +720,7 @@ namespace FakeNewsFilter.Data.Migrations
                             SocialBeliefs = 0.0,
                             SourceCreate = 2,
                             Status = 0,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7400),
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2940),
                             Title = "Bạc Liêu: Mắc Covid-19 được “ưu ái điều trị tại nhà” là sai sự thật",
                             UrlNews = "https://dangcongsan.vn/canh-bao-thong-tin-gia/bac-lieu-mac-covid-19-duoc-uu-ai-dieu-tri-tai-nha-la-sai-su-that-592693.html",
                             ViewCount = 0
@@ -690,7 +736,7 @@ namespace FakeNewsFilter.Data.Migrations
                             SocialBeliefs = 0.0,
                             SourceCreate = 2,
                             Status = 0,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7410),
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2950),
                             Title = "“Chiến dịch tiêm vaccine ngừa Covid-19 cho trẻ em 12-15 tuổi ở xứ Anh bị tạm dừng” là không chính xác",
                             UrlNews = "https://dangcongsan.vn/canh-bao-thong-tin-gia/chien-dich-tiem-vaccine-ngua-covid-19-cho-tre-em-12-15-tuoi-o-xu-anh-bi-tam-dung-la-khong-chinh-xac-591591.html",
                             ViewCount = 0
@@ -706,7 +752,7 @@ namespace FakeNewsFilter.Data.Migrations
                             SocialBeliefs = 0.0,
                             SourceCreate = 2,
                             Status = 0,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7410),
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2950),
                             Title = "Săn 'lộc trời': Lội suối nhặt ốc, vào thủ phủ cá chình",
                             UrlNews = "https://thanhnien.vn/san-loc-troi-loi-suoi-nhat-oc-vao-thu-phu-ca-chinh-post1406363.html",
                             ViewCount = 0
@@ -722,7 +768,7 @@ namespace FakeNewsFilter.Data.Migrations
                             SocialBeliefs = 0.0,
                             SourceCreate = 2,
                             Status = 0,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7410),
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2950),
                             Title = "Nghề Việt - Nét Việt: Nghề trai Chuôn Ngọ",
                             UrlNews = "https://thanhnien.vn/nghe-viet-net-viet-nghe-trai-chuon-ngo-post1404658.html",
                             ViewCount = 0
@@ -738,7 +784,7 @@ namespace FakeNewsFilter.Data.Migrations
                             SocialBeliefs = 0.0,
                             SourceCreate = 2,
                             Status = 0,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7410),
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2950),
                             Title = "Nỗi lòng người cạo mủ cao su",
                             UrlNews = "https://thanhnien.vn/noi-long-nguoi-cao-mu-cao-su-post1404643.html",
                             ViewCount = 0
@@ -754,7 +800,7 @@ namespace FakeNewsFilter.Data.Migrations
                             SocialBeliefs = 0.0,
                             SourceCreate = 2,
                             Status = 0,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7410),
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2950),
                             Title = "Khám phá thác ba nhánh hùng vĩ ít người biết giữa Tây Nguyên",
                             UrlNews = "https://thanhnien.vn/kham-pha-thac-ba-nhanh-hung-vi-it-nguoi-biet-giua-tay-nguyen-post1405776.html",
                             ViewCount = 0
@@ -770,7 +816,7 @@ namespace FakeNewsFilter.Data.Migrations
                             SocialBeliefs = 0.0,
                             SourceCreate = 2,
                             Status = 0,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7420),
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2960),
                             Title = "Chiếc nồi cổ ‘thần kỳ’ tạo ra món xôi độc đáo của người Nùng ở Đắk Lắk",
                             UrlNews = "https://thanhnien.vn/chiec-noi-co-than-ky-tao-ra-mon-xoi-doc-dao-cua-nguoi-nung-o-dak-lak-post1403687.html",
                             ViewCount = 0
@@ -786,7 +832,7 @@ namespace FakeNewsFilter.Data.Migrations
                             SocialBeliefs = 0.0,
                             SourceCreate = 2,
                             Status = 0,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7420),
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2960),
                             Title = "Những đứa con tìm về nguồn cội",
                             UrlNews = "https://thanhnien.vn/nhung-dua-con-tim-ve-nguon-coi-post1405816.html",
                             ViewCount = 0
@@ -802,7 +848,7 @@ namespace FakeNewsFilter.Data.Migrations
                             SocialBeliefs = 0.0,
                             SourceCreate = 2,
                             Status = 0,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7420),
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2960),
                             Title = "Mang chất Việt vào tranh in trên đất Mỹ",
                             UrlNews = "https://thanhnien.vn/mang-chat-viet-vao-tranh-in-tren-dat-my-post1403198.html",
                             ViewCount = 0
@@ -818,7 +864,7 @@ namespace FakeNewsFilter.Data.Migrations
                             SocialBeliefs = 0.0,
                             SourceCreate = 2,
                             Status = 0,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7420),
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2960),
                             Title = "Người phụ nữ Việt phát triển vật liệu phủ chống cháy ở Úc",
                             UrlNews = "https://thanhnien.vn/nguoi-phu-nu-viet-phat-trien-vat-lieu-phu-chong-chay-o-uc-post1401084.html",
                             ViewCount = 0
@@ -834,7 +880,7 @@ namespace FakeNewsFilter.Data.Migrations
                             SocialBeliefs = 0.0,
                             SourceCreate = 2,
                             Status = 0,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7430),
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2970),
                             Title = "Cảm hứng từ bữa ăn Việt của bà",
                             UrlNews = "https://thanhnien.vn/cam-hung-tu-bua-an-viet-cua-ba-post1401081.html",
                             ViewCount = 0
@@ -850,7 +896,7 @@ namespace FakeNewsFilter.Data.Migrations
                             SocialBeliefs = 0.0,
                             SourceCreate = 2,
                             Status = 0,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7430),
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2970),
                             Title = "Gặp bão, đoàn tàu metro trễ hẹn về TP.HCM",
                             UrlNews = "https://thanhnien.vn/gap-bao-doan-tau-metro-tre-hen-ve-tp-hcm-post1406682.html",
                             ViewCount = 0
@@ -866,7 +912,7 @@ namespace FakeNewsFilter.Data.Migrations
                             SocialBeliefs = 0.0,
                             SourceCreate = 2,
                             Status = 0,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7430),
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2970),
                             Title = "Xuất khẩu thép lần đầu cán mốc 10 tỉ USD",
                             UrlNews = "https://thanhnien.vn/xuat-khau-thep-lan-dau-can-moc-10-ti-usd-post1406650.html",
                             ViewCount = 0
@@ -882,7 +928,7 @@ namespace FakeNewsFilter.Data.Migrations
                             SocialBeliefs = 0.0,
                             SourceCreate = 2,
                             Status = 0,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7430),
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2970),
                             Title = "TP.HCM khát vốn cho giao thông",
                             UrlNews = "https://thanhnien.vn/tp-hcm-khat-von-cho-giao-thong-post1406453.html",
                             ViewCount = 0
@@ -898,7 +944,7 @@ namespace FakeNewsFilter.Data.Migrations
                             SocialBeliefs = 0.0,
                             SourceCreate = 2,
                             Status = 0,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7430),
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2980),
                             Title = "Lượng kiều hối tăng mạnh kỷ lục",
                             UrlNews = "https://thanhnien.vn/luong-kieu-hoi-tang-manh-ky-luc-post1405536.html",
                             ViewCount = 0
@@ -914,7 +960,7 @@ namespace FakeNewsFilter.Data.Migrations
                             SocialBeliefs = 0.0,
                             SourceCreate = 2,
                             Status = 0,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7430),
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2980),
                             Title = "Dòng vốn mạnh đưa chứng khoán lập đỉnh",
                             UrlNews = "https://thanhnien.vn/dong-von-manh-dua-chung-khoan-lap-dinh-post1404799.html",
                             ViewCount = 0
@@ -930,7 +976,7 @@ namespace FakeNewsFilter.Data.Migrations
                             SocialBeliefs = 0.0,
                             SourceCreate = 2,
                             Status = 0,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7440),
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2980),
                             Title = "Tin tức giáo dục đặc biệt 1.12: Dạy sử bằng nội dung cảm xúc hay sự kiện?",
                             UrlNews = "https://thanhnien.vn/tin-tuc-giao-duc-dac-biet-1-12-day-su-bang-noi-dung-cam-xuc-hay-su-kien-post1406754.html",
                             ViewCount = 0
@@ -946,7 +992,7 @@ namespace FakeNewsFilter.Data.Migrations
                             SocialBeliefs = 0.0,
                             SourceCreate = 2,
                             Status = 0,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7440),
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2980),
                             Title = "Hướng vào đại học phù hợp với điểm thi",
                             UrlNews = "https://thanhnien.vn/huong-vao-dai-hoc-phu-hop-voi-diem-thi-post989845.html",
                             ViewCount = 0
@@ -962,7 +1008,7 @@ namespace FakeNewsFilter.Data.Migrations
                             SocialBeliefs = 0.0,
                             SourceCreate = 2,
                             Status = 0,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7440),
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2990),
                             Title = "Gặp người thầy… đẹp trai nhất trường mầm non!",
                             UrlNews = "https://thanhnien.vn/gap-nguoi-thay-dep-trai-nhat-truong-mam-non-post1403127.html",
                             ViewCount = 0
@@ -978,7 +1024,7 @@ namespace FakeNewsFilter.Data.Migrations
                             SocialBeliefs = 0.0,
                             SourceCreate = 2,
                             Status = 0,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7440),
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2990),
                             Title = "Thầy giáo dùng tiền khen thưởng ủng hộ Quỹ phòng chống Covid-19",
                             UrlNews = "https://thanhnien.vn/thay-giao-dung-tien-khen-thuong-ung-ho-quy-phong-chong-covid-19-post1075098.html",
                             ViewCount = 0
@@ -994,7 +1040,7 @@ namespace FakeNewsFilter.Data.Migrations
                             SocialBeliefs = 0.0,
                             SourceCreate = 2,
                             Status = 0,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7440),
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2990),
                             Title = "Khoa Y ĐH Quốc gia TP.HCM xét tuyển bổ sung cả thí sinh tự do",
                             UrlNews = "https://thanhnien.vn/khoa-y-dh-quoc-gia-tp-hcm-xet-tuyen-bo-sung-ca-thi-sinh-tu-do-post1116655.html",
                             ViewCount = 0
@@ -1010,7 +1056,7 @@ namespace FakeNewsFilter.Data.Migrations
                             SocialBeliefs = 0.0,
                             SourceCreate = 2,
                             Status = 0,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7450),
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2990),
                             Title = "Bản nâng cấp Cyberpunk 2077 sẽ miễn phí cho chủ sở hữu PS4 và Xbox One",
                             UrlNews = "https://thanhnien.vn/ban-nang-cap-cyberpunk-2077-se-mien-phi-cho-chu-so-huu-ps4-va-xbox-one-post1406595.html",
                             ViewCount = 0
@@ -1026,7 +1072,7 @@ namespace FakeNewsFilter.Data.Migrations
                             SocialBeliefs = 0.0,
                             SourceCreate = 2,
                             Status = 0,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7450),
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2990),
                             Title = "Phi Vụ Triệu Đô tái kết hợp Free Fire trong phần đặc biệt: Phi Vụ Cuối Cùng tháng 12 này",
                             UrlNews = "https://thanhnien.vn/phi-vu-trieu-do-tai-ket-hop-free-fire-trong-phan-dac-biet-phi-vu-cuoi-cung-thang-12-nay-post1406503.html",
                             ViewCount = 0
@@ -1042,7 +1088,7 @@ namespace FakeNewsFilter.Data.Migrations
                             SocialBeliefs = 0.0,
                             SourceCreate = 2,
                             Status = 0,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7450),
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(3000),
                             Title = "Việt Nam lọt Top 5 đội LMHT: Tốc Chiến thế giới",
                             UrlNews = "https://thanhnien.vn/viet-nam-lot-top-5-doi-lmht-toc-chien-the-gioi-post1404103.html",
                             ViewCount = 0
@@ -1058,7 +1104,7 @@ namespace FakeNewsFilter.Data.Migrations
                             SocialBeliefs = 0.0,
                             SourceCreate = 2,
                             Status = 0,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7450),
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(3000),
                             Title = "Riot Games để lộ 4 địa điểm của Chung kết LMHT Thế giới 2022",
                             UrlNews = "https://thanhnien.vn/riot-games-de-lo-4-dia-diem-cua-chung-ket-lmht-the-gioi-2022-post1403726.html",
                             ViewCount = 0
@@ -1074,7 +1120,7 @@ namespace FakeNewsFilter.Data.Migrations
                             SocialBeliefs = 0.0,
                             SourceCreate = 2,
                             Status = 0,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7450),
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(3000),
                             Title = "Arcane giúp Vi và Jinx tăng vọt tỉ lệ được chọn trong LMHT",
                             UrlNews = "https://thanhnien.vn/arcane-giup-vi-va-jinx-tang-vot-ti-le-duoc-chon-trong-lmht-post1401689.html",
                             ViewCount = 0
@@ -1096,7 +1142,7 @@ namespace FakeNewsFilter.Data.Migrations
                     b.Property<DateTime>("DatePublished")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 8, 12, 16, 34, 59, 224, DateTimeKind.Local).AddTicks(9820));
+                        .HasDefaultValue(new DateTime(2022, 11, 11, 15, 35, 30, 702, DateTimeKind.Local).AddTicks(1710));
 
                     b.Property<bool>("IsPopular")
                         .ValueGeneratedOnAdd()
@@ -1152,7 +1198,7 @@ namespace FakeNewsFilter.Data.Migrations
                     b.Property<DateTime>("Timestamp")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 8, 12, 16, 34, 59, 222, DateTimeKind.Local).AddTicks(5770));
+                        .HasDefaultValue(new DateTime(2022, 11, 11, 15, 35, 30, 699, DateTimeKind.Local).AddTicks(4800));
 
                     b.HasKey("TopicId", "NewsId");
 
@@ -1408,14 +1454,14 @@ namespace FakeNewsFilter.Data.Migrations
                         new
                         {
                             Id = new Guid("a3314be5-4c77-4fb6-82ad-302014682a73"),
-                            ConcurrencyStamp = "bba260c3-e298-4822-ab0e-a0123702cd5d",
+                            ConcurrencyStamp = "fa7335a3-b8fe-4a70-b150-6da5138dd22b",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
                             Id = new Guid("b4314be5-4c77-4fb6-82ad-302014682b13"),
-                            ConcurrencyStamp = "257b5145-b2da-41b7-8587-75279334a36d",
+                            ConcurrencyStamp = "5c5fa2be-33c7-4a86-abc7-2cb7ce661a98",
                             Name = "Subscriber",
                             NormalizedName = "Subscriber"
                         });
@@ -1483,7 +1529,7 @@ namespace FakeNewsFilter.Data.Migrations
                     b.Property<DateTime>("Timestamp")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 8, 12, 16, 34, 59, 224, DateTimeKind.Local).AddTicks(1350));
+                        .HasDefaultValue(new DateTime(2022, 11, 11, 15, 35, 30, 701, DateTimeKind.Local).AddTicks(5580));
 
                     b.HasKey("StoryId");
 
@@ -1537,7 +1583,7 @@ namespace FakeNewsFilter.Data.Migrations
                     b.Property<DateTime>("Timestamp")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 8, 12, 16, 34, 59, 221, DateTimeKind.Local).AddTicks(4660));
+                        .HasDefaultValue(new DateTime(2022, 11, 11, 15, 35, 30, 698, DateTimeKind.Local).AddTicks(1040));
 
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -1564,7 +1610,7 @@ namespace FakeNewsFilter.Data.Migrations
                             Status = 0,
                             Tag = "afghanistan",
                             ThumbTopic = 3,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7300)
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2800)
                         },
                         new
                         {
@@ -1575,7 +1621,7 @@ namespace FakeNewsFilter.Data.Migrations
                             Status = 0,
                             Tag = "in-depth",
                             ThumbTopic = 2,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7310)
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2800)
                         },
                         new
                         {
@@ -1586,7 +1632,7 @@ namespace FakeNewsFilter.Data.Migrations
                             Status = 0,
                             Tag = "coronavirus",
                             ThumbTopic = 1,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7310)
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2800)
                         },
                         new
                         {
@@ -1597,7 +1643,7 @@ namespace FakeNewsFilter.Data.Migrations
                             Status = 0,
                             Tag = "top-business",
                             ThumbTopic = 1,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7310)
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2810)
                         },
                         new
                         {
@@ -1608,7 +1654,7 @@ namespace FakeNewsFilter.Data.Migrations
                             Status = 0,
                             Tag = "biden-admin",
                             ThumbTopic = 1,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7310)
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2810)
                         },
                         new
                         {
@@ -1619,7 +1665,7 @@ namespace FakeNewsFilter.Data.Migrations
                             Status = 0,
                             Tag = "top-news",
                             ThumbTopic = 1,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7320)
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2810)
                         },
                         new
                         {
@@ -1630,7 +1676,7 @@ namespace FakeNewsFilter.Data.Migrations
                             Status = 0,
                             Tag = "boston",
                             ThumbTopic = 1,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7320)
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2810)
                         },
                         new
                         {
@@ -1641,7 +1687,7 @@ namespace FakeNewsFilter.Data.Migrations
                             Status = 0,
                             Tag = "dịch bệnh",
                             ThumbTopic = 3,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7320)
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2810)
                         },
                         new
                         {
@@ -1652,7 +1698,7 @@ namespace FakeNewsFilter.Data.Migrations
                             Status = 0,
                             Tag = "người Việt Nam",
                             ThumbTopic = 4,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7320)
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2820)
                         },
                         new
                         {
@@ -1663,7 +1709,7 @@ namespace FakeNewsFilter.Data.Migrations
                             Status = 0,
                             Tag = "Kinh tế",
                             ThumbTopic = 5,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7320)
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2820)
                         },
                         new
                         {
@@ -1674,7 +1720,7 @@ namespace FakeNewsFilter.Data.Migrations
                             Status = 0,
                             Tag = "học hành",
                             ThumbTopic = 6,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7320)
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2820)
                         },
                         new
                         {
@@ -1685,7 +1731,7 @@ namespace FakeNewsFilter.Data.Migrations
                             Status = 0,
                             Tag = "Trò chơi",
                             ThumbTopic = 7,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7330)
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2830)
                         },
                         new
                         {
@@ -1696,7 +1742,7 @@ namespace FakeNewsFilter.Data.Migrations
                             Status = 0,
                             Tag = "Sản phẩm",
                             ThumbTopic = 8,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7330)
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2830)
                         },
                         new
                         {
@@ -1707,7 +1753,51 @@ namespace FakeNewsFilter.Data.Migrations
                             Status = 0,
                             Tag = "Phóng sự",
                             ThumbTopic = 9,
-                            Timestamp = new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7330)
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2830)
+                        },
+                        new
+                        {
+                            TopicId = 15,
+                            Description = "View the latest technology headlines, gadget and smartphone trends, and insights from tech industry leaders.",
+                            Label = "normal",
+                            LanguageId = "en",
+                            Status = 0,
+                            Tag = "Technology",
+                            ThumbTopic = 23,
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2830)
+                        },
+                        new
+                        {
+                            TopicId = 16,
+                            Description = "News, results and comments on sport tournaments in worldwide. Football, martial arts, chess, tennis, esport and others.",
+                            Label = "normal",
+                            LanguageId = "en",
+                            Status = 0,
+                            Tag = "Sports",
+                            ThumbTopic = 24,
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2830)
+                        },
+                        new
+                        {
+                            TopicId = 17,
+                            Description = "View the latest health news and explore articles on fitness, diet, nutrition, parenting, relationships, medicine, diseases and healthy living.",
+                            Label = "normal",
+                            LanguageId = "en",
+                            Status = 0,
+                            Tag = "Health",
+                            ThumbTopic = 25,
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2840)
+                        },
+                        new
+                        {
+                            TopicId = 18,
+                            Description = "View entertainment news and videos for the latest movie, music, TV and celebrity headlines.",
+                            Label = "normal",
+                            LanguageId = "en",
+                            Status = 0,
+                            Tag = "Entertainment",
+                            ThumbTopic = 26,
+                            Timestamp = new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2840)
                         });
                 });
 
@@ -1783,14 +1873,14 @@ namespace FakeNewsFilter.Data.Migrations
                         {
                             Id = new Guid("69db714f-9576-45ba-b5b7-f00649be01de"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a96eb8b2-2a6b-4013-87df-5b7c265f7af3",
+                            ConcurrencyStamp = "73572192-be40-49c4-92d9-c872e052ab71",
                             Email = "bp.khuyen@hutech.edu.vn",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Bui Phu Khuyen",
                             NormalizedEmail = "BP.KHUYEN@HUTECH.EDU.VN",
                             NormalizedUserName = "khuyenpb",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOqkl69zCMUToDS4x7DBSztIQ+urpORmvxZJvyNvd9X1gbB8YFAZ5IK+oUmYstep1A==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBjLcxWLceZ/pG272JK6z9OW5WTJUxF6G0HsFUSlvdJJeWUnyxtJL/4dREsQTRyUHg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             Status = 0,
@@ -1801,14 +1891,14 @@ namespace FakeNewsFilter.Data.Migrations
                         {
                             Id = new Guid("69db714f-9576-45ba-b5b7-f00649be02de"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6f928259-ff58-4386-b0ba-b1b97ee8b8b7",
+                            ConcurrencyStamp = "03226b6d-9dda-4a26-a64a-066831000bcd",
                             Email = "thanh26092000@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Le Xuan Thanh",
                             NormalizedEmail = "THANH26092000@GMAIL.COM",
                             NormalizedUserName = "LXThanh",
-                            PasswordHash = "AQAAAAEAACcQAAAAEMG7OS5WzDiZoo3b+yOWWTqXHc/KwM9Tax0F1CtV+jTSsy3amoelQzbdTsIJ+e/A0A==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEIA24bFegKjqN9VQJlQfCg2sDZkpudAyx3/YVdi7A1ShvJOeck5zVlPx4oDpQw0bMA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             Status = 0,
@@ -1819,14 +1909,14 @@ namespace FakeNewsFilter.Data.Migrations
                         {
                             Id = new Guid("69db714f-9576-45ba-b5b7-f00649be03de"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "618d8d13-38a3-4daa-b6c3-01e2361bd77d",
+                            ConcurrencyStamp = "34d70d3d-d4cc-4d4f-abd9-67dd70351eae",
                             Email = "khanh200111@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Huynh Huu Khanh",
                             NormalizedEmail = "KHANH200111@GMAIL.COM",
                             NormalizedUserName = "hkhansh27",
-                            PasswordHash = "AQAAAAEAACcQAAAAELImTV9d8dKNF0QCCgzSL612cFIM6Uujh1VAlWOeqSvJvmFGBXkFbkRvDiDAh7nFCg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEB7v+xau9xPtS1fq1UDNoum9oAqQpf/HKFTEfd46otwMgfK+DAUPcqTrbilWPmNY6w==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             Status = 0,
@@ -1837,14 +1927,14 @@ namespace FakeNewsFilter.Data.Migrations
                         {
                             Id = new Guid("69db714f-9576-45ba-b5b7-f00649be04de"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "527976ca-a7ed-4d0e-9e08-7070b5ee4623",
+                            ConcurrencyStamp = "e8e9c625-debd-4b7a-b9a8-17ad891eb42d",
                             Email = "hi@phucs.me",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "To Hoang Phuc",
                             NormalizedEmail = "HI@PHUCS.ME",
                             NormalizedUserName = "HoangPhuc",
-                            PasswordHash = "AQAAAAEAACcQAAAAEAlfWjK/9y+YpEMqCY0C27plADl5lCeL3eqEUC6YE6QODkFK45DlmqFCMOWdL2QW6g==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELR5tJCLIUyYPo8Z43iqaGAZXKTzBWjgKFIryKFWUGa97Cd+nAwXkvBy1CDj5wPb2Q==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             Status = 0,
@@ -1904,7 +1994,7 @@ namespace FakeNewsFilter.Data.Migrations
                     b.Property<DateTime>("CreateTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 8, 12, 16, 34, 59, 225, DateTimeKind.Local).AddTicks(6020));
+                        .HasDefaultValue(new DateTime(2022, 11, 11, 15, 35, 30, 702, DateTimeKind.Local).AddTicks(9630));
 
                     b.Property<int>("Platform")
                         .HasColumnType("int");
@@ -1937,7 +2027,7 @@ namespace FakeNewsFilter.Data.Migrations
                     b.Property<DateTime>("Timestamp")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 8, 12, 16, 34, 59, 223, DateTimeKind.Local).AddTicks(6540));
+                        .HasDefaultValue(new DateTime(2022, 11, 11, 15, 35, 30, 700, DateTimeKind.Local).AddTicks(9300));
 
                     b.Property<bool>("isReal")
                         .HasColumnType("bit");

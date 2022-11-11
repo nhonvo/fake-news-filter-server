@@ -2,36 +2,13 @@ version: '3.4'
 
 services:
   fakenewsfilter.api:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
     ports:
-      - "2000:2000"
-    depends_on:
-      - dbfakenews
+        - "2000:80"
 
   fakenewsfilter.userapp:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
     ports:
-      - "8080:8080"
-
+      - "2002:80"
 
   fakenewsfilter.adminapp:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-    ports:
-      - "2001:2001"
-
-  redis:
-    image: redis
-    ports:
-        - "6379:6379"
-
-  dbfakenews:
-        image: "mcr.microsoft.com/mssql/server:2019-latest"
-        ports:
-          - "1433:1433"
-
-        environment:
-            MSSQL_SA_PASSWORD: MyPass@word
-            ACCEPT_EULA: Y
+      ports:
+      - "2001:80"

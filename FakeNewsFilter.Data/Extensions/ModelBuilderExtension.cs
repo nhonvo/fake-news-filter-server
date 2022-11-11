@@ -482,6 +482,7 @@ namespace FakeNewsFilter.Data.Extensions
                 {
                     NewsId = 1,
                     Title = "Kabul’s Sudden Fall to Taliban Ends U.S. Era in Afghanistan",
+                    Description = "Taliban fighters in Kabul, the capital, on Sunday on a Humvee seized from Afghan forces. The speed of the Taliban’s sweep through the country startled American officials. Credit...Jim Huylebroek for The New York Times",
                     LanguageId = "en",
                     UrlNews = "https://www.independent.co.uk/arts-entertainment/eurovision/the-rasmus-eurovision-2022-finland-b2077365.html",
                     ImageLink = "https://travelweekly.co.uk/images/cmstw/original/4/e/6/4/4/easid-453165-media-id-34528.jpg",
@@ -495,6 +496,7 @@ namespace FakeNewsFilter.Data.Extensions
                 {
                     NewsId = 2,
                     Title = "Texas high court blocks mask mandates in two of state's largest counties",
+                    Description = "The masking orders in Dallas and Bexar counties were issued after a lower court ruled last week in favor of local officials.",
                     UrlNews = "https://www.wltx.com/article/sports/clemson/101-15d947ca-db30-4440-b99a-a1e5a6f4ca35",
                     ImageLink = "https://media.wltx.com/assets/WLTX/images/cd8afe4e-86f9-487f-b8b4-5e9313da807e/cd8afe4e-86f9-487f-b8b4-5e9313da807e_1140x641.jpg",
                     LanguageId = "en",

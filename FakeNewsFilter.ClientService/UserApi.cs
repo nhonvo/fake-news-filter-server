@@ -39,6 +39,7 @@ namespace FakeNewsFilter.ClientServices
 
         private readonly IHttpContextAccessor _httpContextAccessor;
 
+
         public UserApi(IHttpClientFactory httpClientFactory, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _httpClientFactory = httpClientFactory;
@@ -46,6 +47,7 @@ namespace FakeNewsFilter.ClientServices
             _httpContextAccessor = httpContextAccessor;
         }
 
+        
         //Đăng nhập 
         public async Task<ApiResult<TokenResult>> Authenticate(LoginRequest request)
         {

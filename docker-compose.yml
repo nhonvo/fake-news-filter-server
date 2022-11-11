@@ -2,21 +2,37 @@ version: '3.4'
 
 services:
   fakenewsfilter.api:
-    image: ${DOCKER_REGISTRY-}fakenewsfilter
+    image: fakenewsfilter
     build:
       context: .
       dockerfile: FakeNewsFilter.API/Dockerfile
+    depends_on:
+        - db
 
   fakenewsfilter.adminapp:
-    image: ${DOCKER_REGISTRY-}fakenewsfilter
+    image: fakenewsfilter
     build:
       context: .
       dockerfile: FakeNewsFilter.AdminApp/Dockerfile
 
 
   fakenewsfilter.userapp:
-    image: ${DOCKER_REGISTRY-}fakenewsfilter
+    image: fakenewsfilter
     build:
       context: .
       dockerfile: FakeNewsFilter.UserApp/Dockerfile
+   
 
+  redis:
+    image: redis
+    ports: ["6379"]
+
+
+  db:
+    image: "mcr.microsoft.com/azure-sql-edge"
+    ports:
+        - "1433:1433"
+    environment:
+            MSSQL_SA_PASSWORD: "MyPass@word"
+            ACCEPT_EULA: "Y"
+            MSSQL_USER: "SA"

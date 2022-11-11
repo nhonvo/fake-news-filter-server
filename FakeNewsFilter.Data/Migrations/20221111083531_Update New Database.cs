@@ -64,7 +64,7 @@ namespace FakeNewsFilter.Data.Migrations
                     SortOrder = table.Column<int>(type: "int", nullable: false),
                     Duration = table.Column<int>(type: "int", nullable: false),
                     FileSize = table.Column<long>(type: "bigint", nullable: false),
-                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2022, 8, 12, 16, 34, 59, 223, DateTimeKind.Local).AddTicks(4290))
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2022, 11, 11, 15, 35, 30, 700, DateTimeKind.Local).AddTicks(6200))
                 },
                 constraints: table =>
                 {
@@ -152,7 +152,7 @@ namespace FakeNewsFilter.Data.Migrations
                     VersionNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Platform = table.Column<int>(type: "int", nullable: false),
-                    CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2022, 8, 12, 16, 34, 59, 225, DateTimeKind.Local).AddTicks(6020)),
+                    CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2022, 11, 11, 15, 35, 30, 702, DateTimeKind.Local).AddTicks(9630)),
                     ReleaseTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     isRequired = table.Column<bool>(type: "bit", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false)
@@ -168,7 +168,8 @@ namespace FakeNewsFilter.Data.Migrations
                 {
                     NewsId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     OfficialRating = table.Column<int>(type: "int", nullable: false),
                     ImageLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UrlNews = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -178,7 +179,7 @@ namespace FakeNewsFilter.Data.Migrations
                     ViewCount = table.Column<int>(type: "int", nullable: false),
                     SourceCreate = table.Column<int>(type: "int", nullable: false),
                     DatePublished = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2022, 8, 12, 16, 34, 59, 222, DateTimeKind.Local).AddTicks(590)),
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2022, 11, 11, 15, 35, 30, 698, DateTimeKind.Local).AddTicks(8020)),
                     Status = table.Column<int>(type: "int", nullable: false, defaultValue: 1),
                     LanguageId = table.Column<string>(type: "varchar(5)", unicode: false, maxLength: 5, nullable: false)
                 },
@@ -281,7 +282,7 @@ namespace FakeNewsFilter.Data.Migrations
                     StoryId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Thumbstory = table.Column<int>(type: "int", nullable: true),
-                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2022, 8, 12, 16, 34, 59, 224, DateTimeKind.Local).AddTicks(1350)),
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2022, 11, 11, 15, 35, 30, 701, DateTimeKind.Local).AddTicks(5580)),
                     Link = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SourceId = table.Column<int>(type: "int", nullable: false),
                     LanguageId = table.Column<string>(type: "varchar(5)", unicode: false, maxLength: 5, nullable: false),
@@ -320,7 +321,7 @@ namespace FakeNewsFilter.Data.Migrations
                     ParentId = table.Column<int>(type: "int", nullable: true),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false, defaultValue: 1),
-                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2022, 8, 12, 16, 34, 59, 224, DateTimeKind.Local).AddTicks(9120))
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2022, 11, 11, 15, 35, 30, 702, DateTimeKind.Local).AddTicks(850))
                 },
                 constraints: table =>
                 {
@@ -355,7 +356,7 @@ namespace FakeNewsFilter.Data.Migrations
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Screenshoot = table.Column<int>(type: "int", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2022, 8, 12, 16, 34, 59, 225, DateTimeKind.Local).AddTicks(7670))
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2022, 11, 11, 15, 35, 30, 703, DateTimeKind.Local).AddTicks(1570))
                 },
                 constraints: table =>
                 {
@@ -388,7 +389,7 @@ namespace FakeNewsFilter.Data.Migrations
                     Source = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsPopular = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DatePublished = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2022, 8, 12, 16, 34, 59, 224, DateTimeKind.Local).AddTicks(9820)),
+                    DatePublished = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2022, 11, 11, 15, 35, 30, 702, DateTimeKind.Local).AddTicks(1710)),
                     ThumbNews = table.Column<int>(type: "int", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     LanguageId = table.Column<string>(type: "varchar(5)", unicode: false, maxLength: 5, nullable: false)
@@ -447,7 +448,7 @@ namespace FakeNewsFilter.Data.Migrations
                     Label = table.Column<string>(type: "nvarchar(max)", nullable: true, defaultValue: "normal"),
                     Tag = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2022, 8, 12, 16, 34, 59, 221, DateTimeKind.Local).AddTicks(4660)),
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2022, 11, 11, 15, 35, 30, 698, DateTimeKind.Local).AddTicks(1040)),
                     Status = table.Column<int>(type: "int", nullable: false, defaultValue: 1),
                     ThumbTopic = table.Column<int>(type: "int", nullable: true),
                     LanguageId = table.Column<string>(type: "varchar(5)", unicode: false, maxLength: 5, nullable: false),
@@ -505,7 +506,7 @@ namespace FakeNewsFilter.Data.Migrations
                     NewsId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     isReal = table.Column<bool>(type: "bit", nullable: false),
-                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2022, 8, 12, 16, 34, 59, 223, DateTimeKind.Local).AddTicks(6540))
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2022, 11, 11, 15, 35, 30, 700, DateTimeKind.Local).AddTicks(9300))
                 },
                 constraints: table =>
                 {
@@ -554,7 +555,7 @@ namespace FakeNewsFilter.Data.Migrations
                 {
                     NewsId = table.Column<int>(type: "int", nullable: false),
                     TopicId = table.Column<int>(type: "int", nullable: false),
-                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2022, 8, 12, 16, 34, 59, 222, DateTimeKind.Local).AddTicks(5770))
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2022, 11, 11, 15, 35, 30, 699, DateTimeKind.Local).AddTicks(4800))
                 },
                 constraints: table =>
                 {
@@ -592,28 +593,32 @@ namespace FakeNewsFilter.Data.Migrations
                 columns: new[] { "MediaId", "Caption", "DateCreated", "Duration", "FileSize", "PathMedia", "SortOrder", "Type" },
                 values: new object[,]
                 {
-                    { 1, null, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7340), 0, 0L, "covid.jpeg", 0, 1 },
-                    { 2, null, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7350), 0, 0L, "taliban.jpeg", 0, 1 },
-                    { 3, null, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7350), 0, 0L, "kinh-te-tg.jpeg", 0, 1 },
-                    { 4, null, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7350), 0, 0L, "ngvietnamchau.jpeg", 0, 1 },
-                    { 5, null, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7350), 0, 0L, "doanh-nghiep.jpeg", 0, 1 },
-                    { 6, null, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7350), 0, 0L, "chon truong.jpeg", 0, 1 },
-                    { 7, null, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7350), 0, 0L, "congnghegame.jpeg", 0, 1 },
-                    { 8, null, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7350), 0, 0L, "congnghemoi.jpeg", 0, 1 },
-                    { 9, null, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7350), 0, 0L, "phongsu.jpeg", 0, 1 },
-                    { 10, null, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7360), 0, 0L, "giaothong.jpeg", 0, 1 },
-                    { 11, null, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7360), 0, 0L, "chungkhoan.jpeg", 0, 1 },
-                    { 12, null, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7360), 0, 0L, "khoahocvn.jpeg", 0, 1 },
-                    { 13, null, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7360), 0, 0L, "the-thao1.jpeg", 0, 1 },
-                    { 14, null, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7360), 0, 0L, "newsid1.jpg", 0, 1 },
-                    { 15, null, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7360), 0, 0L, "newsid2.jpg", 0, 1 },
-                    { 16, null, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7360), 0, 0L, "newsid3.jpg", 0, 1 },
-                    { 17, null, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7370), 0, 0L, "newsid4.jpg", 0, 1 },
-                    { 18, null, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7370), 0, 0L, "newsid5.jpg", 0, 1 },
-                    { 19, null, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7370), 0, 0L, "newsid6.png", 0, 1 },
-                    { 20, null, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7370), 0, 0L, "newsid7.jpg", 0, 1 },
-                    { 21, null, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7370), 0, 0L, "newsid8.jpg", 0, 1 },
-                    { 22, null, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7370), 0, 0L, "newsid9.jpg", 0, 1 }
+                    { 1, null, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2860), 0, 0L, "covid.jpeg", 0, 1 },
+                    { 2, null, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2860), 0, 0L, "taliban.jpeg", 0, 1 },
+                    { 3, null, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2860), 0, 0L, "kinh-te-tg.jpeg", 0, 1 },
+                    { 4, null, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2860), 0, 0L, "ngvietnamchau.jpeg", 0, 1 },
+                    { 5, null, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2870), 0, 0L, "doanh-nghiep.jpeg", 0, 1 },
+                    { 6, null, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2870), 0, 0L, "chon truong.jpeg", 0, 1 },
+                    { 7, null, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2870), 0, 0L, "congnghegame.jpeg", 0, 1 },
+                    { 8, null, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2870), 0, 0L, "congnghemoi.jpeg", 0, 1 },
+                    { 9, null, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2870), 0, 0L, "phongsu.jpeg", 0, 1 },
+                    { 10, null, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2870), 0, 0L, "giaothong.jpeg", 0, 1 },
+                    { 11, null, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2880), 0, 0L, "chungkhoan.jpeg", 0, 1 },
+                    { 12, null, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2880), 0, 0L, "khoahocvn.jpeg", 0, 1 },
+                    { 13, null, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2880), 0, 0L, "the-thao1.jpeg", 0, 1 },
+                    { 14, null, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2880), 0, 0L, "newsid1.jpg", 0, 1 },
+                    { 15, null, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2880), 0, 0L, "newsid2.jpg", 0, 1 },
+                    { 16, null, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2880), 0, 0L, "newsid3.jpg", 0, 1 },
+                    { 17, null, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2890), 0, 0L, "newsid4.jpg", 0, 1 },
+                    { 18, null, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2890), 0, 0L, "newsid5.jpg", 0, 1 },
+                    { 19, null, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2890), 0, 0L, "newsid6.png", 0, 1 },
+                    { 20, null, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2890), 0, 0L, "newsid7.jpg", 0, 1 },
+                    { 21, null, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2890), 0, 0L, "newsid8.jpg", 0, 1 },
+                    { 22, null, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2890), 0, 0L, "newsid9.jpg", 0, 1 },
+                    { 23, null, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2900), 0, 0L, "technology.jpeg", 0, 1 },
+                    { 24, null, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2900), 0, 0L, "sports.jpeg", 0, 1 },
+                    { 25, null, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2900), 0, 0L, "health.jpeg", 0, 1 },
+                    { 26, null, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2900), 0, 0L, "entertainment.jpeg", 0, 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -621,8 +626,8 @@ namespace FakeNewsFilter.Data.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { new Guid("a3314be5-4c77-4fb6-82ad-302014682a73"), "bba260c3-e298-4822-ab0e-a0123702cd5d", "Admin", "Admin" },
-                    { new Guid("b4314be5-4c77-4fb6-82ad-302014682b13"), "257b5145-b2da-41b7-8587-75279334a36d", "Subscriber", "Subscriber" }
+                    { new Guid("a3314be5-4c77-4fb6-82ad-302014682a73"), "fa7335a3-b8fe-4a70-b150-6da5138dd22b", "Admin", "Admin" },
+                    { new Guid("b4314be5-4c77-4fb6-82ad-302014682b13"), "5c5fa2be-33c7-4a86-abc7-2cb7ce661a98", "Subscriber", "Subscriber" }
                 });
 
             migrationBuilder.InsertData(
@@ -630,49 +635,49 @@ namespace FakeNewsFilter.Data.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "AvatarId", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { new Guid("69db714f-9576-45ba-b5b7-f00649be01de"), 0, null, "a96eb8b2-2a6b-4013-87df-5b7c265f7af3", "bp.khuyen@hutech.edu.vn", true, false, null, "Bui Phu Khuyen", "BP.KHUYEN@HUTECH.EDU.VN", "khuyenpb", "AQAAAAEAACcQAAAAEOqkl69zCMUToDS4x7DBSztIQ+urpORmvxZJvyNvd9X1gbB8YFAZ5IK+oUmYstep1A==", null, false, "", false, "khuyenpb" },
-                    { new Guid("69db714f-9576-45ba-b5b7-f00649be02de"), 0, null, "6f928259-ff58-4386-b0ba-b1b97ee8b8b7", "thanh26092000@gmail.com", true, false, null, "Le Xuan Thanh", "THANH26092000@GMAIL.COM", "LXThanh", "AQAAAAEAACcQAAAAEMG7OS5WzDiZoo3b+yOWWTqXHc/KwM9Tax0F1CtV+jTSsy3amoelQzbdTsIJ+e/A0A==", null, false, "", false, "LXThanh" },
-                    { new Guid("69db714f-9576-45ba-b5b7-f00649be03de"), 0, null, "618d8d13-38a3-4daa-b6c3-01e2361bd77d", "khanh200111@gmail.com", true, false, null, "Huynh Huu Khanh", "KHANH200111@GMAIL.COM", "hkhansh27", "AQAAAAEAACcQAAAAELImTV9d8dKNF0QCCgzSL612cFIM6Uujh1VAlWOeqSvJvmFGBXkFbkRvDiDAh7nFCg==", null, false, "", false, "hkhansh27" },
-                    { new Guid("69db714f-9576-45ba-b5b7-f00649be04de"), 0, null, "527976ca-a7ed-4d0e-9e08-7070b5ee4623", "hi@phucs.me", true, false, null, "To Hoang Phuc", "HI@PHUCS.ME", "HoangPhuc", "AQAAAAEAACcQAAAAEAlfWjK/9y+YpEMqCY0C27plADl5lCeL3eqEUC6YE6QODkFK45DlmqFCMOWdL2QW6g==", null, false, "", false, "HoangPhuc" }
+                    { new Guid("69db714f-9576-45ba-b5b7-f00649be01de"), 0, null, "73572192-be40-49c4-92d9-c872e052ab71", "bp.khuyen@hutech.edu.vn", true, false, null, "Bui Phu Khuyen", "BP.KHUYEN@HUTECH.EDU.VN", "khuyenpb", "AQAAAAEAACcQAAAAEBjLcxWLceZ/pG272JK6z9OW5WTJUxF6G0HsFUSlvdJJeWUnyxtJL/4dREsQTRyUHg==", null, false, "", false, "khuyenpb" },
+                    { new Guid("69db714f-9576-45ba-b5b7-f00649be02de"), 0, null, "03226b6d-9dda-4a26-a64a-066831000bcd", "thanh26092000@gmail.com", true, false, null, "Le Xuan Thanh", "THANH26092000@GMAIL.COM", "LXThanh", "AQAAAAEAACcQAAAAEIA24bFegKjqN9VQJlQfCg2sDZkpudAyx3/YVdi7A1ShvJOeck5zVlPx4oDpQw0bMA==", null, false, "", false, "LXThanh" },
+                    { new Guid("69db714f-9576-45ba-b5b7-f00649be03de"), 0, null, "34d70d3d-d4cc-4d4f-abd9-67dd70351eae", "khanh200111@gmail.com", true, false, null, "Huynh Huu Khanh", "KHANH200111@GMAIL.COM", "hkhansh27", "AQAAAAEAACcQAAAAEB7v+xau9xPtS1fq1UDNoum9oAqQpf/HKFTEfd46otwMgfK+DAUPcqTrbilWPmNY6w==", null, false, "", false, "hkhansh27" },
+                    { new Guid("69db714f-9576-45ba-b5b7-f00649be04de"), 0, null, "e8e9c625-debd-4b7a-b9a8-17ad891eb42d", "hi@phucs.me", true, false, null, "To Hoang Phuc", "HI@PHUCS.ME", "HoangPhuc", "AQAAAAEAACcQAAAAELR5tJCLIUyYPo8Z43iqaGAZXKTzBWjgKFIryKFWUGa97Cd+nAwXkvBy1CDj5wPb2Q==", null, false, "", false, "HoangPhuc" }
                 });
 
             migrationBuilder.InsertData(
                 table: "News",
-                columns: new[] { "NewsId", "DatePublished", "ImageLink", "LanguageId", "OfficialRating", "Publisher", "SocialBeliefs", "SourceCreate", "Timestamp", "Title", "UrlNews", "ViewCount" },
+                columns: new[] { "NewsId", "DatePublished", "Description", "ImageLink", "LanguageId", "OfficialRating", "Publisher", "SocialBeliefs", "SourceCreate", "Timestamp", "Title", "UrlNews", "ViewCount" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2021, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://travelweekly.co.uk/images/cmstw/original/4/e/6/4/4/easid-453165-media-id-34528.jpg", "en", 0, "New York Times", 0.0, 1, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7390), "Kabul’s Sudden Fall to Taliban Ends U.S. Era in Afghanistan", "https://www.independent.co.uk/arts-entertainment/eurovision/the-rasmus-eurovision-2022-finland-b2077365.html", 0 },
-                    { 2, new DateTime(2021, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://media.wltx.com/assets/WLTX/images/cd8afe4e-86f9-487f-b8b4-5e9313da807e/cd8afe4e-86f9-487f-b8b4-5e9313da807e_1140x641.jpg", "en", 0, "NBC News", 0.0, 1, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7400), "Texas high court blocks mask mandates in two of state's largest counties", "https://www.wltx.com/article/sports/clemson/101-15d947ca-db30-4440-b99a-a1e5a6f4ca35", 0 },
-                    { 3, new DateTime(2021, 4, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://media.wltx.com/assets/WLTX/images/cd8afe4e-86f9-487f-b8b4-5e9313da807e/cd8afe4e-86f9-487f-b8b4-5e9313da807e_1140x641.jpg", "en", 2, null, 0.0, 1, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7400), "Hospitalizations of Americans under 50 have reached new pandemic highs", "https://www.wltx.com/article/sports/clemson/101-15d947ca-db30-4440-b99a-a1e5a6f4ca35", 0 },
-                    { 5, new DateTime(2021, 7, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://cdnimg.vietnamplus.vn/t620/uploaded/fsmsy/2021_07_26/phun_khu_khuan.jpg", "vi", 2, "TTXVN/Vietnam", 0.0, 2, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7400), "Thông tin TP.HCM dùng 5 trực thăng phun khử khuẩn là sai sự thật", "https://www.vietnamplus.vn/thong-tin-tphcm-su-dung-5-truc-thang-phun-khu-trung-la-sai-su-that/729372.vnp", 0 },
-                    { 6, new DateTime(2021, 8, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://www.baobaclieu.vn/uploads/image/2021/08/06/13b.jpg", "vi", 1, "Báo Bạc Liêu", 0.0, 2, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7400), "Mạnh tay xử lý hành vi đưa tin giả liên quan đến dịch Covid – 19", "https://www.baobaclieu.vn/quoc-phong-an-ninh/manh-tay-xu-ly-tin-gia-tin-sai-su-that-ve-dich-covid-19-tren-mang-72306.html", 0 },
-                    { 7, new DateTime(2022, 5, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://img.nhandan.com.vn/Files/Images/2022/05/12/Hai_truong_hop_lam_viec_voi_co_q-1652343768786.jpg", "vi", 1, "Báo Nhân Dân", 0.0, 2, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7400), "Thông tin nguồn nước Thánh Thiên chữa được Covid-19 là sai sự thật", "https://nhandan.vn/factcheck/thong-tin-nguon-nuoc-thanh-thien-co-the-chua-covid-19-la-sai-su-that-696816/", 0 },
-                    { 8, new DateTime(2021, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://file1.dangcongsan.vn/data/0/images/2021/10/01/vulinh/dfhgdfh.jpg?dpi=150&quality=100&w=780", "vi", 2, "DCSVN", 0.0, 2, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7400), "Bạc Liêu: Mắc Covid-19 được “ưu ái điều trị tại nhà” là sai sự thật", "https://dangcongsan.vn/canh-bao-thong-tin-gia/bac-lieu-mac-covid-19-duoc-uu-ai-dieu-tri-tai-nha-la-sai-su-that-592693.html", 0 },
-                    { 9, new DateTime(2021, 9, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://file1.dangcongsan.vn/data/0/images/2021/09/21/vulinh/video-man-1632200081574.jpg?dpi=150&quality=100&w=780", "vi", 1, "DCSVN", 0.0, 2, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7410), "“Chiến dịch tiêm vaccine ngừa Covid-19 cho trẻ em 12-15 tuổi ở xứ Anh bị tạm dừng” là không chính xác", "https://dangcongsan.vn/canh-bao-thong-tin-gia/chien-dich-tiem-vaccine-ngua-covid-19-cho-tre-em-12-15-tuoi-o-xu-anh-bi-tam-dung-la-khong-chinh-xac-591591.html", 0 },
-                    { 10, new DateTime(2021, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://image.thanhnien.vn/w2048/Uploaded/2022/pwivoviu/2021_11_29/1-bai-3-1687.jpg", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7410), "Săn 'lộc trời': Lội suối nhặt ốc, vào thủ phủ cá chình", "https://thanhnien.vn/san-loc-troi-loi-suoi-nhat-oc-vao-thu-phu-ca-chinh-post1406363.html", 0 },
-                    { 11, new DateTime(2021, 11, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://image.thanhnien.vn/w2048/Uploaded/2022/wsxrxqeiod/2021_11_24/nghe-viet-1372.jpg", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7410), "Nghề Việt - Nét Việt: Nghề trai Chuôn Ngọ", "https://thanhnien.vn/nghe-viet-net-viet-nghe-trai-chuon-ngo-post1404658.html", 0 },
-                    { 12, new DateTime(2021, 11, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://image.thanhnien.vn/w2048/Uploaded/2022/wsxrxqeiod/2021_11_24/cao-su-7917.jpg", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7410), "Nỗi lòng người cạo mủ cao su", "https://thanhnien.vn/noi-long-nguoi-cao-mu-cao-su-post1404643.html", 0 },
-                    { 13, new DateTime(2021, 4, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://image.thanhnien.vn/w2048/Uploaded/2022/fsmxy/2021_11_27/drai-dlong-8588.png", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7410), "Khám phá thác ba nhánh hùng vĩ ít người biết giữa Tây Nguyên", "https://thanhnien.vn/kham-pha-thac-ba-nhanh-hung-vi-it-nguoi-biet-giua-tay-nguyen-post1405776.html", 0 },
-                    { 14, new DateTime(2021, 4, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://image.thanhnien.vn/w2048/Uploaded/2022/fsmxy/2021_11_21/noi-hap-xoi-co-4376.png", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7420), "Chiếc nồi cổ ‘thần kỳ’ tạo ra món xôi độc đáo của người Nùng ở Đắk Lắk", "https://thanhnien.vn/chiec-noi-co-than-ky-tao-ra-mon-xoi-doc-dao-cua-nguoi-nung-o-dak-lak-post1403687.html", 0 },
-                    { 15, new DateTime(2021, 11, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://image.thanhnien.vn/w2048/Uploaded/2022/pwivoviu/2021_11_27/22b1-5885.jpg", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7420), "Những đứa con tìm về nguồn cội", "https://thanhnien.vn/nhung-dua-con-tim-ve-nguon-coi-post1405816.html", 0 },
-                    { 16, new DateTime(2021, 11, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://image.thanhnien.vn/w2048/Uploaded/2022/wsxrxqeiod/2021_11_20/trien-lam-5546.jpg", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7420), "Mang chất Việt vào tranh in trên đất Mỹ", "https://thanhnien.vn/mang-chat-viet-vao-tranh-in-tren-dat-my-post1403198.html", 0 },
-                    { 17, new DateTime(2021, 4, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://image.thanhnien.vn/w2048/Uploaded/2022/pwivoviu/2021_11_13/22a1-5500.jpg", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7420), "Người phụ nữ Việt phát triển vật liệu phủ chống cháy ở Úc", "https://thanhnien.vn/nguoi-phu-nu-viet-phat-trien-vat-lieu-phu-chong-chay-o-uc-post1401084.html", 0 },
-                    { 18, new DateTime(2021, 4, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://image.thanhnien.vn/w2048/Uploaded/2022/pwivoviu/2021_11_13/hinh-1-3868.png", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7430), "Cảm hứng từ bữa ăn Việt của bà", "https://thanhnien.vn/cam-hung-tu-bua-an-viet-cua-ba-post1401081.html", 0 },
-                    { 19, new DateTime(2021, 9, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://image.thanhnien.vn/w2048/Uploaded/2022/rfnmf/2021_11_30/tau-metro-2-acxy-8311.jpg", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7430), "Gặp bão, đoàn tàu metro trễ hẹn về TP.HCM", "https://thanhnien.vn/gap-bao-doan-tau-metro-tre-hen-ve-tp-hcm-post1406682.html", 0 },
-                    { 20, new DateTime(2021, 11, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://image.thanhnien.vn/w2048/Uploaded/2022/vjryqdxwp/2021_11_30/satthep-chihieu-uver-keev-9147.jpg", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7430), "Xuất khẩu thép lần đầu cán mốc 10 tỉ USD", "https://thanhnien.vn/xuat-khau-thep-lan-dau-can-moc-10-ti-usd-post1406650.html", 0 },
-                    { 21, new DateTime(2021, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://image.thanhnien.vn/w2048/Uploaded/2022/pwivoviu/2021_11_30/2a2-8280.jpg", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7430), "TP.HCM khát vốn cho giao thông", "https://thanhnien.vn/tp-hcm-khat-von-cho-giao-thong-post1406453.html", 0 },
-                    { 22, new DateTime(2021, 4, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://image.thanhnien.vn/w2048/Uploaded/2022/wpxlcqjwq/2021_11_26/kieu-hoi-3276.jpg", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7430), "Lượng kiều hối tăng mạnh kỷ lục", "https://thanhnien.vn/luong-kieu-hoi-tang-manh-ky-luc-post1405536.html", 0 },
-                    { 23, new DateTime(2021, 4, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://image.thanhnien.vn/w2048/Uploaded/2022/wpxlcqjwq/2021_11_24/chung-khoan-9665.jpg", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7430), "Dòng vốn mạnh đưa chứng khoán lập đỉnh", "https://thanhnien.vn/dong-von-manh-dua-chung-khoan-lap-dinh-post1404799.html", 0 },
-                    { 24, new DateTime(2021, 12, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://image.thanhnien.vn/w2048/Uploaded/2022/bpcgvoiv/2021_11_30/a1-dtan-4946.jpg", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7440), "Tin tức giáo dục đặc biệt 1.12: Dạy sử bằng nội dung cảm xúc hay sự kiện?", "https://thanhnien.vn/tin-tuc-giao-duc-dac-biet-1-12-day-su-bang-noi-dung-cam-xuc-hay-su-kien-post1406754.html", 0 },
-                    { 25, new DateTime(2020, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://image.thanhnien.vn/w2048/Uploaded/2022/wsxrxqeiod/2020_08_31/tuyen-sinh_chbt.jpg", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7440), "Hướng vào đại học phù hợp với điểm thi", "https://thanhnien.vn/huong-vao-dai-hoc-phu-hop-voi-diem-thi-post989845.html", 0 },
-                    { 26, new DateTime(2021, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://image.thanhnien.vn/w2048/Uploaded/2022/wobjuko/2021_11_20/anh-1-7862.jpg", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7440), "Gặp người thầy… đẹp trai nhất trường mầm non!", "https://thanhnien.vn/gap-nguoi-thay-dep-trai-nhat-truong-mam-non-post1403127.html", 0 },
-                    { 27, new DateTime(2021, 6, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://image.thanhnien.vn/w2048/Uploaded/2022/wobjuko/2021_06_05/3_cdyb.jpg", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7440), "Thầy giáo dùng tiền khen thưởng ủng hộ Quỹ phòng chống Covid-19", "https://thanhnien.vn/thay-giao-dung-tien-khen-thuong-ung-ho-quy-phong-chong-covid-19-post1075098.html", 0 },
-                    { 28, new DateTime(2021, 9, 29, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://image.thanhnien.vn/w2048/Uploaded/2022/mffsm/2021_09_29/0-1_pldi.jpg", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7440), "Khoa Y ĐH Quốc gia TP.HCM xét tuyển bổ sung cả thí sinh tự do", "https://thanhnien.vn/khoa-y-dh-quoc-gia-tp-hcm-xet-tuyen-bo-sung-ca-thi-sinh-tu-do-post1116655.html", 0 },
-                    { 29, new DateTime(2021, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://image.thanhnien.vn/w2048/Uploaded/2022/xdrkxrvekx/2021_11_30/cyberpunk-4917.png", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7450), "Bản nâng cấp Cyberpunk 2077 sẽ miễn phí cho chủ sở hữu PS4 và Xbox One", "https://thanhnien.vn/ban-nang-cap-cyberpunk-2077-se-mien-phi-cho-chu-so-huu-ps4-va-xbox-one-post1406595.html", 0 },
-                    { 30, new DateTime(2021, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://image.thanhnien.vn/w2048/Uploaded/2022/dbeyxqxqrs/2021_11_30/1-8294.png", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7450), "Phi Vụ Triệu Đô tái kết hợp Free Fire trong phần đặc biệt: Phi Vụ Cuối Cùng tháng 12 này", "https://thanhnien.vn/phi-vu-trieu-do-tai-ket-hop-free-fire-trong-phan-dac-biet-phi-vu-cuoi-cung-thang-12-nay-post1406503.html", 0 },
-                    { 31, new DateTime(2021, 11, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://image.thanhnien.vn/w2048/Uploaded/2022/xdrkxrvekx/2021_11_23/image0-500.png", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7450), "Việt Nam lọt Top 5 đội LMHT: Tốc Chiến thế giới", "https://thanhnien.vn/viet-nam-lot-top-5-doi-lmht-toc-chien-the-gioi-post1404103.html", 0 },
-                    { 32, new DateTime(2021, 11, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://image.thanhnien.vn/w2048/Uploaded/2022/xdrkxrvekx/2021_11_22/1-3692.jpg", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7450), "Riot Games để lộ 4 địa điểm của Chung kết LMHT Thế giới 2022", "https://thanhnien.vn/riot-games-de-lo-4-dia-diem-cua-chung-ket-lmht-the-gioi-2022-post1403726.html", 0 },
-                    { 33, new DateTime(2021, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://image.thanhnien.vn/w2048/Uploaded/2022/xdrkxrvekx/2021_11_15/picture2-6769.png", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7450), "Arcane giúp Vi và Jinx tăng vọt tỉ lệ được chọn trong LMHT", "https://thanhnien.vn/arcane-giup-vi-va-jinx-tang-vot-ti-le-duoc-chon-trong-lmht-post1401689.html", 0 }
+                    { 1, new DateTime(2021, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "Taliban fighters in Kabul, the capital, on Sunday on a Humvee seized from Afghan forces. The speed of the Taliban’s sweep through the country startled American officials. Credit...Jim Huylebroek for The New York Times", "https://travelweekly.co.uk/images/cmstw/original/4/e/6/4/4/easid-453165-media-id-34528.jpg", "en", 0, "New York Times", 0.0, 1, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2920), "Kabul’s Sudden Fall to Taliban Ends U.S. Era in Afghanistan", "https://www.independent.co.uk/arts-entertainment/eurovision/the-rasmus-eurovision-2022-finland-b2077365.html", 0 },
+                    { 2, new DateTime(2021, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "The masking orders in Dallas and Bexar counties were issued after a lower court ruled last week in favor of local officials.", "https://media.wltx.com/assets/WLTX/images/cd8afe4e-86f9-487f-b8b4-5e9313da807e/cd8afe4e-86f9-487f-b8b4-5e9313da807e_1140x641.jpg", "en", 0, "NBC News", 0.0, 1, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2930), "Texas high court blocks mask mandates in two of state's largest counties", "https://www.wltx.com/article/sports/clemson/101-15d947ca-db30-4440-b99a-a1e5a6f4ca35", 0 },
+                    { 3, new DateTime(2021, 4, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "https://media.wltx.com/assets/WLTX/images/cd8afe4e-86f9-487f-b8b4-5e9313da807e/cd8afe4e-86f9-487f-b8b4-5e9313da807e_1140x641.jpg", "en", 2, null, 0.0, 1, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2930), "Hospitalizations of Americans under 50 have reached new pandemic highs", "https://www.wltx.com/article/sports/clemson/101-15d947ca-db30-4440-b99a-a1e5a6f4ca35", 0 },
+                    { 5, new DateTime(2021, 7, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "https://cdnimg.vietnamplus.vn/t620/uploaded/fsmsy/2021_07_26/phun_khu_khuan.jpg", "vi", 2, "TTXVN/Vietnam", 0.0, 2, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2940), "Thông tin TP.HCM dùng 5 trực thăng phun khử khuẩn là sai sự thật", "https://www.vietnamplus.vn/thong-tin-tphcm-su-dung-5-truc-thang-phun-khu-trung-la-sai-su-that/729372.vnp", 0 },
+                    { 6, new DateTime(2021, 8, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "https://www.baobaclieu.vn/uploads/image/2021/08/06/13b.jpg", "vi", 1, "Báo Bạc Liêu", 0.0, 2, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2940), "Mạnh tay xử lý hành vi đưa tin giả liên quan đến dịch Covid – 19", "https://www.baobaclieu.vn/quoc-phong-an-ninh/manh-tay-xu-ly-tin-gia-tin-sai-su-that-ve-dich-covid-19-tren-mang-72306.html", 0 },
+                    { 7, new DateTime(2022, 5, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "https://img.nhandan.com.vn/Files/Images/2022/05/12/Hai_truong_hop_lam_viec_voi_co_q-1652343768786.jpg", "vi", 1, "Báo Nhân Dân", 0.0, 2, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2940), "Thông tin nguồn nước Thánh Thiên chữa được Covid-19 là sai sự thật", "https://nhandan.vn/factcheck/thong-tin-nguon-nuoc-thanh-thien-co-the-chua-covid-19-la-sai-su-that-696816/", 0 },
+                    { 8, new DateTime(2021, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "https://file1.dangcongsan.vn/data/0/images/2021/10/01/vulinh/dfhgdfh.jpg?dpi=150&quality=100&w=780", "vi", 2, "DCSVN", 0.0, 2, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2940), "Bạc Liêu: Mắc Covid-19 được “ưu ái điều trị tại nhà” là sai sự thật", "https://dangcongsan.vn/canh-bao-thong-tin-gia/bac-lieu-mac-covid-19-duoc-uu-ai-dieu-tri-tai-nha-la-sai-su-that-592693.html", 0 },
+                    { 9, new DateTime(2021, 9, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "https://file1.dangcongsan.vn/data/0/images/2021/09/21/vulinh/video-man-1632200081574.jpg?dpi=150&quality=100&w=780", "vi", 1, "DCSVN", 0.0, 2, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2950), "“Chiến dịch tiêm vaccine ngừa Covid-19 cho trẻ em 12-15 tuổi ở xứ Anh bị tạm dừng” là không chính xác", "https://dangcongsan.vn/canh-bao-thong-tin-gia/chien-dich-tiem-vaccine-ngua-covid-19-cho-tre-em-12-15-tuoi-o-xu-anh-bi-tam-dung-la-khong-chinh-xac-591591.html", 0 },
+                    { 10, new DateTime(2021, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "https://image.thanhnien.vn/w2048/Uploaded/2022/pwivoviu/2021_11_29/1-bai-3-1687.jpg", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2950), "Săn 'lộc trời': Lội suối nhặt ốc, vào thủ phủ cá chình", "https://thanhnien.vn/san-loc-troi-loi-suoi-nhat-oc-vao-thu-phu-ca-chinh-post1406363.html", 0 },
+                    { 11, new DateTime(2021, 11, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "https://image.thanhnien.vn/w2048/Uploaded/2022/wsxrxqeiod/2021_11_24/nghe-viet-1372.jpg", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2950), "Nghề Việt - Nét Việt: Nghề trai Chuôn Ngọ", "https://thanhnien.vn/nghe-viet-net-viet-nghe-trai-chuon-ngo-post1404658.html", 0 },
+                    { 12, new DateTime(2021, 11, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "https://image.thanhnien.vn/w2048/Uploaded/2022/wsxrxqeiod/2021_11_24/cao-su-7917.jpg", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2950), "Nỗi lòng người cạo mủ cao su", "https://thanhnien.vn/noi-long-nguoi-cao-mu-cao-su-post1404643.html", 0 },
+                    { 13, new DateTime(2021, 4, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "https://image.thanhnien.vn/w2048/Uploaded/2022/fsmxy/2021_11_27/drai-dlong-8588.png", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2950), "Khám phá thác ba nhánh hùng vĩ ít người biết giữa Tây Nguyên", "https://thanhnien.vn/kham-pha-thac-ba-nhanh-hung-vi-it-nguoi-biet-giua-tay-nguyen-post1405776.html", 0 },
+                    { 14, new DateTime(2021, 4, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "https://image.thanhnien.vn/w2048/Uploaded/2022/fsmxy/2021_11_21/noi-hap-xoi-co-4376.png", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2960), "Chiếc nồi cổ ‘thần kỳ’ tạo ra món xôi độc đáo của người Nùng ở Đắk Lắk", "https://thanhnien.vn/chiec-noi-co-than-ky-tao-ra-mon-xoi-doc-dao-cua-nguoi-nung-o-dak-lak-post1403687.html", 0 },
+                    { 15, new DateTime(2021, 11, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "https://image.thanhnien.vn/w2048/Uploaded/2022/pwivoviu/2021_11_27/22b1-5885.jpg", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2960), "Những đứa con tìm về nguồn cội", "https://thanhnien.vn/nhung-dua-con-tim-ve-nguon-coi-post1405816.html", 0 },
+                    { 16, new DateTime(2021, 11, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "https://image.thanhnien.vn/w2048/Uploaded/2022/wsxrxqeiod/2021_11_20/trien-lam-5546.jpg", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2960), "Mang chất Việt vào tranh in trên đất Mỹ", "https://thanhnien.vn/mang-chat-viet-vao-tranh-in-tren-dat-my-post1403198.html", 0 },
+                    { 17, new DateTime(2021, 4, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "https://image.thanhnien.vn/w2048/Uploaded/2022/pwivoviu/2021_11_13/22a1-5500.jpg", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2960), "Người phụ nữ Việt phát triển vật liệu phủ chống cháy ở Úc", "https://thanhnien.vn/nguoi-phu-nu-viet-phat-trien-vat-lieu-phu-chong-chay-o-uc-post1401084.html", 0 },
+                    { 18, new DateTime(2021, 4, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "https://image.thanhnien.vn/w2048/Uploaded/2022/pwivoviu/2021_11_13/hinh-1-3868.png", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2970), "Cảm hứng từ bữa ăn Việt của bà", "https://thanhnien.vn/cam-hung-tu-bua-an-viet-cua-ba-post1401081.html", 0 },
+                    { 19, new DateTime(2021, 9, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "https://image.thanhnien.vn/w2048/Uploaded/2022/rfnmf/2021_11_30/tau-metro-2-acxy-8311.jpg", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2970), "Gặp bão, đoàn tàu metro trễ hẹn về TP.HCM", "https://thanhnien.vn/gap-bao-doan-tau-metro-tre-hen-ve-tp-hcm-post1406682.html", 0 },
+                    { 20, new DateTime(2021, 11, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "https://image.thanhnien.vn/w2048/Uploaded/2022/vjryqdxwp/2021_11_30/satthep-chihieu-uver-keev-9147.jpg", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2970), "Xuất khẩu thép lần đầu cán mốc 10 tỉ USD", "https://thanhnien.vn/xuat-khau-thep-lan-dau-can-moc-10-ti-usd-post1406650.html", 0 },
+                    { 21, new DateTime(2021, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "https://image.thanhnien.vn/w2048/Uploaded/2022/pwivoviu/2021_11_30/2a2-8280.jpg", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2970), "TP.HCM khát vốn cho giao thông", "https://thanhnien.vn/tp-hcm-khat-von-cho-giao-thong-post1406453.html", 0 },
+                    { 22, new DateTime(2021, 4, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "https://image.thanhnien.vn/w2048/Uploaded/2022/wpxlcqjwq/2021_11_26/kieu-hoi-3276.jpg", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2980), "Lượng kiều hối tăng mạnh kỷ lục", "https://thanhnien.vn/luong-kieu-hoi-tang-manh-ky-luc-post1405536.html", 0 },
+                    { 23, new DateTime(2021, 4, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "https://image.thanhnien.vn/w2048/Uploaded/2022/wpxlcqjwq/2021_11_24/chung-khoan-9665.jpg", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2980), "Dòng vốn mạnh đưa chứng khoán lập đỉnh", "https://thanhnien.vn/dong-von-manh-dua-chung-khoan-lap-dinh-post1404799.html", 0 },
+                    { 24, new DateTime(2021, 12, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "https://image.thanhnien.vn/w2048/Uploaded/2022/bpcgvoiv/2021_11_30/a1-dtan-4946.jpg", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2980), "Tin tức giáo dục đặc biệt 1.12: Dạy sử bằng nội dung cảm xúc hay sự kiện?", "https://thanhnien.vn/tin-tuc-giao-duc-dac-biet-1-12-day-su-bang-noi-dung-cam-xuc-hay-su-kien-post1406754.html", 0 },
+                    { 25, new DateTime(2020, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "https://image.thanhnien.vn/w2048/Uploaded/2022/wsxrxqeiod/2020_08_31/tuyen-sinh_chbt.jpg", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2980), "Hướng vào đại học phù hợp với điểm thi", "https://thanhnien.vn/huong-vao-dai-hoc-phu-hop-voi-diem-thi-post989845.html", 0 },
+                    { 26, new DateTime(2021, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "https://image.thanhnien.vn/w2048/Uploaded/2022/wobjuko/2021_11_20/anh-1-7862.jpg", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2990), "Gặp người thầy… đẹp trai nhất trường mầm non!", "https://thanhnien.vn/gap-nguoi-thay-dep-trai-nhat-truong-mam-non-post1403127.html", 0 },
+                    { 27, new DateTime(2021, 6, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "https://image.thanhnien.vn/w2048/Uploaded/2022/wobjuko/2021_06_05/3_cdyb.jpg", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2990), "Thầy giáo dùng tiền khen thưởng ủng hộ Quỹ phòng chống Covid-19", "https://thanhnien.vn/thay-giao-dung-tien-khen-thuong-ung-ho-quy-phong-chong-covid-19-post1075098.html", 0 },
+                    { 28, new DateTime(2021, 9, 29, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "https://image.thanhnien.vn/w2048/Uploaded/2022/mffsm/2021_09_29/0-1_pldi.jpg", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2990), "Khoa Y ĐH Quốc gia TP.HCM xét tuyển bổ sung cả thí sinh tự do", "https://thanhnien.vn/khoa-y-dh-quoc-gia-tp-hcm-xet-tuyen-bo-sung-ca-thi-sinh-tu-do-post1116655.html", 0 },
+                    { 29, new DateTime(2021, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "https://image.thanhnien.vn/w2048/Uploaded/2022/xdrkxrvekx/2021_11_30/cyberpunk-4917.png", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2990), "Bản nâng cấp Cyberpunk 2077 sẽ miễn phí cho chủ sở hữu PS4 và Xbox One", "https://thanhnien.vn/ban-nang-cap-cyberpunk-2077-se-mien-phi-cho-chu-so-huu-ps4-va-xbox-one-post1406595.html", 0 },
+                    { 30, new DateTime(2021, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "https://image.thanhnien.vn/w2048/Uploaded/2022/dbeyxqxqrs/2021_11_30/1-8294.png", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2990), "Phi Vụ Triệu Đô tái kết hợp Free Fire trong phần đặc biệt: Phi Vụ Cuối Cùng tháng 12 này", "https://thanhnien.vn/phi-vu-trieu-do-tai-ket-hop-free-fire-trong-phan-dac-biet-phi-vu-cuoi-cung-thang-12-nay-post1406503.html", 0 },
+                    { 31, new DateTime(2021, 11, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "https://image.thanhnien.vn/w2048/Uploaded/2022/xdrkxrvekx/2021_11_23/image0-500.png", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(3000), "Việt Nam lọt Top 5 đội LMHT: Tốc Chiến thế giới", "https://thanhnien.vn/viet-nam-lot-top-5-doi-lmht-toc-chien-the-gioi-post1404103.html", 0 },
+                    { 32, new DateTime(2021, 11, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "https://image.thanhnien.vn/w2048/Uploaded/2022/xdrkxrvekx/2021_11_22/1-3692.jpg", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(3000), "Riot Games để lộ 4 địa điểm của Chung kết LMHT Thế giới 2022", "https://thanhnien.vn/riot-games-de-lo-4-dia-diem-cua-chung-ket-lmht-the-gioi-2022-post1403726.html", 0 },
+                    { 33, new DateTime(2021, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "https://image.thanhnien.vn/w2048/Uploaded/2022/xdrkxrvekx/2021_11_15/picture2-6769.png", "vi", 0, "Báo Thanh Niên", 0.0, 2, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(3000), "Arcane giúp Vi và Jinx tăng vọt tỉ lệ được chọn trong LMHT", "https://thanhnien.vn/arcane-giup-vi-va-jinx-tang-vot-ti-le-duoc-chon-trong-lmht-post1401689.html", 0 }
                 });
 
             migrationBuilder.InsertData(
@@ -680,16 +685,16 @@ namespace FakeNewsFilter.Data.Migrations
                 columns: new[] { "TopicId", "Description", "Label", "LanguageId", "Tag", "ThumbTopic", "Timestamp", "UserId" },
                 values: new object[,]
                 {
-                    { 1, "Follow live as the Taliban seizes territory across Afghanistan in the wake of the U.S. withdrawal.", "breaking", "en", "afghanistan", null, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7300), null },
-                    { 2, "Best nonfiction features, in-depth stores and other long-form content from across the web.", "featured", "en", "in-depth", 2, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7310), null },
-                    { 3, "Outbreak of respiratory virus that has killed over 1 million and infected 100 milion worldwide.", "featured", "en", "coronavirus", null, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7310), null },
-                    { 4, "The top business and economic news from around the world with a focus on the United State.", "featured", "en", "top-business", null, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7310), null },
-                    { 5, "Follow the presidential transition of Joe Biden, including policy plans, appointments and more.", "featured", "en", "biden-admin", null, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7310), null },
-                    { 6, "Top stories from around the world with a focus on news not covered in other feeds.", "featured", "en", "top-news", null, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7320), null },
-                    { 7, "Follow important local news: politics, business, top events and more. Updated everything evening.", "featured", "en", "boston", 1, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7320), null },
-                    { 8, "Các thông tin về virut corona.", "breaking", "vi", "dịch bệnh", 3, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7320), null },
-                    { 9, "Cuộc sống của người Việt Trên toàn thế giới.", "normal", "vi", "người Việt Nam", 4, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7320), null },
-                    { 10, " Nền doanh nghiệp Việt Nam.", "normal", "vi", "Kinh tế", 5, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7320), null }
+                    { 1, "Follow live as the Taliban seizes territory across Afghanistan in the wake of the U.S. withdrawal.", "breaking", "en", "afghanistan", null, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2800), null },
+                    { 2, "Best nonfiction features, in-depth stores and other long-form content from across the web.", "featured", "en", "in-depth", 2, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2800), null },
+                    { 3, "Outbreak of respiratory virus that has killed over 1 million and infected 100 milion worldwide.", "featured", "en", "coronavirus", null, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2800), null },
+                    { 4, "The top business and economic news from around the world with a focus on the United State.", "featured", "en", "top-business", null, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2810), null },
+                    { 5, "Follow the presidential transition of Joe Biden, including policy plans, appointments and more.", "featured", "en", "biden-admin", null, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2810), null },
+                    { 6, "Top stories from around the world with a focus on news not covered in other feeds.", "featured", "en", "top-news", null, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2810), null },
+                    { 7, "Follow important local news: politics, business, top events and more. Updated everything evening.", "featured", "en", "boston", 1, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2810), null },
+                    { 8, "Các thông tin về virut corona.", "breaking", "vi", "dịch bệnh", 3, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2810), null },
+                    { 9, "Cuộc sống của người Việt Trên toàn thế giới.", "normal", "vi", "người Việt Nam", 4, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2820), null },
+                    { 10, " Nền doanh nghiệp Việt Nam.", "normal", "vi", "Kinh tế", 5, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2820), null }
                 });
 
             migrationBuilder.InsertData(
@@ -697,10 +702,14 @@ namespace FakeNewsFilter.Data.Migrations
                 columns: new[] { "TopicId", "Description", "Label", "LanguageId", "Tag", "ThumbTopic", "Timestamp", "UserId" },
                 values: new object[,]
                 {
-                    { 11, "Chọn trường nghề phù hợp với bản thân.", "normal", "vi", "học hành", 6, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7320), null },
-                    { 12, "Công nghệ mới trong game.", "normal", "vi", "Trò chơi", 7, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7330), null },
-                    { 13, " Sản phẩm công nghệ mới trong năm.", "featured", "vi", "Sản phẩm", 8, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7330), null },
-                    { 14, " Phóng sự đời sống thường nhật của người dân.", "normal", "vi", "Phóng sự", 9, new DateTime(2022, 8, 12, 16, 34, 59, 232, DateTimeKind.Local).AddTicks(7330), null }
+                    { 11, "Chọn trường nghề phù hợp với bản thân.", "normal", "vi", "học hành", 6, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2820), null },
+                    { 12, "Công nghệ mới trong game.", "normal", "vi", "Trò chơi", 7, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2830), null },
+                    { 13, " Sản phẩm công nghệ mới trong năm.", "featured", "vi", "Sản phẩm", 8, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2830), null },
+                    { 14, " Phóng sự đời sống thường nhật của người dân.", "normal", "vi", "Phóng sự", 9, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2830), null },
+                    { 15, "View the latest technology headlines, gadget and smartphone trends, and insights from tech industry leaders.", "normal", "en", "Technology", 23, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2830), null },
+                    { 16, "News, results and comments on sport tournaments in worldwide. Football, martial arts, chess, tennis, esport and others.", "normal", "en", "Sports", 24, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2830), null },
+                    { 17, "View the latest health news and explore articles on fitness, diet, nutrition, parenting, relationships, medicine, diseases and healthy living.", "normal", "en", "Health", 25, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2840), null },
+                    { 18, "View entertainment news and videos for the latest movie, music, TV and celebrity headlines.", "normal", "en", "Entertainment", 26, new DateTime(2022, 11, 11, 15, 35, 30, 712, DateTimeKind.Local).AddTicks(2840), null }
                 });
 
             migrationBuilder.InsertData(

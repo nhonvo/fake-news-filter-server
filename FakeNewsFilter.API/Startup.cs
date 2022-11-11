@@ -69,7 +69,7 @@ namespace FakeNewsFilter
                     options.UseSqlServer(Configuration.GetConnectionString(SystemConstants.MainConnectionString)),
                 ServiceLifetime.Transient);
 
-
+           
             //AutoMapper
             services.AddAutoMapper(typeof(MappingProfile));
 
@@ -180,6 +180,7 @@ namespace FakeNewsFilter
 
             services.AddQuartz(q =>
             {
+
                 // handy when part of cluster or you want to otherwise identify multiple schedulers
                 q.SchedulerId = "Scheduler-Core";
 
@@ -245,6 +246,11 @@ namespace FakeNewsFilter
                 app.UseStatusCodePagesWithReExecute("/errors/{0}");
                 app.UseMiddleware<MiddlewareExtentions>();
                 app.UseHsts();
+            }
+
+            using (IServiceScope scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                scope.ServiceProvider.GetService<ApplicationDBContext>().Database.Migrate();
             }
 
             app.UseHttpsRedirection();
