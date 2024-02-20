@@ -31,6 +31,7 @@ using Role = FakeNewsFilter.Data.Entities.Role;
 using FakeNewsFilter.Utilities.Exceptions;
 using FakeNewsFilter.API.Validator.News;
 using FakeNewsFilter.Quartz;
+using Microsoft.OpenApi.Models;
 
 namespace FakeNewsFilter
 {
@@ -69,7 +70,7 @@ namespace FakeNewsFilter
                     options.UseSqlServer(Configuration.GetConnectionString(SystemConstants.MainConnectionString)),
                 ServiceLifetime.Transient);
 
-           
+
             //AutoMapper
             services.AddAutoMapper(typeof(MappingProfile));
 
@@ -79,10 +80,43 @@ namespace FakeNewsFilter
                 .AddDefaultTokenProviders();
 
             services.AddHttpClient();
+            services.AddSwaggerGen(options =>
+                   {
+                       options.SwaggerDoc("v1", new OpenApiInfo
+                       {
+                           Title = "Template",
+                           Version = "v1",
+                           Description = "API template project",
+                           Contact = new OpenApiContact
+                           {
+                               Url = new Uri("https://google.com")
+                           }
+                       });
 
+                       // Add JWT authentication support in Swagger
+                       var securityScheme = new OpenApiSecurityScheme
+                       {
+                           Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                           Name = "Authorization",
+                           In = ParameterLocation.Header,
+                           Type = SecuritySchemeType.Http,
+                           Scheme = "bearer",
+                           Reference = new OpenApiReference
+                           {
+                               Type = ReferenceType.SecurityScheme,
+                               Id = "Bearer"
+                           }
+                       };
+
+                       options.AddSecurityDefinition("Bearer", securityScheme);
+
+                       //    var securityRequirement = new OpenApiSecurityRequirement{{securityScheme, value }};
+
+                       //    options.AddSecurityRequirement(securityRequirement);
+                   });
             //Declare DI
- 
-            
+
+
             services.AddTransient<FacebookAuthService>();
             services.AddTransient<UserManager<User>, UserManager<User>>();
             services.AddTransient<SignInManager<User>, SignInManager<User>>();
@@ -105,7 +139,7 @@ namespace FakeNewsFilter
             services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<INewsCommunityService, NewsCommunityService>();
             services.AddTransient<FileStorageService>();
-            
+
             ConnectionMultiplexer GetConnectionMultiplexer()
             {
                 var options = ConfigurationOptions.Parse(Configuration["Redis:ConnectionString"]);
@@ -114,7 +148,7 @@ namespace FakeNewsFilter
 
                 return ConnectionMultiplexer.Connect(options);
             }
-            
+
             //Fluent Validation
             //User
             services.AddControllers().AddFluentValidation(fv =>
@@ -215,7 +249,7 @@ namespace FakeNewsFilter
                     .RepeatForever())
                     .WithDescription("Trigger to update rate of news")
                 );
-                
+
                 q.ScheduleJob<CloneNewsJob>(trigger => trigger
                     .StartNow()
                     .WithSimpleSchedule(x => x.WithIntervalInHours(5)
@@ -247,7 +281,8 @@ namespace FakeNewsFilter
                 app.UseMiddleware<MiddlewareExtentions>();
                 app.UseHsts();
             }
-
+            app.UseSwagger();
+            app.UseSwaggerUI();
             using (IServiceScope scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
                 scope.ServiceProvider.GetService<ApplicationDBContext>().Database.Migrate();
