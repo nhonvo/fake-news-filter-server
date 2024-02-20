@@ -5,7 +5,10 @@ using Microsoft.Extensions.Localization;
 
 namespace FakeNewsFilter.API.Controllers
 {
-    public class ErrorsController : Controller
+
+    [ApiController]
+    [Route("api/[controller]/")]
+    public class ErrorsController : ControllerBase
     {
         private readonly IStringLocalizer<ErrorsController> _localizer;
 
@@ -14,37 +17,37 @@ namespace FakeNewsFilter.API.Controllers
             _localizer = localizer;
         }
 
-        [Route("errors/{statusCode}")]
+        [HttpGet]
         public IActionResult CustomError(int statusCode)
         {
-                switch (statusCode)
-                {
-                    case 400:
+            switch (statusCode)
+            {
+                case 400:
                     {
                         return new JsonResult(new ApiErrorResult<string>(400, _localizer["BadRequest"].Value));
                     }
-                    case 401:
+                case 401:
                     {
                         return new JsonResult(new ApiErrorResult<string>(401, _localizer["Unauthorized"].Value));
                     }
-                    case 403:
+                case 403:
                     {
                         return new JsonResult(new ApiErrorResult<string>(403, _localizer["Forbidden"].Value));
                     }
-                    case 404:
+                case 404:
                     {
                         return new JsonResult(new ApiErrorResult<string>(404, _localizer["NotFound"].Value));
                     }
-                    case 405:
+                case 405:
                     {
                         return new JsonResult(new ApiErrorResult<string>(405, _localizer["MethodNotAllowed"].Value));
                     }
-                    default:
+                default:
                     {
                         return new JsonResult(new ApiErrorResult<string>(500, _localizer["InternalServerError"].Value));
                     }
-                }
-           
+            }
+
         }
     }
 }
