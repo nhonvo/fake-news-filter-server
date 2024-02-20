@@ -31,6 +31,7 @@ namespace FakeNewsFilter.API.Controllers
             _localizer = localizer;
             _logger = logger;
         }
+        [HttpGet]
         IActionResult ResultStatusString(ApiResult<string> resultToken)
         {
             switch (resultToken.StatusCode)

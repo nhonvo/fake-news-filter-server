@@ -19,7 +19,7 @@ namespace FakeNewsFilter.API.Controllers
 {
     [Route("api/[controller]")]
     [Authorize]
-    public class UsersController : Controller
+    public class UsersController : ControllerBase
     {
         private readonly IStringLocalizer<UsersController> _localizer;
         private readonly IUserService _userService;

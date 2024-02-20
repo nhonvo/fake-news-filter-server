@@ -16,7 +16,7 @@ namespace FakeNewsFilter.API.Controllers
 
     [ApiController]
     [Authorize]
-    public class ExtraFeaturesController : Controller
+    public class ExtraFeaturesController : ControllerBase
     {
         private readonly IExtraFeaturesService _featuresService;
         private readonly IStringLocalizer<ExtraFeaturesController> _localizer;

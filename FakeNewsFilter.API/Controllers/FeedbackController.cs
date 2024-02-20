@@ -17,7 +17,7 @@ namespace FakeNewsFilter.API.Controllers
 {
     [Route("api/[controller]")]
     [Authorize]
-    public class FeedbackController : Controller
+    public class FeedbackController : ControllerBase
     {
         private readonly IFeedbackService _feedbackService;
         private readonly IStringLocalizer<VoteController> _localizer;
