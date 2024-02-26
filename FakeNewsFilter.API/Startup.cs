@@ -236,12 +236,12 @@ namespace FakeNewsFilter
             {
                 //app.UseDeveloperExceptionPage();
                 app.UseStatusCodePagesWithReExecute("/errors/{0}");
-                app.UseMiddleware<MiddlewareExtentions>();
+                app.UseMiddleware<MiddlewareExtensions>();
             }
             else
             {
                 app.UseStatusCodePagesWithReExecute("/errors/{0}");
-                app.UseMiddleware<MiddlewareExtentions>();
+                app.UseMiddleware<MiddlewareExtensions>();
                 app.UseHsts();
             }
             app.UseSwagger();

@@ -8,11 +8,11 @@ using Microsoft.AspNetCore.Http;
 
 namespace FakeNewsFilter.Utilities.Exceptions
 {
-    public class MiddlewareExtentions
+    public class MiddlewareExtensions
     {
         private readonly RequestDelegate _next;
 
-        public MiddlewareExtentions(RequestDelegate next)
+        public MiddlewareExtensions(RequestDelegate next)
         {
             _next = next;
         }
@@ -27,7 +27,7 @@ namespace FakeNewsFilter.Utilities.Exceptions
             {
                 var response = context.Response;
                 response.ContentType = "application/json";
-                
+
                 switch (error)
                 {
                     case FakeNewsException e:

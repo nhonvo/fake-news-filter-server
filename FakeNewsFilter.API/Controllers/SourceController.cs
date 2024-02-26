@@ -136,7 +136,7 @@ namespace FakeNewsFilter.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetById(int sourceid)
         {
-            var result = await _IScourceStoryService.GetoneStory(sourceid);
+            var result = await _IScourceStoryService.GetAStory(sourceid);
 
             result.Message = _localizer[result.Message].Value;
 
