@@ -49,24 +49,6 @@ namespace FakeNewsFilter
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //Globalization language
-            services.AddLocalization(options => options.ResourcesPath = "Resources");
-            services.AddMvc()
-                .AddViewLocalization(Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat.Suffix)
-                .AddDataAnnotationsLocalization();
-
-            services.Configure<RequestLocalizationOptions>(options =>
-            {
-                var cultures = new List<CultureInfo>
-                {
-                    new CultureInfo("en"),
-                    new CultureInfo("vi")
-                };
-                options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("en");
-                options.SupportedCultures = cultures;
-                options.SupportedUICultures = cultures;
-            });
-
             //Config Database Connection
             services.AddDbContext<ApplicationDBContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString(SystemConstants.MainConnectionString)),
@@ -76,7 +58,7 @@ namespace FakeNewsFilter
             //AutoMapper
             services.AddAutoMapper(typeof(MappingProfile));
 
-            //Indentity
+            //Identity
             services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<ApplicationDBContext>()
                 .AddDefaultTokenProviders();
