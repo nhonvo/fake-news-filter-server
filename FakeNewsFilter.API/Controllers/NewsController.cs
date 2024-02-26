@@ -25,7 +25,8 @@ namespace FakeNewsFilter.API.Controllers
 {
     [Route("api/[controller]")]
     [Authorize]
-    public class NewsController : ReturnStatus, IJob
+    // public class NewsController : ReturnStatus, IJob
+    public class NewsController : ReturnStatus
     {
         private readonly IDistributedCache _distributedCache;
         private readonly INewsService _newsService;
@@ -420,12 +421,12 @@ namespace FakeNewsFilter.API.Controllers
             server.FlushAllDatabases();
         }
         
-        public async Task Execute(IJobExecutionContext context)
-        {
-            var newsViewCountDict = GetKeysAndValuesInRedisCache("viewcountnews");
-            await _newsService.UpdateViewCount(newsViewCountDict);
-            ClearCache();
-        }
+        // public async Task Execute(IJobExecutionContext context)
+        // {
+        //     var newsViewCountDict = GetKeysAndValuesInRedisCache("viewcountnews");
+        //     await _newsService.UpdateViewCount(newsViewCountDict);
+        //     ClearCache();
+        // }
 
         [HttpPut("Archive/{newsId}")]
         [Authorize(Roles = "Admin")]

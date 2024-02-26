@@ -12,7 +12,7 @@ namespace FakeNewsFilter.API.Controllers
 {
     [Route("api/[controller]")]
     [Authorize]
-    public class VoteController : ControllerBase, IJob
+    public class VoteController : ControllerBase
     {
         private readonly IVoteService _voteService;
         private readonly IStringLocalizer<VoteController> _localizer;
@@ -54,10 +54,9 @@ namespace FakeNewsFilter.API.Controllers
             }
 
         }
-        
-        public async Task Execute(IJobExecutionContext context)
-        {
-            await _voteService.UpdateRatingVote();
-        }
+        // public async Task Execute(IJobExecutionContext context)
+        // {
+        //     await _voteService.UpdateRatingVote();
+        // }
     }
 }

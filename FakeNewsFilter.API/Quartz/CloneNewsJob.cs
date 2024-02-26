@@ -6,7 +6,7 @@ using Quartz;
 
 namespace FakeNewsFilter.Quartz;
 
-public class CloneNewsJob : IJob
+public class CloneNewsJob 
 
 {
     private readonly INewsService _newsService;
@@ -18,15 +18,15 @@ public class CloneNewsJob : IJob
         _cloneNewsService = cloneNewsService;
     }
 
-    public async Task Execute(IJobExecutionContext context)
-    {
-        foreach (var topic in SystemConstants.MapOigetitTopic)
-        {
-            var sysTopicId = SystemConstants.MapSysTopics[topic.Key];
+    // public async Task Execute(IJobExecutionContext context)
+    // {
+    //     foreach (var topic in SystemConstants.MapOigetitTopic)
+    //     {
+    //         var sysTopicId = SystemConstants.MapSysTopics[topic.Key];
             
-            var news = await _cloneNewsService.GetOigetitCategory(topic.Value, sysTopicId);
+    //         var news = await _cloneNewsService.GetOigetitCategory(topic.Value, sysTopicId);
 
-            await _newsService.CreateBatchNews(news.ResultObj, sysTopicId);
-        }
-    }
+    //         await _newsService.CreateBatchNews(news.ResultObj, sysTopicId);
+    //     }
+    // }
 }
