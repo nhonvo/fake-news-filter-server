@@ -1,0 +1,3776 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "Template",
+        "description": "API template project",
+        "contact": {
+            "url": "https://google.com"
+        },
+        "version": "v1"
+    },
+    "paths": {
+        "/api/Comment": {
+            "post": {
+                "tags": [
+                    "Comment"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CommentCreateRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CommentCreateRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CommentCreateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Comment"
+                ],
+                "parameters": [
+                    {
+                        "name": "commentId",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "userId",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Comment"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CommentUpdateRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CommentUpdateRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CommentUpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Comment/news/{newsId}": {
+            "get": {
+                "tags": [
+                    "Comment"
+                ],
+                "parameters": [
+                    {
+                        "name": "newsId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Comment/{cmtId}": {
+            "get": {
+                "tags": [
+                    "Comment"
+                ],
+                "parameters": [
+                    {
+                        "name": "cmtId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Comment/Update": {
+            "put": {
+                "tags": [
+                    "Comment"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CommentUpdateRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CommentUpdateRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CommentUpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Errors": {
+            "get": {
+                "tags": [
+                    "Errors"
+                ],
+                "parameters": [
+                    {
+                        "name": "statusCode",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/ExtraFeatures/Search": {
+            "get": {
+                "tags": [
+                    "ExtraFeatures"
+                ],
+                "parameters": [
+                    {
+                        "name": "keyword",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "languageId",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/ExtraFeatures/{id}": {
+            "get": {
+                "tags": [
+                    "ExtraFeatures"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Feedback": {
+            "post": {
+                "tags": [
+                    "Feedback"
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "NewsId": {
+                                        "type": "integer",
+                                        "format": "int32"
+                                    },
+                                    "UserId": {
+                                        "type": "string",
+                                        "format": "uuid"
+                                    },
+                                    "Content": {
+                                        "type": "string"
+                                    },
+                                    "ScreenShoot": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                }
+                            },
+                            "encoding": {
+                                "NewsId": {
+                                    "style": "form"
+                                },
+                                "UserId": {
+                                    "style": "form"
+                                },
+                                "Content": {
+                                    "style": "form"
+                                },
+                                "ScreenShoot": {
+                                    "style": "form"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Feedback/ReportLinkNews": {
+            "post": {
+                "tags": [
+                    "Feedback"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateFeedbackRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateFeedbackRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateFeedbackRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Follow": {
+            "post": {
+                "tags": [
+                    "Follow"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FollowCreateRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FollowCreateRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FollowCreateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Follow/{userId}": {
+            "get": {
+                "tags": [
+                    "Follow"
+                ],
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Language/List": {
+            "get": {
+                "tags": [
+                    "Language"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/News/CreateBySystem": {
+            "post": {
+                "tags": [
+                    "News"
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "Title": {
+                                        "type": "string"
+                                    },
+                                    "Description": {
+                                        "type": "string"
+                                    },
+                                    "OfficialRating": {
+                                        "type": "string"
+                                    },
+                                    "Content": {
+                                        "type": "string"
+                                    },
+                                    "Alias": {
+                                        "type": "string"
+                                    },
+                                    "Type": {
+                                        "$ref": "#/components/schemas/MediaType"
+                                    },
+                                    "ThumbNews": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "LanguageId": {
+                                        "type": "string"
+                                    },
+                                    "Publisher": {
+                                        "type": "string"
+                                    },
+                                    "isVote": {
+                                        "type": "boolean"
+                                    },
+                                    "DatePublished": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "TopicId": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer",
+                                            "format": "int32"
+                                        }
+                                    },
+                                    "SourceCreate": {
+                                        "$ref": "#/components/schemas/SourceCreate"
+                                    }
+                                }
+                            },
+                            "encoding": {
+                                "Title": {
+                                    "style": "form"
+                                },
+                                "Description": {
+                                    "style": "form"
+                                },
+                                "OfficialRating": {
+                                    "style": "form"
+                                },
+                                "Content": {
+                                    "style": "form"
+                                },
+                                "Alias": {
+                                    "style": "form"
+                                },
+                                "Type": {
+                                    "style": "form"
+                                },
+                                "ThumbNews": {
+                                    "style": "form"
+                                },
+                                "LanguageId": {
+                                    "style": "form"
+                                },
+                                "Publisher": {
+                                    "style": "form"
+                                },
+                                "isVote": {
+                                    "style": "form"
+                                },
+                                "DatePublished": {
+                                    "style": "form"
+                                },
+                                "TopicId": {
+                                    "style": "form"
+                                },
+                                "SourceCreate": {
+                                    "style": "form"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/News/CreateByOutSource": {
+            "post": {
+                "tags": [
+                    "News"
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "Title": {
+                                        "type": "string"
+                                    },
+                                    "Description": {
+                                        "type": "string"
+                                    },
+                                    "OfficialRating": {
+                                        "type": "string"
+                                    },
+                                    "UrlNews": {
+                                        "type": "string"
+                                    },
+                                    "ImageLink": {
+                                        "type": "string"
+                                    },
+                                    "Type": {
+                                        "$ref": "#/components/schemas/MediaType"
+                                    },
+                                    "LanguageId": {
+                                        "type": "string"
+                                    },
+                                    "Publisher": {
+                                        "type": "string"
+                                    },
+                                    "isVote": {
+                                        "type": "boolean"
+                                    },
+                                    "DatePublished": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "TopicId": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer",
+                                            "format": "int32"
+                                        }
+                                    },
+                                    "SourceCreate": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "encoding": {
+                                "Title": {
+                                    "style": "form"
+                                },
+                                "Description": {
+                                    "style": "form"
+                                },
+                                "OfficialRating": {
+                                    "style": "form"
+                                },
+                                "UrlNews": {
+                                    "style": "form"
+                                },
+                                "ImageLink": {
+                                    "style": "form"
+                                },
+                                "Type": {
+                                    "style": "form"
+                                },
+                                "LanguageId": {
+                                    "style": "form"
+                                },
+                                "Publisher": {
+                                    "style": "form"
+                                },
+                                "isVote": {
+                                    "style": "form"
+                                },
+                                "DatePublished": {
+                                    "style": "form"
+                                },
+                                "TopicId": {
+                                    "style": "form"
+                                },
+                                "SourceCreate": {
+                                    "style": "form"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/News": {
+            "get": {
+                "tags": [
+                    "News"
+                ],
+                "parameters": [
+                    {
+                        "name": "Keyword",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "LanguageId",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "PageIndex",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "PageSize",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/News/paging": {
+            "get": {
+                "tags": [
+                    "News"
+                ],
+                "parameters": [
+                    {
+                        "name": "Keyword",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "LanguageId",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "PageIndex",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "PageSize",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/News/Source": {
+            "get": {
+                "tags": [
+                    "News"
+                ],
+                "parameters": [
+                    {
+                        "name": "Keyword",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "LanguageId",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "PageIndex",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "PageSize",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/News/{newsId}": {
+            "get": {
+                "tags": [
+                    "News"
+                ],
+                "parameters": [
+                    {
+                        "name": "newsId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/News/views/{newsId}": {
+            "get": {
+                "tags": [
+                    "News"
+                ],
+                "parameters": [
+                    {
+                        "name": "newsId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/News/content/{newsId}": {
+            "get": {
+                "tags": [
+                    "News"
+                ],
+                "parameters": [
+                    {
+                        "name": "newsId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/News/Topic": {
+            "get": {
+                "tags": [
+                    "News"
+                ],
+                "parameters": [
+                    {
+                        "name": "topicId",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "PageIndex",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "PageSize",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/News/FollowedTopic": {
+            "get": {
+                "tags": [
+                    "News"
+                ],
+                "parameters": [
+                    {
+                        "name": "topicList",
+                        "in": "query",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer",
+                                "format": "int32"
+                            }
+                        }
+                    },
+                    {
+                        "name": "userId",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "PageIndex",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "PageSize",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/News/UpdateBySystem": {
+            "put": {
+                "tags": [
+                    "News"
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "Id": {
+                                        "type": "integer",
+                                        "format": "int32"
+                                    },
+                                    "Title": {
+                                        "type": "string"
+                                    },
+                                    "OfficialRating": {
+                                        "type": "string"
+                                    },
+                                    "Description": {
+                                        "type": "string"
+                                    },
+                                    "Content": {
+                                        "type": "string"
+                                    },
+                                    "Alias": {
+                                        "type": "string"
+                                    },
+                                    "Type": {
+                                        "$ref": "#/components/schemas/MediaType"
+                                    },
+                                    "ThumbNews": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "LanguageId": {
+                                        "type": "string"
+                                    },
+                                    "Publisher": {
+                                        "type": "string"
+                                    },
+                                    "isVote": {
+                                        "type": "boolean"
+                                    },
+                                    "DatePublished": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "TopicId": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer",
+                                            "format": "int32"
+                                        }
+                                    }
+                                }
+                            },
+                            "encoding": {
+                                "Id": {
+                                    "style": "form"
+                                },
+                                "Title": {
+                                    "style": "form"
+                                },
+                                "OfficialRating": {
+                                    "style": "form"
+                                },
+                                "Description": {
+                                    "style": "form"
+                                },
+                                "Content": {
+                                    "style": "form"
+                                },
+                                "Alias": {
+                                    "style": "form"
+                                },
+                                "Type": {
+                                    "style": "form"
+                                },
+                                "ThumbNews": {
+                                    "style": "form"
+                                },
+                                "LanguageId": {
+                                    "style": "form"
+                                },
+                                "Publisher": {
+                                    "style": "form"
+                                },
+                                "isVote": {
+                                    "style": "form"
+                                },
+                                "DatePublished": {
+                                    "style": "form"
+                                },
+                                "TopicId": {
+                                    "style": "form"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/News/UpdateByOutSource": {
+            "put": {
+                "tags": [
+                    "News"
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "Id": {
+                                        "type": "integer",
+                                        "format": "int32"
+                                    },
+                                    "Title": {
+                                        "type": "string"
+                                    },
+                                    "Description": {
+                                        "type": "string"
+                                    },
+                                    "OfficialRating": {
+                                        "type": "string"
+                                    },
+                                    "UrlNews": {
+                                        "type": "string"
+                                    },
+                                    "ImageLink": {
+                                        "type": "string"
+                                    },
+                                    "Type": {
+                                        "$ref": "#/components/schemas/MediaType"
+                                    },
+                                    "LanguageId": {
+                                        "type": "string"
+                                    },
+                                    "Publisher": {
+                                        "type": "string"
+                                    },
+                                    "isVote": {
+                                        "type": "boolean"
+                                    },
+                                    "DatePublished": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "TopicId": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer",
+                                            "format": "int32"
+                                        }
+                                    }
+                                }
+                            },
+                            "encoding": {
+                                "Id": {
+                                    "style": "form"
+                                },
+                                "Title": {
+                                    "style": "form"
+                                },
+                                "Description": {
+                                    "style": "form"
+                                },
+                                "OfficialRating": {
+                                    "style": "form"
+                                },
+                                "UrlNews": {
+                                    "style": "form"
+                                },
+                                "ImageLink": {
+                                    "style": "form"
+                                },
+                                "Type": {
+                                    "style": "form"
+                                },
+                                "LanguageId": {
+                                    "style": "form"
+                                },
+                                "Publisher": {
+                                    "style": "form"
+                                },
+                                "isVote": {
+                                    "style": "form"
+                                },
+                                "DatePublished": {
+                                    "style": "form"
+                                },
+                                "TopicId": {
+                                    "style": "form"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/News/link/{newsId}/{newLink}": {
+            "patch": {
+                "tags": [
+                    "News"
+                ],
+                "parameters": [
+                    {
+                        "name": "newsId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "newLink",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/News/Archive/{newsId}": {
+            "put": {
+                "tags": [
+                    "News"
+                ],
+                "parameters": [
+                    {
+                        "name": "newsId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/NewsCommunity": {
+            "post": {
+                "tags": [
+                    "NewsCommunity"
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "Title": {
+                                        "type": "string"
+                                    },
+                                    "Content": {
+                                        "type": "string"
+                                    },
+                                    "IsPopular": {
+                                        "type": "boolean"
+                                    },
+                                    "UserId": {
+                                        "type": "string",
+                                        "format": "uuid"
+                                    },
+                                    "Type": {
+                                        "$ref": "#/components/schemas/MediaType"
+                                    },
+                                    "DatePublished": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "ThumbNews": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "LanguageId": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "encoding": {
+                                "Title": {
+                                    "style": "form"
+                                },
+                                "Content": {
+                                    "style": "form"
+                                },
+                                "IsPopular": {
+                                    "style": "form"
+                                },
+                                "UserId": {
+                                    "style": "form"
+                                },
+                                "Type": {
+                                    "style": "form"
+                                },
+                                "DatePublished": {
+                                    "style": "form"
+                                },
+                                "ThumbNews": {
+                                    "style": "form"
+                                },
+                                "LanguageId": {
+                                    "style": "form"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "NewsCommunity"
+                ],
+                "parameters": [
+                    {
+                        "name": "languageId",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "NewsCommunity"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/NewsCommunity/{newsCommunityId}": {
+            "get": {
+                "tags": [
+                    "NewsCommunity"
+                ],
+                "parameters": [
+                    {
+                        "name": "newsCommunityId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "NewsCommunity"
+                ],
+                "parameters": [
+                    {
+                        "name": "newsCommunityId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/NewsCommunity/Update": {
+            "put": {
+                "tags": [
+                    "NewsCommunity"
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "NewsCommunityId": {
+                                        "type": "integer",
+                                        "format": "int32"
+                                    },
+                                    "Title": {
+                                        "type": "string"
+                                    },
+                                    "Content": {
+                                        "type": "string"
+                                    },
+                                    "IsPopular": {
+                                        "type": "boolean"
+                                    },
+                                    "UserId": {
+                                        "type": "string",
+                                        "format": "uuid"
+                                    },
+                                    "DatePublished": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "Type": {
+                                        "$ref": "#/components/schemas/MediaType"
+                                    },
+                                    "ThumbNews": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "LanguageId": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "encoding": {
+                                "NewsCommunityId": {
+                                    "style": "form"
+                                },
+                                "Title": {
+                                    "style": "form"
+                                },
+                                "Content": {
+                                    "style": "form"
+                                },
+                                "IsPopular": {
+                                    "style": "form"
+                                },
+                                "UserId": {
+                                    "style": "form"
+                                },
+                                "DatePublished": {
+                                    "style": "form"
+                                },
+                                "Type": {
+                                    "style": "form"
+                                },
+                                "ThumbNews": {
+                                    "style": "form"
+                                },
+                                "LanguageId": {
+                                    "style": "form"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/NewsCommunity/link/{newsCommunityId}/{newLink}": {
+            "patch": {
+                "tags": [
+                    "NewsCommunity"
+                ],
+                "parameters": [
+                    {
+                        "name": "newsCommunityId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "newLink",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/NewsCommunity/User": {
+            "get": {
+                "tags": [
+                    "NewsCommunity"
+                ],
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Roles": {
+            "get": {
+                "tags": [
+                    "Roles"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Source": {
+            "post": {
+                "tags": [
+                    "Source"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SourceCreateRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SourceCreateRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SourceCreateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Source"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SourceUpdateRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SourceUpdateRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SourceUpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Source"
+                ],
+                "parameters": [
+                    {
+                        "name": "languageId",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Source/Update": {
+            "put": {
+                "tags": [
+                    "Source"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SourceUpdateRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SourceUpdateRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SourceUpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Source/{SourceId}": {
+            "delete": {
+                "tags": [
+                    "Source"
+                ],
+                "parameters": [
+                    {
+                        "name": "sourceid",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Source"
+                ],
+                "parameters": [
+                    {
+                        "name": "sourceid",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Story": {
+            "post": {
+                "tags": [
+                    "Story"
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "ThumbNews": {
+                                        "type": "integer",
+                                        "format": "int32"
+                                    },
+                                    "LanguageId": {
+                                        "type": "string"
+                                    },
+                                    "ThumbStory": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "Timestamp": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "Link": {
+                                        "type": "string"
+                                    },
+                                    "SourceId": {
+                                        "type": "integer",
+                                        "format": "int32"
+                                    }
+                                }
+                            },
+                            "encoding": {
+                                "ThumbNews": {
+                                    "style": "form"
+                                },
+                                "LanguageId": {
+                                    "style": "form"
+                                },
+                                "ThumbStory": {
+                                    "style": "form"
+                                },
+                                "Timestamp": {
+                                    "style": "form"
+                                },
+                                "Link": {
+                                    "style": "form"
+                                },
+                                "SourceId": {
+                                    "style": "form"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Story"
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "StoryId": {
+                                        "type": "integer",
+                                        "format": "int32"
+                                    },
+                                    "ThumbStory": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "LanguageId": {
+                                        "type": "string"
+                                    },
+                                    "Timestamp": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "Link": {
+                                        "type": "string"
+                                    },
+                                    "SourceId": {
+                                        "type": "integer",
+                                        "format": "int32"
+                                    }
+                                }
+                            },
+                            "encoding": {
+                                "StoryId": {
+                                    "style": "form"
+                                },
+                                "ThumbStory": {
+                                    "style": "form"
+                                },
+                                "LanguageId": {
+                                    "style": "form"
+                                },
+                                "Timestamp": {
+                                    "style": "form"
+                                },
+                                "Link": {
+                                    "style": "form"
+                                },
+                                "SourceId": {
+                                    "style": "form"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Story"
+                ],
+                "parameters": [
+                    {
+                        "name": "languageId",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Story/Update": {
+            "put": {
+                "tags": [
+                    "Story"
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "StoryId": {
+                                        "type": "integer",
+                                        "format": "int32"
+                                    },
+                                    "ThumbStory": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "LanguageId": {
+                                        "type": "string"
+                                    },
+                                    "Timestamp": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "Link": {
+                                        "type": "string"
+                                    },
+                                    "SourceId": {
+                                        "type": "integer",
+                                        "format": "int32"
+                                    }
+                                }
+                            },
+                            "encoding": {
+                                "StoryId": {
+                                    "style": "form"
+                                },
+                                "ThumbStory": {
+                                    "style": "form"
+                                },
+                                "LanguageId": {
+                                    "style": "form"
+                                },
+                                "Timestamp": {
+                                    "style": "form"
+                                },
+                                "Link": {
+                                    "style": "form"
+                                },
+                                "SourceId": {
+                                    "style": "form"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Story/{StoryId}": {
+            "delete": {
+                "tags": [
+                    "Story"
+                ],
+                "parameters": [
+                    {
+                        "name": "storyId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Story"
+                ],
+                "parameters": [
+                    {
+                        "name": "storyId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Topic": {
+            "post": {
+                "tags": [
+                    "Topic"
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "Label": {
+                                        "type": "string"
+                                    },
+                                    "Tag": {
+                                        "type": "string"
+                                    },
+                                    "Description": {
+                                        "type": "string"
+                                    },
+                                    "LanguageId": {
+                                        "type": "string"
+                                    },
+                                    "ThumbTopic": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                }
+                            },
+                            "encoding": {
+                                "Label": {
+                                    "style": "form"
+                                },
+                                "Tag": {
+                                    "style": "form"
+                                },
+                                "Description": {
+                                    "style": "form"
+                                },
+                                "LanguageId": {
+                                    "style": "form"
+                                },
+                                "ThumbTopic": {
+                                    "style": "form"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Topic/list": {
+            "get": {
+                "tags": [
+                    "Topic"
+                ],
+                "parameters": [
+                    {
+                        "name": "LanguageId",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Topic/paging": {
+            "get": {
+                "tags": [
+                    "Topic"
+                ],
+                "parameters": [
+                    {
+                        "name": "Keyword",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "LanguageId",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "PageIndex",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "PageSize",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Topic/{Id}": {
+            "get": {
+                "tags": [
+                    "Topic"
+                ],
+                "parameters": [
+                    {
+                        "name": "Id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Topic/Update/{topicId}": {
+            "put": {
+                "tags": [
+                    "Topic"
+                ],
+                "parameters": [
+                    {
+                        "name": "topicId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "TopicId": {
+                                        "type": "integer",
+                                        "format": "int32"
+                                    },
+                                    "Label": {
+                                        "type": "string"
+                                    },
+                                    "Tag": {
+                                        "type": "string"
+                                    },
+                                    "LanguageId": {
+                                        "type": "string"
+                                    },
+                                    "Description": {
+                                        "type": "string"
+                                    },
+                                    "ThumbImage": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                }
+                            },
+                            "encoding": {
+                                "TopicId": {
+                                    "style": "form"
+                                },
+                                "Label": {
+                                    "style": "form"
+                                },
+                                "Tag": {
+                                    "style": "form"
+                                },
+                                "LanguageId": {
+                                    "style": "form"
+                                },
+                                "Description": {
+                                    "style": "form"
+                                },
+                                "ThumbImage": {
+                                    "style": "form"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Topic/Archive/{topicId}": {
+            "put": {
+                "tags": [
+                    "Topic"
+                ],
+                "parameters": [
+                    {
+                        "name": "topicId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Topic/{topicId}": {
+            "delete": {
+                "tags": [
+                    "Topic"
+                ],
+                "parameters": [
+                    {
+                        "name": "topicId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Users/refresh-token": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Users/Authenticate": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Users/Register": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegisterRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegisterRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegisterRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Users/List": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Users/{id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Users"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Users": {
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "UserId": {
+                                        "type": "string",
+                                        "format": "uuid"
+                                    },
+                                    "UserName": {
+                                        "type": "string"
+                                    },
+                                    "Name": {
+                                        "type": "string"
+                                    },
+                                    "Email": {
+                                        "type": "string"
+                                    },
+                                    "Avatar": {
+                                        "type": "string"
+                                    },
+                                    "MediaFile": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                }
+                            },
+                            "encoding": {
+                                "UserId": {
+                                    "style": "form"
+                                },
+                                "UserName": {
+                                    "style": "form"
+                                },
+                                "Name": {
+                                    "style": "form"
+                                },
+                                "Email": {
+                                    "style": "form"
+                                },
+                                "Avatar": {
+                                    "style": "form"
+                                },
+                                "MediaFile": {
+                                    "style": "form"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Users/{id}/roles": {
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RoleAssignRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RoleAssignRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RoleAssignRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Users/SignInFacebook": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginSocialRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginSocialRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginSocialRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Users/SignInGoogle": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginSocialRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginSocialRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginSocialRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Users/SignInApple": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginSocialRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginSocialRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginSocialRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Users/SendPasswordResetCode": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Users/ResetPassword": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "otp",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "newPassword",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Version": {
+            "post": {
+                "tags": [
+                    "Version"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VersionCreateRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VersionCreateRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VersionCreateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Version/list-platform": {
+            "get": {
+                "tags": [
+                    "Version"
+                ],
+                "parameters": [
+                    {
+                        "name": "platform",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Version/checklastest": {
+            "get": {
+                "tags": [
+                    "Version"
+                ],
+                "parameters": [
+                    {
+                        "name": "platform",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "version_current",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Vote": {
+            "post": {
+                "tags": [
+                    "Vote"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VoteCreateRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VoteCreateRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VoteCreateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Comment": {
+                "type": "object",
+                "properties": {
+                    "commentId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "content": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "newsId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "news": {
+                        "$ref": "#/components/schemas/News"
+                    },
+                    "parentId": {
+                        "type": "integer",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "userId": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/Status"
+                    },
+                    "timestamp": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "parent": {
+                        "$ref": "#/components/schemas/Comment"
+                    },
+                    "child": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Comment"
+                        },
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "CommentCreateRequest": {
+                "type": "object",
+                "properties": {
+                    "commentId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "parentId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "content": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "newsId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "news": {
+                        "$ref": "#/components/schemas/News"
+                    },
+                    "userId": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "timestamp": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "CommentUpdateRequest": {
+                "type": "object",
+                "properties": {
+                    "commentId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "content": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "timestamp": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "CreateFeedbackRequest": {
+                "type": "object",
+                "properties": {
+                    "newsId": {
+                        "type": "integer",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "userId": {
+                        "type": "string",
+                        "format": "uuid",
+                        "nullable": true
+                    },
+                    "content": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "screenShoot": {
+                        "type": "string",
+                        "format": "binary",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "DetailNews": {
+                "type": "object",
+                "properties": {
+                    "detailNewsId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "alias": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "content": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "thumbNews": {
+                        "type": "integer",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "media": {
+                        "$ref": "#/components/schemas/Media"
+                    },
+                    "newsId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "news": {
+                        "$ref": "#/components/schemas/News"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Feedback": {
+                "type": "object",
+                "properties": {
+                    "feedbackId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "newsId": {
+                        "type": "integer",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "news": {
+                        "$ref": "#/components/schemas/News"
+                    },
+                    "userId": {
+                        "type": "string",
+                        "format": "uuid",
+                        "nullable": true
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "content": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "screenshoot": {
+                        "type": "integer",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "media": {
+                        "$ref": "#/components/schemas/Media"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/Status"
+                    },
+                    "timestamp": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Follow": {
+                "type": "object",
+                "properties": {
+                    "topicId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "topicNews": {
+                        "$ref": "#/components/schemas/TopicNews"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "userId": {
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "FollowCreateRequest": {
+                "type": "object",
+                "properties": {
+                    "topicId": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer",
+                            "format": "int32"
+                        },
+                        "nullable": true
+                    },
+                    "userId": {
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "LabelNews": {
+                "enum": [
+                    0,
+                    1,
+                    2
+                ],
+                "type": "integer",
+                "format": "int32"
+            },
+            "Language": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "flag": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "isDefault": {
+                        "type": "boolean"
+                    },
+                    "topicNews": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/TopicNews"
+                        },
+                        "nullable": true
+                    },
+                    "news": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/News"
+                        },
+                        "nullable": true
+                    },
+                    "newsCommunities": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/NewsCommunity"
+                        },
+                        "nullable": true
+                    },
+                    "source": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Source"
+                        },
+                        "nullable": true
+                    },
+                    "story": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Story"
+                        },
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "LoginRequest": {
+                "type": "object",
+                "properties": {
+                    "userName": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "password": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "rememberMe": {
+                        "type": "boolean"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "LoginSocialRequest": {
+                "type": "object",
+                "properties": {
+                    "fullName": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "accessToken": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Media": {
+                "type": "object",
+                "properties": {
+                    "mediaId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "type": {
+                        "$ref": "#/components/schemas/MediaType"
+                    },
+                    "pathMedia": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "caption": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "sortOrder": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "duration": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "fileSize": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "dateCreated": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "detailNews": {
+                        "$ref": "#/components/schemas/DetailNews"
+                    },
+                    "newsCommunity": {
+                        "$ref": "#/components/schemas/NewsCommunity"
+                    },
+                    "story": {
+                        "$ref": "#/components/schemas/Story"
+                    },
+                    "topicNews": {
+                        "$ref": "#/components/schemas/TopicNews"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "mediaFeedback": {
+                        "$ref": "#/components/schemas/Feedback"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "MediaType": {
+                "enum": [
+                    0,
+                    1
+                ],
+                "type": "integer",
+                "format": "int32"
+            },
+            "News": {
+                "type": "object",
+                "properties": {
+                    "newsId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "title": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "description": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "officialRating": {
+                        "$ref": "#/components/schemas/LabelNews"
+                    },
+                    "imageLink": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "urlNews": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "publisher": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "socialBeliefs": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "isVote": {
+                        "type": "boolean",
+                        "nullable": true
+                    },
+                    "viewCount": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "sourceCreate": {
+                        "$ref": "#/components/schemas/SourceCreate"
+                    },
+                    "datePublished": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "timestamp": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/Status"
+                    },
+                    "languageId": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "language": {
+                        "$ref": "#/components/schemas/Language"
+                    },
+                    "detailNews": {
+                        "$ref": "#/components/schemas/DetailNews"
+                    },
+                    "newsInTopics": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/NewsInTopics"
+                        },
+                        "nullable": true
+                    },
+                    "vote": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Vote"
+                        },
+                        "nullable": true
+                    },
+                    "comment": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Comment"
+                        },
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "NewsCommunity": {
+                "type": "object",
+                "properties": {
+                    "newsCommunityId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "title": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "content": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "source": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "isPopular": {
+                        "type": "boolean"
+                    },
+                    "userId": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "publisher": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "datePublished": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "thumbNews": {
+                        "type": "integer",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "media": {
+                        "$ref": "#/components/schemas/Media"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/Status"
+                    },
+                    "languageId": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "language": {
+                        "$ref": "#/components/schemas/Language"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "NewsInTopics": {
+                "type": "object",
+                "properties": {
+                    "newsId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "news": {
+                        "$ref": "#/components/schemas/News"
+                    },
+                    "topicId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "topicNews": {
+                        "$ref": "#/components/schemas/TopicNews"
+                    },
+                    "timestamp": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "RefreshToken": {
+                "type": "object",
+                "properties": {
+                    "tokenId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "token": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "expires": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "isExpired": {
+                        "type": "boolean",
+                        "readOnly": true
+                    },
+                    "created": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "revoked": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "isActive": {
+                        "type": "boolean",
+                        "readOnly": true
+                    },
+                    "userId": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/User"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "RegisterRequest": {
+                "type": "object",
+                "properties": {
+                    "userName": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "email": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "password": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "confirmPassword": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Role": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "name": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "normalizedName": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "concurrencyStamp": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "userRoles": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserRoles"
+                        },
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "RoleAssignRequest": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "roles": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SelectItem"
+                        },
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "SelectItem": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "selected": {
+                        "type": "boolean"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Source": {
+                "type": "object",
+                "properties": {
+                    "sourceId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "sourceName": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "languageId": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "language": {
+                        "$ref": "#/components/schemas/Language"
+                    },
+                    "story": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Story"
+                        },
+                        "nullable": true
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/Status"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "SourceCreate": {
+                "enum": [
+                    0,
+                    1,
+                    2,
+                    3
+                ],
+                "type": "integer",
+                "format": "int32"
+            },
+            "SourceCreateRequest": {
+                "type": "object",
+                "properties": {
+                    "sourceName": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "languageId": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "SourceUpdateRequest": {
+                "type": "object",
+                "properties": {
+                    "sourceId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "sourceName": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "languageId": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Status": {
+                "enum": [
+                    0,
+                    1,
+                    2,
+                    3
+                ],
+                "type": "integer",
+                "format": "int32"
+            },
+            "Story": {
+                "type": "object",
+                "properties": {
+                    "storyId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "thumbstory": {
+                        "type": "integer",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "timestamp": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "link": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "media": {
+                        "$ref": "#/components/schemas/Media"
+                    },
+                    "sourceId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "source": {
+                        "$ref": "#/components/schemas/Source"
+                    },
+                    "languageId": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "language": {
+                        "$ref": "#/components/schemas/Language"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/Status"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "TopicNews": {
+                "type": "object",
+                "properties": {
+                    "topicId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "label": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "tag": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "description": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "timestamp": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/Status"
+                    },
+                    "thumbTopic": {
+                        "type": "integer",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "media": {
+                        "$ref": "#/components/schemas/Media"
+                    },
+                    "languageId": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "language": {
+                        "$ref": "#/components/schemas/Language"
+                    },
+                    "newsInTopics": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/NewsInTopics"
+                        },
+                        "nullable": true
+                    },
+                    "follows": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Follow"
+                        },
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "User": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "userName": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "normalizedUserName": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "email": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "normalizedEmail": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "emailConfirmed": {
+                        "type": "boolean"
+                    },
+                    "passwordHash": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "securityStamp": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "concurrencyStamp": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "phoneNumber": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "phoneNumberConfirmed": {
+                        "type": "boolean"
+                    },
+                    "twoFactorEnabled": {
+                        "type": "boolean"
+                    },
+                    "lockoutEnd": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "lockoutEnabled": {
+                        "type": "boolean"
+                    },
+                    "accessFailedCount": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "follows": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Follow"
+                        },
+                        "nullable": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/Status"
+                    },
+                    "avatarId": {
+                        "type": "integer",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "avatar": {
+                        "$ref": "#/components/schemas/Media"
+                    },
+                    "userRoles": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserRoles"
+                        },
+                        "nullable": true
+                    },
+                    "refreshTokens": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RefreshToken"
+                        },
+                        "nullable": true
+                    },
+                    "vote": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Vote"
+                        },
+                        "nullable": true
+                    },
+                    "topicId": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/TopicNews"
+                        },
+                        "nullable": true
+                    },
+                    "comment": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Comment"
+                        },
+                        "nullable": true
+                    },
+                    "newsCommunity": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/NewsCommunity"
+                        },
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "UserRoles": {
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "roleId": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "role": {
+                        "$ref": "#/components/schemas/Role"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "VStatus": {
+                "enum": [
+                    0,
+                    1,
+                    2,
+                    3
+                ],
+                "type": "integer",
+                "format": "int32"
+            },
+            "VersionCreateRequest": {
+                "type": "object",
+                "properties": {
+                    "versionNumber": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "content": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "platform": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "createTime": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "releaseTime": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "isRequired": {
+                        "type": "boolean"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/VStatus"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Vote": {
+                "type": "object",
+                "properties": {
+                    "newsId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "news": {
+                        "$ref": "#/components/schemas/News"
+                    },
+                    "userId": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "isReal": {
+                        "type": "boolean"
+                    },
+                    "timestamp": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "VoteCreateRequest": {
+                "type": "object",
+                "properties": {
+                    "newsId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "userId": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "isReal": {
+                        "type": "boolean"
+                    },
+                    "timestamp": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "additionalProperties": false
+            }
+        },
+        "securitySchemes": {
+            "Bearer": {
+                "type": "http",
+                "description": "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                "scheme": "bearer"
+            }
+        }
+    }
+}
