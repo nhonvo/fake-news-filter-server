@@ -109,7 +109,7 @@ namespace FakeNewsFilter
             services.AddTransient<IRoleService, RoleService>();
             services.AddTransient<IFollowService, FollowService>();
             services.AddTransient<ILanguageService, LanguageService>();
-            services.AddTransient<IScourceService, SourceService>();
+            services.AddTransient<ISourceService, SourceService>();
             services.AddTransient<IStoryService, StoryService>();
             services.AddTransient<SlugHelper>();
             services.AddTransient<IExtraFeaturesService, ExtraFeaturesService>();

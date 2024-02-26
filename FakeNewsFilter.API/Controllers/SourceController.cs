@@ -16,16 +16,16 @@ namespace FakeNewsFilter.API.Controllers
     [Authorize]
     public class SourceController : ReturnStatus
     {
-        private readonly IScourceService _IScourceStoryService;
+        private readonly ISourceService _IScourceStoryService;
         private readonly IStringLocalizer<SourceController> _localizer;
         private readonly ILogger<SourceController> _logger;
-        public SourceController(IScourceService IScourceStoryService, IStringLocalizer<SourceController> localizer, ILogger<SourceController> logger) : base(logger)
+        public SourceController(ISourceService IScourceStoryService, IStringLocalizer<SourceController> localizer, ILogger<SourceController> logger) : base(logger)
         {
             _IScourceStoryService = IScourceStoryService;
             _localizer = localizer;
             _logger = logger;
         }
-        
+
 
         [HttpPost]
         [Authorize(Roles = "Admin")]

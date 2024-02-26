@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace FakeNewsFilter.Application.Catalog
 {
-    public interface IScourceService
+    public interface ISourceService
     {
         Task<ApiResult<SourceViewModel>> Create(SourceCreateRequest request);
         Task<ApiResult<SourceViewModel>> Update(SourceUpdateRequest request);
@@ -23,7 +23,7 @@ namespace FakeNewsFilter.Application.Catalog
 
 
     }
-    public class SourceService : IScourceService
+    public class SourceService : ISourceService
     {
         private readonly ApplicationDBContext _context;
         public SourceService(ApplicationDBContext context)
@@ -36,7 +36,7 @@ namespace FakeNewsFilter.Application.Catalog
             try
             {
                 //Kiểm tra ngôn ngữ có trong hệ thống hay không
-                if(request.LanguageId != null)
+                if (request.LanguageId != null)
                 {
                     var language = await LanguageCommon.CheckExistLanguage(_context, request.LanguageId);
                     if (language == null)
@@ -44,7 +44,7 @@ namespace FakeNewsFilter.Application.Catalog
                         return new ApiErrorResult<SourceViewModel>(404, "LanguageNotFound");
                     }
                 }
-               
+
                 //Kiểm tra đã tồn tại trong hệ thống hay chưa
                 var sourcename = await _context.Source.FirstOrDefaultAsync(x => x.SourceName == request.SourceName);
                 if (sourcename != null)
@@ -175,13 +175,13 @@ namespace FakeNewsFilter.Application.Catalog
             {
                 return new ApiErrorResult<string>(404, "CanNotFindSourceid", " " + sourceid.ToString());
             }
-            
+
             _context.Source.Remove(deletesourceId);
 
             var result = await _context.SaveChangesAsync();
             if (result == 0)
             {
-                return new ApiErrorResult<string>(400, "DeleteSourceStoryUnsuccessful"," " + result.ToString());
+                return new ApiErrorResult<string>(400, "DeleteSourceStoryUnsuccessful", " " + result.ToString());
             }
 
             return new ApiSuccessResult<string>("DeleteSourceStorySuccessful", " " + deletesourceId.SourceId.ToString());
