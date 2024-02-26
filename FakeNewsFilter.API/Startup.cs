@@ -49,6 +49,25 @@ namespace FakeNewsFilter
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Globalization language
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+            services.AddMvc()
+                .AddViewLocalization(Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization();
+
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var cultures = new List<CultureInfo>
+                {
+                    new CultureInfo("en"),
+                    new CultureInfo("vi")
+                };
+                options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("en");
+                options.SupportedCultures = cultures;
+                options.SupportedUICultures = cultures;
+            });
+
+
             //Config Database Connection
             services.AddDbContext<ApplicationDBContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString(SystemConstants.MainConnectionString)),
@@ -65,39 +84,39 @@ namespace FakeNewsFilter
 
             services.AddHttpClient();
             services.AddSwaggerGen(options =>
-                   {
-                       options.SwaggerDoc("v1", new OpenApiInfo
-                       {
-                           Title = "Template",
-                           Version = "v1",
-                           Description = "API template project",
-                           Contact = new OpenApiContact
-                           {
-                               Url = new Uri("https://google.com")
-                           }
-                       });
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Template",
+                    Version = "v1",
+                    Description = "API template project",
+                    Contact = new OpenApiContact
+                    {
+                        Url = new Uri("https://google.com")
+                    }
+                });
 
-                       // Add JWT authentication support in Swagger
-                       var securityScheme = new OpenApiSecurityScheme
-                       {
-                           Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
-                           Name = "Authorization",
-                           In = ParameterLocation.Header,
-                           Type = SecuritySchemeType.Http,
-                           Scheme = "bearer",
-                           Reference = new OpenApiReference
-                           {
-                               Type = ReferenceType.SecurityScheme,
-                               Id = "Bearer"
-                           }
-                       };
+                // Add JWT authentication support in Swagger
+                var securityScheme = new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                };
 
-                       options.AddSecurityDefinition("Bearer", securityScheme);
+                options.AddSecurityDefinition("Bearer", securityScheme);
 
-                       //    var securityRequirement = new OpenApiSecurityRequirement{{securityScheme, value }};
+                //    var securityRequirement = new OpenApiSecurityRequirement{{securityScheme, value }};
 
-                       //    options.AddSecurityRequirement(securityRequirement);
-                   });
+                //    options.AddSecurityRequirement(securityRequirement);
+            });
             //Declare DI
 
 
