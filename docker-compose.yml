@@ -1,38 +1,42 @@
 version: '3.4'
 
 services:
-  fakenewsfilter.api:
-    image: fakenewsfilter
+  api:
     build:
       context: .
       dockerfile: FakeNewsFilter.API/Dockerfile
+    ports:
+      - "2000:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=docker
     depends_on:
-        - db
+        - sqlserver
 
-  fakenewsfilter.adminapp:
-    image: fakenewsfilter
+  adminapp:
     build:
       context: .
       dockerfile: FakeNewsFilter.AdminApp/Dockerfile
+    ports:
+      - "2001:80"
 
-
-  fakenewsfilter.userapp:
-    image: fakenewsfilter
+  userapp:
     build:
       context: .
       dockerfile: FakeNewsFilter.UserApp/Dockerfile
-   
+    ports:
+      - "2002:80"
 
   redis:
     image: redis
-    ports: ["6379"]
-
-
-  db:
-    image: "mcr.microsoft.com/azure-sql-edge"
+    command: redis-server
     ports:
-        - "1433:1433"
+      - 6379:6379
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    ports:
+      - "1433:1433"
     environment:
-            MSSQL_SA_PASSWORD: "MyPass@word"
-            ACCEPT_EULA: "Y"
-            MSSQL_USER: "SA"
+      MSSQL_SA_PASSWORD: "MyPass@word"
+      ACCEPT_EULA: "Y"
+      MSSQL_USER: "sa"
