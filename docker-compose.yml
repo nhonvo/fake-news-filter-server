@@ -18,13 +18,17 @@ services:
       dockerfile: FakeNewsFilter.AdminApp/Dockerfile
     ports:
       - "2001:80"
-
+    environment:
+      - ASPNETCORE_ENVIRONMENT=docker
+      
   userapp:
     build:
       context: .
       dockerfile: FakeNewsFilter.UserApp/Dockerfile
     ports:
       - "2002:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=docker
 
   redis:
     image: redis
